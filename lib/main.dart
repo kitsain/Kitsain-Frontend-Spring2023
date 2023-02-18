@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
+import 'package:kitsain_frontend_spring2023/isar_service.dart';
+import 'package:kitsain_frontend_spring2023/models/item.dart';
 
 void main() {
   runApp(const MyApp());
