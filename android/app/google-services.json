@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "268538141692",
+    "project_id": "kitsain-a3bee",
+    "storage_bucket": "kitsain-a3bee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:268538141692:android:7303124d6a0ee68cf5f079",
+        "android_client_info": {
+          "package_name": "com.example.kitsain_frontend_spring2023"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "268538141692-ql4igi3qojuost7b7tk6nr7ne0jp4d2e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9u8txJcCIl84mIyZokJXJy3oRsppjq8s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "268538141692-ql4igi3qojuost7b7tk6nr7ne0jp4d2e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "268538141692-dci565p16spfkac3h5jdeu7q7qbdjr0g.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.kitsainFrontendSpring2023"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
