@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:convert';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final realmConfig = json
+      .decode(await rootBundle.loadString('assets/config/atlasConfig.json'));
+  String appId = realmConfig['appId'];
+  Uri baseUrl = Uri.parse(realmConfig['baseUrl']);
   runApp(const MyApp());
 }
 
