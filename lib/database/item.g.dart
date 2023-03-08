@@ -22,7 +22,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     String? ecoscoreGrade,
     String? packaging,
     String? origins,
-    Status? status,
     Iterable<String?> categories = const [],
     Iterable<String?> labels = const [],
     Iterable<String?> ingredients = const [],
@@ -42,7 +41,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     RealmObjectBase.set(this, 'ecoscoreGrade', ecoscoreGrade);
     RealmObjectBase.set(this, 'packaging', packaging);
     RealmObjectBase.set(this, 'origins', origins);
-    RealmObjectBase.set(this, 'status', status);
     RealmObjectBase.set<RealmList<String?>>(
         this, 'categories', RealmList<String?>(categories));
     RealmObjectBase.set<RealmList<String?>>(
@@ -169,11 +167,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   set origins(String? value) => RealmObjectBase.set(this, 'origins', value);
 
   @override
-  Status? get status => RealmObjectBase.get<Status>(this, 'status') as Status?;
-  @override
-  set status(Status? value) => RealmObjectBase.set(this, 'status', value);
-
-  @override
   Stream<RealmObjectChanges<Item>> get changes =>
       RealmObjectBase.getChanges<Item>(this);
 
@@ -209,8 +202,40 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
       SchemaProperty('ecoscoreGrade', RealmPropertyType.string, optional: true),
       SchemaProperty('packaging', RealmPropertyType.string, optional: true),
       SchemaProperty('origins', RealmPropertyType.string, optional: true),
-      SchemaProperty('status', RealmPropertyType.object,
-          optional: true, linkTarget: 'Status'),
+    ]);
+  }
+}
+
+class ObjectIdPrimaryKey extends _ObjectIdPrimaryKey
+    with RealmEntity, RealmObjectBase, RealmObject {
+  ObjectIdPrimaryKey(
+    ObjectId id,
+  ) {
+    RealmObjectBase.set(this, 'id', id);
+  }
+
+  ObjectIdPrimaryKey._();
+
+  @override
+  ObjectId get id => RealmObjectBase.get<ObjectId>(this, 'id') as ObjectId;
+  @override
+  set id(ObjectId value) => RealmObjectBase.set(this, 'id', value);
+
+  @override
+  Stream<RealmObjectChanges<ObjectIdPrimaryKey>> get changes =>
+      RealmObjectBase.getChanges<ObjectIdPrimaryKey>(this);
+
+  @override
+  ObjectIdPrimaryKey freeze() =>
+      RealmObjectBase.freezeObject<ObjectIdPrimaryKey>(this);
+
+  static SchemaObject get schema => _schema ??= _initSchema();
+  static SchemaObject? _schema;
+  static SchemaObject _initSchema() {
+    RealmObjectBase.registerFactory(ObjectIdPrimaryKey._);
+    return const SchemaObject(
+        ObjectType.realmObject, ObjectIdPrimaryKey, 'ObjectIdPrimaryKey', [
+      SchemaProperty('id', RealmPropertyType.objectid, primaryKey: true),
     ]);
   }
 }

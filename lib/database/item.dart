@@ -23,31 +23,29 @@ class _Item {
   late String? ecoscoreGrade;
   late String? packaging;
   late String? origins;
-  late Status? status;
 }
 
 @RealmModel()
-enum Status {
-  unopened,
-  opened,
-  wasted
+class _ObjectIdPrimaryKey {
+  @PrimaryKey()
+  late ObjectId id;
 }
 
-// // Creating a configuration object
-// final config = Configuration.local([Item.schema]);
+// Creating a configuration object
+final config = Configuration.local([Item.schema]);
 
-// // Opening a Realm
-// final realm = Realm(config);
+// Opening a Realm
+final realm = Realm(config);
 
 // // Idk what this does tbh, but it made the errors go away!
 // class Helpers {
 //   late Realm realm;
-
+//
 //   Helpers() {
 //     // Configuring a local realm
 //     var config = Configuration.local([Item.schema]);
 //     var realm = Realm(config);
-
+//
 //     var testItem = Item(ObjectId(), "test");
 //     realm.write(() {
 //       realm.add(testItem);
