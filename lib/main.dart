@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:kitsain_frontend_spring2023/database/realmServices.dart' as rs;
 
 void main() {
+  List<dynamic> data = ["test"];
+  debugPrint(rs.addItem(data));
   runApp(const MyApp());
 }
 
