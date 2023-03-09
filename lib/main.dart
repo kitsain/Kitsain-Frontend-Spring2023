@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kitsain_frontend_spring2023/views/addNewItemForm.dart';
 
 void main() {
   runApp(const MyApp());
@@ -78,10 +79,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _addNewItem() {
-    // todo: Logic for adding items
-    setState(() {
-
-    });
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return NewItemForm();
+        }
+        );
   }
 
   @override
