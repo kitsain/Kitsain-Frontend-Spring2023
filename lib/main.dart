@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kitsain_frontend_spring2023/views/addNewItemForm.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Kitsain App MVP 2023'),
     );
   }
 }
@@ -78,10 +79,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _addNewItem() {
-    // todo: Logic for adding items
-    setState(() {
-
-    });
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return NewItemForm();
+        }
+        );
   }
 
   @override
@@ -107,24 +110,21 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Add new item',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
-    bottomNavigationBar: NavigationBar(
-      selectedIndex: _navigationMenuIndex,
-      onDestinationSelected: (index) => _navMenuItemSelected(index),
-      destinations: const [
-        NavigationDestination(
-            icon: Icon(Icons.restaurant),
-            label: 'Page 1'),
-        NavigationDestination(
-            icon: Icon(Icons.playlist_add),
-            label: 'page 2'),
-        NavigationDestination(
-            icon: Icon(Icons.blender),
-            label: 'page 3'),
-        NavigationDestination(
-            icon: Icon(Icons.recycling),
-            label: 'page 4')
-      ],
-    ),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _navigationMenuIndex,
+        onDestinationSelected: (index) => _navMenuItemSelected(index),
+        destinations: const [
+          NavigationDestination(
+              icon: Icon(Icons.house),
+              label: 'YOUR PANTRY'),
+          NavigationDestination(
+              icon: Icon(Icons.shopping_cart),
+              label: 'SHOPPING LIST'),
+          NavigationDestination(
+              icon: Icon(Icons.recycling),
+              label: 'WASTE STATS')
+        ],
+      ),
     );
   }
 }
