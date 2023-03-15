@@ -1,8 +1,33 @@
-// File to initialize realm and to modify it
+// File to modify the database
 
 import 'package:realm/realm.dart';
 import 'item.dart';
 import 'package:flutter/foundation.dart';
+
+// class RealmServices extends ChangeNotifier {
+//   // late PantryModel _pantry;
+//   // final List<ObjectId> _itemIds = [];
+//   //
+//   // PantryModel get pantry => _pantry;
+//   //
+//   // set pantry(PantryModel newPantry) {
+//   //   _pantry = newPantry;
+//   //   // Notifying widgets when something has changed in the pantry
+//   //   notifyListeners();
+//   // }
+//   //
+//   // List<Item> get items => _itemIds.map((id) => _pantry.getById(id)).toList();
+//   //
+//   // // Add an item to pantry
+//   // bool add(Item item) {
+//   //   _itemIds.add(item.id);
+//   //   notifyListeners();
+//   //   return true;
+//   // }
+//
+//
+//
+// }
 
 var _config = Configuration.local([Item.schema]);
 var realm = Realm(_config);
@@ -17,96 +42,78 @@ int getItemCount() {
   return realm.all<Item>().length;
 }
 
-// TODO Count items by tag
-int getTagCount(String tag) {
-  return 0;
-}
-
-String testprint() {
-  final apple = Item(ObjectId(), "omppu");
-  realm.write(() {
-    realm.add(apple);
-  });
-  return apple.id.toString();
-}
+// // TODO Count items by category
+// int getTagCount() {
+//   var result = realm.query<Item>("name == omppu");
+//   return result.length;
+// }
 
 // Get item by id
-// TODO: After checking everything works, change return to ITEM
-String getById(ObjectId objectId) {
-  var item = realm.query<Item>("id == oid($objectId)");
-  // The line commented below is an example how it works correctly (tested) without a parameter
-  // TODO: test with parameter
-  // var found = realm.find<Item>("id == oid(6408aa37ecb6ca10553a7d14)");
-  return item[0].name;
+Item getById(String objectId) {
+  var found = realm.find<Item>(objectId)!;
+  return found;
 }
 
-// Add one item
+// Example data for addItem
+List<dynamic> data = [
+  ObjectId().toString(),
+  "turnip!",
+  "isbn",
+  2,
+  1.5,
+  DateTime.now().toUtc(),
+  DateTime.now().toUtc(),
+  DateTime.now().toUtc(),
+  DateTime.now().toUtc(),
+  ["vegetables", "good stuff"],
+  ["joutsenmerkki"],
+  ["turnip", "healthy bits"],
+  "unprocessed",
+  "amazing!",
+  [null],
+  "not applicable",
+  "plastic",
+  "Qo'onoS"
+];
+
+// Upsert one item
 // Parameter is a list. If no value is submitted in the app,
 // it should default to null
-String? addItem() {
+bool addItem(List<dynamic> data) {
   try {
-    // Example data for addItem
-    // TODO: Figure out how to make lists null
-    List<dynamic> data = [
-      ObjectId(),
-      "additem!",
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      // null,
-      // null,
-      // null,
-      // null,
-      // null,
-      // null,
-      // null,
-      // null
-    ];
     var newItem = Item(data[0], data[1],
         isbn: data[2],
-        quantity: data[2],
-        price: data[3],
-        purchaseDate: data[4],
-        openedDate: data[5],
-        expiryDate: data[6],
-        bbDate: data[7],
-        categories: data[8],
-        // labels: data[9],
-        // ingredients: data[10],
-        // processing: data[11],
-        // nutritionGrade: data[12],
-        // nutriments: data[13],
-        // ecoscoreGrade: data[14],
-        // packaging: data[15],
-        // origins: data[16]
-        );
+        quantity: data[3],
+        price: data[4],
+        purchaseDate: data[5],
+        openedDate: data[6],
+        expiryDate: data[7],
+        bbDate: data[8],
+        categories: data[9],
+        labels: data[10],
+        ingredients: data[11],
+        processing: data[12],
+        nutritionGrade: data[13],
+        nutriments: data[14],
+        ecoscoreGrade: data[15],
+        packaging: data[16],
+        origins: data[17]);
     realm.write(() {
-      realm.add<Item>(newItem);
+      realm.add<Item>(newItem, update: true);
     });
-    return newItem.name;
+    debugPrint("success!");
+    return true;
   } on RealmException catch (e) {
     debugPrint(e.message);
-    return null;
+    debugPrint("nej satan");
+    return false;
   }
 }
 
-// TODO: Figure out how to import property key from parameter
-// //Modify item property
-// void modifyItem(ObjectId id, String property, dynamic data) {
-//   var item = getById(id);
-//   realm.write(() {
-//     item.$property = data;
-//   });
-// }
-
 // Delete one item
-bool deleteItem(Item item) {
+bool deleteItem(String id) {
   try {
+    var item = realm.find<Item>(id)!;
     realm.write(() {
       realm.delete(item);
     });

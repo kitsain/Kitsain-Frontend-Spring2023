@@ -5,7 +5,7 @@ part 'item.g.dart';
 @RealmModel()
 class _Item {
   @PrimaryKey()
-  late final ObjectId id;
+  late final String id;
   late String name;
   late String? isbn;
   late int? quantity;
@@ -24,31 +24,31 @@ class _Item {
   late String? packaging;
   late String? origins;
 }
-
-@RealmModel()
-class _ObjectIdPrimaryKey {
-  @PrimaryKey()
-  late ObjectId id;
-}
-
-// Creating a configuration object
-final config = Configuration.local([Item.schema]);
-
-// Opening a Realm
-final realm = Realm(config);
-
-// // Idk what this does tbh, but it made the errors go away!
-// class Helpers {
+//
+// // A proxy of the pantry
+// class PantryModel {
 //   late Realm realm;
 //
-//   Helpers() {
-//     // Configuring a local realm
+//   PantryModel() {
 //     var config = Configuration.local([Item.schema]);
-//     var realm = Realm(config);
+//     realm = Realm(config);
 //
-//     var testItem = Item(ObjectId(), "test");
-//     realm.write(() {
-//       realm.add(testItem);
-//     });
+//     var allItems = realm.all<Item>();
+//
+//     // Putting some test objects in an empty pantry
+//     if (allItems.isEmpty) {
+//       realm.write(() {
+//         realm.addAll([
+//           Item(ObjectId().toString(), "carrot"),
+//           Item(ObjectId().toString(), "turnip", isbn: "isbn")
+//         ]);
+//       });
+//     }
 //   }
+//
+//     // Get item by id
+//     Item getById(ObjectId id) {
+//       final item = realm.find<Item>(id)!;
+//       return item;
+//     }
 // }
