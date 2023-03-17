@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:kitsain_frontend_spring2023/item_controller.dart';
 import 'package:kitsain_frontend_spring2023/views/add_new_item_form.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/my_pantry.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/used_and_expired.dart';
-
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +25,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
   final String title;
@@ -34,6 +34,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final StateController = Get.put(ItemController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    StateController.addData();
+    super.initState();
+  }
+
   int _navigationMenuIndex = 0;
   final _pages = [
     MyPantry(),
@@ -52,8 +61,7 @@ class _HomePageState extends State<HomePage> {
         context: context,
         builder: (BuildContext context) {
           return NewItemForm();
-        }
-    );
+        });
   }
 
   @override
@@ -64,7 +72,7 @@ class _HomePageState extends State<HomePage> {
         toolbarHeight: MediaQuery.of(context).size.height * 0.25,
       ),
       body: Center(
-          child: _pages[_navigationMenuIndex],
+        child: _pages[_navigationMenuIndex],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addNewItem,
@@ -77,13 +85,12 @@ class _HomePageState extends State<HomePage> {
         destinations: [
           DragTarget(
             builder: (
-                BuildContext context,
-                List<dynamic> accepted,
-                List<dynamic> rejected,
-                ) {
+              BuildContext context,
+              List<dynamic> accepted,
+              List<dynamic> rejected,
+            ) {
               return const NavigationDestination(
-                  icon: Icon(Icons.house),
-                  label: 'MY PANTRY');
+                  icon: Icon(Icons.house), label: 'MY PANTRY');
             },
             onMove: (details) {
               _navigationMenuIndex = 0;
@@ -92,28 +99,26 @@ class _HomePageState extends State<HomePage> {
           ),
           DragTarget(
             builder: (
-                BuildContext context,
-                List<dynamic> accepted,
-                List<dynamic> rejected,
-                ) {
+              BuildContext context,
+              List<dynamic> accepted,
+              List<dynamic> rejected,
+            ) {
               return const NavigationDestination(
-                  icon: Icon(Icons.shopping_cart),
-                  label: 'SHOPPING LIST');
+                  icon: Icon(Icons.shopping_cart), label: 'SHOPPING LIST');
             },
             onMove: (details) {
-                _navigationMenuIndex = 1;
-                _navMenuItemSelected(1);
+              _navigationMenuIndex = 1;
+              _navMenuItemSelected(1);
             },
           ),
           DragTarget(
             builder: (
-                BuildContext context,
-                List<dynamic> accepted,
-                List<dynamic> rejected,
-                ) {
+              BuildContext context,
+              List<dynamic> accepted,
+              List<dynamic> rejected,
+            ) {
               return const NavigationDestination(
-                  icon: Icon(Icons.recycling),
-                  label: 'USED & EXPIRED');
+                  icon: Icon(Icons.recycling), label: 'USED & EXPIRED');
             },
             onMove: (details) {
               _navigationMenuIndex = 2;

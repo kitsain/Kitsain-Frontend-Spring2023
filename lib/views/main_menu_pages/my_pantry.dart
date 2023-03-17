@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:kitsain_frontend_spring2023/item_controller.dart';
 
 class MyPantry extends StatefulWidget {
   const MyPantry({super.key});
@@ -8,61 +10,36 @@ class MyPantry extends StatefulWidget {
 }
 
 class _MyPantryState extends State<MyPantry> {
+  final StateController = Get.put(ItemController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-          children: <Widget>[
-            Draggable<String>(
-              data: 'Example item 1',
+      body: ListView.builder(
+          itemCount: StateController.pantryList.length,
+          itemBuilder: (context, index) {
+            return Draggable<String>(
+              data: StateController.pantryList[index],
+              onDragCompleted: () {
+                print('drag complete');
+                StateController.pantryList.removeAt(index);
+              },
               feedback: Material(
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.75,
                   height: MediaQuery.of(context).size.height * 0.10,
                   child: ListTile(
                     tileColor: Colors.lightGreen,
-                    title: Text('Example item 1 - currently being dragged'),
+                    title: Text(
+                        '${StateController.pantryList[index]}currently being dragged'),
                   ),
                 ),
               ),
               child: ListTile(
-                title: Text('Example item 1'),
+                title: Text('${StateController.pantryList[index]}'),
               ),
-            ),
-            Draggable<String>(
-              data: 'Example item 2',
-              feedback: Material(
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  height: MediaQuery.of(context).size.height * 0.10,
-                  child: ListTile(
-                    tileColor: Colors.lightGreen,
-                    title: Text('Example item 2 - currently being dragged'),
-                  ),
-                ),
-              ),
-              child: ListTile(
-                title: Text('Example item 2'),
-              ),
-            ),
-            Draggable<String>(
-              data: 'Example item 3',
-              feedback: Material(
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  height: MediaQuery.of(context).size.height * 0.10,
-                  child: ListTile(
-                    tileColor: Colors.lightGreen,
-                    title: Text('Example item 3 - currently being dragged'),
-                  ),
-                ),
-              ),
-              child: ListTile(
-                title: Text('Example item 3'),
-              ),
-            ),
-          ]
-      ),
+            );
+          }),
     );
   }
 }
