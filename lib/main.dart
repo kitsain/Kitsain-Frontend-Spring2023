@@ -68,7 +68,17 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(widget.title),
+            Image(
+              image: AssetImage('assets/images/Kitsain_logo.png'),
+              width: 150,
+              height: 150,
+            )
+          ],
+        ),
         toolbarHeight: MediaQuery.of(context).size.height * 0.25,
       ),
       body: Center(
