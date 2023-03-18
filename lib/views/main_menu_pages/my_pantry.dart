@@ -16,30 +16,30 @@ class _MyPantryState extends State<MyPantry> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.builder(
-          itemCount: StateController.pantryList.length,
-          itemBuilder: (context, index) {
-            return Draggable<String>(
-              data: StateController.pantryList[index],
-              onDragCompleted: () {
-                print('drag complete');
-                StateController.pantryList.removeAt(index);
-              },
-              feedback: Material(
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  height: MediaQuery.of(context).size.height * 0.10,
-                  child: ListTile(
-                    tileColor: Colors.lightGreen,
-                    title: Text(
-                        '${StateController.pantryList[index]}currently being dragged'),
-                  ),
+        itemCount: StateController.pantryList.length,
+        itemBuilder: (context, index) {
+          return Draggable<String>(
+            data: StateController.pantryList[index],
+            onDragCompleted: () {
+              print('drag complete');
+              StateController.pantryList.removeAt(index);
+            },
+            feedback: Material(
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.75,
+                height: MediaQuery.of(context).size.height * 0.10,
+                child: ListTile(
+                  tileColor: Colors.lightGreen,
+                  title: Text('${StateController.pantryList[index]}'),
                 ),
               ),
-              child: ListTile(
-                title: Text('${StateController.pantryList[index]}'),
-              ),
-            );
-          }),
+            ),
+            child: ListTile(
+              title: Text('${StateController.pantryList[index]}'),
+            ),
+          );
+        },
+      ),
     );
   }
 }
