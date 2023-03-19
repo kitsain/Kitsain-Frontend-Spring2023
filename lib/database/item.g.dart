@@ -10,10 +10,11 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   Item(
     String id,
     String name, {
-    String? isbn,
+    String? barcode,
+    String? brand,
     int? quantity,
     double? price,
-    DateTime? purchaseDate,
+    DateTime? addedDate,
     DateTime? openedDate,
     DateTime? expiryDate,
     DateTime? bbDate,
@@ -22,6 +23,8 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     String? ecoscoreGrade,
     String? packaging,
     String? origins,
+    Status? status,
+    bool? everyday,
     Iterable<String?> categories = const [],
     Iterable<String?> labels = const [],
     Iterable<String?> ingredients = const [],
@@ -29,10 +32,11 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   }) {
     RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set(this, 'name', name);
-    RealmObjectBase.set(this, 'isbn', isbn);
+    RealmObjectBase.set(this, 'barcode', barcode);
+    RealmObjectBase.set(this, 'brand', brand);
     RealmObjectBase.set(this, 'quantity', quantity);
     RealmObjectBase.set(this, 'price', price);
-    RealmObjectBase.set(this, 'purchaseDate', purchaseDate);
+    RealmObjectBase.set(this, 'addedDate', addedDate);
     RealmObjectBase.set(this, 'openedDate', openedDate);
     RealmObjectBase.set(this, 'expiryDate', expiryDate);
     RealmObjectBase.set(this, 'bbDate', bbDate);
@@ -41,6 +45,8 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     RealmObjectBase.set(this, 'ecoscoreGrade', ecoscoreGrade);
     RealmObjectBase.set(this, 'packaging', packaging);
     RealmObjectBase.set(this, 'origins', origins);
+    RealmObjectBase.set(this, 'status', status);
+    RealmObjectBase.set(this, 'everyday', everyday);
     RealmObjectBase.set<RealmList<String?>>(
         this, 'categories', RealmList<String?>(categories));
     RealmObjectBase.set<RealmList<String?>>(
@@ -64,9 +70,15 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   set name(String value) => RealmObjectBase.set(this, 'name', value);
 
   @override
-  String? get isbn => RealmObjectBase.get<String>(this, 'isbn') as String?;
+  String? get barcode =>
+      RealmObjectBase.get<String>(this, 'barcode') as String?;
   @override
-  set isbn(String? value) => RealmObjectBase.set(this, 'isbn', value);
+  set barcode(String? value) => RealmObjectBase.set(this, 'barcode', value);
+
+  @override
+  String? get brand => RealmObjectBase.get<String>(this, 'brand') as String?;
+  @override
+  set brand(String? value) => RealmObjectBase.set(this, 'brand', value);
 
   @override
   int? get quantity => RealmObjectBase.get<int>(this, 'quantity') as int?;
@@ -79,11 +91,11 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   set price(double? value) => RealmObjectBase.set(this, 'price', value);
 
   @override
-  DateTime? get purchaseDate =>
-      RealmObjectBase.get<DateTime>(this, 'purchaseDate') as DateTime?;
+  DateTime? get addedDate =>
+      RealmObjectBase.get<DateTime>(this, 'addedDate') as DateTime?;
   @override
-  set purchaseDate(DateTime? value) =>
-      RealmObjectBase.set(this, 'purchaseDate', value);
+  set addedDate(DateTime? value) =>
+      RealmObjectBase.set(this, 'addedDate', value);
 
   @override
   DateTime? get openedDate =>
@@ -167,6 +179,16 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   set origins(String? value) => RealmObjectBase.set(this, 'origins', value);
 
   @override
+  Status? get status => RealmObjectBase.get<Status>(this, 'status') as Status?;
+  @override
+  set status(Status? value) => RealmObjectBase.set(this, 'status', value);
+
+  @override
+  bool? get everyday => RealmObjectBase.get<bool>(this, 'everyday') as bool?;
+  @override
+  set everyday(bool? value) => RealmObjectBase.set(this, 'everyday', value);
+
+  @override
   Stream<RealmObjectChanges<Item>> get changes =>
       RealmObjectBase.getChanges<Item>(this);
 
@@ -180,11 +202,11 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     return const SchemaObject(ObjectType.realmObject, Item, 'Item', [
       SchemaProperty('id', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('name', RealmPropertyType.string),
-      SchemaProperty('isbn', RealmPropertyType.string, optional: true),
+      SchemaProperty('barcode', RealmPropertyType.string, optional: true),
+      SchemaProperty('brand', RealmPropertyType.string, optional: true),
       SchemaProperty('quantity', RealmPropertyType.int, optional: true),
       SchemaProperty('price', RealmPropertyType.double, optional: true),
-      SchemaProperty('purchaseDate', RealmPropertyType.timestamp,
-          optional: true),
+      SchemaProperty('addedDate', RealmPropertyType.timestamp, optional: true),
       SchemaProperty('openedDate', RealmPropertyType.timestamp, optional: true),
       SchemaProperty('expiryDate', RealmPropertyType.timestamp, optional: true),
       SchemaProperty('bbDate', RealmPropertyType.timestamp, optional: true),
@@ -202,6 +224,9 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
       SchemaProperty('ecoscoreGrade', RealmPropertyType.string, optional: true),
       SchemaProperty('packaging', RealmPropertyType.string, optional: true),
       SchemaProperty('origins', RealmPropertyType.string, optional: true),
+      SchemaProperty('status', RealmPropertyType.object,
+          optional: true, linkTarget: 'Status'),
+      SchemaProperty('everyday', RealmPropertyType.bool, optional: true),
     ]);
   }
 }

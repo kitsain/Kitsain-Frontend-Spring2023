@@ -7,10 +7,11 @@ class _Item {
   @PrimaryKey()
   late final String id;
   late String name;
-  late String? isbn;
+  late String? barcode;
+  late String? brand;
   late int? quantity;
   late double? price;
-  late DateTime? purchaseDate;
+  late DateTime? addedDate;
   late DateTime? openedDate;
   late DateTime? expiryDate;
   late DateTime? bbDate;
@@ -23,6 +24,16 @@ class _Item {
   late String? ecoscoreGrade;
   late String? packaging;
   late String? origins;
+  late Status? status;
+  late bool? everyday;
+}
+
+@RealmModel()
+enum Status {
+  unopened,
+  opened,
+  expired,
+  used
 }
 //
 // // A proxy of the pantry

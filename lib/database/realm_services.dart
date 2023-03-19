@@ -58,7 +58,7 @@ Item getById(String objectId) {
 List<dynamic> data = [
   ObjectId().toString(),
   "turnip!",
-  "isbn",
+  "ean",
   2,
   1.5,
   DateTime.now().toUtc(),
@@ -73,7 +73,9 @@ List<dynamic> data = [
   [null],
   "not applicable",
   "plastic",
-  "Qo'onoS"
+  "Qo'onoS",
+  "unopened",
+  false
 ];
 
 // Upsert one item
@@ -81,11 +83,15 @@ List<dynamic> data = [
 // it should default to null
 bool addItem(List<dynamic> data) {
   try {
+    // Check if the object already exists; if not, create a new ObjectId
+    if (getById(data[0]).isValid == false) {
+      data[0] = ObjectId();
+    }
     var newItem = Item(data[0], data[1],
-        isbn: data[2],
+        barcode: data[2],
         quantity: data[3],
         price: data[4],
-        purchaseDate: data[5],
+        addedDate: data[5],
         openedDate: data[6],
         expiryDate: data[7],
         bbDate: data[8],
@@ -97,7 +103,11 @@ bool addItem(List<dynamic> data) {
         nutriments: data[14],
         ecoscoreGrade: data[15],
         packaging: data[16],
-        origins: data[17]);
+        origins: data[17],
+        status: data[18],
+        everyday: data[19],
+        brand: data[20]
+    );
     realm.write(() {
       realm.add<Item>(newItem, update: true);
     });
