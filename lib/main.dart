@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
 import 'package:kitsain_frontend_spring2023/views/add_new_item_form.dart';
+import 'package:kitsain_frontend_spring2023/views/homepage2.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/my_pantry.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/used_and_expired.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -20,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.lightGreen,
       ),
-      home: const HomePage(title: 'Kitsain MVP 2023'),
+      home: HomePage2(),
     );
   }
 }

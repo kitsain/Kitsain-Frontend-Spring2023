@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:kitsain_frontend_spring2023/google_sign_in.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 class NewItemForm extends StatefulWidget {
@@ -13,6 +15,7 @@ class NewItemForm extends StatefulWidget {
 class _NewItemFormState extends State<NewItemForm> {
   final _barcodeField = TextEditingController();
 
+  final loginController = Get.put(LoginController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +23,12 @@ class _NewItemFormState extends State<NewItemForm> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            ElevatedButton(
+              onPressed: () async {
+                loginController.googleLogin();
+              },
+              child: const Text('Google Sign In'),
+            ),
             ElevatedButton(
               onPressed: () async {
                 var res = await Navigator.push(
@@ -35,7 +44,7 @@ class _NewItemFormState extends State<NewItemForm> {
               },
               child: const Text('Open Scanner'),
             ),
-            SizedBox( height: MediaQuery.of(context).size.height * 0.05),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.5,
               child: TextField(
