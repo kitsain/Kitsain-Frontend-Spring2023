@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kitsain_frontend_spring2023/database/realm_services.dart' as rs;
+import 'package:kitsain_frontend_spring2023/database/openfoodfacts.dart' as off;
+import 'package:realm/realm.dart';
 
 void main() {
+  // This is just to help me find the correct db file to delete if I make changes to the database and get migration errors :3
+  // Get on-disk location of the default Realm
+  // final storagePath = Configuration.defaultStoragePath;
   runApp(const MyApp());
 }
 

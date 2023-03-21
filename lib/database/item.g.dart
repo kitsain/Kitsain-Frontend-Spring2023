@@ -23,7 +23,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     String? ecoscoreGrade,
     String? packaging,
     String? origins,
-    Status? status,
+    String? status,
     bool? everyday,
     Iterable<String?> categories = const [],
     Iterable<String?> labels = const [],
@@ -179,9 +179,9 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   set origins(String? value) => RealmObjectBase.set(this, 'origins', value);
 
   @override
-  Status? get status => RealmObjectBase.get<Status>(this, 'status') as Status?;
+  String? get status => RealmObjectBase.get<String>(this, 'status') as String?;
   @override
-  set status(Status? value) => RealmObjectBase.set(this, 'status', value);
+  set status(String? value) => RealmObjectBase.set(this, 'status', value);
 
   @override
   bool? get everyday => RealmObjectBase.get<bool>(this, 'everyday') as bool?;
@@ -224,8 +224,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
       SchemaProperty('ecoscoreGrade', RealmPropertyType.string, optional: true),
       SchemaProperty('packaging', RealmPropertyType.string, optional: true),
       SchemaProperty('origins', RealmPropertyType.string, optional: true),
-      SchemaProperty('status', RealmPropertyType.object,
-          optional: true, linkTarget: 'Status'),
+      SchemaProperty('status', RealmPropertyType.string, optional: true),
       SchemaProperty('everyday', RealmPropertyType.bool, optional: true),
     ]);
   }

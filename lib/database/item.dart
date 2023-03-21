@@ -24,42 +24,6 @@ class _Item {
   late String? ecoscoreGrade;
   late String? packaging;
   late String? origins;
-  late Status? status;
+  late String? status;
   late bool? everyday;
 }
-
-@RealmModel()
-enum Status {
-  unopened,
-  opened,
-  expired,
-  used
-}
-//
-// // A proxy of the pantry
-// class PantryModel {
-//   late Realm realm;
-//
-//   PantryModel() {
-//     var config = Configuration.local([Item.schema]);
-//     realm = Realm(config);
-//
-//     var allItems = realm.all<Item>();
-//
-//     // Putting some test objects in an empty pantry
-//     if (allItems.isEmpty) {
-//       realm.write(() {
-//         realm.addAll([
-//           Item(ObjectId().toString(), "carrot"),
-//           Item(ObjectId().toString(), "turnip", isbn: "isbn")
-//         ]);
-//       });
-//     }
-//   }
-//
-//     // Get item by id
-//     Item getById(ObjectId id) {
-//       final item = realm.find<Item>(id)!;
-//       return item;
-//     }
-// }

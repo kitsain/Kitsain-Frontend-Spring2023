@@ -29,6 +29,7 @@ Future<Product?> getFromJson(String barcode) async {
   ProductResultV3 result = await OpenFoodAPIClient.getProductV3(config);
 
   if (result.status == ProductResultV3.statusSuccess) {
+    debugPrint(result.product?.productName);
     return result.product;
   } else {
     throw Exception("Product not found.");
