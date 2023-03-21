@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kitsain_frontend_spring2023/views/addNewItemForm.dart';
+import 'package:get/get.dart';
+import 'package:kitsain_frontend_spring2023/item_controller.dart';
+import 'package:kitsain_frontend_spring2023/views/add_new_item_form.dart';
+import 'package:kitsain_frontend_spring2023/views/main_menu_pages/my_pantry.dart';
+import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_list.dart';
+import 'package:kitsain_frontend_spring2023/views/main_menu_pages/used_and_expired.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,68 +13,41 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Kitsain 2023 MVP',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.lightGreen,
       ),
-      home: const MyHomePage(title: 'Kitsain App MVP 2023'),
+      home: const HomePage(title: 'Kitsain MVP 2023'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
+class HomePage extends StatefulWidget {
+  const HomePage({super.key, required this.title});
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
+  final StateController = Get.put(ItemController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    StateController.addData();
+    super.initState();
+  }
+
   int _navigationMenuIndex = 0;
   final _pages = [
-    ListView(
-        children: const <Widget>[
-          ListTile(
-            title: Text('example item'),
-          ),
-          ListTile(
-            title: Text('example item'),
-          ),
-          ListTile(
-            title: Text('example item'),
-          ),
-          ListTile(
-            title: Text('example item'),
-          )
-        ]
-    ),
-    ListView(children: const <Widget>[]),
-    ListView(children: const <Widget>[]),
-    ListView(children: const <Widget>[]),
+    MyPantry(),
+    ShoppingList(),
+    UsedAndExpired(),
   ];
 
   void _navMenuItemSelected(int index) {
@@ -83,27 +61,28 @@ class _MyHomePageState extends State<MyHomePage> {
         context: context,
         builder: (BuildContext context) {
           return NewItemForm();
-        }
-        );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(widget.title),
+            Image(
+              image: AssetImage('assets/images/Kitsain_logo.png'),
+              width: 150,
+              height: 150,
+            )
+          ],
+        ),
         toolbarHeight: MediaQuery.of(context).size.height * 0.25,
       ),
       body: Center(
-          child: _pages[_navigationMenuIndex],
+        child: _pages[_navigationMenuIndex],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addNewItem,
@@ -113,16 +92,49 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: _navigationMenuIndex,
         onDestinationSelected: (index) => _navMenuItemSelected(index),
-        destinations: const [
-          NavigationDestination(
-              icon: Icon(Icons.house),
-              label: 'YOUR PANTRY'),
-          NavigationDestination(
-              icon: Icon(Icons.shopping_cart),
-              label: 'SHOPPING LIST'),
-          NavigationDestination(
-              icon: Icon(Icons.recycling),
-              label: 'WASTE STATS')
+        destinations: [
+          DragTarget(
+            builder: (
+              BuildContext context,
+              List<dynamic> accepted,
+              List<dynamic> rejected,
+            ) {
+              return const NavigationDestination(
+                  icon: Icon(Icons.house), label: 'MY PANTRY');
+            },
+            onMove: (details) {
+              _navigationMenuIndex = 0;
+              _navMenuItemSelected(0);
+            },
+          ),
+          DragTarget(
+            builder: (
+              BuildContext context,
+              List<dynamic> accepted,
+              List<dynamic> rejected,
+            ) {
+              return const NavigationDestination(
+                  icon: Icon(Icons.shopping_cart), label: 'SHOPPING LIST');
+            },
+            onMove: (details) {
+              _navigationMenuIndex = 1;
+              _navMenuItemSelected(1);
+            },
+          ),
+          DragTarget(
+            builder: (
+              BuildContext context,
+              List<dynamic> accepted,
+              List<dynamic> rejected,
+            ) {
+              return const NavigationDestination(
+                  icon: Icon(Icons.recycling), label: 'USED & EXPIRED');
+            },
+            onMove: (details) {
+              _navigationMenuIndex = 2;
+              _navMenuItemSelected(2);
+            },
+          ),
         ],
       ),
     );
