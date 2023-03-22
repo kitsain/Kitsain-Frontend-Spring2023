@@ -4,12 +4,22 @@ import 'package:realm/realm.dart';
 import 'item.dart';
 import 'package:flutter/foundation.dart';
 
-class Pantry extends ChangeNotifier {
+class PantryProxy extends ChangeNotifier {
   late Realm realm;
 
-  Pantry() {
+  PantryProxy() {
     var config = Configuration.local([Item.schema]);
     realm = Realm(config);
+  }
+
+  // Get all Items
+  RealmResults<Item> getItems() {
+    return realm.all<Item>();
+  }
+
+  // Get item count
+  int getItemCount() {
+    return realm.all<Item>().length;
   }
 
   // Get item by id
@@ -28,7 +38,6 @@ class Pantry extends ChangeNotifier {
     ObjectId().toString(),
     "turnip!",
     "ean",
-    "Pirkka",
     2,
     1.5,
     DateTime.now().toUtc(),
@@ -45,7 +54,8 @@ class Pantry extends ChangeNotifier {
     "plastic",
     "Qo'onoS",
     "unopened",
-    false
+    "Pirkka",
+    "vegetables"
   ];
 
   // Upsert one item
@@ -53,10 +63,6 @@ class Pantry extends ChangeNotifier {
   // it should default to null
   bool addItem(List<dynamic> data) {
     try {
-      // Check if the object already exists; if not, create a new ObjectId
-      if (getById(data[0]).isValid == false) {
-        data[0] = ObjectId();
-      }
       var newItem = Item(data[0], data[1],
           barcode: data[2],
           quantity: data[3],
@@ -75,8 +81,8 @@ class Pantry extends ChangeNotifier {
           packaging: data[16],
           origins: data[17],
           status: data[18],
-          everyday: data[19],
-          brand: data[20]);
+          brand: data[19],
+          mainCat: data[20]);
       realm.write(() {
         realm.add<Item>(newItem, update: true);
       });
@@ -85,6 +91,18 @@ class Pantry extends ChangeNotifier {
     } on RealmException catch (e) {
       debugPrint(e.message);
       return false;
+    }
+  }
+
+  // Set/unset a favourite item
+  void toggleFavourite(String id) {
+    try {
+      var item = getById(id);
+      realm.write(() {
+        item.everyday = !item.everyday;
+      });
+    } on RealmException catch (e) {
+      debugPrint(e.message);
     }
   }
 

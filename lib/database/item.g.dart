@@ -7,6 +7,8 @@ part of 'item.dart';
 // **************************************************************************
 
 class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
+  static var _defaultsSet = false;
+
   Item(
     String id,
     String name, {
@@ -18,18 +20,25 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     DateTime? openedDate,
     DateTime? expiryDate,
     DateTime? bbDate,
+    String? mainCat,
     String? processing,
     String? nutritionGrade,
     String? ecoscoreGrade,
     String? packaging,
     String? origins,
     String? status,
-    bool? everyday,
+    bool everyday = false,
+    bool? newItem,
     Iterable<String?> categories = const [],
     Iterable<String?> labels = const [],
     Iterable<String?> ingredients = const [],
     Iterable<String?> nutriments = const [],
   }) {
+    if (!_defaultsSet) {
+      _defaultsSet = RealmObjectBase.setDefaults<Item>({
+        'everyday': false,
+      });
+    }
     RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set(this, 'name', name);
     RealmObjectBase.set(this, 'barcode', barcode);
@@ -40,6 +49,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     RealmObjectBase.set(this, 'openedDate', openedDate);
     RealmObjectBase.set(this, 'expiryDate', expiryDate);
     RealmObjectBase.set(this, 'bbDate', bbDate);
+    RealmObjectBase.set(this, 'mainCat', mainCat);
     RealmObjectBase.set(this, 'processing', processing);
     RealmObjectBase.set(this, 'nutritionGrade', nutritionGrade);
     RealmObjectBase.set(this, 'ecoscoreGrade', ecoscoreGrade);
@@ -47,6 +57,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     RealmObjectBase.set(this, 'origins', origins);
     RealmObjectBase.set(this, 'status', status);
     RealmObjectBase.set(this, 'everyday', everyday);
+    RealmObjectBase.set(this, 'newItem', newItem);
     RealmObjectBase.set<RealmList<String?>>(
         this, 'categories', RealmList<String?>(categories));
     RealmObjectBase.set<RealmList<String?>>(
@@ -118,6 +129,12 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   set bbDate(DateTime? value) => RealmObjectBase.set(this, 'bbDate', value);
 
   @override
+  String? get mainCat =>
+      RealmObjectBase.get<String>(this, 'mainCat') as String?;
+  @override
+  set mainCat(String? value) => RealmObjectBase.set(this, 'mainCat', value);
+
+  @override
   RealmList<String?> get categories =>
       RealmObjectBase.get<String?>(this, 'categories') as RealmList<String?>;
   @override
@@ -184,9 +201,14 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   set status(String? value) => RealmObjectBase.set(this, 'status', value);
 
   @override
-  bool? get everyday => RealmObjectBase.get<bool>(this, 'everyday') as bool?;
+  bool get everyday => RealmObjectBase.get<bool>(this, 'everyday') as bool;
   @override
-  set everyday(bool? value) => RealmObjectBase.set(this, 'everyday', value);
+  set everyday(bool value) => RealmObjectBase.set(this, 'everyday', value);
+
+  @override
+  bool? get newItem => RealmObjectBase.get<bool>(this, 'newItem') as bool?;
+  @override
+  set newItem(bool? value) => RealmObjectBase.set(this, 'newItem', value);
 
   @override
   Stream<RealmObjectChanges<Item>> get changes =>
@@ -210,6 +232,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
       SchemaProperty('openedDate', RealmPropertyType.timestamp, optional: true),
       SchemaProperty('expiryDate', RealmPropertyType.timestamp, optional: true),
       SchemaProperty('bbDate', RealmPropertyType.timestamp, optional: true),
+      SchemaProperty('mainCat', RealmPropertyType.string, optional: true),
       SchemaProperty('categories', RealmPropertyType.string,
           optional: true, collectionType: RealmCollectionType.list),
       SchemaProperty('labels', RealmPropertyType.string,
@@ -225,7 +248,8 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
       SchemaProperty('packaging', RealmPropertyType.string, optional: true),
       SchemaProperty('origins', RealmPropertyType.string, optional: true),
       SchemaProperty('status', RealmPropertyType.string, optional: true),
-      SchemaProperty('everyday', RealmPropertyType.bool, optional: true),
+      SchemaProperty('everyday', RealmPropertyType.bool),
+      SchemaProperty('newItem', RealmPropertyType.bool, optional: true),
     ]);
   }
 }

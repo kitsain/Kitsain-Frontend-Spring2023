@@ -5,11 +5,9 @@ import 'package:kitsain_frontend_spring2023/views/add_new_item_form.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/pantry_ella.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/used_and_expired.dart';
+import 'package:realm/realm.dart';
 
 void main() {
-  // This is just to help me find the correct db file to delete if I make changes to the database and get migration errors :3
-  // Get on-disk location of the default Realm
-  // final storagePath = Configuration.defaultStoragePath;
   runApp(const MyApp());
 }
 
