@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
+const List<String> categories = <String>['Meat', 'Seafood', 'Fruit', 'Vegetables',
+                                         'Frozen', 'Drinks', 'Bread', 'Sweets',
+                                         'Dairy', 'Ready meals',
+                                         'Dry & canned goods', 'Other'];
 
 class NewItemForm extends StatefulWidget {
   const NewItemForm({super.key});
@@ -13,11 +17,36 @@ class NewItemForm extends StatefulWidget {
 @override
 class _NewItemFormState extends State<NewItemForm> {
   final _formKey = GlobalKey<FormState>();
+  final _barcodeField = TextEditingController();
   var _itemName = TextEditingController();
-  var _itemCat = TextEditingController();
   var _expDate = TextEditingController();
   var _openDate = TextEditingController();
   bool click = true;
+  String dropdownValue = categories.first;
+
+  void _discardChangesDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          content: const Text('Discard changes?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('CANCEL'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: const Text('DISCARD'),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        )
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +63,7 @@ class _NewItemFormState extends State<NewItemForm> {
                   height: MediaQuery.of(context).size.height * 0.05,
                   child: FloatingActionButton(
                     child: Icon(Icons.close),
-                    onPressed: () {Navigator.pop(context);}, //Close sheet
+                    onPressed: () => _discardChangesDialog(), //Close sheet
                   ),
               )
             ],
@@ -48,7 +77,7 @@ class _NewItemFormState extends State<NewItemForm> {
               ),
           ),
           SizedBox( height: MediaQuery.of(context).size.height * 0.03),
-          Row(
+          Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
@@ -60,7 +89,11 @@ class _NewItemFormState extends State<NewItemForm> {
                         MaterialPageRoute(
                           builder: (context) => SimpleBarcodeScannerPage(),
                         ));
-
+                    setState(() {
+                      if (res is String) {
+                        _barcodeField.text = res;
+                      }
+                    });
                     //Res will be the EAN-code
                     //Here add OFF-api call and populate item name and category
                     //fields if the product was found
@@ -69,6 +102,17 @@ class _NewItemFormState extends State<NewItemForm> {
                   },
                   icon: Icon(Icons.camera_alt),
                   label: const Text('SCAN ITEM'),
+                ),
+              ),
+              SizedBox( height: MediaQuery.of(context).size.height * 0.03),
+              SizedBox(
+                width: 150,
+                child: TextFormField(
+                  controller: _barcodeField,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                   labelText: 'Barcode',
+                  ),
                 ),
               ),
             ],
@@ -91,18 +135,19 @@ class _NewItemFormState extends State<NewItemForm> {
           ),
           SizedBox( height: MediaQuery.of(context).size.height * 0.03),
           SizedBox(
-            child: TextFormField(
-              controller: _itemCat,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Item category',
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Please enter item category";
-                }
-                return null;
+            child: DropdownButtonFormField<String>(
+              value: dropdownValue,
+              onChanged: (String? value) {
+                setState(() {
+                  dropdownValue = value!;
+                });
               },
+              items: categories.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
             ),
           ),
           SizedBox( height: MediaQuery.of(context).size.height * 0.03),
@@ -172,11 +217,11 @@ class _NewItemFormState extends State<NewItemForm> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.07,
                 child: ElevatedButton(
-                  onPressed: () async {
-                  },
-                  child: Text('CANCEL'),
+                  onPressed: () => _discardChangesDialog(),
+                    child: Text('CANCEL'),
+                  ),
                 ),
-              ),
+
               SizedBox( width: MediaQuery.of(context).size.width * 0.03,),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.07,
@@ -190,9 +235,10 @@ class _NewItemFormState extends State<NewItemForm> {
                 ),
               ),
             ],
-          ),
-        ],
-      ),
+            ),
+            ],
+          )
     );
   }
 }
+
