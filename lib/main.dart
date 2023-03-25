@@ -59,8 +59,12 @@ class _HomePageState extends State<HomePage> {
   void _addNewItem() {
     showModalBottomSheet(
         context: context,
+        isScrollControlled: true,
         builder: (BuildContext context) {
-          return NewItemForm();
+          return FractionallySizedBox(
+            heightFactor: 0.7,
+            child: NewItemForm(),
+          );
         });
   }
 
