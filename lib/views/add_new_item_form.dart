@@ -25,27 +25,32 @@ class _NewItemFormState extends State<NewItemForm> {
   String dropdownValue = categories.first;
 
   void _discardChangesDialog() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          content: const Text('Discard changes?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('CANCEL'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            TextButton(
-              child: const Text('DISCARD'),
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        )
-    );
+    if(_itemName.text.isEmpty && _barcodeField.text.isEmpty &&
+       _openDate.text.isEmpty && _expDate.text.isEmpty) {
+      Navigator.pop(context);
+    } else {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            content: const Text('Discard changes?'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('CANCEL'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              TextButton(
+                child: const Text('DISCARD'),
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          )
+      );
+    }
   }
 
   @override
