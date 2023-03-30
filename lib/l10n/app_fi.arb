@@ -1,0 +1,12 @@
+{
+    "pantryScreen": "RUOKAKOMERO",
+    "shoppingListScreen": "KAUPPALISTA",
+    "historyScreen": "HISTORIA",
+    "addNewItem": "lisää uusi tuote",
+    "dragComplete": "Tuote vedetty",
+    "dropTarget": "Pudota",
+    "openScanner": "Avaa viivakoodinlukija",
+    "barcode": "Viivakoodi",
+    "pantryItem": "tuote",
+    "shoppingListItem": "kauppalista"
+}
