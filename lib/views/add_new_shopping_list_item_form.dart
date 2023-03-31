@@ -17,13 +17,12 @@ class NewShoppingListItemForm extends StatefulWidget {
 @override
 class _NewItemFormState extends State<NewShoppingListItemForm> {
   final _formKey = GlobalKey<FormState>();
-  final _barcodeField = TextEditingController();
+  final _EANCodeField = TextEditingController();
   var _itemName = TextEditingController();
-  bool click = true;
   String dropdownValue = categories.first;
 
   void _discardChangesDialog() {
-    if(_itemName.text.isEmpty && _barcodeField.text.isEmpty) {
+    if(_itemName.text.isEmpty && _EANCodeField.text.isEmpty) {
       Navigator.pop(context);
     } else {
       showDialog(
@@ -48,7 +47,6 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
           )
       );
     }
-
   }
 
   @override
@@ -56,7 +54,6 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
     return Form(
         key: _formKey,
         child: ListView(
-          //mainAxisAlignment: MainAxisAlignment.center,
           padding: const EdgeInsets.all(8),
           children: <Widget>[
             Row(
@@ -66,7 +63,7 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                   height: MediaQuery.of(context).size.height * 0.05,
                   child: FloatingActionButton(
                     child: Icon(Icons.close),
-                    onPressed: () => _discardChangesDialog(), //Close sheet
+                    onPressed: () => _discardChangesDialog(),
                   ),
                 )
               ],
@@ -90,28 +87,37 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                             builder: (context) => SimpleBarcodeScannerPage(),
                           ));
                       setState(() {
-                        if (res is String) {
-                          _barcodeField.text = res;
+                        if (res is String && res != '-1') {
+                          _EANCodeField.text = res;
                         }
                       });
                       //Res will be the EAN-code
                       //Here add OFF-api call and populate item name and category
                       //fields if the product was found
                       //_itemName.text =
-                      //_itemCat.text =
                     },
-                    icon: Icon(Icons.camera_alt),
-                    label: const Text('SCAN ITEM'),
+                    icon: Icon(Icons.camera_alt, size: 40,),
+                    label: Text('SCAN EAN', style: TextStyle(fontSize: 20)),
+                  ),
+                ),
+                SizedBox( height: MediaQuery.of(context).size.height * 0.01),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.03,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      //Here check that EAN-code-field is no empty
+                      //And then call OFF-API
+                    },
+                    child: Text('      ADD MANUALLY     '),
                   ),
                 ),
                 SizedBox( height: MediaQuery.of(context).size.height * 0.03),
                 SizedBox(
-                  width: 150,
                   child: TextFormField(
-                    controller: _barcodeField,
+                    controller: _EANCodeField,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Barcode',
+                      labelText: 'EAN CODE',
                     ),
                   ),
                 ),
@@ -123,7 +129,7 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                 controller: _itemName,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Item name',
+                  labelText: 'ITEM NAME',
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -134,10 +140,10 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
               ),
             ),
             SizedBox( height: MediaQuery.of(context).size.height * 0.03),
-            //Category-field
             SizedBox(
               child: DropdownButtonFormField<String>(
                 value: dropdownValue,
+                decoration: InputDecoration(labelText: 'ITEM CATEGORY'),
                 onChanged: (String? value) {
                   setState(() {
                     dropdownValue = value!;
@@ -151,19 +157,7 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                 }).toList(),
               ),
             ),
-            SizedBox( height: MediaQuery.of(context).size.height * 0.01),
-            SizedBox(
-              child: TextButton.icon(
-                onPressed: () {
-                  setState(() {
-                    click = !click;
-                  });
-                },
-                icon: Icon((click == false) ? Icons.favorite : Icons.favorite_border),
-                label: Text('Mark as an "everyday" item'),
-              ),
-            ),
-            SizedBox( height: MediaQuery.of(context).size.height * 0.03),
+            SizedBox( height: MediaQuery.of(context).size.height * 0.05),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

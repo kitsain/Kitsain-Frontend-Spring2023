@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
 import 'package:kitsain_frontend_spring2023/views/add_new_item_form.dart';
 import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_item_form.dart';
+import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_form.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/my_pantry.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/used_and_expired.dart';
@@ -70,6 +71,16 @@ class _HomePageState extends State<HomePage> {
             );
           });
     } else if(_navigationMenuIndex == 1) {
+      showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (BuildContext context) {
+            return FractionallySizedBox(
+              heightFactor: 0.7,
+              child: NewShoppingListForm(),
+            );
+          });
+    }else if(_navigationMenuIndex == 2) {
       showModalBottomSheet(
           context: context,
           isScrollControlled: true,
