@@ -19,7 +19,7 @@ The only mandatory fields for an item are:
 @RealmModel()
 class _Item {
   @PrimaryKey()
-  late final String id;
+  late final String id; // This will NOT be shown to the user
   late String name;
   late String? barcode;
   late String? brand;
@@ -39,7 +39,36 @@ class _Item {
   late String? ecoscoreGrade;
   late String? packaging;
   late String? origins;
-  late String? status;
-  late bool everyday = false;
-  late bool? newItem;
+  late String?
+      status; // Unopened, opened, close to expiration, expired; Not shown to user
+  late String? location; // Pantry, used, bin, new; Not shown to user
+  late bool? everyday = false;
+
+  Map<String, dynamic> toMap() {
+    return {
+      "id": id,
+      "name": name,
+      "barcode": barcode,
+      "brand": brand,
+      "quantity": quantity,
+      "price": price,
+      "addedDate": addedDate,
+      "openedDate": openedDate,
+      "expiryDate": expiryDate,
+      "bbDate": bbDate,
+      "mainCat": mainCat,
+      "categories": categories,
+      "labels": labels,
+      "ingredients": ingredients,
+      "processing": processing,
+      "nutritionGrade": nutritionGrade,
+      "nutriments": nutriments,
+      "ecoscoreGrade": ecoscoreGrade,
+      "packaing": packaging,
+      "origins": origins,
+      "status": status,
+      "location": location,
+      "everyday": everyday
+    };
+  }
 }

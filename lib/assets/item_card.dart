@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:kitsain_frontend_spring2023/views/edit_item.dart';
-
+import 'package:get/get.dart';
+import 'package:kitsain_frontend_spring2023/database/item.dart';
+import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
+import 'package:kitsain_frontend_spring2023/views/forms/edit_item.dart';
+import 'package:expansion_tile_card/expansion_tile_card.dart';
 // Original card without the status colour and with dates
 
 class ItemCard extends StatefulWidget {
@@ -30,7 +33,8 @@ class _ItemCardState extends State<ItemCard> {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (BuildContext context) => const EditItem(),
+                          builder: (BuildContext context) =>
+                              const EditItemForm(),
                         ),
                       );
                     },
@@ -64,15 +68,25 @@ class _ItemCardState extends State<ItemCard> {
 
 // Smaller card without dates
 
-class ItemCardTesting extends StatefulWidget {
-  const ItemCardTesting({super.key});
+class ItemCardSmall extends StatefulWidget {
+  ItemCardSmall({super.key, required this.item});
+  late Item item;
 
   @override
-  State<ItemCardTesting> createState() => _ItemCardTestingState();
+  State<ItemCardSmall> createState() => _ItemCardSmallState();
 }
 
-class _ItemCardTestingState extends State<ItemCardTesting> {
+class _ItemCardSmallState extends State<ItemCardSmall> {
   bool _isFavourite = false;
+
+  Color getColor(Item item) {
+    if (item.everyday == true) {
+      return Colors.red;
+    } else {
+      return Colors.grey;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -98,9 +112,9 @@ class _ItemCardTestingState extends State<ItemCardTesting> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   ListTile(
-                    title: const Text(
-                      "EXAMPLE ITEM",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    title: Text(
+                      widget.item.name!,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     trailing: Wrap(
                       children: <Widget>[
@@ -109,14 +123,15 @@ class _ItemCardTestingState extends State<ItemCardTesting> {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      const EditItem(),
+                                      const EditItemForm(),
                                 ),
                               );
                             },
                             icon: const Icon(Icons.edit)),
                         IconButton(
-                            color: _isFavourite ? Colors.red : Colors.grey,
+                            color: getColor(widget.item),
                             onPressed: () {
+                              PantryProxy().toggleItemEveryday(widget.item);
                               setState(() {
                                 _isFavourite = !_isFavourite;
                               });
@@ -125,18 +140,9 @@ class _ItemCardTestingState extends State<ItemCardTesting> {
                       ],
                     ),
                     subtitle: Text(
-                      "Categories go here".toUpperCase(),
+                      widget.item.mainCat!.toUpperCase(),
                     ),
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.end,
-                  //   children: const <Widget>[
-                  //     Icon(Icons.calendar_month),
-                  //     Text("EXPIRATION DATE"),
-                  //     Icon(Icons.calendar_today),
-                  //     Text("OPENED"),
-                  //   ],
-                  // ),
                 ],
               ),
             ),
@@ -144,5 +150,116 @@ class _ItemCardTestingState extends State<ItemCardTesting> {
         ),
       ),
     );
+  }
+}
+
+// https://pub.dev/packages/expansion_tile_card#expansion_tile_card
+// https://medium.flutterdevs.com/explore-expansion-tile-card-in-flutter-fe995beb6845
+class ItemTile extends StatefulWidget {
+  const ItemTile({super.key});
+
+  @override
+  State<ItemTile> createState() => _ItemTileState();
+}
+
+class _ItemTileState extends State<ItemTile> {
+  final GlobalKey<ExpansionTileCardState> cardA = GlobalKey();
+
+  // Example item
+  var item = PantryProxy().getPantryItems()[0];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: ExpansionTileCard(
+      key: cardA,
+      title: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            color: Colors.amber,
+            width: 15,
+          ),
+          const SizedBox(
+            width: 10.0,
+          ),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  title: Text(
+                    item.name.toUpperCase(),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  trailing: Wrap(
+                    children: <Widget>[
+                      IconButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    const EditItemForm(),
+                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.edit)),
+                      IconButton(
+                          color: Colors.red,
+                          onPressed: () {
+                            setState(() {});
+                          },
+                          icon: const Icon(Icons.favorite)),
+                    ],
+                  ),
+                  subtitle: Text(
+                    item.mainCat!.toUpperCase(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      children: <Widget>[
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+            child: Container(
+              color: Colors
+                  .amber, // Just to see where the column is currently located :3
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text("Barcode: ${item.barcode ?? 'Not added yet'}"),
+                  Text("Brand: ${item.brand ?? 'Not added yet'}"),
+                  Text("Quantity: ${item.quantity ?? 'Not added yet'}"),
+                  Text("Price: ${item.price ?? 'Not added yet'}"),
+                  Text("Date added: ${item.addedDate ?? 'Not added yet'}"),
+                  Text("Date opened: ${item.openedDate ?? 'Not added yet'}"),
+                  Text(
+                      "Expiration date: ${item.expiryDate ?? 'Not added yet'}"),
+                  Text("Best before -date: ${item.bbDate ?? 'Not added yet'}"),
+                  Text("Labels: ${item.labels.length ?? 'Not added yet'}"),
+                  Text("Ingredients: ${item.ingredients ?? 'Not added yet'}"),
+                  Text("Processing: ${item.processing ?? 'Not added yet'}"),
+                  Text(
+                      "Nutrition grade: ${item.nutritionGrade ?? 'Not added yet'}"),
+                  Text("Nutriments: ${item.nutriments ?? 'Not added yet'}"),
+                  Text(
+                      "Ecoscore grade: ${item.ecoscoreGrade ?? 'Not added yet'}"),
+                  Text("Packaging: ${item.packaging ?? 'Not added yet'}"),
+                  Text("Origins: ${item.origins ?? 'Not added yet'}"),
+                ],
+              ),
+            ),
+          ),
+        )
+      ],
+    ));
   }
 }

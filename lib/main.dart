@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kitsain_frontend_spring2023/assets/item_card.dart';
+import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
-import 'package:kitsain_frontend_spring2023/views/add_new_item_form.dart';
+import 'package:kitsain_frontend_spring2023/views/forms/add_new_item_form.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/pantry_ella.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/used_and_expired.dart';
 import 'package:realm/realm.dart';
 
+import 'database/item.dart';
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -35,20 +40,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final StateController = Get.put(ItemController());
+  final stateController = Get.put(ItemController());
 
   @override
   void initState() {
     // TODO: implement initState
-    StateController.addData();
+    stateController.addData();
     super.initState();
   }
 
   int _navigationMenuIndex = 0;
   final _pages = [
-    Pantry(),
-    ShoppingList(),
-    UsedAndExpired(),
+    // Testing(items: PantryProxy().getPantryItems()),
+    ItemTile(),
+    // PantryView(),
+    const ShoppingList(),
+    const UsedAndExpired(),
   ];
 
   void _navMenuItemSelected(int index) {
@@ -61,7 +68,7 @@ class _HomePageState extends State<HomePage> {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
-          return NewItemForm();
+          return const NewItemForm();
         });
   }
 
@@ -73,7 +80,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(widget.title),
-            Image(
+            const Image(
               image: AssetImage('assets/images/Kitsain_logo.png'),
               width: 150,
               height: 150,

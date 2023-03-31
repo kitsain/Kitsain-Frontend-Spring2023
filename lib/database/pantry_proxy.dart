@@ -1,92 +1,75 @@
-// File to modify the database
-
 import 'package:realm/realm.dart';
-import 'item.dart';
 import 'package:flutter/foundation.dart';
+import 'item.dart';
 
-class PantryProxy extends ChangeNotifier {
-  late Realm realm;
+// This file is used to modify the database.
+// When you want to call a function from another class,
+// use for example PantryProxy().
+
+class PantryProxy with ChangeNotifier {
+  final Configuration _config =
+      Configuration.local([Item.schema], shouldDeleteIfMigrationNeeded: true);
+  late Realm _realm;
 
   PantryProxy() {
-    var config = Configuration.local([Item.schema]);
-    realm = Realm(config);
+    openRealm();
   }
 
-  // Get all Items
+  openRealm() {
+    _realm = Realm(_config);
+  }
+
+  closeRealm() {
+    if (!_realm.isClosed) {
+      _realm.close();
+    }
+  }
+
+  listenToChanges() {
+    final subscription = getItems().changes.listen((changes) {
+      changes.inserted;
+      changes.modified;
+      changes.deleted;
+      changes.newModified;
+      changes.moved;
+      changes.results;
+    });
+  }
+
+  List groupBy(RealmResults<Item> items) {
+    return [];
+  }
+
   RealmResults<Item> getItems() {
-    return realm.all<Item>();
+    var all = _realm.all<Item>();
+    return all;
   }
 
-  // Get item count
-  int getItemCount() {
-    return realm.all<Item>().length;
+  RealmResults<Item> getPantryItems() {
+    var all = getItems();
+    var result = all.query("location == \$0", ["Pantry"]);
+    return result;
   }
 
-  // Get item by id
-  Item getById(String objectId) {
-    var item = realm.find<Item>(objectId)!;
+  Item? getItem(String id) {
+    final item = _realm.find<Item>(id);
     return item;
   }
 
-  // TODO Count items by category
-  int getTagCount() {
-    return 0;
+  RealmResults<Item> getByMainCat(String category) {
+    var all = getItems();
+    var result = all.query("mainCat == \$0", [category]);
+    return result;
   }
 
-  // Example data for addItem
-  List<dynamic> data = [
-    ObjectId().toString(),
-    "turnip!",
-    "ean",
-    2,
-    1.5,
-    DateTime.now().toUtc(),
-    DateTime.now().toUtc(),
-    DateTime.now().toUtc(),
-    DateTime.now().toUtc(),
-    ["vegetables", "good stuff"],
-    ["joutsenmerkki"],
-    ["turnip", "healthy bits"],
-    "unprocessed",
-    "amazing!",
-    [null],
-    "not applicable",
-    "plastic",
-    "Qo'onoS",
-    "unopened",
-    "Pirkka",
-    "vegetables"
-  ];
-
-  // Upsert one item
-  // Parameter is a list. If no value is submitted in the app,
-  // it should default to null
-  bool addItem(List<dynamic> data) {
+  bool upsertItem(Item item) {
+    debugPrint("addItem");
     try {
-      var newItem = Item(data[0], data[1],
-          barcode: data[2],
-          quantity: data[3],
-          price: data[4],
-          addedDate: data[5],
-          openedDate: data[6],
-          expiryDate: data[7],
-          bbDate: data[8],
-          categories: data[9],
-          labels: data[10],
-          ingredients: data[11],
-          processing: data[12],
-          nutritionGrade: data[13],
-          nutriments: data[14],
-          ecoscoreGrade: data[15],
-          packaging: data[16],
-          origins: data[17],
-          status: data[18],
-          brand: data[19],
-          mainCat: data[20]);
-      realm.write(() {
-        realm.add<Item>(newItem, update: true);
+      debugPrint(item.mainCat);
+      _realm.write(() {
+        _realm.add<Item>(item, update: true);
       });
-      debugPrint("Item added successfully.");
+      notifyListeners();
       return true;
     } on RealmException catch (e) {
       debugPrint(e.message);
@@ -94,25 +77,16 @@ class PantryProxy extends ChangeNotifier {
     }
   }
 
-  // Set/unset a favourite item
-  void toggleFavourite(String id) {
+  bool toggleItemEveryday(Item item) {
     try {
-      var item = getById(id);
-      realm.write(() {
-        item.everyday = !item.everyday;
+      _realm.write(() {
+        if (item.everyday == false) {
+          item.everyday = true;
+        } else {
+          item.everyday = false;
+        }
       });
-    } on RealmException catch (e) {
-      debugPrint(e.message);
-    }
-  }
-
-  // Delete one item
-  bool deleteItem(String id) {
-    try {
-      var item = realm.find<Item>(id)!;
-      realm.write(() {
-        realm.delete(item);
-      });
+      notifyListeners();
       return true;
     } on RealmException catch (e) {
       debugPrint(e.message);
@@ -120,10 +94,23 @@ class PantryProxy extends ChangeNotifier {
     }
   }
 
-  //Delete all items
+  bool deleteItem(Item item) {
+    try {
+      _realm.write(() {
+        _realm.delete(item);
+      });
+      notifyListeners();
+      return true;
+    } on RealmException catch (e) {
+      debugPrint(e.message);
+      return false;
+    }
+  }
+
   void deleteAll() {
-    realm.write(() {
-      realm.deleteAll<Item>();
+    _realm.write(() {
+      _realm.deleteAll<Item>();
     });
+    notifyListeners();
   }
 }

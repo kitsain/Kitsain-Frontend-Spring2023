@@ -1,125 +1,197 @@
 import 'package:flutter/material.dart';
-import 'package:kitsain_frontend_spring2023/assets/item_card.dart';
-import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
-import 'package:provider/provider.dart';
+import 'package:kitsain_frontend_spring2023/views/forms/add_new_item_form.dart';
+import 'package:kitsain_frontend_spring2023/views/forms/edit_item.dart';
+import 'package:realm/realm.dart';
+import '../../assets/item_card.dart';
+import '../../database/pantry_proxy.dart';
+import 'package:kitsain_frontend_spring2023/assets/itembuilder.dart';
+import 'package:flutter/foundation.dart';
 
-class Pantry extends StatefulWidget {
-  late List<Item> items;
-  late Function(Item) onToggle;
-  Pantry({super.key});
+class PantryView extends StatefulWidget {
+  late final Function(Item) onToggle;
+  PantryView({super.key});
 
   @override
-  State<Pantry> createState() => _PantryState();
+  State<PantryView> createState() => _PantryViewState();
 }
 
-class _PantryState extends State<Pantry> {
+class _PantryViewState extends State<PantryView> {
+  Future<RealmResults<Item>> _getItems() async {
+    return PantryProxy().getItems();
+  }
+
+  List<String> categories = <String>[
+    'Meat',
+    'Seafood',
+    'Fruit',
+    'Vegetables',
+    'Frozen',
+    'Drinks',
+    'Bread',
+    'Sweets',
+    'Dairy',
+    'Ready meals',
+    'Dry & canned goods',
+    'Other'
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: ListView(
-          children: const [
-            ListTile(
-              title: Text("MEALS"),
+    return FutureBuilder<RealmResults>(
+      future: _getItems(),
+      builder: (context, AsyncSnapshot snapshot) {
+        if (snapshot.hasError) {
+          return const Scaffold(
+            body: Center(
+              child: Text("Your pantry is empty."),
             ),
-            ItemCard(),
-            ItemCardTesting(),
-            ListTile(
-              title: Text("PROTEINS"),
-            ),
-            ListTile(
-              title: Text("FRUITS"),
-            ),
-            ListTile(
-              title: Text("VEGETABLES"),
-            ),
-            ListTile(
-              title: Text("DAIRY"),
-            ),
-            ListTile(
-              title: Text("FROZEN"),
-            ),
-            ListTile(
-              title: Text("DRY & CANNED"),
-            ),
-            ListTile(
-              title: Text("DRINKS"),
-            ),
-            ListTile(
-              title: Text("TREATS"),
-            ),
-          ],
-        ),
-      ),
+          );
+        } else {
+          if (snapshot.hasData) {
+            return Scaffold(
+              body: ListView(
+                children: [
+                  for (var cat in categories)
+                    Column(
+                      children: [
+                        Text(cat),
+                        const ItemBuilder(),
+                      ],
+                    )
+                ],
+              ),
+              // body: Column(
+              //   mainAxisSize: MainAxisSize.min,
+              //   children: [
+              //     for (var cat in categories)
+              //       Column(
+              //         children: [
+              //           Title(
+              //             color: Colors.black,
+              //             child: Text(cat),
+              //           ),
+              //           const ItemBuilder(),
+              //         ],
+              //       )
+              //   ],
+              // ),
+              // floatingActionButton: FloatingActionButton(
+              //   onPressed: () {
+              //     showDialog(
+              //       context: context,
+              //       builder: (BuildContext context) {
+              //         return const AlertDialog(
+              //           scrollable: true,
+              //           content: Padding(
+              //             padding: EdgeInsets.all(8.0),
+              //             child: NewItemForm(),
+              //           ),
+              //         );
+              //       },
+              //     );
+              //   },
+              //   child: const Icon(Icons.add),
+              // ),
+            );
+          } else {
+            return const Scaffold(
+              body: Center(
+                child: Text("Your pantry is empty."),
+              ),
+            );
+          }
+        }
+      },
     );
   }
 }
 
-//   Widget getItemBuilder(BuildContext context, int index) {
-//     Item item = items[index];
-//   }
+class Testing extends StatelessWidget {
+  final RealmResults<Item> items;
+  const Testing({super.key, required this.items});
 
-// class _ItemInfo extends StatelessWidget {
-//   final int index;
-//   const _ItemInfo(this.index, {Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemBuilder: getItemBuilder,
+      shrinkWrap: true,
+      itemCount: items.length,
+      scrollDirection: Axis.vertical,
+      physics: const BouncingScrollPhysics(),
+    );
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     var item = context.select<Pantry, Item>(
-//       (pantry) => pantry.getByPosition(index),
-//     );
+  Widget getItemBuilder(BuildContext context, int index) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+      height: 80,
+      child: const ItemBuilder(),
+    );
+  }
 
-//     return Padding(
-//       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-//       child: LimitedBox(
-//         maxHeight: 48,
-//         child: Row(
-//           children: [
-//             Expanded(
-//               child: Text(item.name),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class Pantry extends StatelessWidget {
-//   var items = PantryProxy().getItems();
-//   late Function(Item) onToggle;
-//   Pantry({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListView.separated(
-//       itemBuilder: getItemBuilder,
-//       separatorBuilder: getSeparatorBuilder,
-//       itemCount: items.length,
-//       padding: const EdgeInsets.all(10),
-//       shrinkWrap: true,
-//       scrollDirection: Axis.vertical,
-//       physics: const BouncingScrollPhysics(),
-//     );
-//   }
-
-//   Widget getItemBuilder(BuildContext context, int index) {
-//     Item item = items[index];
-//     return Row(
-//       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//       children: [
-//         Row(
-//           children: [
-//             Text(item.name),
-//           ],
-//         ),
-//       ],
-//     );
-//   }
-
-//   Widget getSeparatorBuilder(BuildContext, int index) {
-//     return const Divider();
-//   }
-// }
-
+  Card ItemCard(int index, BuildContext context) {
+    return Card(
+      color: Colors.white,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            color: Colors.amber,
+            width: 15,
+          ),
+          const SizedBox(
+            width: 10.0,
+          ),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  title: Text(
+                    items[index].name.toUpperCase(),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  trailing: Wrap(
+                    children: <Widget>[
+                      IconButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const AlertDialog(
+                                  scrollable: true,
+                                  content: Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: EditItemForm(),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(Icons.edit)),
+                      IconButton(
+                          highlightColor: Colors.red,
+                          color: Colors.grey,
+                          onPressed: () {
+                            debugPrint("onPressed");
+                            PantryProxy().toggleItemEveryday(items[index]);
+                            ;
+                          },
+                          icon: const Icon(Icons.favorite)),
+                    ],
+                  ),
+                  subtitle: Text(
+                    "${items[index].mainCat!.toUpperCase()}, ${items[index].everyday.toString().toUpperCase()}",
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

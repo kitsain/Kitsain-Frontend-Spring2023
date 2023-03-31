@@ -27,8 +27,9 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     String? packaging,
     String? origins,
     String? status,
-    bool everyday = false,
-    bool? newItem,
+    String? location,
+    bool? everyday = false,
+    bool? isExpanded = false,
     Iterable<String?> categories = const [],
     Iterable<String?> labels = const [],
     Iterable<String?> ingredients = const [],
@@ -37,6 +38,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     if (!_defaultsSet) {
       _defaultsSet = RealmObjectBase.setDefaults<Item>({
         'everyday': false,
+        'isExpanded': false,
       });
     }
     RealmObjectBase.set(this, 'id', id);
@@ -56,8 +58,9 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     RealmObjectBase.set(this, 'packaging', packaging);
     RealmObjectBase.set(this, 'origins', origins);
     RealmObjectBase.set(this, 'status', status);
+    RealmObjectBase.set(this, 'location', location);
     RealmObjectBase.set(this, 'everyday', everyday);
-    RealmObjectBase.set(this, 'newItem', newItem);
+    RealmObjectBase.set(this, 'isExpanded', isExpanded);
     RealmObjectBase.set<RealmList<String?>>(
         this, 'categories', RealmList<String?>(categories));
     RealmObjectBase.set<RealmList<String?>>(
@@ -201,14 +204,21 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   set status(String? value) => RealmObjectBase.set(this, 'status', value);
 
   @override
-  bool get everyday => RealmObjectBase.get<bool>(this, 'everyday') as bool;
+  String? get location =>
+      RealmObjectBase.get<String>(this, 'location') as String?;
   @override
-  set everyday(bool value) => RealmObjectBase.set(this, 'everyday', value);
+  set location(String? value) => RealmObjectBase.set(this, 'location', value);
 
   @override
-  bool? get newItem => RealmObjectBase.get<bool>(this, 'newItem') as bool?;
+  bool? get everyday => RealmObjectBase.get<bool>(this, 'everyday') as bool?;
   @override
-  set newItem(bool? value) => RealmObjectBase.set(this, 'newItem', value);
+  set everyday(bool? value) => RealmObjectBase.set(this, 'everyday', value);
+
+  @override
+  bool? get isExpanded =>
+      RealmObjectBase.get<bool>(this, 'isExpanded') as bool?;
+  @override
+  set isExpanded(bool? value) => RealmObjectBase.set(this, 'isExpanded', value);
 
   @override
   Stream<RealmObjectChanges<Item>> get changes =>
@@ -248,8 +258,9 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
       SchemaProperty('packaging', RealmPropertyType.string, optional: true),
       SchemaProperty('origins', RealmPropertyType.string, optional: true),
       SchemaProperty('status', RealmPropertyType.string, optional: true),
-      SchemaProperty('everyday', RealmPropertyType.bool),
-      SchemaProperty('newItem', RealmPropertyType.bool, optional: true),
+      SchemaProperty('location', RealmPropertyType.string, optional: true),
+      SchemaProperty('everyday', RealmPropertyType.bool, optional: true),
+      SchemaProperty('isExpanded', RealmPropertyType.bool, optional: true),
     ]);
   }
 }

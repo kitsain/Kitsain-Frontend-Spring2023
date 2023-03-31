@@ -21,7 +21,7 @@ class _MyPantryState extends State<MyPantry> {
           return Draggable<String>(
             data: StateController.pantryList[index],
             onDragCompleted: () {
-              print('drag complete');
+              debugPrint('drag complete');
               StateController.pantryList.removeAt(index);
             },
             feedback: Material(
