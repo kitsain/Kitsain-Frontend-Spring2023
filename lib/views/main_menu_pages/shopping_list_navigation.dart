@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:kitsain_frontend_spring2023/item_controller.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/user_shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_lists.dart';
 
@@ -13,15 +11,13 @@ class ShoppingListNavigation extends StatefulWidget {
 }
 
 class _ShoppingListNavigationState extends State<ShoppingListNavigation> {
-  final StateController = Get.put(ItemController());
+  String _activeList = '';
+  int _activeShoppingListIndex = 0;
 
-  String activeList = '';
-  int activeShoppingListIndex = 0;
-  
   setActiveShoppingListIndex(index) {
     setState(() {
-      activeShoppingListIndex = index;
-      activeList = index.toString();
+      _activeShoppingListIndex = index;
+      _activeList = index.toString();
     });
   }
 
@@ -31,7 +27,7 @@ class _ShoppingListNavigationState extends State<ShoppingListNavigation> {
       body: Navigator(
         pages: [
           MaterialPage(child: ShoppingLists(setActiveShoppingListIndex: setActiveShoppingListIndex)),
-          if (activeList != '') MaterialPage(child: UserShoppingList(listIndex: activeShoppingListIndex,)),
+          if (_activeList != '') MaterialPage(child: UserShoppingList(listIndex: _activeShoppingListIndex,)),
         ],
         onPopPage: (route, result) {
           return route.didPop(result);
