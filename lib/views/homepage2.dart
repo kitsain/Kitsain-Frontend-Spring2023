@@ -3,12 +3,15 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:googleapis/tasks/v1.dart';
+import 'package:kitsain_frontend_spring2023/controller/tasklist_controller.dart';
 import 'package:kitsain_frontend_spring2023/google_sign_in.dart';
+import 'package:kitsain_frontend_spring2023/views/tasklists_screen.dart';
 
 class HomePage2 extends StatelessWidget {
   HomePage2({super.key});
 
   final loginController = Get.put(LoginController());
+  final taskListController = Get.put(TaskListController());
 
   var username = 'Test';
 
@@ -31,24 +34,39 @@ class HomePage2 extends StatelessWidget {
                   : Text(loginController.googleUser.value!.email),
               ElevatedButton(
                 onPressed: () async {
-                  loginController.googleLogin();
+                  await loginController.googleLogin();
+                  await taskListController.getTaskLists();
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: ((context) => TaskListsScreen())));
                 },
                 child: const Text('Google Sign In'),
               ),
               ElevatedButton(
                 onPressed: () async {
-                  // await loginController.taskApi.value!.tasklists
-                  //     .insert(TaskList(title: 'testtle11'), $fields: '')
+                  loginController.googleSignInUser.value
+                      ?.signOut()
+                      .whenComplete(() => print('done'));
+                },
+                child: const Text('Google Sign OUT'),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  await taskListController.createTaskLists('name');
+
+                  ///creating taskList
+
+                  // await loginController.taskApiAuthenticated.value!.tasklists
+                  //     .insert(TaskList(title: 'kitsaintest'), $fields: '')
                   //     .whenComplete(() => print("done"));
 
-// await loginController.taskApi.value!.tasklists.list()
-
-                  await loginController.taskApi.value!.tasks
+                  //// creating task
+                  await loginController.taskApiAuthenticated.value!.tasks
                       .insert(
                           Task(
-                              title: 'testtasktitles',
+                              title: 'kitsain task',
                               deleted: false,
-                              status: 'completed',
+
+                              // status: 'completed',
                               notes: 'notes describing taskss'),
                           'MDQzNDg5NjY4OTE0NzE0ODQwMjM6MDow')
                       .whenComplete(() => print('done'));
@@ -56,21 +74,23 @@ class HomePage2 extends StatelessWidget {
                 child: const Text('Create Task'),
               ),
               Expanded(
-                child: ListView.builder(
-                    itemCount: loginController.googleUser.value == null
-                        ? 0
-                        : loginController.taskLists.value?.items?.length,
-                    shrinkWrap: true,
-                    itemBuilder: ((context, index) {
-                      return Column(
-                        children: [
-                          Text(
-                              '${loginController.taskLists.value?.items?[index].title}'),
-                          Text(
-                              '${loginController.taskLists.value?.items?[index].id}'),
-                        ],
-                      );
-                    })),
+                child: Obx(() {
+                  return ListView.builder(
+                      itemCount: loginController.googleUser.value == null
+                          ? 0
+                          : taskListController.taskLists.value?.items?.length,
+                      shrinkWrap: true,
+                      itemBuilder: ((context, index) {
+                        return Column(
+                          children: [
+                            Text(
+                                '${taskListController.taskLists.value?.items?[index].title}'),
+                            Text(
+                                '${taskListController.taskLists.value?.items?[index].id}'),
+                          ],
+                        );
+                      }));
+                }),
               ),
             ],
           );
