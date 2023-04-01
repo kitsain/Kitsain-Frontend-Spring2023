@@ -33,6 +33,9 @@ class _ShoppingListNavigationState extends State<ShoppingListNavigation> {
           MaterialPage(child: ShoppingLists(setActiveShoppingListIndex: setActiveShoppingListIndex)),
           if (activeList != '') MaterialPage(child: UserShoppingList(listIndex: activeShoppingListIndex,)),
         ],
+        onPopPage: (route, result) {
+          return route.didPop(result);
+        }
       ),
     );
   }
