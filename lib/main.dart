@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
 import 'package:kitsain_frontend_spring2023/views/add_new_item_form.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/my_pantry.dart';
-import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/used_and_expired.dart';
+import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_list_navigation.dart';
 
 void main() {
   runApp(MaterialApp(home: const MyApp()));
@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
   int _navigationMenuIndex = 0;
   final _pages = [
     MyPantry(),
-    ShoppingList(),
+    ShoppingListNavigation(),
     UsedAndExpired(),
   ];
 
