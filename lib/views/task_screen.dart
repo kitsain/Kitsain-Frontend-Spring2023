@@ -14,6 +14,9 @@ class TaskScreen extends StatefulWidget {
 
 class _TaskScreenState extends State<TaskScreen> {
   final taskController = Get.put(TaskController());
+
+  List<int> indicesToRemove = [1, 0];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +38,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 title: IconButton(
                     onPressed: () {
                       taskController.editTask(
-                          'newKitsain',
+                          'newKitsain$index',
                           'new Des',
                           widget.taskListId,
                           '${taskController.tasksList.value?.items?[index].id}',
@@ -44,10 +47,31 @@ class _TaskScreenState extends State<TaskScreen> {
                     icon: Icon(Icons.edit)),
                 trailing: IconButton(
                     onPressed: () {
-                      taskController.deleteTask(
-                          widget.taskListId,
-                          '${taskController.tasksList.value?.items?[index].id}',
-                          index);
+                      indicesToRemove.sort((a, b) => b.compareTo(a));
+
+                      // indicesToRemove.forEach((element) {
+                      //   print(element);
+                      //   taskController.deleteTask(
+                      //       widget.taskListId,
+                      //       '${taskController.tasksList.value?.items?[element].id}',
+                      //       indicesToRemove[element]);
+                      // });
+
+                      for (int ind = 0; ind < indicesToRemove.length; ind++) {
+                        print(indicesToRemove[ind]);
+
+                        taskController.deleteTask(
+                            widget.taskListId,
+                            '${taskController.tasksList.value?.items?[indicesToRemove[ind]].id}',
+                            indicesToRemove[ind]);
+                      }
+
+                      // for (var i = 0; i < 2; i++) {
+                      //   taskController.deleteTask(
+                      //       widget.taskListId,
+                      //       '${taskController.tasksList.value?.items?[index].id}',
+                      //       index);
+                      // }
                     },
                     icon: Icon(Icons.delete)),
                 onTap: () {

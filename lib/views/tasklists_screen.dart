@@ -24,6 +24,7 @@ class _TaskListsScreenState extends State<TaskListsScreen> {
         IconButton(
             onPressed: () {
               taskListController.createTaskLists('testtasklist');
+              // taskController.tasksList.refresh();
             },
             icon: Icon(Icons.add)),
       ]),
@@ -37,7 +38,7 @@ class _TaskListsScreenState extends State<TaskListsScreen> {
                 title: IconButton(
                     onPressed: () {
                       taskListController.editTaskLists(
-                          'kitsain',
+                          'kitsain$index',
                           '${taskListController.taskLists.value?.items?[index].id}',
                           index);
                     },
@@ -50,7 +51,7 @@ class _TaskListsScreenState extends State<TaskListsScreen> {
                     },
                     icon: Icon(Icons.delete)),
                 onTap: () async {
-                  print('ok');
+                  // print('ok');
                   print(
                       '${taskListController.taskLists.value?.items?[index].id}');
                   await taskController.getTasksList(

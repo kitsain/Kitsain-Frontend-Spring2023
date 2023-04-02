@@ -16,7 +16,6 @@ class TaskListController extends GetxController {
   createTaskLists(String name) async {
     // print(tskList?.items?.first.title);
     print(taskLists.value?.items?.length);
-
     await loginController.taskApiAuthenticated.value!.tasklists
         .insert(TaskList(title: name), $fields: '')
         .then((value) => {
