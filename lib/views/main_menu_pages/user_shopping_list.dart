@@ -27,7 +27,9 @@ class _UserShoppingListState extends State<UserShoppingList> {
   }
 
   _moveSelectedItemsToPantry() {
-    // todo
+    // todo (Currently moves all items, not just selected. Needs to be fixed when real model is available.)
+    _stateController.pantryList.addAll(_stateController.shoppingLists[widget.listIndex]);
+    _stateController.shoppingLists[widget.listIndex].clear();
   }
 
   _deselectAll() {
