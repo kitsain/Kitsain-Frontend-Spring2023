@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kitsain_frontend_spring2023/assets/shopping_list_item.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
 
 class UserShoppingList extends StatefulWidget {
@@ -26,6 +27,10 @@ class _UserShoppingListState extends State<UserShoppingList> {
   }
 
   _moveSelectedItemsToPantry() {
+    // todo
+  }
+
+  _deselectAll() {
     // todo
   }
 
@@ -57,6 +62,16 @@ class _UserShoppingListState extends State<UserShoppingList> {
                 // todo: change the title to come from the model
               ],
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () => _deselectAll(),
+                  child: Text('DESELECT ALL'),
+                ),
+                SizedBox(width: 15,),
+              ],
+            ),
             DragTarget<String>(
               onAccept: (data) => _receiveItem(data),
               builder: (context, candidateData, rejectedData) {
@@ -68,20 +83,14 @@ class _UserShoppingListState extends State<UserShoppingList> {
                       scrollDirection: Axis.vertical,
                       itemCount: _stateController
                           .shoppingLists[widget.listIndex].length,
-                      padding: EdgeInsets.all(5),
+                      padding: EdgeInsets.all(15),
                       itemBuilder: (context, index) {
                         return Column(
                           children: [
-                            ListTile(
-                              contentPadding: EdgeInsets.all(10),
-                              minVerticalPadding: 10,
-                              tileColor: Colors.lightGreen,
-                              title: Text(_stateController
-                                  .shoppingLists[widget.listIndex][index]),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
+                            ShoppingListItem(
+                                itemName: _stateController
+                                .shoppingLists[widget.listIndex][index],
+                                itemDescription: 'Additional description',),
                           ],
                         );
                       },

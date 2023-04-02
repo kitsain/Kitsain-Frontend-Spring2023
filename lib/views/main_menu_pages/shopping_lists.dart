@@ -40,7 +40,7 @@ class _ShoppingListsState extends State<ShoppingLists> {
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               itemCount: _stateController.shoppingLists.length,
-              padding: EdgeInsets.all(5),
+              padding: EdgeInsets.all(15),
               itemBuilder: (context, index) {
                 return Column(
                   children: [
