@@ -157,7 +157,7 @@ class _HomePageState extends State<HomePage> {
               List<dynamic> rejected,
             ) {
               return const NavigationDestination(
-                  icon: Icon(Icons.recycling), label: 'USED & EXPIRED');
+                  icon: Icon(Icons.recycling), label: 'PANTRY\nHISTORY');
             },
             onMove: (details) {
               _navigationMenuIndex = 2;
