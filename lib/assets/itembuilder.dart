@@ -26,7 +26,7 @@ class _ItemBuilderState extends State<ItemBuilder> {
     }
   }
 
-  RealmResults<Item> items = PantryProxy().getByMainCat("Meat");
+  RealmResults<Item> items = PantryProxy().getPantryItems();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class _ItemBuilderState extends State<ItemBuilder> {
           margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
           height:
               80, // If remove the height, I get an error. If I make it higher to fit the initial item tile, it doesn't open. Bah.
-          child: ItemTile(),
+          child: ItemCardSmall(item: items[index]),
         );
       },
     );
@@ -108,6 +108,41 @@ class _ItemBuilderState extends State<ItemBuilder> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ItemBuilder2 extends StatefulWidget {
+  const ItemBuilder2({super.key, required this.items});
+  final RealmResults<Item> items;
+
+  @override
+  State<ItemBuilder2> createState() => _ItemBuilder2State();
+}
+
+class _ItemBuilder2State extends State<ItemBuilder2> {
+  Color getColor(Item item) {
+    if (item.everyday == true) {
+      return Colors.red;
+    } else {
+      return Colors.grey;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      itemCount: widget.items.length,
+      itemBuilder: (context, index) {
+        return Container(
+          margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+          height:
+              80, // If remove the height, I get an error. If I make it higher to fit the initial item tile, it doesn't open. Bah.
+          child: ItemCardSmall(item: widget.items[index]),
+        );
+      },
     );
   }
 }

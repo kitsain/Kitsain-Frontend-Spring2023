@@ -156,7 +156,8 @@ class _ItemCardSmallState extends State<ItemCardSmall> {
 // https://pub.dev/packages/expansion_tile_card#expansion_tile_card
 // https://medium.flutterdevs.com/explore-expansion-tile-card-in-flutter-fe995beb6845
 class ItemTile extends StatefulWidget {
-  const ItemTile({super.key});
+  const ItemTile({super.key, required this.item});
+  final Item item;
 
   @override
   State<ItemTile> createState() => _ItemTileState();
@@ -174,22 +175,17 @@ class _ItemTileState extends State<ItemTile> {
         body: ExpansionTileCard(
       key: cardA,
       title: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Container(
-            color: Colors.amber,
-            width: 15,
-          ),
-          const SizedBox(
-            width: 10.0,
-          ),
           Expanded(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 ListTile(
+                  leading: Container(
+                    color: Colors.amber,
+                    width: 15,
+                  ),
                   title: Text(
                     item.name.toUpperCase(),
                     style: TextStyle(fontWeight: FontWeight.bold),
@@ -224,42 +220,132 @@ class _ItemTileState extends State<ItemTile> {
         ],
       ),
       children: <Widget>[
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-            child: Container(
-              color: Colors
-                  .amber, // Just to see where the column is currently located :3
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text("Barcode: ${item.barcode ?? 'Not added yet'}"),
-                  Text("Brand: ${item.brand ?? 'Not added yet'}"),
-                  Text("Quantity: ${item.quantity ?? 'Not added yet'}"),
-                  Text("Price: ${item.price ?? 'Not added yet'}"),
-                  Text("Date added: ${item.addedDate ?? 'Not added yet'}"),
-                  Text("Date opened: ${item.openedDate ?? 'Not added yet'}"),
-                  Text(
-                      "Expiration date: ${item.expiryDate ?? 'Not added yet'}"),
-                  Text("Best before -date: ${item.bbDate ?? 'Not added yet'}"),
-                  Text("Labels: ${item.labels.length ?? 'Not added yet'}"),
-                  Text("Ingredients: ${item.ingredients ?? 'Not added yet'}"),
-                  Text("Processing: ${item.processing ?? 'Not added yet'}"),
-                  Text(
-                      "Nutrition grade: ${item.nutritionGrade ?? 'Not added yet'}"),
-                  Text("Nutriments: ${item.nutriments ?? 'Not added yet'}"),
-                  Text(
-                      "Ecoscore grade: ${item.ecoscoreGrade ?? 'Not added yet'}"),
-                  Text("Packaging: ${item.packaging ?? 'Not added yet'}"),
-                  Text("Origins: ${item.origins ?? 'Not added yet'}"),
-                ],
-              ),
-            ),
+        ListTile(
+          leading: Container(
+            color: Colors.amber,
+            width: 15,
           ),
         )
+        // Align(
+        //   alignment: Alignment.centerLeft,
+        //   child: Padding(
+        //     padding: EdgeInsets.symmetric(horizontal: 50),
+        //     child: Container(
+        //       color: Colors
+        //           .amber, // Just to see where the column is currently located :3
+        //       child: Column(
+        //         crossAxisAlignment: CrossAxisAlignment.start,
+        //         children: [
+        //           Text("Barcode: ${item.barcode ?? 'Not added yet'}"),
+        //           Text("Brand: ${item.brand ?? 'Not added yet'}"),
+        //           Text("Quantity: ${item.quantity ?? 'Not added yet'}"),
+        //           Text("Price: ${item.price ?? 'Not added yet'}"),
+        //           Text("Date added: ${item.addedDate ?? 'Not added yet'}"),
+        //           Text("Date opened: ${item.openedDate ?? 'Not added yet'}"),
+        //           Text(
+        //               "Expiration date: ${item.expiryDate ?? 'Not added yet'}"),
+        //           Text("Best before -date: ${item.bbDate ?? 'Not added yet'}"),
+        //           Text("Labels: ${item.labels.length ?? 'Not added yet'}"),
+        //           Text("Ingredients: ${item.ingredients ?? 'Not added yet'}"),
+        //           Text("Processing: ${item.processing ?? 'Not added yet'}"),
+        //           Text(
+        //               "Nutrition grade: ${item.nutritionGrade ?? 'Not added yet'}"),
+        //           Text("Nutriments: ${item.nutriments ?? 'Not added yet'}"),
+        //           Text(
+        //               "Ecoscore grade: ${item.ecoscoreGrade ?? 'Not added yet'}"),
+        //           Text("Packaging: ${item.packaging ?? 'Not added yet'}"),
+        //           Text("Origins: ${item.origins ?? 'Not added yet'}"),
+        //         ],
+        //       ),
+        //     ),
+        //   ),
+        // )
       ],
     ));
+  }
+}
+
+class TestTile extends StatefulWidget {
+  const TestTile({super.key});
+
+  @override
+  State<TestTile> createState() => _TestTileState();
+}
+
+class _TestTileState extends State<TestTile> {
+  var item = PantryProxy().getPantryItems()[0];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ExpansionTileCard(
+        title: Text(item.name.toUpperCase()),
+        initialElevation: 2,
+        baseColor: Colors.green,
+        initialPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        leading: Container(
+          color: Colors.amber,
+          width: 15,
+        ),
+        trailing: Wrap(
+          children: <Widget>[
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => const EditItemForm(),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.edit)),
+            IconButton(
+                color: Colors.red,
+                onPressed: () {
+                  setState(() {});
+                },
+                icon: const Icon(Icons.favorite)),
+          ],
+        ),
+        subtitle: Text(
+          item.mainCat!.toUpperCase(),
+        ),
+        children: <Widget>[
+          Row(
+            children: [
+              Container(
+                color: Colors.amber,
+                width: 15,
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    Text("Barcode: ${item.barcode ?? 'Not added yet'}"),
+                    Text("Brand: ${item.brand ?? 'Not added yet'}"),
+                    Text("Quantity: ${item.quantity ?? 'Not added yet'}"),
+                    Text("Price: ${item.price ?? 'Not added yet'}"),
+                    Text("Date added: ${item.addedDate ?? 'Not added yet'}"),
+                    Text("Date opened: ${item.openedDate ?? 'Not added yet'}"),
+                    Text(
+                        "Expiration date: ${item.expiryDate ?? 'Not added yet'}"),
+                    Text(
+                        "Best before -date: ${item.bbDate ?? 'Not added yet'}"),
+                    Text("Labels: ${item.labels.length ?? 'Not added yet'}"),
+                    Text("Ingredients: ${item.ingredients ?? 'Not added yet'}"),
+                    Text("Processing: ${item.processing ?? 'Not added yet'}"),
+                    Text(
+                        "Nutrition grade: ${item.nutritionGrade ?? 'Not added yet'}"),
+                    Text("Nutriments: ${item.nutriments ?? 'Not added yet'}"),
+                    Text(
+                        "Ecoscore grade: ${item.ecoscoreGrade ?? 'Not added yet'}"),
+                    Text("Packaging: ${item.packaging ?? 'Not added yet'}"),
+                    Text("Origins: ${item.origins ?? 'Not added yet'}"),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

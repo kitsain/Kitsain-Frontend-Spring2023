@@ -56,7 +56,9 @@ class _PantryViewState extends State<PantryView> {
                     Column(
                       children: [
                         Text(cat),
-                        const ItemBuilder(),
+                        ItemBuilder2(
+                          items: PantryProxy().getByMainCat(cat),
+                        ),
                       ],
                     )
                 ],

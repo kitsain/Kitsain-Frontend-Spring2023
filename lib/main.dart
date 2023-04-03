@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
   int _navigationMenuIndex = 0;
   final _pages = [
     // Testing(items: PantryProxy().getPantryItems()),
-    ItemTile(),
+    PantryView(),
     // PantryView(),
     const ShoppingList(),
     const UsedAndExpired(),
