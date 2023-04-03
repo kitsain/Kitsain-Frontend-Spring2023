@@ -4,6 +4,7 @@ import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/views/forms/edit_item.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
+import 'statuscolor.dart';
 // Original card without the status colour and with dates
 
 class ItemCard extends StatefulWidget {
@@ -99,7 +100,9 @@ class _ItemCardSmallState extends State<ItemCardSmall> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
-              color: Colors.amber,
+              color: widget.item.bbDate == null
+                  ? Colors.grey
+                  : returnColor(widget.item.bbDate!),
               width: 15,
             ),
             const SizedBox(
@@ -156,8 +159,7 @@ class _ItemCardSmallState extends State<ItemCardSmall> {
 // https://pub.dev/packages/expansion_tile_card#expansion_tile_card
 // https://medium.flutterdevs.com/explore-expansion-tile-card-in-flutter-fe995beb6845
 class ItemTile extends StatefulWidget {
-  const ItemTile({super.key, required this.item});
-  final Item item;
+  const ItemTile({super.key});
 
   @override
   State<ItemTile> createState() => _ItemTileState();

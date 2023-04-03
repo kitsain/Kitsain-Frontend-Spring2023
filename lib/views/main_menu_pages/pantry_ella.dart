@@ -55,7 +55,11 @@ class _PantryViewState extends State<PantryView> {
                   for (var cat in categories)
                     Column(
                       children: [
-                        Text(cat),
+                        Text(
+                          cat.toUpperCase(),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
                         ItemBuilder2(
                           items: PantryProxy().getByMainCat(cat),
                         ),
