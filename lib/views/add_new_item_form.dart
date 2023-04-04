@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 
 class NewItemForm extends StatefulWidget {
   const NewItemForm({super.key});
@@ -33,16 +34,16 @@ class _NewItemFormState extends State<NewItemForm> {
                   }
                 });
               },
-              child: const Text('Open Scanner'),
+              child: Text(AppLocalizations.of(context)!.openScanner),
             ),
             SizedBox( height: MediaQuery.of(context).size.height * 0.05),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.5,
               child: TextField(
                 controller: _barcodeField,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Barcode',
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: AppLocalizations.of(context)!.barcode,
                 ),
               ),
             ),

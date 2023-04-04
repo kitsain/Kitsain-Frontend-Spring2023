@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
+import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 
 class MyPantry extends StatefulWidget {
   const MyPantry({super.key});
@@ -22,7 +23,7 @@ class _MyPantryState extends State<MyPantry> {
           return LongPressDraggable<String>(
             data: StateController.pantryList[index],
             onDragCompleted: () {
-              print('drag complete');
+              print(AppLocalizations.of(context)!.dragComplete);
               StateController.pantryList.removeAt(index);
             },
             feedback: Material(
@@ -33,7 +34,7 @@ class _MyPantryState extends State<MyPantry> {
                 decoration: BoxDecoration(color: Colors.red),
                 child: ListTile(
                   tileColor: Colors.lightGreen,
-                  title: Text('${StateController.pantryList[index]}'),
+                  title: Text('${AppLocalizations.of(context)!.pantryItem} ${index + 1}'),
                 ),
               ),
             ),
@@ -42,7 +43,7 @@ class _MyPantryState extends State<MyPantry> {
                 Container(
                   color: Colors.red.withOpacity(.8),
                   child: ListTile(
-                    title: Text('${StateController.pantryList[index]}'),
+                    title: Text('${AppLocalizations.of(context)!.pantryItem} ${index + 1}'),
                   ),
                 ),
                 SizedBox(
