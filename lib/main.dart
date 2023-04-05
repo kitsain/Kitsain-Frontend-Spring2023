@@ -5,13 +5,15 @@ import 'package:kitsain_frontend_spring2023/item_controller.dart';
 import 'package:kitsain_frontend_spring2023/views/add_new_item_form.dart';
 import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_item_form.dart';
 import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_form.dart';
-import 'package:kitsain_frontend_spring2023/views/main_menu_pages/my_pantry.dart';
+import 'package:kitsain_frontend_spring2023/views/main_menu_pages/pantry_ella.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/used_and_expired.dart';
 import 'package:kitsain_frontend_spring2023/l10n/l10n.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  // PantryProxy().deleteAll();
   runApp(MaterialApp(home: const MyApp()));
 }
 
@@ -39,6 +41,7 @@ class MyApp extends StatelessWidget {
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
+
   final String title;
 
   @override
@@ -46,60 +49,64 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final StateController = Get.put(ItemController());
+  final stateController = Get.put(ItemController());
 
   @override
   void initState() {
     // TODO: implement initState
-    StateController.addData();
+    stateController.addData();
     super.initState();
   }
 
   int _navigationMenuIndex = 0;
   final _pages = [
-    MyPantry(),
+    PantryView(),
     ShoppingList(),
     UsedAndExpired(),
   ];
 
   void _navMenuItemSelected(int index) {
-    setState(() {
-      _navigationMenuIndex = index;
-      print(_navigationMenuIndex);
-    });
+    setState(
+      () {
+        _navigationMenuIndex = index;
+      },
+    );
   }
 
   void _addNewItem() {
-    if(_navigationMenuIndex == 0) {
+    if (_navigationMenuIndex == 0) {
       showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          builder: (BuildContext context) {
-            return FractionallySizedBox(
-              heightFactor: 0.7,
-              child: NewItemForm(),
-            );
-          });
-    } else if(_navigationMenuIndex == 1) {
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return FractionallySizedBox(
+            heightFactor: 0.7,
+            child: NewItemForm(),
+          );
+        },
+      );
+    } else if (_navigationMenuIndex == 1) {
       showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          builder: (BuildContext context) {
-            return FractionallySizedBox(
-              heightFactor: 0.7,
-              child: NewShoppingListForm(),
-            );
-          });
-    }else if(_navigationMenuIndex == 2) {
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return FractionallySizedBox(
+            heightFactor: 0.7,
+            child: NewShoppingListForm(),
+          );
+        },
+      );
+    } else if (_navigationMenuIndex == 2) {
       showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          builder: (BuildContext context) {
-            return FractionallySizedBox(
-              heightFactor: 0.7,
-              child: NewShoppingListItemForm(),
-            );
-          });
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return FractionallySizedBox(
+            heightFactor: 0.7,
+            child: NewShoppingListItemForm(),
+          );
+        },
+      );
     }
   }
 
@@ -140,7 +147,8 @@ class _HomePageState extends State<HomePage> {
                 List<dynamic> rejected,
               ) {
                 return NavigationDestination(
-                    icon: Icon(Icons.house), label: AppLocalizations.of(context)!.pantryScreen);
+                    icon: Icon(Icons.house),
+                    label: AppLocalizations.of(context)!.pantryScreen);
               },
               onMove: (details) {
                 _navigationMenuIndex = 0;
@@ -154,7 +162,8 @@ class _HomePageState extends State<HomePage> {
                 List<dynamic> rejected,
               ) {
                 return NavigationDestination(
-                    icon: Icon(Icons.shopping_cart), label: AppLocalizations.of(context)!.shoppingListScreen);
+                    icon: Icon(Icons.shopping_cart),
+                    label: AppLocalizations.of(context)!.shoppingListScreen);
               },
               onMove: (details) {
                 _navigationMenuIndex = 1;
@@ -168,7 +177,8 @@ class _HomePageState extends State<HomePage> {
                 List<dynamic> rejected,
               ) {
                 return NavigationDestination(
-                    icon: Icon(Icons.recycling), label: AppLocalizations.of(context)!.historyScreen);
+                    icon: Icon(Icons.recycling),
+                    label: AppLocalizations.of(context)!.historyScreen);
               },
               onMove: (details) {
                 _navigationMenuIndex = 2;
