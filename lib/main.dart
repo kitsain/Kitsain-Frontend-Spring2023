@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
 import 'package:kitsain_frontend_spring2023/views/add_new_item_form.dart';
+import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_item_form.dart';
+import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_form.dart';
+import 'package:kitsain_frontend_spring2023/views/main_menu_pages/pantry_ella.dart';
+import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/my_pantry.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/used_and_expired.dart';
+import 'package:kitsain_frontend_spring2023/l10n/l10n.dart';
+import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_list_navigation.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  // PantryProxy().deleteAll();
   runApp(MaterialApp(home: const MyApp()));
 }
 
@@ -21,12 +30,20 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.lightGreen,
       ),
       home: const HomePage(title: 'Kitsain MVP 2023'),
+      supportedLocales: L10n.all,
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
     );
   }
 }
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
+
   final String title;
 
   @override
@@ -34,34 +51,65 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final StateController = Get.put(ItemController());
+  final stateController = Get.put(ItemController());
 
   @override
   void initState() {
     // TODO: implement initState
-    StateController.addData();
+    stateController.addData();
     super.initState();
   }
 
   int _navigationMenuIndex = 0;
   final _pages = [
-    MyPantry(),
+    PantryView(),
     ShoppingListNavigation(),
     UsedAndExpired(),
   ];
 
   void _navMenuItemSelected(int index) {
-    setState(() {
-      _navigationMenuIndex = index;
-    });
+    setState(
+      () {
+        _navigationMenuIndex = index;
+      },
+    );
   }
 
   void _addNewItem() {
-    showModalBottomSheet(
+    if (_navigationMenuIndex == 0) {
+      showModalBottomSheet(
         context: context,
+        isScrollControlled: true,
         builder: (BuildContext context) {
-          return NewItemForm();
-        });
+          return FractionallySizedBox(
+            heightFactor: 0.7,
+            child: NewItemForm(),
+          );
+        },
+      );
+    } else if (_navigationMenuIndex == 1) {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return FractionallySizedBox(
+            heightFactor: 0.7,
+            child: NewShoppingListForm(),
+          );
+        },
+      );
+    } else if (_navigationMenuIndex == 2) {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return FractionallySizedBox(
+            heightFactor: 0.7,
+            child: NewShoppingListItemForm(),
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -87,7 +135,7 @@ class _HomePageState extends State<HomePage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: _addNewItem,
-          tooltip: 'Add new item',
+          tooltip: AppLocalizations.of(context)!.addNewItem,
           child: const Icon(Icons.add),
         ), // This trailing comma makes auto-formatting nicer for build methods.
         bottomNavigationBar: NavigationBar(
@@ -100,8 +148,9 @@ class _HomePageState extends State<HomePage> {
                 List<dynamic> accepted,
                 List<dynamic> rejected,
               ) {
-                return const NavigationDestination(
-                    icon: Icon(Icons.house), label: 'MY PANTRY');
+                return NavigationDestination(
+                    icon: Icon(Icons.house),
+                    label: AppLocalizations.of(context)!.pantryScreen);
               },
               onMove: (details) {
                 _navigationMenuIndex = 0;
@@ -114,8 +163,9 @@ class _HomePageState extends State<HomePage> {
                 List<dynamic> accepted,
                 List<dynamic> rejected,
               ) {
-                return const NavigationDestination(
-                    icon: Icon(Icons.shopping_cart), label: 'SHOPPING LIST');
+                return NavigationDestination(
+                    icon: Icon(Icons.shopping_cart),
+                    label: AppLocalizations.of(context)!.shoppingListScreen);
               },
               onMove: (details) {
                 _navigationMenuIndex = 1;
@@ -128,8 +178,9 @@ class _HomePageState extends State<HomePage> {
                 List<dynamic> accepted,
                 List<dynamic> rejected,
               ) {
-                return const NavigationDestination(
-                    icon: Icon(Icons.recycling), label: 'USED & EXPIRED');
+                return NavigationDestination(
+                    icon: Icon(Icons.recycling),
+                    label: AppLocalizations.of(context)!.historyScreen);
               },
               onMove: (details) {
                 _navigationMenuIndex = 2;

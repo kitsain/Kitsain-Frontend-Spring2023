@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 
 class UsedAndExpired extends StatefulWidget {
   const UsedAndExpired({super.key});
@@ -21,6 +22,7 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
+      _placeholderDataModel = AppLocalizations.of(context)!.dropTarget;
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
