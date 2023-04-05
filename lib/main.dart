@@ -13,7 +13,6 @@ import 'database/item.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  //PantryProxy().deleteAll();
   runApp(const MyApp());
 }
 

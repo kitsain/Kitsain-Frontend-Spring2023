@@ -138,9 +138,7 @@ class _ItemBuilder2State extends State<ItemBuilder2> {
       itemBuilder: (context, index) {
         return Container(
           margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-          height:
-              80, // If remove the height, I get an error. If I make it higher to fit the initial item tile, it doesn't open. Bah.
-          child: ItemCardSmall(item: widget.items[index]),
+          child: ItemCard(item: widget.items[index]),
         );
       },
     );

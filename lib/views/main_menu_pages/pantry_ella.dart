@@ -8,7 +8,7 @@ import '../../database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/assets/itembuilder.dart';
 import 'package:flutter/foundation.dart';
 
-class PantryView extends StatefulWidget {
+class PantryView extends StatefulWidget with ChangeNotifier {
   late final Function(Item) onToggle;
   PantryView({super.key});
 
@@ -17,8 +17,8 @@ class PantryView extends StatefulWidget {
 }
 
 class _PantryViewState extends State<PantryView> {
-  Future<RealmResults<Item>> _getItems() async {
-    return PantryProxy().getItems();
+  Future<RealmResults<Item>> _getPantryItems() async {
+    return PantryProxy().getPantryItems();
   }
 
   List<String> categories = <String>[
@@ -39,7 +39,7 @@ class _PantryViewState extends State<PantryView> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<RealmResults>(
-      future: _getItems(),
+      future: _getPantryItems(),
       builder: (context, AsyncSnapshot snapshot) {
         if (snapshot.hasError) {
           return const Scaffold(
@@ -67,38 +67,6 @@ class _PantryViewState extends State<PantryView> {
                     )
                 ],
               ),
-              // body: Column(
-              //   mainAxisSize: MainAxisSize.min,
-              //   children: [
-              //     for (var cat in categories)
-              //       Column(
-              //         children: [
-              //           Title(
-              //             color: Colors.black,
-              //             child: Text(cat),
-              //           ),
-              //           const ItemBuilder(),
-              //         ],
-              //       )
-              //   ],
-              // ),
-              // floatingActionButton: FloatingActionButton(
-              //   onPressed: () {
-              //     showDialog(
-              //       context: context,
-              //       builder: (BuildContext context) {
-              //         return const AlertDialog(
-              //           scrollable: true,
-              //           content: Padding(
-              //             padding: EdgeInsets.all(8.0),
-              //             child: NewItemForm(),
-              //           ),
-              //         );
-              //       },
-              //     );
-              //   },
-              //   child: const Icon(Icons.add),
-              // ),
             );
           } else {
             return const Scaffold(
