@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
-import 'package:kitsain_frontend_spring2023/views/add_new_item_form.dart';
-import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_item_form.dart';
-import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_form.dart';
+import 'package:kitsain_frontend_spring2023/views/add_forms/add_new_item_form.dart';
+import 'package:kitsain_frontend_spring2023/views/add_forms/add_new_shopping_list_form.dart';
+import 'package:kitsain_frontend_spring2023/views/add_forms/add_new_shopping_list_item_form.dart';
+
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/my_pantry.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/used_and_expired.dart';
@@ -60,7 +61,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _addNewItem() {
-    if(_navigationMenuIndex == 0) {
+    if (_navigationMenuIndex == 0) {
       showModalBottomSheet(
           context: context,
           isScrollControlled: true,
@@ -70,7 +71,7 @@ class _HomePageState extends State<HomePage> {
               child: NewItemForm(),
             );
           });
-    } else if(_navigationMenuIndex == 1) {
+    } else if (_navigationMenuIndex == 1) {
       showModalBottomSheet(
           context: context,
           isScrollControlled: true,
@@ -80,7 +81,7 @@ class _HomePageState extends State<HomePage> {
               child: NewShoppingListForm(),
             );
           });
-    }else if(_navigationMenuIndex == 2) {
+    } else if (_navigationMenuIndex == 2) {
       showModalBottomSheet(
           context: context,
           isScrollControlled: true,
