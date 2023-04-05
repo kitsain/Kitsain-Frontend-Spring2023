@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
+import 'package:kitsain_frontend_spring2023/language_picker.dart';
 import 'package:kitsain_frontend_spring2023/views/add_new_item_form.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/my_pantry.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/used_and_expired.dart';
 import 'package:kitsain_frontend_spring2023/l10n/l10n.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
+import 'package:kitsain_frontend_spring2023/locale_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MaterialApp(home: const MyApp()));
@@ -17,22 +20,28 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Kitsain 2023 MVP',
-      theme: ThemeData(
-        primarySwatch: Colors.lightGreen,
-      ),
-      home: const HomePage(title: 'Kitsain MVP 2023'),
-      supportedLocales: L10n.all,
-      localizationsDelegates: [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-    );
-  }
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+      create: (context) => LocaleProvider(),
+      builder: (context, child) {
+        final provider = Provider.of<LocaleProvider>(context);
+
+      return MaterialApp(
+        title: 'Kitsain 2023 MVP',
+        theme: ThemeData(
+          primarySwatch: Colors.lightGreen,
+        ),
+        home: const HomePage(title: 'Kitsain MVP 2023'),
+        locale: provider.locale,
+        supportedLocales: L10n.all,
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+      );
+    },
+  );
 }
 
 class HomePage extends StatefulWidget {
@@ -79,15 +88,20 @@ class _HomePageState extends State<HomePage> {
     return Material(
       child: Scaffold(
         appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          title: Column(
             children: [
-              Text(widget.title),
-              Image(
-                image: AssetImage('assets/images/Kitsain_logo.png'),
-                width: 150,
-                height: 150,
-              )
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(widget.title),
+                  Image(
+                    image: AssetImage('assets/images/Kitsain_logo.png'),
+                    width: 150,
+                    height: 150,
+                  )
+                ],
+              ),
+              LanguageWidget(),
             ],
           ),
           toolbarHeight: MediaQuery.of(context).size.height * 0.25,
