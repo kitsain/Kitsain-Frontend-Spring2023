@@ -7,9 +7,11 @@ import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_item_for
 import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_form.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/pantry_ella.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_list.dart';
+import 'package:kitsain_frontend_spring2023/views/main_menu_pages/my_pantry.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/used_and_expired.dart';
 import 'package:kitsain_frontend_spring2023/l10n/l10n.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
+import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_list_navigation.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,7 +63,7 @@ class _HomePageState extends State<HomePage> {
   int _navigationMenuIndex = 0;
   final _pages = [
     PantryView(),
-    ShoppingList(),
+    ShoppingListNavigation(),
     UsedAndExpired(),
   ];
 
