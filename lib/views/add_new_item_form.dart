@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 
 const List<String> categories = <String>['Meat', 'Seafood', 'Fruit', 'Vegetables',
                                          'Frozen', 'Drinks', 'Bread', 'Sweets',
