@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+import 'package:kitsain_frontend_spring2023/database/openfoodfacts.dart';
 
 const List<String> categories = <String>['Meat', 'Seafood', 'Fruit', 'Vegetables',
   'Frozen', 'Drinks', 'Bread', 'Sweets',
@@ -20,6 +21,7 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
   final _EANCodeField = TextEditingController();
   var _itemName = TextEditingController();
   String dropdownValue = categories.first;
+  var _offData;
 
   void _discardChangesDialog() {
     if(_itemName.text.isEmpty && _EANCodeField.text.isEmpty) {
@@ -90,9 +92,16 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                             MaterialPageRoute(
                               builder: (context) => SimpleBarcodeScannerPage(),
                             ));
-                        setState(() {
+                        setState(() async {
                           if (res is String && res != '-1') {
-                            _EANCodeField.text = res;
+                            try {
+                              _EANCodeField.text = res;
+                              _offData = await getFromJson(res);
+                              _itemName.text = _offData.productName.toString();
+
+                            } catch (e) {
+                              //TODO item not found.
+                            }
                           }
                         });
                         //Res will be the EAN-code
@@ -108,9 +117,15 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.03,
                     child: ElevatedButton(
-                      onPressed: () {
-                        //Here check that EAN-code-field is no empty
-                        //And then call OFF-API
+                      onPressed: () async {
+                        try {
+                          _offData = await getFromJson(_EANCodeField.text);
+                          setState(() {
+                            _itemName.text = _offData.productName.toString();
+                          });
+                        } catch (e) {
+                          //TODO item not found.
+                        }
                       },
                       child: Text('      ADD MANUALLY     '),
                     ),

@@ -104,9 +104,10 @@ class _NewItemFormState extends State<NewItemForm> {
                         if (res is String && res != '-1') {
 
                           try {
+                            _EANCodeField.text = res;
                             _offData = await getFromJson(res);
                             _itemName.text = _offData.productName.toString();
-                            _EANCodeField.text = res;
+
                           } catch (e) {
                             //TODO item not found.
                           }
@@ -131,10 +132,6 @@ class _NewItemFormState extends State<NewItemForm> {
                     } catch (e) {
                       //TODO item not found.
                     }
-
-
-                    //Here check that EAN-code is input
-                    //And then call OFF-API
                   },
                   child: Text('      ADD MANUALLY     '),
                 ),
