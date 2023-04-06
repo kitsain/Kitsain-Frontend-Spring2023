@@ -43,7 +43,6 @@ dependencies:
   async: ^2.10.0
   get: ^4.6.5
   provider: ^6.0.5
-  expansion_tile_card: ^2.0.0
 
 dev_dependencies:
   flutter_test:

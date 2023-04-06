@@ -25,17 +25,6 @@ class PantryProxy with ChangeNotifier {
     }
   }
 
-  listenToChanges() {
-    final subscription = getItems().changes.listen((changes) {
-      changes.inserted;
-      changes.modified;
-      changes.deleted;
-      changes.newModified;
-      changes.moved;
-      changes.results;
-    });
-  }
-
   List groupBy(RealmResults<Item> items) {
     return [];
   }
