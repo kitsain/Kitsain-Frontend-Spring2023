@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
-import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 
 class ShoppingList extends StatefulWidget {
   const ShoppingList({super.key});
@@ -17,7 +16,7 @@ class _ShoppingListState extends State<ShoppingList> {
     StateController.shoppingBagList.add(data);
 
     setState(
-      () {
+          () {
         // print(shoppingBagList.length);
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text("$data")));
@@ -33,7 +32,7 @@ class _ShoppingListState extends State<ShoppingList> {
         onAccept: (data) => _receiveItem(data),
         builder: (context, candidateData, rejectedData) {
           return Obx(
-            () {
+                () {
               return ListView.builder(
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
@@ -46,7 +45,7 @@ class _ShoppingListState extends State<ShoppingList> {
                         contentPadding: EdgeInsets.all(10),
                         minVerticalPadding: 10,
                         tileColor: Colors.lightGreen,
-                        title: Text('${AppLocalizations.of(context)!.shoppingListItem} ${index + 1}'),
+                        title: Text(StateController.shoppingBagList[index]),
                       ),
                       SizedBox(
                         height: 20,
