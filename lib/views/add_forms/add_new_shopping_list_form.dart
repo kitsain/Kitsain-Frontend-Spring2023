@@ -43,72 +43,77 @@ class _NewItemFormState extends State<NewShoppingListForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(8),
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.05,
-                  child: FloatingActionButton(
-                    child: Icon(Icons.close),
-                    onPressed: () => _discardChangesDialog(),
-                  ),
-                )
-              ],
-            ),
-            SizedBox( height: MediaQuery.of(context).size.height * 0.03),
-            Text(
-              'NEW SHOPPING LIST',
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
-            SizedBox( height: MediaQuery.of(context).size.height * 0.03),
-            SizedBox(
-              child: TextFormField(
-                controller: _listName,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'LIST NAME',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter shopping list name";
-                  }
-                  return null;
-                },
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsets.all(8),
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    child: FloatingActionButton(
+                      child: Icon(Icons.close),
+                      onPressed: () => _discardChangesDialog(),
+                    ),
+                  )
+                ],
               ),
-            ),
-            SizedBox( height: MediaQuery.of(context).size.height * 0.375),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.07,
-                  child: ElevatedButton(
-                    onPressed: () => _discardChangesDialog(),
-                    child: Text('CANCEL'),
+              SizedBox( height: MediaQuery.of(context).size.height * 0.03),
+              Text(
+                'NEW SHOPPING LIST',
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
+              SizedBox( height: MediaQuery.of(context).size.height * 0.03),
+              SizedBox(
+                child: TextFormField(
+                  controller: _listName,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'LIST NAME',
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter shopping list name";
+                    }
+                    return null;
+                  },
                 ),
-                SizedBox( width: MediaQuery.of(context).size.width * 0.05),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.07,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if(_formKey.currentState!.validate()) {
-                        print("OK");
-                      }
-                    },
-                    child: Text('  DONE  '),
+              ),
+              SizedBox( height: MediaQuery.of(context).size.height * 0.375),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    child: ElevatedButton(
+                      onPressed: () => _discardChangesDialog(),
+                      child: Text('CANCEL'),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
-        )
+                  SizedBox( width: MediaQuery.of(context).size.width * 0.05),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if(_formKey.currentState!.validate()) {
+                          print("OK");
+                        }
+                      },
+                      child: Text('  DONE  '),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          )
+      ),
     );
   }
 }

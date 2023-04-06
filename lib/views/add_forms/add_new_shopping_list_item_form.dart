@@ -51,140 +51,145 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(8),
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.05,
-                  child: FloatingActionButton(
-                    child: Icon(Icons.close),
-                    onPressed: () => _discardChangesDialog(),
-                  ),
-                )
-              ],
-            ),
-            Text(
-              'ADD TO\n SHOPPING LIST',
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox( height: MediaQuery.of(context).size.height * 0.03),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.07,
-                  child: ElevatedButton.icon(
-                    onPressed: () async {
-                      var res = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SimpleBarcodeScannerPage(),
-                          ));
-                      setState(() {
-                        if (res is String && res != '-1') {
-                          _EANCodeField.text = res;
-                        }
-                      });
-                      //Res will be the EAN-code
-                      //Here add OFF-api call and populate item name and category
-                      //fields if the product was found
-                      //_itemName.text =
-                    },
-                    icon: Icon(Icons.camera_alt, size: 40,),
-                    label: Text('SCAN EAN', style: TextStyle(fontSize: 20)),
-                  ),
-                ),
-                SizedBox( height: MediaQuery.of(context).size.height * 0.01),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.03,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      //Here check that EAN-code-field is no empty
-                      //And then call OFF-API
-                    },
-                    child: Text('      ADD MANUALLY     '),
-                  ),
-                ),
-                SizedBox( height: MediaQuery.of(context).size.height * 0.03),
-                SizedBox(
-                  child: TextFormField(
-                    controller: _EANCodeField,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'EAN CODE',
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsets.all(8),
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    child: FloatingActionButton(
+                      child: Icon(Icons.close),
+                      onPressed: () => _discardChangesDialog(),
+                    ),
+                  )
+                ],
+              ),
+              Text(
+                'ADD TO\n SHOPPING LIST',
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox( height: MediaQuery.of(context).size.height * 0.03),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    child: ElevatedButton.icon(
+                      onPressed: () async {
+                        var res = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SimpleBarcodeScannerPage(),
+                            ));
+                        setState(() {
+                          if (res is String && res != '-1') {
+                            _EANCodeField.text = res;
+                          }
+                        });
+                        //Res will be the EAN-code
+                        //Here add OFF-api call and populate item name and category
+                        //fields if the product was found
+                        //_itemName.text =
+                      },
+                      icon: Icon(Icons.camera_alt, size: 40,),
+                      label: Text('SCAN EAN', style: TextStyle(fontSize: 20)),
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox( height: MediaQuery.of(context).size.height * 0.03),
-            SizedBox(
-              child: TextFormField(
-                controller: _itemName,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'ITEM NAME',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter item name";
-                  }
-                  return null;
-                },
-              ),
-            ),
-            SizedBox( height: MediaQuery.of(context).size.height * 0.03),
-            SizedBox(
-              child: DropdownButtonFormField<String>(
-                value: dropdownValue,
-                decoration: InputDecoration(labelText: 'ITEM CATEGORY'),
-                onChanged: (String? value) {
-                  setState(() {
-                    dropdownValue = value!;
-                  });
-                },
-                items: categories.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
-            ),
-            SizedBox( height: MediaQuery.of(context).size.height * 0.05),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.07,
-                  child: ElevatedButton(
-                    onPressed: () => _discardChangesDialog(),
-                    child: Text('CANCEL'),
+                  SizedBox( height: MediaQuery.of(context).size.height * 0.01),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.03,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        //Here check that EAN-code-field is no empty
+                        //And then call OFF-API
+                      },
+                      child: Text('      ADD MANUALLY     '),
+                    ),
                   ),
+                  SizedBox( height: MediaQuery.of(context).size.height * 0.03),
+                  SizedBox(
+                    child: TextFormField(
+                      controller: _EANCodeField,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'EAN CODE',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox( height: MediaQuery.of(context).size.height * 0.03),
+              SizedBox(
+                child: TextFormField(
+                  controller: _itemName,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'ITEM NAME',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter item name";
+                    }
+                    return null;
+                  },
                 ),
+              ),
+              SizedBox( height: MediaQuery.of(context).size.height * 0.03),
+              SizedBox(
+                child: DropdownButtonFormField<String>(
+                  value: dropdownValue,
+                  decoration: InputDecoration(labelText: 'ITEM CATEGORY'),
+                  onChanged: (String? value) {
+                    setState(() {
+                      dropdownValue = value!;
+                    });
+                  },
+                  items: categories.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ),
+              SizedBox( height: MediaQuery.of(context).size.height * 0.05),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    child: ElevatedButton(
+                      onPressed: () => _discardChangesDialog(),
+                      child: Text('CANCEL'),
+                    ),
+                  ),
 
-                SizedBox( width: MediaQuery.of(context).size.width * 0.05),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.07,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if(_formKey.currentState!.validate()) {
-                        print("OK");
-                      }
-                    },
-                    child: Text('ADD ITEM'),
+                  SizedBox( width: MediaQuery.of(context).size.width * 0.05),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if(_formKey.currentState!.validate()) {
+                          print("OK");
+                        }
+                      },
+                      child: Text('ADD ITEM'),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
-        )
+                ],
+              ),
+            ],
+          )
+      ),
     );
   }
 }
