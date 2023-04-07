@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
 class TopBar extends StatefulWidget {
-  const TopBar({super.key, required this.title, this.addFunction, this.addIcon = const Icon(Icons.add), required this.helpFunction});
+  const TopBar(
+      {super.key,
+      required this.title,
+      this.addFunction,
+      this.addIcon = Icons.add,
+      required this.helpFunction});
 
   final String title;
   final Function? addFunction;
-  final Icon addIcon;
+  final IconData addIcon;
   final Function helpFunction;
 
   @override
@@ -34,7 +39,7 @@ class _TopBarState extends State<TopBar> {
             if (widget.addFunction != null)
               FloatingActionButton(
                 onPressed: () => widget.addFunction!(),
-                child: widget.addIcon,
+                child: Icon(widget.addIcon),
               ),
             Column(
               children: [
