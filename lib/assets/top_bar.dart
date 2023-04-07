@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class TopBar extends StatefulWidget {
+class TopBar extends StatefulWidget implements PreferredSizeWidget {
   const TopBar(
       {super.key,
       required this.title,
@@ -15,27 +15,30 @@ class TopBar extends StatefulWidget {
 
   @override
   State<TopBar> createState() => _TopBarState();
+
+  @override
+  Size get preferredSize => const Size.fromHeight(100);
 }
 
 class _TopBarState extends State<TopBar> {
   @override
   Widget build(BuildContext context) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(100),
+      preferredSize: widget.preferredSize,
       child: Container(
         height: MediaQuery.of(context).size.height * 0.175,
         color: Colors.green,
-        padding: EdgeInsets.only(left: 15, top: 15),
+        padding: const EdgeInsets.only(left: 15, top: 15),
         child: Row(
           children: [
             Container(
               width: MediaQuery.of(context).size.width * 0.66,
               child: Text(
                 widget.title,
-                style: TextStyle(fontSize: 32),
+                style: const TextStyle(fontSize: 32),
               ),
             ),
-            Spacer(),
+            const Spacer(),
             if (widget.addFunction != null)
               FloatingActionButton(
                 onPressed: () => widget.addFunction!(),
@@ -45,9 +48,9 @@ class _TopBarState extends State<TopBar> {
               children: [
                 IconButton(
                   onPressed: () => widget.helpFunction(),
-                  icon: Icon(Icons.help_outline),
+                  icon: const Icon(Icons.help_outline),
                 ),
-                Spacer(),
+                const Spacer(),
               ],
             ),
           ],

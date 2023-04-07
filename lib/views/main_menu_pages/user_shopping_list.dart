@@ -56,15 +56,12 @@ class _UserShoppingListState extends State<UserShoppingList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100),
-        child: TopBar(
+      appBar: TopBar(
           title: AppLocalizations.of(context)!.shoppingListScreen,
           addFunction: _addNewItem,
           addIcon: Icons.add_shopping_cart,
           helpFunction: _addNewItem,
         ),
-      ),
       body: SingleChildScrollView(
         child: Column(
           children: [

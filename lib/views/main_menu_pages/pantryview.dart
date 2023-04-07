@@ -52,14 +52,11 @@ class _PantryViewState extends State<PantryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100),
-        child: TopBar(
-          title: AppLocalizations.of(context)!.pantryScreen,
-          addFunction: _addNewItem,
-          addIcon: Icons.add_home,
-          helpFunction: _addNewItem,
-        ),
+      appBar: TopBar(
+        title: AppLocalizations.of(context)!.pantryScreen,
+        addFunction: _addNewItem,
+        addIcon: Icons.add_home,
+        helpFunction: _addNewItem,
       ),
       body: FutureBuilder<RealmResults>(
         future: _getPantryItems(),
