@@ -51,28 +51,26 @@ class _PantryViewState extends State<PantryView> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<RealmResults>(
-      future: _getPantryItems(),
-      builder: (context, AsyncSnapshot snapshot) {
-        if (snapshot.hasError) {
-          return const Scaffold(
-            body: Center(
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(100),
+        child: TopBar(
+          title: AppLocalizations.of(context)!.pantryScreen,
+          addFunction: _addNewItem,
+          addIcon: Icons.add_home,
+          helpFunction: _addNewItem,
+        ),
+      ),
+      body: FutureBuilder<RealmResults>(
+        future: _getPantryItems(),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
               child: Text("Your pantry is empty."),
-            ),
-          );
-        } else {
-          if (snapshot.hasData) {
-            return Scaffold(
-              appBar: PreferredSize(
-                preferredSize: const Size.fromHeight(100),
-                child: TopBar(
-                  title: AppLocalizations.of(context)!.pantryScreen,
-                  addFunction: _addNewItem,
-                  addIcon: Icons.add_home,
-                  helpFunction: _addNewItem,
-                ),
-              ),
-              body: ListView(
+            );
+          } else {
+            if (snapshot.hasData) {
+              return ListView(
                 children: [
                   for (var cat in categories)
                     Column(
@@ -88,17 +86,15 @@ class _PantryViewState extends State<PantryView> {
                       ],
                     )
                 ],
-              ),
-            );
-          } else {
-            return const Scaffold(
-              body: Center(
+              );
+            } else {
+              return const Center(
                 child: Text("Your pantry is empty."),
-              ),
-            );
+              );
+            }
           }
-        }
-      },
+        },
+      ),
     );
   }
 }
