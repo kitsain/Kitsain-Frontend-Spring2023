@@ -30,9 +30,9 @@ class _NewItemFormState extends State<NewItemForm> {
   bool click = true;
   String dropdownValue = categories.first;
 
-  void _discardChangesDialog() {
-    if(_itemName.text.isEmpty && _EANCodeField.text.isEmpty &&
-       _openDate.text.isEmpty && _expDate.text.isEmpty) {
+  void _discardChangesDialog(bool discardForm) {
+    if(discardForm || (_itemName.text.isEmpty && _EANCodeField.text.isEmpty &&
+       _openDate.text.isEmpty && _expDate.text.isEmpty)) {
       Navigator.pop(context);
     } else {
       showDialog(
@@ -50,7 +50,7 @@ class _NewItemFormState extends State<NewItemForm> {
                 child: const Text('DISCARD'),
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.pop(context);
+                  _discardChangesDialog(true);
                 },
               ),
             ],
@@ -73,7 +73,7 @@ class _NewItemFormState extends State<NewItemForm> {
                   height: MediaQuery.of(context).size.height * 0.05,
                   child: FloatingActionButton(
                     child: Icon(Icons.close),
-                    onPressed: () => _discardChangesDialog(),
+                    onPressed: () => _discardChangesDialog(false),
                   ),
               )
             ],
@@ -233,7 +233,7 @@ class _NewItemFormState extends State<NewItemForm> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.07,
                 child: ElevatedButton(
-                  onPressed: () => _discardChangesDialog(),
+                  onPressed: () => _discardChangesDialog(false),
                     child: Text('CANCEL'),
                   ),
                 ),
