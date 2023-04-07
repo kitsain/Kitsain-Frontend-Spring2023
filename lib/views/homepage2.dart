@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:googleapis/tasks/v1.dart';
 import 'package:kitsain_frontend_spring2023/controller/tasklist_controller.dart';
 import 'package:kitsain_frontend_spring2023/google_sign_in.dart';
+import 'package:kitsain_frontend_spring2023/main.dart';
 import 'package:kitsain_frontend_spring2023/views/tasklists_screen.dart';
 
 class HomePage2 extends StatelessWidget {
@@ -36,8 +37,14 @@ class HomePage2 extends StatelessWidget {
                 onPressed: () async {
                   await loginController.googleLogin();
                   await taskListController.getTaskLists();
+
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: ((context) => TaskListsScreen())));
+                      builder: ((context) => HomePage(
+                            title: 'Kitsain MVP Spring 2023',
+                          ))));
+
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: ((context) => TaskListsScreen())));
                 },
                 child: const Text('Google Sign In'),
               ),

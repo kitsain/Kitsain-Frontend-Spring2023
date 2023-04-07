@@ -5,6 +5,8 @@ import 'package:kitsain_frontend_spring2023/google_sign_in.dart';
 class TaskController extends GetxController {
   var tasksList = Rx<Tasks?>(null);
 
+  var tasksListRemove = Rx<List<int>?>([]);
+
   final loginController = Get.put(LoginController());
 
   getTasksList(String taskListId) async {

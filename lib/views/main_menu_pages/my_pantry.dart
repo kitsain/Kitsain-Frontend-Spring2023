@@ -34,7 +34,8 @@ class _MyPantryState extends State<MyPantry> {
                 decoration: BoxDecoration(color: Colors.red),
                 child: ListTile(
                   tileColor: Colors.lightGreen,
-                  title: Text('${AppLocalizations.of(context)!.pantryItem} ${index + 1}'),
+                  title: Text(
+                      '${AppLocalizations.of(context)!.pantryItem} ${index + 1}'),
                 ),
               ),
             ),
@@ -43,7 +44,8 @@ class _MyPantryState extends State<MyPantry> {
                 Container(
                   color: Colors.red.withOpacity(.8),
                   child: ListTile(
-                    title: Text('${AppLocalizations.of(context)!.pantryItem} ${index + 1}'),
+                    title: Text(
+                        '${AppLocalizations.of(context)!.pantryItem} ${index + 1}'),
                   ),
                 ),
                 SizedBox(

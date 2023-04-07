@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kitsain_frontend_spring2023/assets/shopping_list_item.dart';
+import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
 
 class UserShoppingList extends StatefulWidget {
-  const UserShoppingList({super.key, required this.listIndex});
+  const UserShoppingList(
+      {super.key, required this.taskListIndex, required this.taskListName});
 
-  final int listIndex;
+  final int taskListIndex;
+  final String taskListName;
 
   @override
   State<UserShoppingList> createState() => _UserShoppingListState();
@@ -16,7 +19,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
   final _stateController = Get.put(ItemController());
 
   _receiveItem(String data) {
-    _stateController.shoppingLists[widget.listIndex].add(data);
+    _stateController.shoppingLists[widget.taskListIndex].add(data);
 
     setState(
       () {
@@ -28,13 +31,17 @@ class _UserShoppingListState extends State<UserShoppingList> {
 
   _moveSelectedItemsToPantry() {
     // todo (Currently moves all items, not just selected. Needs to be fixed when real model is available.)
-    _stateController.pantryList.addAll(_stateController.shoppingLists[widget.listIndex]);
-    _stateController.shoppingLists[widget.listIndex].clear();
+    _stateController.pantryList
+        .addAll(_stateController.shoppingLists[widget.taskListIndex]);
+    _stateController.shoppingLists[widget.taskListIndex].clear();
   }
 
   _deselectAll() {
     // todo
   }
+  final taskController = Get.put(TaskController());
+
+  List<int> indicesToRemove = [1, 0];
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +67,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
                   ),
                 ),
                 Icon(Icons.arrow_forward_ios),
-                Text('Shopping list ${widget.listIndex + 1}'),
+                Text('${widget.taskListName}'),
                 // todo: change the title to come from the model
               ],
             ),
@@ -71,7 +78,9 @@ class _UserShoppingListState extends State<UserShoppingList> {
                   onPressed: () => _deselectAll(),
                   child: Text('DESELECT ALL'),
                 ),
-                SizedBox(width: 15,),
+                SizedBox(
+                  width: 15,
+                ),
               ],
             ),
             DragTarget<String>(
@@ -83,16 +92,16 @@ class _UserShoppingListState extends State<UserShoppingList> {
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
-                      itemCount: _stateController
-                          .shoppingLists[widget.listIndex].length,
+                      itemCount: taskController.tasksList.value?.items?.length,
                       padding: EdgeInsets.all(15),
                       itemBuilder: (context, index) {
                         return Column(
                           children: [
                             ShoppingListItem(
-                                itemName: _stateController
-                                .shoppingLists[widget.listIndex][index],
-                                itemDescription: 'Additional description',),
+                              itemName: 'name $index',
+                              itemDescription: 'Additional descriptionsss',
+                              indexToRemove: index,
+                            ),
                           ],
                         );
                       },
@@ -102,7 +111,14 @@ class _UserShoppingListState extends State<UserShoppingList> {
               },
             ),
             OutlinedButton(
-              onPressed: _moveSelectedItemsToPantry,
+              // onPressed: _moveSelectedItemsToPantry,
+              onPressed: () {
+                taskController.tasksListRemove.value
+                    ?.sort((a, b) => b.compareTo(a));
+                taskController.tasksListRemove.value?.forEach((element) {
+                  print('pp  $element');
+                });
+              },
               child: Text('ADD ITEMS TO PANTRY'),
             ),
             SizedBox(

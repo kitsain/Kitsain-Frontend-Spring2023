@@ -19,7 +19,7 @@ import 'package:firebase_core/firebase_core.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MaterialApp(home: const MyApp()));
+  runApp(MaterialApp(home: HomePage2()));
 }
 
 class MyApp extends StatelessWidget {
@@ -126,8 +126,8 @@ class _HomePageState extends State<HomePage> {
               Text(widget.title),
               Image(
                 image: AssetImage('assets/images/Kitsain_logo.png'),
-                width: 150,
-                height: 150,
+                width: 50,
+                height: 50,
               )
             ],
           ),
@@ -138,7 +138,7 @@ class _HomePageState extends State<HomePage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: _addNewItem,
-          tooltip: AppLocalizations.of(context)!.addNewItem,
+          // tooltip: AppLocalizations.of(context)!.addNewItem,
           child: const Icon(Icons.add),
         ), // This trailing comma makes auto-formatting nicer for build methods.
         bottomNavigationBar: NavigationBar(
@@ -152,8 +152,7 @@ class _HomePageState extends State<HomePage> {
                 List<dynamic> rejected,
               ) {
                 return NavigationDestination(
-                    icon: Icon(Icons.house),
-                    label: AppLocalizations.of(context)!.pantryScreen);
+                    icon: Icon(Icons.house), label: 'MY PANTRY');
               },
               onMove: (details) {
                 _navigationMenuIndex = 0;
@@ -167,8 +166,7 @@ class _HomePageState extends State<HomePage> {
                 List<dynamic> rejected,
               ) {
                 return NavigationDestination(
-                    icon: Icon(Icons.shopping_cart),
-                    label: AppLocalizations.of(context)!.shoppingListScreen);
+                    icon: Icon(Icons.shopping_cart), label: 'SHOPPING LIST');
               },
               onMove: (details) {
                 _navigationMenuIndex = 1;
@@ -182,8 +180,7 @@ class _HomePageState extends State<HomePage> {
                 List<dynamic> rejected,
               ) {
                 return NavigationDestination(
-                    icon: Icon(Icons.recycling),
-                    label: AppLocalizations.of(context)!.historyScreen);
+                    icon: Icon(Icons.recycling), label: 'USED & EXPIRED');
               },
               onMove: (details) {
                 _navigationMenuIndex = 2;
