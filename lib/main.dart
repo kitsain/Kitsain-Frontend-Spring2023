@@ -8,7 +8,6 @@ import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_form.dar
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/pantry_ella.dart';
 import 'package:kitsain_frontend_spring2023/views/homepage2.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/my_pantry.dart';
-import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/my_pantry.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/used_and_expired.dart';
 import 'package:kitsain_frontend_spring2023/l10n/l10n.dart';

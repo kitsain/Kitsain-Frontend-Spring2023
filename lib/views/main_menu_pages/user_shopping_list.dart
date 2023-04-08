@@ -38,7 +38,10 @@ class _UserShoppingListState extends State<UserShoppingList> {
 
   _deselectAll() {
     // todo
+
+    taskController.tasksListRemove.value?.clear();
   }
+
   final taskController = Get.put(TaskController());
 
   List<int> indicesToRemove = [1, 0];
@@ -98,9 +101,13 @@ class _UserShoppingListState extends State<UserShoppingList> {
                         return Column(
                           children: [
                             ShoppingListItem(
-                              itemName: 'name $index',
+                              itemName:
+                                  '${taskController.tasksList.value?.items?[index].title}',
                               itemDescription: 'Additional descriptionsss',
                               indexToRemove: index,
+                            ),
+                            SizedBox(
+                              height: 10,
                             ),
                           ],
                         );
@@ -110,16 +117,34 @@ class _UserShoppingListState extends State<UserShoppingList> {
                 );
               },
             ),
-            OutlinedButton(
-              // onPressed: _moveSelectedItemsToPantry,
-              onPressed: () {
-                taskController.tasksListRemove.value
-                    ?.sort((a, b) => b.compareTo(a));
-                taskController.tasksListRemove.value?.forEach((element) {
-                  print('pp  $element');
-                });
-              },
-              child: Text('ADD ITEMS TO PANTRY'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                OutlinedButton(
+                  // onPressed: _moveSelectedItemsToPantry,
+                  onPressed: () {
+                    // taskController.tasksListRemove.value
+                    //     ?.sort((a, b) => b.compareTo(a));
+                    taskController.tasksListRemove.value?.forEach((element) {
+                      print('pp  $element');
+                    });
+                  },
+                  child: Text('Remove Items From List'),
+                ),
+                OutlinedButton(
+                  // onPressed: _moveSelectedItemsToPantry,
+                  onPressed: () {
+                    // taskController.tasksListRemove.value
+                    //     ?.sort((a, b) => b.compareTo(a));
+
+                    print(taskController.tasksListRemove.value?.length);
+                    taskController.tasksListRemove.value?.forEach((element) {
+                      print('pp  $element');
+                    });
+                  },
+                  child: Text('ADD ITEMS TO PANTRY'),
+                ),
+              ],
             ),
             SizedBox(
               height: 100,

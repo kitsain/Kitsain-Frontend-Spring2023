@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:googleapis/tasks/v1.dart';
-import 'package:kitsain_frontend_spring2023/google_sign_in.dart';
+import 'package:kitsain_frontend_spring2023/LoginController.dart';
 
 class TaskController extends GetxController {
   var tasksList = Rx<Tasks?>(null);

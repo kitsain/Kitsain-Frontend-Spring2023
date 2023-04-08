@@ -29,10 +29,12 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
     if (newValue) {
       print(newValue);
       taskController.tasksListRemove.value?.add(widget.indexToRemove);
+      taskController.tasksListRemove.value?.sort((a, b) => b.compareTo(a));
       taskController.tasksListRemove.refresh();
     } else {
       print(newValue);
       taskController.tasksListRemove.value?.remove(widget.indexToRemove);
+      taskController.tasksListRemove.value?.sort((a, b) => b.compareTo(a));
       taskController.tasksListRemove.refresh();
     }
   }
@@ -40,7 +42,9 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 64,
+      // height: 64,
+      color: Colors.green,
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       child: Column(
         children: [
           Row(
@@ -62,10 +66,10 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
                     // print('ok');
                     _checkBoxChanged(newValue);
 
-                    taskController.tasksListRemove.value?.forEach((element) {
-                      print('pp  $element');
-                    });
-                    print('ok');
+                    // taskController.tasksListRemove.value?.forEach((element) {
+                    //   print('pp  $element');
+                    // });
+                    // print('ok');
                   }),
             ],
           ),
