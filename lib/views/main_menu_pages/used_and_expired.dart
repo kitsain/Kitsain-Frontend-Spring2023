@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
+import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 
 const List<Widget> tabs = <Widget>[
   Text('BIN'),
@@ -30,24 +31,19 @@ class UsedAndExpired extends StatefulWidget {
 }
 
 class _UsedAndExpiredState extends State<UsedAndExpired> {
-  String _placeholderDataModel = "Drop";
   final StateController = Get.put(ItemController());
-  bool _customTileExpanded = false;
-  final month = months[DateTime.now().month - 1];
-  final year = DateTime.now().year;
   var _expDate = TextEditingController();
   var _openDate = TextEditingController();
-  bool click = true;
 
   final List<bool> _selectedTabs = <bool>[true, false];
 
-  _receiveItem(String data) {
+  /*_receiveItem(String data) {
     setState(() {
       _placeholderDataModel = data;
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("$data")));
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -55,17 +51,6 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
     return Scaffold(
         body: ListView(
       children: [
-        /*Align(
-          alignment: Alignment.centerLeft,
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.03,
-            child: Text(
-              'MONTH > $month $year',
-              textAlign: TextAlign.right,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),*/
         SizedBox(height: MediaQuery.of(context).size.height * 0.02),
         Center(
           child: ToggleButtons(

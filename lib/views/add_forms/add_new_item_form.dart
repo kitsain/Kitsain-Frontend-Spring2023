@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+import '../../database/item.dart';
+import '../../database/pantry_proxy.dart';
+import 'package:realm/realm.dart';
+
 
 const List<String> categories = <String>['Meat', 'Seafood', 'Fruit', 'Vegetables',
                                          'Frozen', 'Drinks', 'Bread', 'Sweets',
@@ -21,6 +25,8 @@ class _NewItemFormState extends State<NewItemForm> {
   var _itemName = TextEditingController();
   var _expDate = TextEditingController();
   var _openDate = TextEditingController();
+  var _bbdate;
+  var _oDate;
   bool click = true;
   String dropdownValue = categories.first;
 
@@ -192,6 +198,7 @@ class _NewItemFormState extends State<NewItemForm> {
                 if(pickedDate != null) {
                   String expirationDate = pickedDate.day.toString() + "." +  pickedDate.month.toString() + "." + pickedDate.year.toString();
                   _expDate.text = expirationDate;
+                  _bbdate = pickedDate;
                 } else {
                   _expDate.text = "";
                 };
@@ -213,6 +220,7 @@ class _NewItemFormState extends State<NewItemForm> {
               if(pickedDate != null) {
                 String openedDate = pickedDate.day.toString() + "." +  pickedDate.month.toString() + "." + pickedDate.year.toString();
                 _openDate.text = openedDate;
+                _oDate = pickedDate;
               } else {
                 _openDate.text = "";
               };
@@ -236,7 +244,13 @@ class _NewItemFormState extends State<NewItemForm> {
                 child: ElevatedButton(
                   onPressed: () {
                     if(_formKey.currentState!.validate()) {
-                      print("OK");
+                      var newItem = Item(
+                          ObjectId().toString(), _itemName.text,
+                          mainCat: dropdownValue,
+                          openedDate: _oDate,
+                          bbDate: _bbdate,
+                          location: "Pantry");
+                      PantryProxy().upsertItem(newItem);
                     }
                   },
                   child: Text('ADD ITEM'),
