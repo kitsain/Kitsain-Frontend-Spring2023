@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.kitsain_frontend_spring2023">
+    package="com.kitsain.kitsain_frontend_spring2023">
    <application
         android:label="kitsain_frontend_spring2023"
         android:name="${applicationName}"

@@ -8,7 +8,7 @@
 PRODUCT_NAME = kitsain_frontend_spring2023
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.kitsainFrontendSpring2023
+PRODUCT_BUNDLE_IDENTIFIER = com.kitsain.kitsainFrontendSpring2023
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2023 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2023 com.kitsain. All rights reserved.
