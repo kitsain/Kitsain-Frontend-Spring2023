@@ -3,6 +3,8 @@ import 'package:kitsain_frontend_spring2023/assets/item_card.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:realm/realm.dart';
 
+import '../database/pantry_proxy.dart';
+
 // In this file we build the list of item cards
 
 class ItemBuilder extends StatefulWidget {
@@ -24,6 +26,33 @@ class _ItemBuilderState extends State<ItemBuilder> {
       itemBuilder: (context, index) {
         return ItemCard(item: widget.items[index]);
       },
+    );
+  }
+}
+
+class ByCatBuilder extends StatefulWidget {
+  const ByCatBuilder({super.key});
+
+  @override
+  State<ByCatBuilder> createState() => _ByCatBuilderState();
+}
+
+class _ByCatBuilderState extends State<ByCatBuilder> {
+  // If the category has no items, the header for it will not be shown
+  bool checkIfEmpty(String cat) {
+    if (PantryProxy().getCatCount(cat) > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [],
+      ),
     );
   }
 }

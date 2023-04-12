@@ -35,8 +35,6 @@ class _Item {
   late String? ecoscoreGrade;
   late String? packaging;
   late String? origins;
-  late String?
-      status; // Unopened, opened, close to expiration, expired; Not shown to user, controls the item card color stripe
   late String? location; // Pantry, used, bin, new; Not shown to user
   late bool? everyday = false;
 }

@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
 import 'package:kitsain_frontend_spring2023/views/add_new_item_form.dart';
 import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_item_form.dart';
 import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_form.dart';
+import 'package:kitsain_frontend_spring2023/views/main_menu_pages/history_ella.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/pantryview.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/used_and_expired.dart';
 import 'package:kitsain_frontend_spring2023/l10n/l10n.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_list_navigation.dart';
-
-import 'database/pantry_proxy.dart';
+import 'package:realm/realm.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,9 +64,9 @@ class _HomePageState extends State<HomePage> {
 
   int _navigationMenuIndex = 0;
   final _pages = [
-    PantryView3(),
+    PantryView(),
     const ShoppingListNavigation(),
-    const UsedAndExpired(),
+    const History(),
   ];
 
   void _navMenuItemSelected(int index) {

@@ -6,27 +6,13 @@ import 'item.dart';
 // When you want to call a function from another class,
 // use for example PantryProxy().
 
+var _config =
+    Configuration.local([Item.schema], shouldDeleteIfMigrationNeeded: true);
+var realm = Realm(_config);
+
 class PantryProxy with ChangeNotifier {
-  final Configuration _config =
-      Configuration.local([Item.schema], shouldDeleteIfMigrationNeeded: true);
-  late Realm _realm;
-
-  PantryProxy() {
-    openRealm();
-  }
-
-  openRealm() {
-    _realm = Realm(_config);
-  }
-
-  closeRealm() {
-    if (!_realm.isClosed) {
-      _realm.close();
-    }
-  }
-
   RealmResults<Item> getItems() {
-    var all = _realm.all<Item>();
+    var all = realm.all<Item>();
     return all;
   }
 
@@ -43,19 +29,48 @@ class PantryProxy with ChangeNotifier {
     });
   }
 
-  RealmResults<Item> getPantryItems({String sortBy = "az"}) {
+  RealmResults<Item> getPantryItems([String sortBy = "az"]) {
     var all = getItems();
-    var result = all.query("location == \$0", ["Pantry"]);
-    //var result = all.query("location = \$0 SORT(\$1 DESC)", ["Pantry", sortBy]);
+    late RealmResults<Item> result;
+    // var result = all.query("location == \$0", ["Pantry"]);
+    if (sortBy == "az") {
+      result = all.query("location = \$0 SORT(name ASC)", ["Pantry"]);
+    } else if (sortBy == "expdate") {
+      result = all.query("location = \$0 SORT(expiryDate ASC)", ["Pantry"]);
+    } else if (sortBy == "addedLast") {
+      result = all.query("location = \$0 SORT(addedDate ASC)", ["Pantry"]);
+    }
+
     return result;
   }
 
-  RealmResults<Item> getOpenedItems() {
+  RealmResults<Item> getOpenedItems([String sortBy = "az"]) {
     var pantryitems = getPantryItems();
     //var result = all.query("location == \$0", ["Pantry"]);
     var result = pantryitems.query(
       "openedDate != null",
     );
+    late RealmResults<Item> sorted;
+    if (sortBy == "az") {
+      sorted = result.query("location = \$0 SORT(name ASC)", ["Pantry"]);
+    } else if (sortBy == "expdate") {
+      sorted = result.query("location = \$0 SORT(expiryDate ASC)", ["Pantry"]);
+    } else if (sortBy == "addedLast") {
+      sorted = result.query("location = \$0 SORT(addedDate ASC)", ["Pantry"]);
+    }
+
+    return sorted;
+  }
+
+  RealmResults<Item> getUsedItems() {
+    var all = getItems();
+    var result = all.query("location == \$0", ["Used"]);
+    return result;
+  }
+
+  RealmResults<Item> getBinItems() {
+    var all = getItems();
+    var result = all.query("location == \$0", ["Bin"]);
     return result;
   }
 
@@ -75,8 +90,8 @@ class PantryProxy with ChangeNotifier {
     debugPrint("addItem");
     try {
       debugPrint(item.mainCat);
-      _realm.write(() {
-        _realm.add<Item>(item, update: true);
+      realm.write(() {
+        realm.add<Item>(item, update: true);
       });
       notifyListeners();
       return true;
@@ -88,7 +103,7 @@ class PantryProxy with ChangeNotifier {
 
   bool toggleItemEveryday(Item item) {
     try {
-      _realm.write(() {
+      realm.write(() {
         if (item.everyday == false) {
           item.everyday = true;
         } else {
@@ -104,17 +119,19 @@ class PantryProxy with ChangeNotifier {
   }
 
   void changeLocation(Item item, String newLoc) {
-    _realm.write(() {
+    realm.write(() {
       item.location = newLoc;
     });
     notifyListeners();
   }
 
   void deleteItem(Item item) {
+    debugPrint("deleteItem");
     try {
-      _realm.write(() {
-        _realm.delete(item);
+      realm.write(() {
+        realm.delete(item);
       });
+      debugPrint("Item deleted");
       notifyListeners();
     } on RealmException catch (e) {
       debugPrint(e.message);
@@ -122,8 +139,8 @@ class PantryProxy with ChangeNotifier {
   }
 
   void deleteAll() {
-    _realm.write(() {
-      _realm.deleteAll<Item>();
+    realm.write(() {
+      realm.deleteAll<Item>();
     });
     notifyListeners();
   }

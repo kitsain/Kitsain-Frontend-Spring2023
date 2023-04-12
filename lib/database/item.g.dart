@@ -25,7 +25,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     String? ecoscoreGrade,
     String? packaging,
     String? origins,
-    String? status,
     String? location,
     bool? everyday = false,
     Iterable<String?> categories = const [],
@@ -53,7 +52,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     RealmObjectBase.set(this, 'ecoscoreGrade', ecoscoreGrade);
     RealmObjectBase.set(this, 'packaging', packaging);
     RealmObjectBase.set(this, 'origins', origins);
-    RealmObjectBase.set(this, 'status', status);
     RealmObjectBase.set(this, 'location', location);
     RealmObjectBase.set(this, 'everyday', everyday);
     RealmObjectBase.set<RealmList<String?>>(
@@ -188,11 +186,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   set origins(String? value) => RealmObjectBase.set(this, 'origins', value);
 
   @override
-  String? get status => RealmObjectBase.get<String>(this, 'status') as String?;
-  @override
-  set status(String? value) => RealmObjectBase.set(this, 'status', value);
-
-  @override
   String? get location =>
       RealmObjectBase.get<String>(this, 'location') as String?;
   @override
@@ -239,7 +232,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
       SchemaProperty('ecoscoreGrade', RealmPropertyType.string, optional: true),
       SchemaProperty('packaging', RealmPropertyType.string, optional: true),
       SchemaProperty('origins', RealmPropertyType.string, optional: true),
-      SchemaProperty('status', RealmPropertyType.string, optional: true),
       SchemaProperty('location', RealmPropertyType.string, optional: true),
       SchemaProperty('everyday', RealmPropertyType.bool, optional: true),
     ]);

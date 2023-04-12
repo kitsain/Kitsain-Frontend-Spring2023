@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'statuscolor.dart';
+// import 'package:kitsain_frontend_spring2023/initrealm.dart';
 
 class ItemCard extends StatefulWidget {
   ItemCard({super.key, required this.item});
@@ -21,6 +22,12 @@ class _ItemCardState extends State<ItemCard> {
     } else {
       return Colors.transparent;
     }
+  }
+
+  void deleteItem(Item item) {
+    realm.write(() {
+      realm.delete(item);
+    });
   }
 
   @override
@@ -45,25 +52,25 @@ class _ItemCardState extends State<ItemCard> {
           icon: const Icon(Icons.more_horiz),
           itemBuilder: (BuildContext context) {
             return [
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: _MenuValues.edit,
                 child: Text("Edit item"),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: _MenuValues.used,
                 child: Text("Move to used"),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: _MenuValues.bin,
                 child: Text("Move to bin"),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: _MenuValues.shoppinglist,
                 child: Text("Move to shopping list"),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: _MenuValues.delete,
-                child: Text("Delete from pantry"),
+                child: Text("Delete item"),
               ),
             ];
           },
@@ -91,12 +98,10 @@ class _ItemCardState extends State<ItemCard> {
                           onPressed: () {
                             Navigator.of(ctx).pop();
                           },
-                          child: Container(
-                            child: const Text("Cancel"),
-                          )),
+                          child: const Text("Cancel")),
                       TextButton(
                           onPressed: () {
-                            PantryProxy().deleteItem(widget.item);
+                            deleteItem(widget.item);
                             Navigator.of(ctx).pop();
                           },
                           child: const Text("Delete"))
@@ -105,72 +110,6 @@ class _ItemCardState extends State<ItemCard> {
                 );
                 break;
             }
-            // if (choice == "edit") {
-            //   () {};
-            // }
-            // if (choice == "used") {
-            //   debugPrint("used");
-            //   debugPrint(widget.item.name);
-            //   PantryProxy().changeLocation(widget.item, "Used");
-            // }
-            // if (choice == "bin") {
-            //   PantryProxy().changeLocation(widget.item, "Bin");
-            // }
-            // if (choice == "shoppinglist") {
-            //   () {};
-            // }
-            // if (choice == "delete") {
-            //   () {
-            //     showDialog(
-            //       context: context,
-            //       builder: (ctx) => AlertDialog(
-            //         title: const Text("Delete item"),
-            //         content: const Text(
-            //             "Are you sure you want to delete this item? This action cannot be undone."),
-            //         actions: <Widget>[
-            //           TextButton(
-            //               onPressed: () {
-            //                 Navigator.of(ctx).pop();
-            //               },
-            //               child: Container(
-            //                 child: const Text("Cancel"),
-            //               )),
-            //           TextButton(
-            //               onPressed: () {
-            //                 PantryProxy().deleteItem(widget.item);
-            //               },
-            //               child: const Text("Delete"))
-            //         ],
-            //       ),
-            //     );
-            //     // showAlertDialog(BuildContext context) {
-            //     //   Widget cancelButton = TextButton(
-            //     //     onPressed: () {},
-            //     //     child: const Text("Cancel"),
-            //     //   );
-            //     //   Widget deleteButton = TextButton(
-            //     //     onPressed: () {
-            //     //       PantryProxy().deleteItem(widget.item);
-            //     //     },
-            //     //     child: const Text("Delete"),
-            //     //   );
-
-            //     //   AlertDialog alert = AlertDialog(
-            //     //     title: const Text("Delete item"),
-            //     //     content: const Text(
-            //     //         "Are you sure you want to delete the item permanently? It will not show in your history or statistics."),
-            //     //     actions: [cancelButton, deleteButton],
-            //     //   );
-
-            //     //   showDialog(
-            //     //     context: context,
-            //     //     builder: (BuildContext context) {
-            //     //       return alert;
-            //     //     },
-            //     //   );
-            //     // }
-            //   };
-            // }
           },
         ),
         subtitle: Text(widget.item.mainCat!.toUpperCase()),
@@ -231,7 +170,7 @@ class _ItemCardState extends State<ItemCard> {
                     Row(
                       children: [
                         const Icon(Icons.question_mark),
-                        Text("${widget.item.quantity ?? 'QUANTITY'}")
+                        Text("${widget.item.addedDate ?? 'ADDED'}")
                       ],
                     ),
                     const SizedBox(
