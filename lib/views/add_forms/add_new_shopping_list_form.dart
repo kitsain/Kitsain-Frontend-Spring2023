@@ -13,9 +13,12 @@ class _NewItemFormState extends State<NewShoppingListForm> {
   final _formKey = GlobalKey<FormState>();
   final _listName = TextEditingController();
 
-  void _discardChangesDialog() {
+  bool _discardChangesDialog() {
+    bool _close = false;
     if(_listName.text.isEmpty) {
       Navigator.pop(context);
+      _close = true;
+      return _close;
     } else {
       showDialog(
           context: context,
@@ -26,6 +29,7 @@ class _NewItemFormState extends State<NewShoppingListForm> {
                 child: const Text('CANCEL'),
                 onPressed: () {
                   Navigator.pop(context);
+                  _close = false;
                 },
               ),
               TextButton(
@@ -33,11 +37,13 @@ class _NewItemFormState extends State<NewShoppingListForm> {
                 onPressed: () {
                   Navigator.pop(context);
                   Navigator.pop(context);
+                  _close = true;
                 },
               ),
             ],
           )
       );
+      return _close;
     }
   }
 
@@ -45,7 +51,7 @@ class _NewItemFormState extends State<NewShoppingListForm> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        return false;
+        return _discardChangesDialog();
       },
       child: Form(
           key: _formKey,

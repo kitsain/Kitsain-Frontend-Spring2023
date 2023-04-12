@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
@@ -23,14 +26,18 @@ class _NewItemFormState extends State<NewItemForm> {
   var _itemName = TextEditingController();
   var _expDate = TextEditingController();
   var _openDate = TextEditingController();
-  bool click = true;
-  String dropdownValue = categories.first;
+  bool _click = false;
+  String _category = categories.first;
   var _offData;
 
-  void _discardChangesDialog() async {
+  bool _discardChangesDialog() {
+    bool _close = false;
     if(_itemName.text.isEmpty && _EANCodeField.text.isEmpty &&
-       _openDate.text.isEmpty && _expDate.text.isEmpty) {
+       _openDate.text.isEmpty && _expDate.text.isEmpty
+        && _category == categories.first && !_click) {
       Navigator.pop(context);
+      _close = true;
+      return _close;
     } else {
       showDialog(
           context: context,
@@ -41,6 +48,7 @@ class _NewItemFormState extends State<NewItemForm> {
                 child: const Text('CANCEL'),
                 onPressed: () {
                   Navigator.pop(context);
+                  _close = false;
                 },
               ),
               TextButton(
@@ -48,11 +56,13 @@ class _NewItemFormState extends State<NewItemForm> {
                 onPressed: () {
                   Navigator.pop(context);
                   Navigator.pop(context);
+                  _close = true;
                 },
               ),
             ],
           )
       );
+      return _close;
     }
   }
 
@@ -60,7 +70,7 @@ class _NewItemFormState extends State<NewItemForm> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        return false;
+        return _discardChangesDialog();
       },
       child: Form(
         key: _formKey,
@@ -102,17 +112,33 @@ class _NewItemFormState extends State<NewItemForm> {
                           ));
                       setState(() async {
                         if (res is String && res != '-1') {
-
                           try {
-                            _EANCodeField.text = res;
                             _offData = await getFromJson(res);
                             _itemName.text = _offData.productName.toString();
-
+                            _EANCodeField.text = res;
                           } catch (e) {
-                            //TODO item not found.
-                          }
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) => SizedBox(
+                                width: 10,
+                                height: 10,
+                                child: AlertDialog(
+                                    content: const Text('Item not found\n'
+                                                        'Input manually'),
+                                    actions: <Widget>[
+                                TextButton(
+                                child: const Text('OK'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                            ),
+                          ]
+                          ),
+                              )
+                            );
                           }
                         }
+                      }
                       );
                     },
                     icon: Icon(Icons.camera_alt, size: 40,),
@@ -124,13 +150,50 @@ class _NewItemFormState extends State<NewItemForm> {
                 height: MediaQuery.of(context).size.height * 0.03,
                 child: ElevatedButton(
                   onPressed: () async {
-                    try {
-                      _offData = await getFromJson(_EANCodeField.text);
-                      setState(() {
+                    if(_EANCodeField.text.isNotEmpty) {
+                      try {
+                        _offData = await getFromJson(_EANCodeField.text);
                         _itemName.text = _offData.productName.toString();
-                      });
-                    } catch (e) {
-                      //TODO item not found.
+                      } catch (e) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) => SizedBox(
+                              width: 10,
+                              height: 10,
+                              child: AlertDialog(
+                                  content: const Text('Item not found\n'
+                                      'Input manually'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: const Text('OK'),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ]
+                              ),
+                            )
+                        );
+                      }
+                    } else {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) => SizedBox(
+                            width: 10,
+                            height: 10,
+                            child: AlertDialog(
+                                content: const Text('Please input EAN-code'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text('OK'),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ]
+                            ),
+                          )
+                      );
                     }
                   },
                   child: Text('      ADD MANUALLY     '),
@@ -167,11 +230,11 @@ class _NewItemFormState extends State<NewItemForm> {
             SizedBox( height: MediaQuery.of(context).size.height * 0.03),
             SizedBox(
               child: DropdownButtonFormField<String>(
-                value: dropdownValue,
+                value: _category,
                 decoration: InputDecoration(labelText: 'ITEM CATEGORY'),
                 onChanged: (String? value) {
                   setState(() {
-                    dropdownValue = value!;
+                    _category = value!;
                   });
                 },
                 items: categories.map<DropdownMenuItem<String>>((String value) {
@@ -187,10 +250,10 @@ class _NewItemFormState extends State<NewItemForm> {
               child: TextButton.icon(
                   onPressed: () {
                     setState(() {
-                      click = !click;
+                      _click = !_click;
                     });
                   },
-                  icon: Icon((click == false) ? Icons.favorite : Icons.favorite_border),
+                  icon: Icon(_click ? Icons.favorite : Icons.favorite_border),
                   label: Text('Mark as favorite'),
               ),
             ),

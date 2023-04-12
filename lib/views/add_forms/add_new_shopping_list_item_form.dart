@@ -20,12 +20,16 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
   final _formKey = GlobalKey<FormState>();
   final _EANCodeField = TextEditingController();
   var _itemName = TextEditingController();
-  String dropdownValue = categories.first;
+  String _category = categories.first;
   var _offData;
 
-  void _discardChangesDialog() {
-    if(_itemName.text.isEmpty && _EANCodeField.text.isEmpty) {
+  bool _discardChangesDialog() {
+    bool _close = false;
+    if(_itemName.text.isEmpty && _EANCodeField.text.isEmpty
+        && _category == categories.first) {
       Navigator.pop(context);
+      _close = true;
+      return _close;
     } else {
       showDialog(
           context: context,
@@ -36,6 +40,7 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                 child: const Text('CANCEL'),
                 onPressed: () {
                   Navigator.pop(context);
+                  _close = false;
                 },
               ),
               TextButton(
@@ -43,11 +48,13 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                 onPressed: () {
                   Navigator.pop(context);
                   Navigator.pop(context);
+                  _close = true;
                 },
               ),
             ],
           )
       );
+      return _close;
     }
   }
 
@@ -55,7 +62,7 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        return false;
+        return _discardChangesDialog();
       },
       child: Form(
           key: _formKey,
@@ -100,7 +107,25 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                               _itemName.text = _offData.productName.toString();
 
                             } catch (e) {
-                              //TODO item not found.
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) => SizedBox(
+                                    width: 10,
+                                    height: 10,
+                                    child: AlertDialog(
+                                        content: const Text('Item not found\n'
+                                            'Input manually'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text('OK'),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ]
+                                    ),
+                                  )
+                              );
                             }
                           }
                         });
@@ -118,13 +143,55 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                     height: MediaQuery.of(context).size.height * 0.03,
                     child: ElevatedButton(
                       onPressed: () async {
-                        try {
-                          _offData = await getFromJson(_EANCodeField.text);
-                          setState(() {
-                            _itemName.text = _offData.productName.toString();
-                          });
-                        } catch (e) {
-                          //TODO item not found.
+                        if (_EANCodeField.text.isNotEmpty) {
+                          try {
+                            _offData = await getFromJson(_EANCodeField.text);
+                            setState(() {
+                              _itemName.text = _offData.productName.toString();
+                            });
+                          } catch (e) {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    SizedBox(
+                                      width: 10,
+                                      height: 10,
+                                      child: AlertDialog(
+                                          content: const Text('Item not found\n'
+                                              'Input manually'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              child: const Text('OK'),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ]
+                                      ),
+                                    )
+                            );
+                          }
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  SizedBox(
+                                    width: 10,
+                                    height: 10,
+                                    child: AlertDialog(
+                                        content: const Text(
+                                            'Please input EAN-code'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text('OK'),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ]
+                                    ),
+                                  )
+                          );
                         }
                       },
                       child: Text('      ADD MANUALLY     '),
@@ -161,11 +228,11 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
               SizedBox( height: MediaQuery.of(context).size.height * 0.03),
               SizedBox(
                 child: DropdownButtonFormField<String>(
-                  value: dropdownValue,
+                  value: _category,
                   decoration: InputDecoration(labelText: 'ITEM CATEGORY'),
                   onChanged: (String? value) {
                     setState(() {
-                      dropdownValue = value!;
+                      _category = value!;
                     });
                   },
                   items: categories.map<DropdownMenuItem<String>>((String value) {
