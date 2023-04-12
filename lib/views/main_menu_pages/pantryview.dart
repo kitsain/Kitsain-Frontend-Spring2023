@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kitsain_frontend_spring2023/assets/item_card.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:realm/realm.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
@@ -17,6 +16,7 @@ class PantryView extends StatefulWidget {
 }
 
 class _PantryViewState extends State<PantryView> {
+  // Default values for what the user sees: all items in alphabetical order
   String selectedView = "all";
   String selectedSort = "az";
 
@@ -119,14 +119,16 @@ class _PantryViewState extends State<PantryView> {
       body: ListView(
         children: <Widget>[
           Container(
-            height: 30,
+            height: 20, // To give space for the show/sort options
           ),
           Expanded(
             child: StreamBuilder<RealmResultsChanges<Item>>(
               stream: chosenStream(selectedView)?.changes,
               builder: (context, snapshot) {
                 final data = snapshot.data;
-                if (data == null) return const CircularProgressIndicator();
+                if (data == null) {
+                  return const CircularProgressIndicator(); // while loading data
+                }
                 final results = data.results;
 
                 if (results.isEmpty) {
@@ -174,7 +176,8 @@ class _PantryViewState extends State<PantryView> {
                                       fontSize: 18),
                                 ),
                                 ItemBuilder(
-                                    items: PantryProxy().getByMainCat(cat),
+                                    items: PantryProxy()
+                                        .getByMainCat(cat, selectedSort),
                                     sortMethod: selectedSort),
                                 const Divider(
                                   height: 4,

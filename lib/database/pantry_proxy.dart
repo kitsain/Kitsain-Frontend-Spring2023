@@ -6,6 +6,7 @@ import 'item.dart';
 // When you want to call a function from another class,
 // use for example PantryProxy().
 
+// Creating and initiating the DB (realm)
 var _config =
     Configuration.local([Item.schema], shouldDeleteIfMigrationNeeded: true);
 var realm = Realm(_config);
@@ -29,6 +30,10 @@ class PantryProxy with ChangeNotifier {
     });
   }
 
+  /*
+  GETTERS
+  */
+
   RealmResults<Item> getPantryItems([String sortBy = "az"]) {
     var all = getItems();
     late RealmResults<Item> result;
@@ -37,28 +42,26 @@ class PantryProxy with ChangeNotifier {
       result = all.query("location = \$0 SORT(name ASC)", ["Pantry"]);
     } else if (sortBy == "expdate") {
       result = all.query("location = \$0 SORT(expiryDate ASC)", ["Pantry"]);
-    } else if (sortBy == "addedLast") {
-      result = all.query("location = \$0 SORT(addedDate ASC)", ["Pantry"]);
+    } else if (sortBy == "addedlast") {
+      result = all.query("location = \$0 SORT(addedDate DESC)", ["Pantry"]);
     }
-
     return result;
   }
 
   RealmResults<Item> getOpenedItems([String sortBy = "az"]) {
     var pantryitems = getPantryItems();
     //var result = all.query("location == \$0", ["Pantry"]);
-    var result = pantryitems.query(
+    var opened = pantryitems.query(
       "openedDate != null",
     );
     late RealmResults<Item> sorted;
     if (sortBy == "az") {
-      sorted = result.query("location = \$0 SORT(name ASC)", ["Pantry"]);
+      sorted = opened.query("location = \$0 SORT(name ASC)", ["Pantry"]);
     } else if (sortBy == "expdate") {
-      sorted = result.query("location = \$0 SORT(expiryDate ASC)", ["Pantry"]);
-    } else if (sortBy == "addedLast") {
-      sorted = result.query("location = \$0 SORT(addedDate ASC)", ["Pantry"]);
+      sorted = opened.query("location = \$0 SORT(expiryDate ASC)", ["Pantry"]);
+    } else if (sortBy == "addedlast") {
+      sorted = opened.query("location = \$0 SORT(addedDate DESC)", ["Pantry"]);
     }
-
     return sorted;
   }
 
@@ -79,12 +82,26 @@ class PantryProxy with ChangeNotifier {
     return count;
   }
 
-  RealmResults<Item> getByMainCat(String category) {
+  RealmResults<Item> getByMainCat(String category, [String sortBy = "az"]) {
     var pantryitems = getPantryItems();
-    var result =
-        pantryitems.query("mainCat == \$0 SORT(name DESC)", [category]);
+    late RealmResults<Item> result;
+    if (sortBy == "az") {
+      result = pantryitems.query("mainCat = \$0 SORT(name ASC)", [category]);
+    } else if (sortBy == "expdate") {
+      result =
+          pantryitems.query("mainCat = \$0 SORT(expiryDate ASC)", [category]);
+    } else if (sortBy == "addedlast") {
+      result =
+          pantryitems.query("mainCat = \$0 SORT(addedDate DESC)", [category]);
+    }
+    // var result =
+    //     pantryitems.query("mainCat == \$0 SORT(name DESC)", [category]);
     return result;
   }
+
+  /*
+  MODIFYING ITEMS
+  */
 
   bool upsertItem(Item item) {
     debugPrint("addItem");
