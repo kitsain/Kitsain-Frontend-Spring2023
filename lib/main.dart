@@ -12,10 +12,12 @@ import 'package:kitsain_frontend_spring2023/l10n/l10n.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_list_navigation.dart';
 
+import 'database/pantry_proxy.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   // PantryProxy().deleteAll();
-  runApp(MaterialApp(home: const MyApp()));
+  runApp(const MaterialApp(home: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -61,9 +63,9 @@ class _HomePageState extends State<HomePage> {
 
   int _navigationMenuIndex = 0;
   final _pages = [
-    PantryView(),
-    ShoppingListNavigation(),
-    UsedAndExpired(),
+    PantryView3(),
+    const ShoppingListNavigation(),
+    const UsedAndExpired(),
   ];
 
   void _navMenuItemSelected(int index) {
@@ -80,7 +82,7 @@ class _HomePageState extends State<HomePage> {
         context: context,
         isScrollControlled: true,
         builder: (BuildContext context) {
-          return FractionallySizedBox(
+          return const FractionallySizedBox(
             heightFactor: 0.7,
             child: NewItemForm(),
           );
@@ -91,7 +93,7 @@ class _HomePageState extends State<HomePage> {
         context: context,
         isScrollControlled: true,
         builder: (BuildContext context) {
-          return FractionallySizedBox(
+          return const FractionallySizedBox(
             heightFactor: 0.7,
             child: NewShoppingListForm(),
           );
@@ -102,7 +104,7 @@ class _HomePageState extends State<HomePage> {
         context: context,
         isScrollControlled: true,
         builder: (BuildContext context) {
-          return FractionallySizedBox(
+          return const FractionallySizedBox(
             heightFactor: 0.7,
             child: NewShoppingListItemForm(),
           );
@@ -120,7 +122,7 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(widget.title),
-              Image(
+              const Image(
                 image: AssetImage('assets/images/Kitsain_logo.png'),
                 width: 150,
                 height: 150,
@@ -148,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                 List<dynamic> rejected,
               ) {
                 return NavigationDestination(
-                    icon: Icon(Icons.house),
+                    icon: const Icon(Icons.house),
                     label: AppLocalizations.of(context)!.pantryScreen);
               },
               onMove: (details) {
@@ -163,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                 List<dynamic> rejected,
               ) {
                 return NavigationDestination(
-                    icon: Icon(Icons.shopping_cart),
+                    icon: const Icon(Icons.shopping_cart),
                     label: AppLocalizations.of(context)!.shoppingListScreen);
               },
               onMove: (details) {
@@ -178,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                 List<dynamic> rejected,
               ) {
                 return NavigationDestination(
-                    icon: Icon(Icons.recycling),
+                    icon: const Icon(Icons.recycling),
                     label: AppLocalizations.of(context)!.historyScreen);
               },
               onMove: (details) {

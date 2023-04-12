@@ -25,7 +25,6 @@ class _Item {
   late DateTime? addedDate;
   late DateTime? openedDate;
   late DateTime? expiryDate;
-  late DateTime? bbDate;
   late String? mainCat;
   late List<String?> categories;
   late List<String?> labels;
@@ -37,35 +36,7 @@ class _Item {
   late String? packaging;
   late String? origins;
   late String?
-      status; // Unopened, opened, close to expiration, expired; Not shown to user
+      status; // Unopened, opened, close to expiration, expired; Not shown to user, controls the item card color stripe
   late String? location; // Pantry, used, bin, new; Not shown to user
   late bool? everyday = false;
-
-  Map<String, dynamic> toMap() {
-    return {
-      "id": id,
-      "name": name,
-      "barcode": barcode,
-      "brand": brand,
-      "quantity": quantity,
-      "price": price,
-      "addedDate": addedDate,
-      "openedDate": openedDate,
-      "expiryDate": expiryDate,
-      "bbDate": bbDate,
-      "mainCat": mainCat,
-      "categories": categories,
-      "labels": labels,
-      "ingredients": ingredients,
-      "processing": processing,
-      "nutritionGrade": nutritionGrade,
-      "nutriments": nutriments,
-      "ecoscoreGrade": ecoscoreGrade,
-      "packaing": packaging,
-      "origins": origins,
-      "status": status,
-      "location": location,
-      "everyday": everyday
-    };
-  }
 }

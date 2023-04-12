@@ -19,7 +19,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     DateTime? addedDate,
     DateTime? openedDate,
     DateTime? expiryDate,
-    DateTime? bbDate,
     String? mainCat,
     String? processing,
     String? nutritionGrade,
@@ -29,7 +28,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     String? status,
     String? location,
     bool? everyday = false,
-    bool? isExpanded = false,
     Iterable<String?> categories = const [],
     Iterable<String?> labels = const [],
     Iterable<String?> ingredients = const [],
@@ -38,7 +36,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     if (!_defaultsSet) {
       _defaultsSet = RealmObjectBase.setDefaults<Item>({
         'everyday': false,
-        'isExpanded': false,
       });
     }
     RealmObjectBase.set(this, 'id', id);
@@ -50,7 +47,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     RealmObjectBase.set(this, 'addedDate', addedDate);
     RealmObjectBase.set(this, 'openedDate', openedDate);
     RealmObjectBase.set(this, 'expiryDate', expiryDate);
-    RealmObjectBase.set(this, 'bbDate', bbDate);
     RealmObjectBase.set(this, 'mainCat', mainCat);
     RealmObjectBase.set(this, 'processing', processing);
     RealmObjectBase.set(this, 'nutritionGrade', nutritionGrade);
@@ -60,7 +56,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     RealmObjectBase.set(this, 'status', status);
     RealmObjectBase.set(this, 'location', location);
     RealmObjectBase.set(this, 'everyday', everyday);
-    RealmObjectBase.set(this, 'isExpanded', isExpanded);
     RealmObjectBase.set<RealmList<String?>>(
         this, 'categories', RealmList<String?>(categories));
     RealmObjectBase.set<RealmList<String?>>(
@@ -124,12 +119,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   @override
   set expiryDate(DateTime? value) =>
       RealmObjectBase.set(this, 'expiryDate', value);
-
-  @override
-  DateTime? get bbDate =>
-      RealmObjectBase.get<DateTime>(this, 'bbDate') as DateTime?;
-  @override
-  set bbDate(DateTime? value) => RealmObjectBase.set(this, 'bbDate', value);
 
   @override
   String? get mainCat =>
@@ -215,12 +204,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   set everyday(bool? value) => RealmObjectBase.set(this, 'everyday', value);
 
   @override
-  bool? get isExpanded =>
-      RealmObjectBase.get<bool>(this, 'isExpanded') as bool?;
-  @override
-  set isExpanded(bool? value) => RealmObjectBase.set(this, 'isExpanded', value);
-
-  @override
   Stream<RealmObjectChanges<Item>> get changes =>
       RealmObjectBase.getChanges<Item>(this);
 
@@ -241,7 +224,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
       SchemaProperty('addedDate', RealmPropertyType.timestamp, optional: true),
       SchemaProperty('openedDate', RealmPropertyType.timestamp, optional: true),
       SchemaProperty('expiryDate', RealmPropertyType.timestamp, optional: true),
-      SchemaProperty('bbDate', RealmPropertyType.timestamp, optional: true),
       SchemaProperty('mainCat', RealmPropertyType.string, optional: true),
       SchemaProperty('categories', RealmPropertyType.string,
           optional: true, collectionType: RealmCollectionType.list),
@@ -260,7 +242,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
       SchemaProperty('status', RealmPropertyType.string, optional: true),
       SchemaProperty('location', RealmPropertyType.string, optional: true),
       SchemaProperty('everyday', RealmPropertyType.bool, optional: true),
-      SchemaProperty('isExpanded', RealmPropertyType.bool, optional: true),
     ]);
   }
 }

@@ -25,29 +25,49 @@ class PantryProxy with ChangeNotifier {
     }
   }
 
-  List groupBy(RealmResults<Item> items) {
-    return [];
-  }
-
   RealmResults<Item> getItems() {
     var all = _realm.all<Item>();
     return all;
   }
 
-  RealmResults<Item> getPantryItems() {
+  subscribe() {
+    final items = getItems();
+    items.changes.listen((changes) {
+      changes.inserted; // indexes of inserted objects
+      changes.modified; // indexes of modified objects
+      changes.deleted; // indexes of deleted objects
+      changes.newModified; // indexes of modified objects
+      // after deletions and insertions are accounted for
+      changes.moved; // indexes of moved objects
+      changes.results; // the full List of objects
+    });
+  }
+
+  RealmResults<Item> getPantryItems({String sortBy = "az"}) {
     var all = getItems();
     var result = all.query("location == \$0", ["Pantry"]);
+    //var result = all.query("location = \$0 SORT(\$1 DESC)", ["Pantry", sortBy]);
     return result;
   }
 
-  Item? getItem(String id) {
-    final item = _realm.find<Item>(id);
-    return item;
+  RealmResults<Item> getOpenedItems() {
+    var pantryitems = getPantryItems();
+    //var result = all.query("location == \$0", ["Pantry"]);
+    var result = pantryitems.query(
+      "openedDate != null",
+    );
+    return result;
+  }
+
+  int getCatCount(String category) {
+    var count = getPantryItems().query("mainCat == \$0", [category]).length;
+    return count;
   }
 
   RealmResults<Item> getByMainCat(String category) {
-    var all = getItems();
-    var result = all.query("mainCat == \$0", [category]);
+    var pantryitems = getPantryItems();
+    var result =
+        pantryitems.query("mainCat == \$0 SORT(name DESC)", [category]);
     return result;
   }
 
@@ -83,16 +103,21 @@ class PantryProxy with ChangeNotifier {
     }
   }
 
-  bool deleteItem(Item item) {
+  void changeLocation(Item item, String newLoc) {
+    _realm.write(() {
+      item.location = newLoc;
+    });
+    notifyListeners();
+  }
+
+  void deleteItem(Item item) {
     try {
       _realm.write(() {
         _realm.delete(item);
       });
       notifyListeners();
-      return true;
     } on RealmException catch (e) {
       debugPrint(e.message);
-      return false;
     }
   }
 
