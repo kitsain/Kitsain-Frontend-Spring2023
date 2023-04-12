@@ -167,12 +167,6 @@ class _ItemCardState extends State<ItemCard> {
                     const SizedBox(
                       height: 5,
                     ),
-                    Row(
-                      children: [
-                        const Icon(Icons.question_mark),
-                        Text("${widget.item.addedDate ?? 'ADDED'}")
-                      ],
-                    ),
                     const SizedBox(
                       height: 5,
                     ),
