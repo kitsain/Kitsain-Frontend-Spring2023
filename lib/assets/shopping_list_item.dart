@@ -1,29 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
 
 class ShoppingListItem extends StatefulWidget {
-  const ShoppingListItem({super.key, required this.itemName, this.itemDescription = ''});
+  const ShoppingListItem(
+      {super.key,
+      required this.itemName,
+      this.itemDescription = '',
+      required this.indexToRemove});
 
   final String itemName;
   final String itemDescription;
+  final int indexToRemove;
 
   @override
   State<ShoppingListItem> createState() => _ShoppingListItemState();
 }
 
-
 class _ShoppingListItemState extends State<ShoppingListItem> {
   bool? _selected = false;
+  final taskController = Get.put(TaskController());
 
   _checkBoxChanged(newValue) {
+    // print('ppp');
     setState(() {
       _selected = newValue;
     });
+    if (newValue) {
+      print(newValue);
+      taskController.tasksListRemove.value?.add(widget.indexToRemove);
+      taskController.tasksListRemove.value?.sort((a, b) => b.compareTo(a));
+      taskController.tasksListRemove.refresh();
+    } else {
+      print(newValue);
+      taskController.tasksListRemove.value?.remove(widget.indexToRemove);
+      taskController.tasksListRemove.value?.sort((a, b) => b.compareTo(a));
+      taskController.tasksListRemove.refresh();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 64,
+      // height: 64,
+      color: Colors.green,
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       child: Column(
         children: [
           Row(
@@ -33,7 +54,7 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
                 children: [
                   Text(widget.itemName),
                   Text(
-                    widget.itemDescription,//'Additional description',
+                    widget.itemDescription, //'Additional description',
                     style: TextStyle(color: Colors.black45),
                   ),
                 ],
@@ -41,10 +62,20 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
               Spacer(),
               Checkbox(
                   value: _selected,
-                  onChanged: (newValue) => _checkBoxChanged(newValue)),
+                  onChanged: (newValue) {
+                    // print('ok');
+                    _checkBoxChanged(newValue);
+
+                    // taskController.tasksListRemove.value?.forEach((element) {
+                    //   print('pp  $element');
+                    // });
+                    // print('ok');
+                  }),
             ],
           ),
-          Divider(height: 1,),
+          Divider(
+            height: 1,
+          ),
         ],
       ),
     );
