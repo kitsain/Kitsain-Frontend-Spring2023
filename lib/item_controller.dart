@@ -23,27 +23,27 @@ class ItemController extends GetxController {
     pantryList.add('pantry 4');
     pantryList.add('pantry 5');
 
-    expiredList.add('ITEM NAME 1');
-    expiredList.add('ITEM NAME 2');
-    expiredList.add('ITEM NAME 3');
-    expiredList.add('ITEM NAME 4');
-    expiredList.add('ITEM NAME 5');
-    expiredList.add('ITEM NAME 6');
-    expiredList.add('ITEM NAME 7');
-    expiredList.add('ITEM NAME 8');
-    expiredList.add('ITEM NAME 9');
-    expiredList.add('ITEM NAME 10');
+    expiredList.add('EXPIRED 1');
+    expiredList.add('EXPIRED 2');
+    expiredList.add('EXPIRED 3');
+    expiredList.add('EXPIRED 4');
+    expiredList.add('EXPIRED 5');
+    expiredList.add('EXPIRED 6');
+    expiredList.add('EXPIRED 7');
+    expiredList.add('EXPIRED 8');
+    expiredList.add('EXPIRED 9');
+    expiredList.add('EXPIRED 10');
 
-    usedList.add('ITEM NAME 1');
-    usedList.add('ITEM NAME 2');
-    usedList.add('ITEM NAME 3');
-    usedList.add('ITEM NAME 4');
-    usedList.add('ITEM NAME 5');
-    usedList.add('ITEM NAME 6');
-    usedList.add('ITEM NAME 7');
-    usedList.add('ITEM NAME 8');
-    usedList.add('ITEM NAME 9');
-    usedList.add('ITEM NAME 10');
+    usedList.add('USED 1');
+    usedList.add('USED 2');
+    usedList.add('USED 3');
+    usedList.add('USED 4');
+    usedList.add('USED 5');
+    usedList.add('USED 6');
+    usedList.add('USED 7');
+    usedList.add('USED 8');
+    usedList.add('USED 9');
+    usedList.add('USED 10');
 
     pantryList.add('pantry 6');
     pantryList.add('pantry 7');
