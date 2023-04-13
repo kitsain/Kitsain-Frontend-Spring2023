@@ -3,13 +3,18 @@ import 'package:get/get.dart';
 import 'package:kitsain_frontend_spring2023/assets/shopping_list_item.dart';
 import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
+import 'package:kitsain_frontend_spring2023/models/ShoppingListItemModel.dart';
 
 class UserShoppingList extends StatefulWidget {
   const UserShoppingList(
-      {super.key, required this.taskListIndex, required this.taskListName});
+      {super.key,
+      required this.taskListIndex,
+      required this.taskListName,
+      required this.taskListId});
 
   final int taskListIndex;
   final String taskListName;
+  final String taskListId;
 
   @override
   State<UserShoppingList> createState() => _UserShoppingListState();
@@ -39,12 +44,25 @@ class _UserShoppingListState extends State<UserShoppingList> {
   _deselectAll() {
     // todo
 
+    taskController.tasksListRemove.value?.forEach(
+      (element) {
+        taskController.shoppingListItem.value?[element].checkBox = false;
+        print('$element' +
+            '${taskController.shoppingListItem.value?[element].checkBox}');
+      },
+    );
     taskController.tasksListRemove.value?.clear();
+    taskController.shoppingListItem.refresh();
   }
 
   final taskController = Get.put(TaskController());
 
-  List<int> indicesToRemove = [1, 0];
+  @override
+  void initState() {
+    // TODO: implement initState
+    taskController.tasksListRemove.value?.clear();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,16 +113,26 @@ class _UserShoppingListState extends State<UserShoppingList> {
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
-                      itemCount: taskController.tasksList.value?.items?.length,
+                      itemCount: taskController.shoppingListItem.value?.length,
                       padding: EdgeInsets.all(15),
                       itemBuilder: (context, index) {
                         return Column(
                           children: [
-                            ShoppingListItem(
-                              itemName:
-                                  '${taskController.tasksList.value?.items?[index].title}',
-                              itemDescription: 'Additional descriptionsss',
-                              indexToRemove: index,
+                            GestureDetector(
+                              onTap: () {
+                                taskController.editTask(
+                                    '${taskController.shoppingListItem.value?[index].title}$index',
+                                    '${taskController.shoppingListItem.value?[index].description}',
+                                    widget.taskListId,
+                                    '${taskController.shoppingListItem.value?[index].id}',
+                                    index);
+                              },
+                              child: ShoppingListItem(
+                                itemName:
+                                    '${taskController.shoppingListItem.value?[index].title}',
+                                itemDescription: 'Additional descriptionsss',
+                                indexToRemove: index,
+                              ),
                             ),
                             SizedBox(
                               height: 10,
@@ -122,12 +150,23 @@ class _UserShoppingListState extends State<UserShoppingList> {
               children: [
                 OutlinedButton(
                   // onPressed: _moveSelectedItemsToPantry,
-                  onPressed: () {
-                    // taskController.tasksListRemove.value
-                    //     ?.sort((a, b) => b.compareTo(a));
-                    taskController.tasksListRemove.value?.forEach((element) {
-                      print('pp  $element');
-                    });
+                  onPressed: () async {
+                    taskController.tasksListRemove.value?.forEach(
+                      (element) async {
+                        taskController
+                            .shoppingListItem.value?[element].checkBox = false;
+                        // print('$element' +
+                        //     '${taskController.shoppingListItem.value?[element].title} ' +
+                        //     '${taskController.shoppingListItem.value?.length}');
+
+                        await taskController.deleteTask(
+                            widget.taskListId,
+                            '${taskController.shoppingListItem.value?[element].id}',
+                            element);
+                      },
+                    );
+
+                    taskController.tasksListRemove.value?.clear();
                   },
                   child: Text('Remove Items From List'),
                 ),
@@ -136,6 +175,9 @@ class _UserShoppingListState extends State<UserShoppingList> {
                   onPressed: () {
                     // taskController.tasksListRemove.value
                     //     ?.sort((a, b) => b.compareTo(a));
+
+                    taskController.createTask(
+                        'newtask', 'descrip', widget.taskListId);
 
                     print(taskController.tasksListRemove.value?.length);
                     taskController.tasksListRemove.value?.forEach((element) {
