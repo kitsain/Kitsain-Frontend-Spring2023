@@ -4,8 +4,8 @@ import 'package:kitsain_frontend_spring2023/item_controller.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 
 const List<Widget> tabs = <Widget>[
-  Text('BIN'),
   Text('USED'),
+  Text('BIN'),
 ];
 
 const List months = [
@@ -36,6 +36,9 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
   var _openDate = TextEditingController();
   var _details = TextEditingController();
   bool _favorite = false;
+
+  final month = months[DateTime.now().month -1];
+  final year = DateTime.now().year;
 
   final List<bool> _selectedTabs = <bool>[true, false];
 
@@ -80,10 +83,24 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
           return Container(
             child: ListView(
               children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.03,
+                      child: Text(
+                        'MONTH > $month $year',
+                        textAlign: TextAlign.right,
+                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ),
                 SizedBox(height: MediaQuery
                     .of(context)
                     .size
-                    .height * 0.02),
+                    .height * 0.01),
                 Center(
                   child: DragTarget<String>(
                     onWillAccept: (data) {
@@ -107,15 +124,11 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                             minHeight: 40.0,
                             minWidth: 100.0,
                           ),
-                          children: tabs,
-                          isSelected: _selectedTabs);
+                          isSelected: _selectedTabs,
+                          children: tabs);
                     }
                   ),
                 ),
-                SizedBox(height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.02),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -127,53 +140,37 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                         //On the first iteration (index == 0) create the graph. On next iterations create the item cards.
                         //Add 1 to list lengths in order to not lose one item because of this.
                         itemCount: _selectedTabs[0]
-                            ? StateController.expiredList.length + 1
-                            : StateController.usedList.length + 1,
+                            ? StateController.usedList.length + 1
+                            : StateController.expiredList.length + 1,
                         itemBuilder: (context, index) {
                           return index == 0
                               ? Column(
                             children: [
-                              SizedBox(
-                                  height: MediaQuery
-                                      .of(context)
-                                      .size
-                                      .height * 0.01),
-                              if (_selectedTabs[0])
-                                Stack(
-                                  children: <Widget>[
-                                    Container(
-                                      width: 360,
-                                      height: 170,
+                              Stack(
+                                children: <Widget>[
+                                  Container(
+                                    width: 360,
+                                    height: 170,
+                                  ),
+                                  Positioned(
+                                    top: -17,
+                                    left: 20,
+                                    right: 20,
+                                    child: Icon(Icons.circle, size: 200,
+                                        color: Colors.amber),
+                                  ),
+                                  Positioned(
+                                    top: 90,
+                                    left: 190,
+                                    right: 10,
+                                    bottom: 10,
+                                    child: Text(
+                                      '25%',
+                                      style: TextStyle(fontSize: 60),
                                     ),
-                                    Positioned(
-                                      left: 20,
-                                      right: 20,
-                                      child: Container(
-                                        width: 10,
-                                        height: 150,
-                                        //color: Colors.red,
-                                        alignment: Alignment.center,
-                                        child: Icon(Icons.circle, size: 150,
-                                            color: Colors.amber),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      top: 110,
-                                      left: 225,
-                                      right: 10,
-                                      bottom: 10,
-                                      child: Text(
-                                        '25%',
-                                        style: TextStyle(fontSize: 40),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              if(_selectedTabs[0])
-                                SizedBox(height: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .height * 0.02),
+                                  ),
+                                ],
+                              ),
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: SizedBox(
@@ -182,12 +179,12 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                                         .size
                                         .height * 0.03,
                                     child: Text(
-                                      _selectedTabs[0] ? " BIN" : " USED ITEMS",
-                                      style: TextStyle(fontSize: 20,
+                                      _selectedTabs[0] ? " USED ITEMS": " BIN",
+                                      style: TextStyle(fontSize: 25,
                                           fontWeight: FontWeight.bold),)
                                 ),
                               ),
-                              //SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                             ],
                           )
                               : LongPressDraggable<String>(
@@ -222,9 +219,9 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                                           title: Text(
                                               '${_selectedTabs[0]
                                                   ? StateController
-                                                  .expiredList[index - 1]
+                                                  .usedList[index - 1]
                                                   : StateController
-                                                  .usedList[index - 1]}',
+                                                  .expiredList[index - 1]}',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 23)),
@@ -269,8 +266,8 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                                       title: Text(
                                           '${_selectedTabs[0]
                                               ? StateController
-                                              .expiredList[index - 1]
-                                              : StateController.usedList[index -
+                                              .usedList[index - 1]
+                                              : StateController.expiredList[index -
                                               1]}',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
@@ -287,13 +284,6 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                                               iconSize: 30,
                                           ),
                                       ),
-                                        /*child: IconButton(
-                                            onPressed: (){
-                                            _moveToDialog();
-                                            },
-                                            icon: Icon(Icons.more_horiz),
-                                            alignment: Alignment.topRight,
-                                        ),*/
                                       leading: Transform.translate(
                                         offset: Offset(0, 0),
                                         child: Icon(Icons.fastfood, size: 35),
