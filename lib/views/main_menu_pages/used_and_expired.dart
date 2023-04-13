@@ -47,6 +47,30 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
     });
   }
 
+  _moveToDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          content: const Text('Discard changes?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('CANCEL'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: const Text('DISCARD'),
+              onPressed: () {
+                Navigator.pop(context);
+                //Navigator.pop(context);
+              },
+            ),
+          ],
+        )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -253,9 +277,23 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                                               fontSize: 23)),
                                       subtitle: Text('ITEM CATEGORY'),
                                       trailing: Transform.translate(
-                                        offset: Offset(0, -15),
-                                        child: Icon(Icons.more_horiz),
+                                          offset: Offset(10, -15),
+                                          child: IconButton(
+                                              icon: Icon(Icons.more_horiz),
+                                              onPressed: (){
+                                                _moveToDialog();
+                                              },
+                                              color: Colors.black,
+                                              iconSize: 30,
+                                          ),
                                       ),
+                                        /*child: IconButton(
+                                            onPressed: (){
+                                            _moveToDialog();
+                                            },
+                                            icon: Icon(Icons.more_horiz),
+                                            alignment: Alignment.topRight,
+                                        ),*/
                                       leading: Transform.translate(
                                         offset: Offset(0, 0),
                                         child: Icon(Icons.fastfood, size: 35),
