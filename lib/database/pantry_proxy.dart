@@ -139,6 +139,12 @@ class PantryProxy with ChangeNotifier {
     realm.write(() {
       item.location = newLoc;
     });
+
+    if (newLoc == "Used" || newLoc == "Bin") {
+      realm.write(() {
+        item.usedDate = DateTime.now();
+      });
+    }
     notifyListeners();
   }
 
@@ -160,5 +166,15 @@ class PantryProxy with ChangeNotifier {
       realm.deleteAll<Item>();
     });
     notifyListeners();
+  }
+
+  /*
+  FOR HISTORY/STATS PAGE
+  */
+
+  RealmResults<Item> getByYearMonth() {
+    var all = getUsedItems();
+    var result = all.query("usedDate == \$0", [4]);
+    return result;
   }
 }

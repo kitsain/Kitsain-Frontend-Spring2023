@@ -25,6 +25,7 @@ class _Item {
   late DateTime? addedDate;
   late DateTime? openedDate;
   late DateTime? expiryDate;
+  late DateTime? usedDate;
   late String? mainCat;
   late List<String?> categories;
   late List<String?> labels;
