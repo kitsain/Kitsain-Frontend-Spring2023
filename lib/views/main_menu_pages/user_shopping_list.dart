@@ -171,27 +171,33 @@ class _UserShoppingListState extends State<UserShoppingList> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                OutlinedButton(
-                  // onPressed: _moveSelectedItemsToPantry,
-                  onPressed: () async {
-                    taskController.tasksListRemove.value?.forEach(
-                      (element) async {
-                        taskController
-                            .shoppingListItem.value?[element].checkBox = false;
-                        // print('$element' +
-                        //     '${taskController.shoppingListItem.value?[element].title} ' +
-                        //     '${taskController.shoppingListItem.value?.length}');
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: OutlinedButton(
+                    // onPressed: _moveSelectedItemsToPantry,
+                    onPressed: () async {
+                      taskController.tasksListRemove.value?.forEach(
+                        (element) async {
+                          taskController.shoppingListItem.value?[element]
+                              .checkBox = false;
+                          // print('$element' +
+                          //     '${taskController.shoppingListItem.value?[element].title} ' +
+                          //     '${taskController.shoppingListItem.value?.length}');
 
-                        await taskController.deleteTask(
-                            widget.taskListId,
-                            '${taskController.shoppingListItem.value?[element].id}',
-                            element);
-                      },
-                    );
+                          await taskController.deleteTask(
+                              widget.taskListId,
+                              '${taskController.shoppingListItem.value?[element].id}',
+                              element);
+                        },
+                      );
 
-                    taskController.tasksListRemove.value?.clear();
-                  },
-                  child: Text('Remove Items From List'),
+                      taskController.tasksListRemove.value?.clear();
+                    },
+                    child: Text(
+                      'Remove Items From List',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.5,
@@ -207,9 +213,13 @@ class _UserShoppingListState extends State<UserShoppingList> {
                     print(taskController.tasksListRemove.value?.length);
                     taskController.tasksListRemove.value?.forEach((element) {
                       print('pp  $element');
-                    });
-                  },
-                  child: Text('ADD ITEMS TO PANTRY'),
+                    },);
+                    },
+                    child: Text(
+                      'ADD ITEMS TO PANTRY',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
               ],
             ),
