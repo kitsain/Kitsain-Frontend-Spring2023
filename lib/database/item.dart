@@ -5,15 +5,12 @@ part 'item.g.dart';
 If a change is made to the item model, a migration error will occur,
 as the item's no longer follow it. If that happens, either navigate to 
 your phone's data folder and delete realm files. For me this is 
-this is /data/data/com.example.kitsain_frontend_spring2023/files. You can also
+this is /data/data/com.kitsain.kitsain_frontend_spring2023/files. You can also
 delete the database by running Realm.deleteRealm(Configuration.defaultPath)
 
 The only mandatory fields for an item are:
+- String id, generated from Realm's ObjectID-class
 - String name, inputted either through scanning a barcode or through Add item -form,
-- bool everyday, which is used to toggle the everyday/favourite status of the 
-  item. If true, the item will automatically be kept on the shopping list.
-  The default value is set to false. 
-
 */
 
 @RealmModel()

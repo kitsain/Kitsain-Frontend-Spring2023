@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 class ItemController extends GetxController {
   RxList<String> shoppingBagList = <String>[].obs;
   RxList<String> pantryList = <String>[].obs;
-
+  
   RxList<List<String>> shoppingLists = <List<String>>[].obs;
   RxList<String> shoppingList1 = <String>[].obs;
   RxList<String> shoppingList2 = <String>[].obs;
