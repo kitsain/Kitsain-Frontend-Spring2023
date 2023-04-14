@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 import 'package:kitsain_frontend_spring2023/assets/shopping_list_item.dart';
+import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
+import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_item_form.dart';
 
 class UserShoppingList extends StatefulWidget {
   const UserShoppingList(
@@ -46,9 +49,28 @@ class _UserShoppingListState extends State<UserShoppingList> {
 
   List<int> indicesToRemove = [1, 0];
 
+  void _addNewItem() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return FractionallySizedBox(
+          heightFactor: 0.7,
+          child: NewShoppingListItemForm(),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: TopBar(
+          title: AppLocalizations.of(context)!.shoppingListScreen,
+          addFunction: _addNewItem,
+          addIcon: Icons.add_shopping_cart,
+          helpFunction: _addNewItem,
+        ),
       body: SingleChildScrollView(
         child: Column(
           children: [
