@@ -50,27 +50,44 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
     });
   }
 
-  _moveToDialog() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          content: const Text('Discard changes?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('CANCEL'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            TextButton(
-              child: const Text('DISCARD'),
-              onPressed: () {
-                Navigator.pop(context);
-                //Navigator.pop(context);
-              },
-            ),
-          ],
+  Widget _actionPopUpMenu() {
+    return PopupMenuButton<String>(
+      constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
+      icon: Icon(Icons.more_horiz, color: Colors.black),
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        PopupMenuItem<String>(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Item action",
+                  style: TextStyle(color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20)),
+              IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.arrow_drop_up, color: Colors.black, size: 35)
+              )
+            ],
+          ),
+        ),
+        PopupMenuItem<String>(
+          child: Text( _selectedTabs[0] ? "MOVE TO BIN": "MOVE TO USED",
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
+          onTap: (){}, //Here the functionality of moving the card
+        ),
+        PopupMenuItem<String>(
+          child: Text('MOVE TO SHOPPING',
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
+          onTap: (){}, //Here the functionality of moving the card
+        ),
+        PopupMenuItem<String>(
+          child: Text('ADD TO PANTRY',
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
+          onTap: (){}, //Here the functionality of moving the card
         )
+      ],
     );
   }
 
@@ -189,8 +206,8 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                           )
                               : LongPressDraggable<String>(
                               data: _selectedTabs[0]
-                                  ? StateController.expiredList[index - 1]
-                                  : StateController.usedList[index - 1],
+                                  ? StateController.usedList[index - 1]
+                                  : StateController.expiredList[index - 1],
                               onDragCompleted: () {
                                 print('drag complete');
                                 //StateController.pantryList.removeAt(index);
@@ -215,7 +232,7 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                                                 color: Colors.black, width: 13),
                                           ),
                                         ),
-                                        child: ExpansionTile(
+                                        child: ListTile(
                                           title: Text(
                                               '${_selectedTabs[0]
                                                   ? StateController
@@ -225,7 +242,7 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 23)),
-                                          subtitle: Text('ITEM CATEGORY'),
+                                          subtitle: Text('ITEM CATEGORY', style: TextStyle(color: Colors.black)),
                                           trailing: Transform.translate(
                                             offset: Offset(0, -15),
                                             child: Icon(Icons.more_horiz),
@@ -274,15 +291,8 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                                               fontSize: 23)),
                                       subtitle: Text('ITEM CATEGORY'),
                                       trailing: Transform.translate(
-                                          offset: Offset(10, -15),
-                                          child: IconButton(
-                                              icon: Icon(Icons.more_horiz),
-                                              onPressed: (){
-                                                _moveToDialog();
-                                              },
-                                              color: Colors.black,
-                                              iconSize: 30,
-                                          ),
+                                          offset: Offset(0, -15),
+                                          child: _actionPopUpMenu()
                                       ),
                                       leading: Transform.translate(
                                         offset: Offset(0, 0),
@@ -352,7 +362,8 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                                                 .size
                                                 .height * 0.12,
                                             child: TextField(
-                                              enabled: false,
+                                              enabled: true,
+                                              readOnly: true,
                                               controller: _details,
                                               decoration: InputDecoration(
                                                 border: OutlineInputBorder(),
