@@ -66,7 +66,8 @@ class _UserShoppingListState extends State<UserShoppingList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
-          title: AppLocalizations.of(context)!.shoppingListScreen,
+          title: 'SHOPPING LISTS',
+          //title: AppLocalizations.of(context)!.shoppingListScreen,
           addFunction: _addNewItem,
           addIcon: Icons.add_shopping_cart,
           helpFunction: _addNewItem,
@@ -142,29 +143,41 @@ class _UserShoppingListState extends State<UserShoppingList> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                OutlinedButton(
-                  // onPressed: _moveSelectedItemsToPantry,
-                  onPressed: () {
-                    // taskController.tasksListRemove.value
-                    //     ?.sort((a, b) => b.compareTo(a));
-                    taskController.tasksListRemove.value?.forEach((element) {
-                      print('pp  $element');
-                    });
-                  },
-                  child: Text('Remove Items From List'),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: OutlinedButton(
+                    // onPressed: _moveSelectedItemsToPantry,
+                    onPressed: () {
+                      // taskController.tasksListRemove.value
+                      //     ?.sort((a, b) => b.compareTo(a));
+                      taskController.tasksListRemove.value?.forEach((element) {
+                        print('pp  $element');
+                      });
+                    },
+                    child: Text(
+                      'REMOVE ITEMS FROM LIST',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
-                OutlinedButton(
-                  // onPressed: _moveSelectedItemsToPantry,
-                  onPressed: () {
-                    // taskController.tasksListRemove.value
-                    //     ?.sort((a, b) => b.compareTo(a));
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: OutlinedButton(
+                    // onPressed: _moveSelectedItemsToPantry,
+                    onPressed: () {
+                      // taskController.tasksListRemove.value
+                      //     ?.sort((a, b) => b.compareTo(a));
 
-                    print(taskController.tasksListRemove.value?.length);
-                    taskController.tasksListRemove.value?.forEach((element) {
-                      print('pp  $element');
-                    });
-                  },
-                  child: Text('ADD ITEMS TO PANTRY'),
+                      print(taskController.tasksListRemove.value?.length);
+                      taskController.tasksListRemove.value?.forEach((element) {
+                        print('pp  $element');
+                      });
+                    },
+                    child: Text(
+                      'ADD ITEMS TO PANTRY',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
               ],
             ),
