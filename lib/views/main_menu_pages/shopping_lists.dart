@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app-localizations.dart';
+import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/LoginController.dart';
 import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
 import 'package:kitsain_frontend_spring2023/controller/tasklist_controller.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
+import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_form.dart';
 import 'package:kitsain_frontend_spring2023/views/homepage2.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/user_shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/task_screen.dart';
@@ -68,9 +71,29 @@ class _ShoppingListsState extends State<ShoppingLists> {
     //     context, MaterialPageRoute(builder: ((context) => HomePage2())));
   }
 
+  void _addNewItem() {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return const FractionallySizedBox(
+            heightFactor: 0.7,
+            child: NewShoppingListForm(),
+          );
+        },
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: TopBar(
+          title: 'SHOPPING LISTS',
+          //title: AppLocalizations.of(context)!.shoppingListScreen,
+          addFunction: _addNewItem,
+          addIcon: Icons.post_add,
+          helpFunction: _addNewItem,
+        ),
       body: SingleChildScrollView(
         child: Column(
           children: [
