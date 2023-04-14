@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app-localizations.dart';
+import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
+import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_form.dart';
 
 class ShoppingLists extends StatefulWidget {
   const ShoppingLists({super.key, required this.setActiveShoppingListIndex});
@@ -25,14 +28,33 @@ class _ShoppingListsState extends State<ShoppingLists> {
     setState(
       () {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("$data")));
+            .showSnackBar(SnackBar(content: Text(data)));
       },
     );
+  }
+
+  void _addNewItem() {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return const FractionallySizedBox(
+            heightFactor: 0.7,
+            child: NewShoppingListForm(),
+          );
+        },
+      );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: TopBar(
+          title: AppLocalizations.of(context)!.shoppingListScreen,
+          addFunction: _addNewItem,
+          addIcon: Icons.post_add,
+          helpFunction: _addNewItem,
+        ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -40,7 +62,7 @@ class _ShoppingListsState extends State<ShoppingLists> {
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               itemCount: _stateController.shoppingLists.length,
-              padding: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               itemBuilder: (context, index) {
                 return Column(
                   children: [
@@ -50,7 +72,7 @@ class _ShoppingListsState extends State<ShoppingLists> {
                         return Obx(
                           () {
                             return ListTile(
-                              contentPadding: EdgeInsets.all(10),
+                              contentPadding: const EdgeInsets.all(10),
                               minVerticalPadding: 10,
                               tileColor: Colors.lightGreen,
                               title:
@@ -61,14 +83,14 @@ class _ShoppingListsState extends State<ShoppingLists> {
                         );
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                   ],
                 );
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 100,
             ),
           ],

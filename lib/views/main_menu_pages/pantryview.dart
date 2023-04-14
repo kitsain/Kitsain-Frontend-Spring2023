@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app-localizations.dart';
+import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
+import 'package:kitsain_frontend_spring2023/views/add_new_item_form.dart';
 import 'package:realm/realm.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/assets/itembuilder.dart';
 
 class PantryView extends StatefulWidget with ChangeNotifier {
   late final Function(Item) onToggle;
+
   PantryView({super.key});
 
   @override
@@ -32,21 +36,38 @@ class _PantryViewState extends State<PantryView> {
     'Other'
   ];
 
+  void _addNewItem() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return const FractionallySizedBox(
+          heightFactor: 0.7,
+          child: NewItemForm(),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<RealmResults>(
-      future: _getPantryItems(),
-      builder: (context, AsyncSnapshot snapshot) {
-        if (snapshot.hasError) {
-          return const Scaffold(
-            body: Center(
+    return Scaffold(
+      appBar: TopBar(
+        title: AppLocalizations.of(context)!.pantryScreen,
+        addFunction: _addNewItem,
+        addIcon: Icons.add_home,
+        helpFunction: _addNewItem,
+      ),
+      body: FutureBuilder<RealmResults>(
+        future: _getPantryItems(),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
               child: Text("Your pantry is empty."),
-            ),
-          );
-        } else {
-          if (snapshot.hasData) {
-            return Scaffold(
-              body: ListView(
+            );
+          } else {
+            if (snapshot.hasData) {
+              return ListView(
                 children: [
                   for (var cat in categories)
                     Column(
@@ -62,17 +83,15 @@ class _PantryViewState extends State<PantryView> {
                       ],
                     )
                 ],
-              ),
-            );
-          } else {
-            return const Scaffold(
-              body: Center(
+              );
+            } else {
+              return const Center(
                 child: Text("Your pantry is empty."),
-              ),
-            );
+              );
+            }
           }
-        }
-      },
+        },
+      ),
     );
   }
 }
