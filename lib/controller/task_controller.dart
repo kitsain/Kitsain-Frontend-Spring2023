@@ -12,6 +12,12 @@ class TaskController extends GetxController {
   getTasksList(String taskListId) async {
     var tskList = await loginController.taskApiAuthenticated.value?.tasks
         .list(taskListId);
+    shoppingListItem.value?.clear();
+    tskList?.items?.forEach((element) {
+      var newItem = ShoppingListItemModel(
+          '${element.title}', '${element.notes}', false, '${element.id}');
+      shoppingListItem.value?.add(newItem);
+    });
 
     shoppingListItem.value?.clear();
     tskList?.items?.forEach((element) {
@@ -73,6 +79,7 @@ class TaskController extends GetxController {
         .then((value) async {
       await getTasksList(taskListId);
       shoppingListItem.refresh();
+
       // tasksList.value?.items?.removeAt(index);
     });
   }

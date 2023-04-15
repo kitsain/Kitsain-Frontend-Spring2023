@@ -171,6 +171,8 @@ class _ShoppingListsState extends State<ShoppingLists> {
                                   context,
                                   MaterialPageRoute(
                                       builder: ((context) => UserShoppingList(
+                                            taskListId:
+                                                '${taskListController.taskLists.value?.items?[index].id}',
                                             taskListIndex: index,
                                             taskListId: '${taskListController.taskLists.value?.items?[index].id}',
                                             taskListName:

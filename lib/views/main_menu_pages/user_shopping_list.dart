@@ -5,6 +5,7 @@ import 'package:kitsain_frontend_spring2023/assets/shopping_list_item.dart';
 import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
+import 'package:kitsain_frontend_spring2023/models/ShoppingListItemModel.dart';
 import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_item_form.dart';
 import 'package:kitsain_frontend_spring2023/models/ShoppingListItemModel.dart';
 
@@ -50,6 +51,13 @@ class _UserShoppingListState extends State<UserShoppingList> {
       },
     );
 
+    taskController.tasksListRemove.value?.forEach(
+      (element) {
+        taskController.shoppingListItem.value?[element].checkBox = false;
+        print('$element' +
+            '${taskController.shoppingListItem.value?[element].checkBox}');
+      },
+    );
     taskController.tasksListRemove.value?.clear();
     taskController.shoppingListItem.refresh();
   }
@@ -193,7 +201,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
                       taskController.tasksListRemove.value?.clear();
                     },
                     child: Text(
-                      'REMOVE ITEMS FROM LIST',
+                      'Remove Items From List',
                       textAlign: TextAlign.center,
                     ),
                   ),
