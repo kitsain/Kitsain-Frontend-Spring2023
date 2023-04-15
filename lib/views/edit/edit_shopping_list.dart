@@ -19,31 +19,34 @@ class _EditItemFormState extends State<EditShoppingListForm> {
   final _taskListController = Get.put(TaskListController());
 
   void _discardChangesDialog() {
-    if(_listName.text.isEmpty) {
+    String originalListName = '${_taskListController.taskLists.value?.items?[widget.listIndex].title}';
+    BuildContext outerContext = context;
+
+    if(_listName.text == originalListName) {
       Navigator.pop(context);
-    } else {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            content: const Text('Discard changes?'),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('CANCEL'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              TextButton(
-                child: const Text('DISCARD'),
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          )
-      );
+      return;
     }
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        content: const Text('Discard changes?'),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('CANCEL'),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          TextButton(
+            child: const Text('DISCARD'),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(outerContext);
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   @override
