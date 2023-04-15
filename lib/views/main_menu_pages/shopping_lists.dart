@@ -10,6 +10,7 @@ import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_form.dar
 import 'package:kitsain_frontend_spring2023/views/homepage2.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/user_shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/task_screen.dart';
+import 'package:kitsain_frontend_spring2023/views/edit/edit_shopping_list.dart';
 
 class ShoppingLists extends StatefulWidget {
   const ShoppingLists({super.key, required this.setActiveShoppingListIndex});
@@ -28,6 +29,19 @@ class _ShoppingListsState extends State<ShoppingLists> {
   final taskController = Get.put(TaskController());
 
   final loginController = Get.put(LoginController());
+
+  void _editList(String listId, int listIndex) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return FractionallySizedBox(
+          heightFactor: 1,
+          child: EditShoppingListForm(listId: listId, listIndex: listIndex),
+        );
+      },
+    );
+  }
 
   _openShoppingList(int index) {
     widget.setActiveShoppingListIndex(index);
@@ -135,12 +149,9 @@ class _ShoppingListsState extends State<ShoppingLists> {
                             leading: Text(
                                 '${taskListController.taskLists.value?.items?[index].title}'),
                             title: IconButton(
-                                onPressed: () {
-                                  taskListController.editTaskLists(
-                                      'kitsain$index',
-                                      '${taskListController.taskLists.value?.items?[index].id}',
-                                      index);
-                                },
+                                onPressed: () => _editList(
+                                    '${taskListController.taskLists.value?.items?[index].id}',
+                                    index),
                                 icon: Icon(Icons.edit)),
                             trailing: IconButton(
                                 onPressed: () {
