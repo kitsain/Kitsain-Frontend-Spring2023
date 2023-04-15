@@ -105,6 +105,7 @@ class _NewItemFormState extends State<NewShoppingListForm> {
                     onPressed: () {
                       if(_formKey.currentState!.validate()) {
                         _taskListController.createTaskLists(_listName.text);
+                        Navigator.pop(context);
                       }
                     },
                     child: Text('  DONE  '),

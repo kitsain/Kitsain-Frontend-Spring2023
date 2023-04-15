@@ -69,7 +69,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
       isScrollControlled: true,
       builder: (BuildContext context) {
         return FractionallySizedBox(
-          heightFactor: 0.7,
+          heightFactor: 1.0,
           child: NewShoppingListItemForm(taskListId: widget.taskListId,),
         );
       },

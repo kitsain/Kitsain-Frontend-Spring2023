@@ -91,7 +91,7 @@ class _ShoppingListsState extends State<ShoppingLists> {
         isScrollControlled: true,
         builder: (BuildContext context) {
           return const FractionallySizedBox(
-            heightFactor: 0.7,
+            heightFactor: 1.0,
             child: NewShoppingListForm(),
           );
         },
