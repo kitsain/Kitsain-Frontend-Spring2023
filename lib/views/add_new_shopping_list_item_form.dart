@@ -26,6 +26,8 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
   String dropdownValue = categories.first;
 
   void _discardChangesDialog() {
+    BuildContext outerContext = context;
+
     if(_itemName.text.isEmpty && _EANCodeField.text.isEmpty) {
       Navigator.pop(context);
     } else {
@@ -44,7 +46,7 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                 child: const Text('DISCARD'),
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.pop(context);
+                  Navigator.pop(outerContext);
                 },
               ),
             ],

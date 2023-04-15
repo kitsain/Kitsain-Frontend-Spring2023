@@ -17,6 +17,8 @@ class _NewItemFormState extends State<NewShoppingListForm> {
   final _taskListController = Get.put(TaskListController());
 
   void _discardChangesDialog() {
+    BuildContext outerContext = context;
+
     if(_listName.text.isEmpty) {
       Navigator.pop(context);
     } else {
@@ -35,7 +37,7 @@ class _NewItemFormState extends State<NewShoppingListForm> {
                 child: const Text('DISCARD'),
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.pop(context);
+                  Navigator.pop(outerContext);
                 },
               ),
             ],
