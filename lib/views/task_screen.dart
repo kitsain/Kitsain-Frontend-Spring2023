@@ -30,18 +30,18 @@ class _TaskScreenState extends State<TaskScreen> {
       ]),
       body: Obx(() {
         return ListView.builder(
-            itemCount: taskController.tasksList.value?.items?.length,
+            itemCount: taskController.shoppingListItem.value?.length,
             itemBuilder: (context, index) {
               return ListTile(
                 leading: Text(
-                    '${taskController.tasksList.value?.items?[index].title}'),
+                    '${taskController.shoppingListItem.value?[index].title}'),
                 title: IconButton(
                     onPressed: () {
                       taskController.editTask(
                           'newKitsain$index',
                           'new Des',
                           widget.taskListId,
-                          '${taskController.tasksList.value?.items?[index].id}',
+                          '${taskController.shoppingListItem.value?[index].id}',
                           index);
                     },
                     icon: Icon(Icons.edit)),
@@ -62,7 +62,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
                         taskController.deleteTask(
                             widget.taskListId,
-                            '${taskController.tasksList.value?.items?[indicesToRemove[ind]].id}',
+                            '${taskController.shoppingListItem.value?[indicesToRemove[ind]].id}',
                             indicesToRemove[ind]);
                       }
 
@@ -76,7 +76,7 @@ class _TaskScreenState extends State<TaskScreen> {
                     icon: Icon(Icons.delete)),
                 onTap: () {
                   print('ok');
-                  print('${taskController.tasksList.value?.items?[index].id}');
+                  print('${taskController.shoppingListItem.value?[index].id}');
                 },
               );
             });

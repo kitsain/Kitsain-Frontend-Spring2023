@@ -18,21 +18,19 @@ class ShoppingListItem extends StatefulWidget {
 }
 
 class _ShoppingListItemState extends State<ShoppingListItem> {
-  bool? _selected = false;
   final taskController = Get.put(TaskController());
 
   _checkBoxChanged(newValue) {
     // print('ppp');
     setState(() {
-      _selected = newValue;
+      taskController.shoppingListItem.value?[widget.indexToRemove].checkBox =
+          newValue;
     });
     if (newValue) {
-      print(newValue);
       taskController.tasksListRemove.value?.add(widget.indexToRemove);
       taskController.tasksListRemove.value?.sort((a, b) => b.compareTo(a));
       taskController.tasksListRemove.refresh();
     } else {
-      print(newValue);
       taskController.tasksListRemove.value?.remove(widget.indexToRemove);
       taskController.tasksListRemove.value?.sort((a, b) => b.compareTo(a));
       taskController.tasksListRemove.refresh();
@@ -61,7 +59,8 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
               ),
               Spacer(),
               Checkbox(
-                  value: _selected,
+                  value: taskController
+                      .shoppingListItem.value?[widget.indexToRemove].checkBox,
                   onChanged: (newValue) {
                     // print('ok');
                     _checkBoxChanged(newValue);
