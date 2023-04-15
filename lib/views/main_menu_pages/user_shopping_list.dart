@@ -9,9 +9,10 @@ import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_item_for
 
 class UserShoppingList extends StatefulWidget {
   const UserShoppingList(
-      {super.key, required this.taskListIndex, required this.taskListName});
+      {super.key, required this.taskListIndex, required this.taskListId, required this.taskListName});
 
   final int taskListIndex;
+  final String taskListId;
   final String taskListName;
 
   @override
@@ -56,7 +57,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
       builder: (BuildContext context) {
         return FractionallySizedBox(
           heightFactor: 0.7,
-          child: NewShoppingListItemForm(),
+          child: NewShoppingListItemForm(taskListId: widget.taskListId,),
         );
       },
     );

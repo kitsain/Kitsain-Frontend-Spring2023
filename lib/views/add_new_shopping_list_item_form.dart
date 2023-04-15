@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+import 'package:get/get.dart';
+import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
 
 const List<String> categories = <String>['Meat', 'Seafood', 'Fruit', 'Vegetables',
   'Frozen', 'Drinks', 'Bread', 'Sweets',
@@ -7,8 +9,9 @@ const List<String> categories = <String>['Meat', 'Seafood', 'Fruit', 'Vegetables
   'Dry & canned goods', 'Other'];
 
 class NewShoppingListItemForm extends StatefulWidget {
-  const NewShoppingListItemForm({super.key});
+  const NewShoppingListItemForm({super.key, required this.taskListId});
 
+  final String taskListId;
   @override
   // ignore: library_private_types_in_public_api
   _NewItemFormState createState() => _NewItemFormState();
@@ -19,6 +22,7 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
   final _formKey = GlobalKey<FormState>();
   final _EANCodeField = TextEditingController();
   var _itemName = TextEditingController();
+  final _taskController = Get.put(TaskController());
   String dropdownValue = categories.first;
 
   void _discardChangesDialog() {
@@ -175,7 +179,10 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                   child: ElevatedButton(
                     onPressed: () {
                       if(_formKey.currentState!.validate()) {
-                        print("OK");
+                        _taskController.createTask(
+                            _itemName.text,
+                            _EANCodeField.text,
+                            widget.taskListId);
                       }
                     },
                     child: Text('ADD ITEM'),
