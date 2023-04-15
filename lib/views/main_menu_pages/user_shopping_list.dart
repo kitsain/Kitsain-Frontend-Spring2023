@@ -147,11 +147,13 @@ class _UserShoppingListState extends State<UserShoppingList> {
                                     index);
                               },
                               child: ShoppingListItem(
+                                itemId: '${taskController.shoppingListItem.value?[index].id}',
                                 itemName:
                                     '${taskController.shoppingListItem.value?[index].title}',
                                 itemDescription:
                                     '${taskController.shoppingListItem.value?[index].description}',
-                                indexToRemove: index,
+                                itemIndex: index,
+                                listId: widget.taskListId,
                               ),
                             ),
                             SizedBox(
@@ -204,13 +206,13 @@ class _UserShoppingListState extends State<UserShoppingList> {
                       // taskController.tasksListRemove.value
                       //     ?.sort((a, b) => b.compareTo(a));
 
-                      taskController.createTask(
+                      /*taskController.createTask(
                           'newtask', 'descrip', widget.taskListId);
 
                       print(taskController.tasksListRemove.value?.length);
                       taskController.tasksListRemove.value?.forEach((element) {
                         print('pp  $element');
-                      });
+                      });*/
                     },
                     child: Text(
                       'ADD ITEMS TO PANTRY',
