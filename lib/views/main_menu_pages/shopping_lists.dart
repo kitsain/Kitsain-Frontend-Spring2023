@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
-import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_form.dart';
+import 'package:kitsain_frontend_spring2023/views/add_forms/add_new_shopping_list_form.dart';
 
 class ShoppingLists extends StatefulWidget {
   const ShoppingLists({super.key, required this.setActiveShoppingListIndex});
