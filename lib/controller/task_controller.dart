@@ -4,8 +4,6 @@ import 'package:kitsain_frontend_spring2023/LoginController.dart';
 import 'package:kitsain_frontend_spring2023/models/ShoppingListItemModel.dart';
 
 class TaskController extends GetxController {
-  // var tasksList = Rx<Tasks?>(null);
-
   var tasksListRemove = Rx<List<int>?>([]);
   var shoppingListItem = Rx<List<ShoppingListItemModel>?>([]);
 
@@ -14,6 +12,13 @@ class TaskController extends GetxController {
   getTasksList(String taskListId) async {
     var tskList = await loginController.taskApiAuthenticated.value?.tasks
         .list(taskListId);
+    shoppingListItem.value?.clear();
+    tskList?.items?.forEach((element) {
+      var newItem = ShoppingListItemModel(
+          '${element.title}', '${element.notes}', false, '${element.id}');
+      shoppingListItem.value?.add(newItem);
+    });
+
     shoppingListItem.value?.clear();
     tskList?.items?.forEach((element) {
       var newItem = ShoppingListItemModel(

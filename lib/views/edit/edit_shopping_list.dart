@@ -2,52 +2,57 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kitsain_frontend_spring2023/controller/tasklist_controller.dart';
 
-class NewShoppingListForm extends StatefulWidget {
-  const NewShoppingListForm({super.key});
+class EditShoppingListForm extends StatefulWidget {
+  const EditShoppingListForm({super.key, required this.listId, required this.listIndex});
+
+  final String listId;
+  final int listIndex;
 
   @override
-  // ignore: library_private_types_in_public_api
-  _NewItemFormState createState() => _NewItemFormState();
+  _EditItemFormState createState() => _EditItemFormState();
 }
 
 @override
-class _NewItemFormState extends State<NewShoppingListForm> {
+class _EditItemFormState extends State<EditShoppingListForm> {
   final _formKey = GlobalKey<FormState>();
   final _listName = TextEditingController();
   final _taskListController = Get.put(TaskListController());
 
   void _discardChangesDialog() {
+    String originalListName = '${_taskListController.taskLists.value?.items?[widget.listIndex].title}';
     BuildContext outerContext = context;
 
-    if(_listName.text.isEmpty) {
+    if(_listName.text == originalListName) {
       Navigator.pop(context);
-    } else {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            content: const Text('Discard changes?'),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('CANCEL'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              TextButton(
-                child: const Text('DISCARD'),
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.pop(outerContext);
-                },
-              ),
-            ],
-          )
-      );
+      return;
     }
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        content: const Text('Discard changes?'),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('CANCEL'),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          TextButton(
+            child: const Text('DISCARD'),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(outerContext);
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    _listName.text = '${_taskListController.taskLists.value?.items?[widget.listIndex].title}';
+
     return Form(
         key: _formKey,
         child: ListView(
@@ -67,7 +72,7 @@ class _NewItemFormState extends State<NewShoppingListForm> {
             ),
             SizedBox( height: MediaQuery.of(context).size.height * 0.03),
             Text(
-              'NEW SHOPPING LIST',
+              'EDIT SHOPPING LIST',
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
@@ -104,7 +109,11 @@ class _NewItemFormState extends State<NewShoppingListForm> {
                   child: ElevatedButton(
                     onPressed: () {
                       if(_formKey.currentState!.validate()) {
-                        _taskListController.createTaskLists(_listName.text);
+                        int index = widget.listIndex;
+                        _taskListController.editTaskLists(
+                            _listName.text,
+                            '${_taskListController.taskLists.value?.items?[index].id}',
+                            index);
                         Navigator.pop(context);
                       }
                     },
@@ -118,4 +127,3 @@ class _NewItemFormState extends State<NewShoppingListForm> {
     );
   }
 }
-

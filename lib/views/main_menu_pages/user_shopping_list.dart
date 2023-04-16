@@ -7,17 +7,15 @@ import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
 import 'package:kitsain_frontend_spring2023/models/ShoppingListItemModel.dart';
 import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_item_form.dart';
+import 'package:kitsain_frontend_spring2023/models/ShoppingListItemModel.dart';
 
 class UserShoppingList extends StatefulWidget {
   const UserShoppingList(
-      {super.key,
-      required this.taskListIndex,
-      required this.taskListName,
-      required this.taskListId});
+      {super.key, required this.taskListIndex, required this.taskListId, required this.taskListName});
 
   final int taskListIndex;
-  final String taskListName;
   final String taskListId;
+  final String taskListName;
 
   @override
   State<UserShoppingList> createState() => _UserShoppingListState();
@@ -45,7 +43,13 @@ class _UserShoppingListState extends State<UserShoppingList> {
   }
 
   _deselectAll() {
-    // todo
+    taskController.tasksListRemove.value?.forEach(
+          (element) {
+        taskController.shoppingListItem.value?[element].checkBox = false;
+        print('$element' +
+            '${taskController.shoppingListItem.value?[element].checkBox}');
+      },
+    );
 
     taskController.tasksListRemove.value?.forEach(
       (element) {
@@ -73,8 +77,8 @@ class _UserShoppingListState extends State<UserShoppingList> {
       isScrollControlled: true,
       builder: (BuildContext context) {
         return FractionallySizedBox(
-          heightFactor: 0.7,
-          child: NewShoppingListItemForm(),
+          heightFactor: 1.0,
+          child: NewShoppingListItemForm(taskListId: widget.taskListId,),
         );
       },
     );
@@ -151,10 +155,13 @@ class _UserShoppingListState extends State<UserShoppingList> {
                                     index);
                               },
                               child: ShoppingListItem(
+                                itemId: '${taskController.shoppingListItem.value?[index].id}',
                                 itemName:
                                     '${taskController.shoppingListItem.value?[index].title}',
-                                itemDescription: 'Additional descriptionsss',
-                                indexToRemove: index,
+                                itemDescription:
+                                    '${taskController.shoppingListItem.value?[index].description}',
+                                itemIndex: index,
+                                listId: widget.taskListId,
                               ),
                             ),
                             SizedBox(
@@ -177,9 +184,9 @@ class _UserShoppingListState extends State<UserShoppingList> {
                     // onPressed: _moveSelectedItemsToPantry,
                     onPressed: () async {
                       taskController.tasksListRemove.value?.forEach(
-                        (element) async {
-                          taskController.shoppingListItem.value?[element]
-                              .checkBox = false;
+                            (element) async {
+                          taskController
+                              .shoppingListItem.value?[element].checkBox = false;
                           // print('$element' +
                           //     '${taskController.shoppingListItem.value?[element].title} ' +
                           //     '${taskController.shoppingListItem.value?.length}');
@@ -207,13 +214,13 @@ class _UserShoppingListState extends State<UserShoppingList> {
                       // taskController.tasksListRemove.value
                       //     ?.sort((a, b) => b.compareTo(a));
 
-                    taskController.createTask(
-                        'newtask', 'descrip', widget.taskListId);
+                      /*taskController.createTask(
+                          'newtask', 'descrip', widget.taskListId);
 
-                    print(taskController.tasksListRemove.value?.length);
-                    taskController.tasksListRemove.value?.forEach((element) {
-                      print('pp  $element');
-                    },);
+                      print(taskController.tasksListRemove.value?.length);
+                      taskController.tasksListRemove.value?.forEach((element) {
+                        print('pp  $element');
+                      });*/
                     },
                     child: Text(
                       'ADD ITEMS TO PANTRY',

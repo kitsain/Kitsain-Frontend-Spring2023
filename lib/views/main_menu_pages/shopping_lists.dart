@@ -5,11 +5,11 @@ import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/LoginController.dart';
 import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
 import 'package:kitsain_frontend_spring2023/controller/tasklist_controller.dart';
-import 'package:kitsain_frontend_spring2023/item_controller.dart';
 import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_form.dart';
 import 'package:kitsain_frontend_spring2023/views/homepage2.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/user_shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/task_screen.dart';
+import 'package:kitsain_frontend_spring2023/views/edit/edit_shopping_list.dart';
 
 class ShoppingLists extends StatefulWidget {
   const ShoppingLists({super.key, required this.setActiveShoppingListIndex});
@@ -29,8 +29,17 @@ class _ShoppingListsState extends State<ShoppingLists> {
 
   final loginController = Get.put(LoginController());
 
-  _openShoppingList(int index) {
-    widget.setActiveShoppingListIndex(index);
+  void _editList(String listId, int listIndex) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return FractionallySizedBox(
+          heightFactor: 1,
+          child: EditShoppingListForm(listId: listId, listIndex: listIndex),
+        );
+      },
+    );
   }
 
   _receiveItem(int index, String data) {
@@ -77,7 +86,7 @@ class _ShoppingListsState extends State<ShoppingLists> {
         isScrollControlled: true,
         builder: (BuildContext context) {
           return const FractionallySizedBox(
-            heightFactor: 0.7,
+            heightFactor: 1.0,
             child: NewShoppingListForm(),
           );
         },
@@ -135,12 +144,9 @@ class _ShoppingListsState extends State<ShoppingLists> {
                             leading: Text(
                                 '${taskListController.taskLists.value?.items?[index].title}'),
                             title: IconButton(
-                                onPressed: () {
-                                  taskListController.editTaskLists(
-                                      'kitsain$index',
-                                      '${taskListController.taskLists.value?.items?[index].id}',
-                                      index);
-                                },
+                                onPressed: () => _editList(
+                                    '${taskListController.taskLists.value?.items?[index].id}',
+                                    index),
                                 icon: Icon(Icons.edit)),
                             trailing: IconButton(
                                 onPressed: () {
@@ -160,9 +166,8 @@ class _ShoppingListsState extends State<ShoppingLists> {
                                   context,
                                   MaterialPageRoute(
                                       builder: ((context) => UserShoppingList(
-                                            taskListId:
-                                                '${taskListController.taskLists.value?.items?[index].id}',
                                             taskListIndex: index,
+                                            taskListId: '${taskListController.taskLists.value?.items?[index].id}',
                                             taskListName:
                                                 '${taskListController.taskLists.value?.items?[index].title}',
                                           ))));

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+import 'package:get/get.dart';
+import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
 
 const List<String> categories = <String>['Meat', 'Seafood', 'Fruit', 'Vegetables',
   'Frozen', 'Drinks', 'Bread', 'Sweets',
@@ -7,8 +9,9 @@ const List<String> categories = <String>['Meat', 'Seafood', 'Fruit', 'Vegetables
   'Dry & canned goods', 'Other'];
 
 class NewShoppingListItemForm extends StatefulWidget {
-  const NewShoppingListItemForm({super.key});
+  const NewShoppingListItemForm({super.key, required this.taskListId});
 
+  final String taskListId;
   @override
   // ignore: library_private_types_in_public_api
   _NewItemFormState createState() => _NewItemFormState();
@@ -19,9 +22,13 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
   final _formKey = GlobalKey<FormState>();
   final _EANCodeField = TextEditingController();
   var _itemName = TextEditingController();
+  final _descriptionField = TextEditingController();
+  final _taskController = Get.put(TaskController());
   String dropdownValue = categories.first;
 
   void _discardChangesDialog() {
+    BuildContext outerContext = context;
+
     if(_itemName.text.isEmpty && _EANCodeField.text.isEmpty) {
       Navigator.pop(context);
     } else {
@@ -40,7 +47,7 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                 child: const Text('DISCARD'),
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.pop(context);
+                  Navigator.pop(outerContext);
                 },
               ),
             ],
@@ -73,7 +80,7 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
-            Column(
+            /*Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox( height: MediaQuery.of(context).size.height * 0.03),
@@ -122,7 +129,7 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                   ),
                 ),
               ],
-            ),
+            ),*/
             SizedBox( height: MediaQuery.of(context).size.height * 0.03),
             SizedBox(
               child: TextFormField(
@@ -141,6 +148,16 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
             ),
             SizedBox( height: MediaQuery.of(context).size.height * 0.03),
             SizedBox(
+              child: TextFormField(
+                controller: _descriptionField,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'DESCRIPTION',
+                ),
+              ),
+            ),
+            /*SizedBox( height: MediaQuery.of(context).size.height * 0.03),
+            SizedBox(
               child: DropdownButtonFormField<String>(
                 value: dropdownValue,
                 decoration: InputDecoration(labelText: 'ITEM CATEGORY'),
@@ -156,8 +173,9 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                   );
                 }).toList(),
               ),
-            ),
-            SizedBox( height: MediaQuery.of(context).size.height * 0.05),
+            ),*/
+
+            SizedBox( height: MediaQuery.of(context).size.height * 0.25),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -175,7 +193,11 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                   child: ElevatedButton(
                     onPressed: () {
                       if(_formKey.currentState!.validate()) {
-                        print("OK");
+                        _taskController.createTask(
+                            _itemName.text,
+                            _descriptionField.text,
+                            widget.taskListId);
+                        Navigator.pop(context);
                       }
                     },
                     child: Text('ADD ITEM'),
