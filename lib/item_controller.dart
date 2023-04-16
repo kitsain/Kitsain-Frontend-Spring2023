@@ -1,9 +1,13 @@
+import 'dart:math';
+
 import 'package:get/get.dart';
 
 class ItemController extends GetxController {
   RxList<String> shoppingBagList = <String>[].obs;
   RxList<String> pantryList = <String>[].obs;
-  
+  RxList<String> expiredList = <String>[].obs;
+  RxList<String> usedList = <String>[].obs;
+
   RxList<List<String>> shoppingLists = <List<String>>[].obs;
   RxList<String> shoppingList1 = <String>[].obs;
   RxList<String> shoppingList2 = <String>[].obs;
@@ -21,6 +25,29 @@ class ItemController extends GetxController {
     pantryList.add('pantry 3');
     pantryList.add('pantry 4');
     pantryList.add('pantry 5');
+
+    expiredList.add('EXPIRED 1');
+    expiredList.add('EXPIRED 2');
+    expiredList.add('EXPIRED 3');
+    expiredList.add('EXPIRED 4');
+    expiredList.add('EXPIRED 5');
+    expiredList.add('EXPIRED 6');
+    expiredList.add('EXPIRED 7');
+    expiredList.add('EXPIRED 8');
+    expiredList.add('EXPIRED 9');
+    expiredList.add('EXPIRED 10');
+
+    usedList.add('USED 1');
+    usedList.add('USED 2');
+    usedList.add('USED 3');
+    usedList.add('USED 4');
+    usedList.add('USED 5');
+    usedList.add('USED 6');
+    usedList.add('USED 7');
+    usedList.add('USED 8');
+    usedList.add('USED 9');
+    usedList.add('USED 10');
+
     pantryList.add('pantry 6');
     pantryList.add('pantry 7');
     pantryList.add('pantry 8');

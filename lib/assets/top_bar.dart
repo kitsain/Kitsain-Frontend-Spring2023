@@ -21,36 +21,67 @@ class TopBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _TopBarState extends State<TopBar> {
+  VisualDensity topIconsDensity = VisualDensity(horizontal: -4.0, vertical: -4.0);
+
+  _openAccountSettings() {
+    // todo
+  }
+
+  _openSettings() {
+    // todo
+  }
+
   @override
   Widget build(BuildContext context) {
     return PreferredSize(
       preferredSize: widget.preferredSize,
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.175,
+        height: MediaQuery.of(context).size.height * 0.2,
         color: Colors.green,
-        padding: const EdgeInsets.only(left: 15, top: 15),
+        padding: const EdgeInsets.only(left: 15, top: 25, bottom: 1, right: 15),
         child: Row(
           children: [
             Container(
-              width: MediaQuery.of(context).size.width * 0.66,
+              width: MediaQuery.of(context).size.width * 0.64,
               child: Text(
                 widget.title,
                 style: const TextStyle(fontSize: 32),
               ),
             ),
             const Spacer(),
-            if (widget.addFunction != null)
-              FloatingActionButton(
-                onPressed: () => widget.addFunction!(),
-                child: Icon(widget.addIcon),
-              ),
             Column(
               children: [
-                IconButton(
-                  onPressed: () => widget.helpFunction(),
-                  icon: const Icon(Icons.help_outline),
+                Row(
+                  children: [
+                    IconButton(
+                      visualDensity: topIconsDensity,
+                      padding: EdgeInsets.zero,
+                      onPressed: () => widget.helpFunction(),
+                      icon: const Icon(Icons.help_outline),
+                    ),
+                    IconButton(
+                      visualDensity: topIconsDensity,
+                      padding: EdgeInsets.zero,
+                      onPressed: () => _openSettings(),
+                      icon: const Icon(Icons.settings),
+                    ),
+                    IconButton(
+                      visualDensity: topIconsDensity,
+                      padding: EdgeInsets.zero,
+                      onPressed: () => _openAccountSettings(),
+                      icon: const Icon(Icons.account_circle),
+                    ),
+                  ],
                 ),
-                const Spacer(),
+                if (widget.addFunction != null)
+                  Container(
+                    height: 48,
+                    width: 48,
+                    child: FloatingActionButton(
+                      onPressed: () => widget.addFunction!(),
+                      child: Icon(widget.addIcon),
+                    ),
+                  ),
               ],
             ),
           ],
