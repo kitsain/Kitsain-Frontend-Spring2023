@@ -1,12 +1,8 @@
-import 'dart:math';
-
 import 'package:get/get.dart';
 
 class ItemController extends GetxController {
   RxList<String> shoppingBagList = <String>[].obs;
   RxList<String> pantryList = <String>[].obs;
-  RxList<String> expiredList = <String>[].obs;
-  RxList<String> usedList = <String>[].obs;
 
   RxList<List<String>> shoppingLists = <List<String>>[].obs;
   RxList<String> shoppingList1 = <String>[].obs;
