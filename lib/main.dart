@@ -90,7 +90,9 @@ class _HomePageState extends State<HomePage> {
                 List<dynamic> rejected,
               ) {
                 return NavigationDestination(
-                    icon: Icon(Icons.house), label: 'MY PANTRY');
+                    icon: Icon(Icons.house),
+                    label: 'MY PANTRY');
+                    //label: AppLocalizations.of(context)!.pantryScreen);
               },
               onMove: (details) {
                 _navigationMenuIndex = 0;
@@ -104,7 +106,9 @@ class _HomePageState extends State<HomePage> {
                 List<dynamic> rejected,
               ) {
                 return NavigationDestination(
-                    icon: Icon(Icons.shopping_cart), label: 'SHOPPING LIST');
+                    icon: Icon(Icons.shopping_cart),
+                    label: 'SHOPPING LISTS');
+                    //label: AppLocalizations.of(context)!.shoppingListsScreen);
               },
               onMove: (details) {
                 _navigationMenuIndex = 1;
@@ -118,7 +122,9 @@ class _HomePageState extends State<HomePage> {
                 List<dynamic> rejected,
               ) {
                 return NavigationDestination(
-                    icon: Icon(Icons.recycling), label: 'USED & EXPIRED');
+                    icon: Icon(Icons.recycling),
+                    label: 'USED & EXPIRED');
+                    //label: AppLocalizations.of(context)!.historyScreen);
               },
               onMove: (details) {
                 _navigationMenuIndex = 2;

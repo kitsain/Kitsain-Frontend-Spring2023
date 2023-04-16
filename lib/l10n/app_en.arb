@@ -3,9 +3,9 @@
     "@pantryScreen": {
         "description": "Name to describe pantry screen"
     },
-    "shoppingListScreen": "SHOPPING LIST",
-    "@shoppingListScreen": {
-        "description": "Name to describe shopping list screen"
+    "shoppingListsScreen": "SHOPPING LISTS",
+    "@shoppingListsScreen": {
+        "description": "Name to describe shopping lists screen"
     },
     "historyScreen": "HISTORY",
     "@historyScreen": {

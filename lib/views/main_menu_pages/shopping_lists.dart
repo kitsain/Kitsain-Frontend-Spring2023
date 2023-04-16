@@ -5,10 +5,10 @@ import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/LoginController.dart';
 import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
 import 'package:kitsain_frontend_spring2023/controller/tasklist_controller.dart';
-import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_form.dart';
 import 'package:kitsain_frontend_spring2023/views/homepage2.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/user_shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/edit/edit_shopping_list.dart';
+import 'package:kitsain_frontend_spring2023/views/add_forms/add_new_shopping_list_form.dart';
 
 class ShoppingLists extends StatefulWidget {
   const ShoppingLists({super.key, required this.setActiveShoppingListIndex});
@@ -111,7 +111,7 @@ class _ShoppingListsState extends State<ShoppingLists> {
     return Scaffold(
       appBar: TopBar(
           title: 'SHOPPING LISTS',
-          //title: AppLocalizations.of(context)!.shoppingListScreen,
+          //title: AppLocalizations.of(context)!.shoppingListsScreen,
           addFunction: _addNewItem,
           addIcon: Icons.post_add,
           helpFunction: _addNewItem,
