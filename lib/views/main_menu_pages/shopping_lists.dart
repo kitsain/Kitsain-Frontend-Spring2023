@@ -109,7 +109,7 @@ class _ShoppingListsState extends State<ShoppingLists> {
             Row(
               children: [
                 Text(
-                  '${loginController.googleUser.value?.email}',
+                  '      ${loginController.googleUser.value?.email}',
                 ),
                 Icon(Icons.arrow_forward_ios),
 
@@ -133,56 +133,78 @@ class _ShoppingListsState extends State<ShoppingLists> {
                   return Column(
                     children: [
                       DragTarget<String>(
-                        onAccept: (data) => _receiveItem(index, data),
-                        builder: (context, candidateData, rejectedData) {
-                          return ListTile(
-                            shape: Border.all(
-                                width: 10,
-                                color: candidateData.isNotEmpty
-                                    ? Colors.red
-                                    : Colors.black),
-                            leading: Text(
-                                '${taskListController.taskLists.value?.items?[index].title}'),
-                            title: IconButton(
-                                onPressed: () => _editList(
-                                    '${taskListController.taskLists.value?.items?[index].id}',
-                                    index),
-                                icon: Icon(Icons.edit)),
-                            trailing: IconButton(
-                                onPressed: () {
-                                  taskListController.deleteTaskLists(
-                                      '${taskListController.taskLists.value?.items?[index].id}',
-                                      index);
-                                },
-                                icon: Icon(Icons.delete)),
-                            onTap: () async {
-                              // print('ok');
-                              print(
-                                  '${taskListController.taskLists.value?.items?[index].id}');
-                              await taskController.getTasksList(
-                                  '${taskListController.taskLists.value?.items?[index].id}');
+                          onAccept: (data) => _receiveItem(index, data),
+                          builder: (context, candidateData, rejectedData) {
+                            return Card(
+                              elevation: 2,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  side: BorderSide(
+                                      width: candidateData.isNotEmpty
+                                          ? 4
+                                          : 1,
+                                      color: candidateData.isNotEmpty
+                                          ? Color.fromRGBO(63, 85, 65, 1)       //TODO: use the universal style color here instead
+                                          : Colors.black38,
+                                  ),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 5, right: 0, top: 5, bottom: 5),
+                              child: ListTile(
+                                title: Row(
+                                  children: [
+                                    Text(
+                                        '${taskListController.taskLists.value?.items?[index].title}'),
+                                    Spacer(),
+                                    IconButton(
+                                      onPressed: () {
+                                        taskListController.deleteTaskLists(
+                                            '${taskListController.taskLists.value?.items?[index].id}',
+                                            index);
+                                      },
+                                      icon: Icon(Icons.delete),
+                                    ),
+                                    IconButton(
+                                      onPressed: () => _editList(
+                                          '${taskListController.taskLists.value?.items?[index].id}',
+                                          index),
+                                      icon: Icon(Icons.edit),
+                                    ),
+                                  ],
+                                ),
+                                onTap: () async {
+                                  // print('ok');
+                                  print(
+                                      '${taskListController.taskLists.value?.items?[index].id}');
+                                  await taskController.getTasksList(
+                                      '${taskListController.taskLists.value?.items?[index].id}');
 
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: ((context) => UserShoppingList(
-                                            taskListIndex: index,
-                                            taskListId: '${taskListController.taskLists.value?.items?[index].id}',
-                                            taskListName:
-                                                '${taskListController.taskLists.value?.items?[index].title}',
-                                          ))));
-                            },
-                          );
-                        },
-                      ),
-                      SizedBox(
-                        height: 50,
-                      ),
-                    ],
-                  );
-                },
-              );
-            }),
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: ((context) =>
+                                              UserShoppingList(
+                                                taskListIndex: index,
+                                                taskListId:
+                                                    '${taskListController.taskLists.value?.items?[index].id}',
+                                                taskListName:
+                                                    '${taskListController.taskLists.value?.items?[index].title}',
+                                              ))));
+                                },
+                              ),
+                              ),
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
           ],
         ),
       ),

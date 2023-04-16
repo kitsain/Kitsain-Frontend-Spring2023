@@ -56,40 +56,54 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.green,
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return Card(
+      elevation: 0,
+      color: Colors.greenAccent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 3, horizontal: 0),
+              child: Row(
                 children: [
-                  Text(widget.itemName),
-                  Text(
-                    widget.itemDescription, //'Additional description',
-                    style: TextStyle(color: Colors.black45),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Text(widget.itemName),
+                      Text(
+                        widget.itemDescription, //'Additional description',
+                        style: TextStyle(color: Colors.black45),
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+                  IconButton(
+                    onPressed: () => _editItem(),
+                    icon: Icon(Icons.edit),
+                  ),
+                  Checkbox(
+                    value: taskController
+                        .shoppingListItem.value?[widget.itemIndex].checkBox,
+                    onChanged: (newValue) {
+                      _checkBoxChanged(newValue);
+                    },
                   ),
                 ],
               ),
-              Spacer(),
-              IconButton(
-                  onPressed: () => _editItem(),
-                  icon: Icon(Icons.edit),
-              ),
-              Checkbox(
-                  value: taskController
-                      .shoppingListItem.value?[widget.itemIndex].checkBox,
-                  onChanged: (newValue) {
-                    _checkBoxChanged(newValue);
-                  }),
-            ],
-          ),
-          Divider(
-            height: 1,
-          ),
-        ],
+            ),
+            Divider(
+              thickness: 1,
+              height: 1,
+            ),
+          ],
+        ),
       ),
     );
   }
