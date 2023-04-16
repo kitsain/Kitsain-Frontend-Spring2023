@@ -6,6 +6,7 @@ import 'package:kitsain_frontend_spring2023/views/add_new_item_form.dart';
 import 'package:realm/realm.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/assets/itembuilder.dart';
+import 'package:kitsain_frontend_spring2023/views/help_pages/pantry_help_page.dart';
 
 class PantryView extends StatefulWidget with ChangeNotifier {
   late final Function(Item) onToggle;
@@ -48,6 +49,18 @@ class _PantryViewState extends State<PantryView> {
       },
     );
   }
+  void _help() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return const FractionallySizedBox(
+          //heightFactor: 0.7,
+          child: PantryHelp(),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +69,7 @@ class _PantryViewState extends State<PantryView> {
         title: AppLocalizations.of(context)!.pantryScreen,
         addFunction: _addNewItem,
         addIcon: Icons.add_home,
-        helpFunction: _addNewItem,
+        helpFunction: _help,
       ),
       body: FutureBuilder<RealmResults>(
         future: _getPantryItems(),

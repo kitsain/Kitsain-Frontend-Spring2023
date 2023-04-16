@@ -5,6 +5,7 @@ import 'package:kitsain_frontend_spring2023/assets/shopping_list_item.dart';
 import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
 import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_item_form.dart';
+import 'package:kitsain_frontend_spring2023/views/help_pages/user_shopping_list_help_page.dart';
 
 class UserShoppingList extends StatefulWidget {
   const UserShoppingList({super.key, required this.listIndex});
@@ -53,6 +54,19 @@ class _UserShoppingListState extends State<UserShoppingList> {
     );
   }
 
+  void _help() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return const FractionallySizedBox(
+          //heightFactor: 0.7,
+          child: UserShoppingListHelp(),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +74,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
           title: AppLocalizations.of(context)!.shoppingListScreen,
           addFunction: _addNewItem,
           addIcon: Icons.add_shopping_cart,
-          helpFunction: _addNewItem,
+          helpFunction: _help,
         ),
       body: SingleChildScrollView(
         child: Column(
