@@ -15,14 +15,7 @@ class TaskController extends GetxController {
     shoppingListItem.value?.clear();
     tskList?.items?.forEach((element) {
       var newItem = ShoppingListItemModel(
-          '${element.title}', '${element.notes}', false, '${element.id}');
-      shoppingListItem.value?.add(newItem);
-    });
-
-    shoppingListItem.value?.clear();
-    tskList?.items?.forEach((element) {
-      var newItem = ShoppingListItemModel(
-          '${element.title}', '${element.notes}', false, '${element.id}');
+          '${element.title}', element.notes == null ? '' : '${element.notes}', false, '${element.id}');
       shoppingListItem.value?.add(newItem);
     });
 
