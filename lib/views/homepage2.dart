@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:googleapis/tasks/v1.dart';
 import 'package:kitsain_frontend_spring2023/controller/tasklist_controller.dart';
 import 'package:kitsain_frontend_spring2023/LoginController.dart';
 import 'package:kitsain_frontend_spring2023/main.dart';
-import 'package:kitsain_frontend_spring2023/views/tasklists_screen.dart';
 
 class HomePage2 extends StatelessWidget {
   HomePage2({super.key});
