@@ -5,9 +5,7 @@ import 'package:kitsain_frontend_spring2023/assets/shopping_list_item.dart';
 import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
-import 'package:kitsain_frontend_spring2023/models/ShoppingListItemModel.dart';
 import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_item_form.dart';
-import 'package:kitsain_frontend_spring2023/models/ShoppingListItemModel.dart';
 
 class UserShoppingList extends StatefulWidget {
   const UserShoppingList(
@@ -36,7 +34,6 @@ class _UserShoppingListState extends State<UserShoppingList> {
   }
 
   _moveSelectedItemsToPantry() {
-    // todo (Currently moves all items, not just selected. Needs to be fixed when real model is available.)
     _stateController.pantryList
         .addAll(_stateController.shoppingLists[widget.taskListIndex]);
     _stateController.shoppingLists[widget.taskListIndex].clear();
@@ -86,21 +83,30 @@ class _UserShoppingListState extends State<UserShoppingList> {
 
   @override
   Widget build(BuildContext context) {
+    // these are here so that the buttons on the bottom will never overflow off screen
+    double fullWidth = MediaQuery.of(context).size.width;
+    double paddingWidth = fullWidth * 0.08;
+    double bottomButtonWidth = (fullWidth - (3 * paddingWidth)) / 2;
+
     return Scaffold(
       appBar: TopBar(
-          title: 'SHOPPING LISTS',
-          //title: AppLocalizations.of(context)!.shoppingListScreen,
-          addFunction: _addNewItem,
-          addIcon: Icons.add_shopping_cart,
-          helpFunction: _addNewItem,
-        ),
+        title: 'SHOPPING LISTS',
+        //title: AppLocalizations.of(context)!.shoppingListScreen,
+        addFunction: _addNewItem,
+        addIcon: Icons.add_shopping_cart,
+        helpFunction: _addNewItem,
+      ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.all(paddingWidth),
         child: Column(
           children: [
             Row(
               children: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                  ),
                   child: DragTarget(
                     builder: (
                       BuildContext context,
@@ -114,21 +120,25 @@ class _UserShoppingListState extends State<UserShoppingList> {
                     },
                   ),
                 ),
-                Icon(Icons.arrow_forward_ios),
-                Text('${widget.taskListName}'),
-                // todo: change the title to come from the model
+                const SizedBox(width: 2),
+                const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16,                                                     // TODO: base this on the font size of surrounding text
+                                                                                // TODO: e.g., fontsize 16 => icon size 16
+                ),
+                const SizedBox(width: 2),
+                Text(widget.taskListName),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  onPressed: () => _deselectAll(),
-                  child: Text('DESELECT ALL'),
-                ),
-                SizedBox(
-                  width: 15,
-                ),
+                    onPressed: () => _deselectAll(),
+                    child: Text('DESELECT ALL'),
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                    )),
               ],
             ),
             DragTarget<String>(
@@ -141,7 +151,6 @@ class _UserShoppingListState extends State<UserShoppingList> {
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
                       itemCount: taskController.shoppingListItem.value?.length,
-                      padding: EdgeInsets.all(15),
                       itemBuilder: (context, index) {
                         return Column(
                           children: [
@@ -155,7 +164,8 @@ class _UserShoppingListState extends State<UserShoppingList> {
                                     index);
                               },
                               child: ShoppingListItem(
-                                itemId: '${taskController.shoppingListItem.value?[index].id}',
+                                itemId:
+                                    '${taskController.shoppingListItem.value?[index].id}',
                                 itemName:
                                     '${taskController.shoppingListItem.value?[index].title}',
                                 itemDescription:
@@ -164,7 +174,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
                                 listId: widget.taskListId,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                           ],
@@ -175,18 +185,21 @@ class _UserShoppingListState extends State<UserShoppingList> {
                 );
               },
             ),
+            const SizedBox(
+              height: 40,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: bottomButtonWidth,
                   child: OutlinedButton(
                     // onPressed: _moveSelectedItemsToPantry,
                     onPressed: () async {
                       taskController.tasksListRemove.value?.forEach(
-                            (element) async {
-                          taskController
-                              .shoppingListItem.value?[element].checkBox = false;
+                        (element) async {
+                          taskController.shoppingListItem.value?[element]
+                              .checkBox = false;
                           // print('$element' +
                           //     '${taskController.shoppingListItem.value?[element].title} ' +
                           //     '${taskController.shoppingListItem.value?.length}');
@@ -206,8 +219,9 @@ class _UserShoppingListState extends State<UserShoppingList> {
                     ),
                   ),
                 ),
+                const Spacer(),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: bottomButtonWidth,
                   child: OutlinedButton(
                     // onPressed: _moveSelectedItemsToPantry,
                     onPressed: () {
@@ -230,7 +244,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 100,
             ),
           ],
