@@ -50,7 +50,7 @@ class _ShoppingListsState extends State<ShoppingLists> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
-          title: AppLocalizations.of(context)!.shoppingListScreen,
+          title: AppLocalizations.of(context)!.shoppingListsScreen,
           addFunction: _addNewItem,
           addIcon: Icons.post_add,
           helpFunction: _addNewItem,
