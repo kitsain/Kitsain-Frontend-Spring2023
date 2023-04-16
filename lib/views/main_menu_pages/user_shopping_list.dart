@@ -85,7 +85,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
   Widget build(BuildContext context) {
     // these are here so that the buttons on the bottom will never overflow off screen
     double fullWidth = MediaQuery.of(context).size.width;
-    double paddingWidth = fullWidth * 0.08;
+    double paddingWidth = fullWidth * 0.05;
     double bottomButtonWidth = (fullWidth - (3 * paddingWidth)) / 2;
 
     return Scaffold(
@@ -105,7 +105,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
                 TextButton(
                   onPressed: () => Navigator.pop(context),
                   style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
+                    padding: EdgeInsets.all(4),
                   ),
                   child: DragTarget(
                     builder: (
@@ -137,7 +137,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
                     onPressed: () => _deselectAll(),
                     child: Text('DESELECT ALL'),
                     style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
+                      padding: EdgeInsets.all(4),
                     )),
               ],
             ),
