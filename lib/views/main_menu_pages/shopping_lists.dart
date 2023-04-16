@@ -8,7 +8,6 @@ import 'package:kitsain_frontend_spring2023/controller/tasklist_controller.dart'
 import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_form.dart';
 import 'package:kitsain_frontend_spring2023/views/homepage2.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/user_shopping_list.dart';
-import 'package:kitsain_frontend_spring2023/views/task_screen.dart';
 import 'package:kitsain_frontend_spring2023/views/edit/edit_shopping_list.dart';
 
 class ShoppingLists extends StatefulWidget {
@@ -43,24 +42,38 @@ class _ShoppingListsState extends State<ShoppingLists> {
   }
 
   _receiveItem(int index, String data) {
-    // _stateController.shoppingLists[index].add(data);
-    // widget.setActiveShoppingListIndex(index);
+    String taskListId = '${taskListController.taskLists.value?.items?[index].id}';
+    String title = data;
+
+    taskController.createTask(title, '', taskListId);
 
     setState(
       () {
-        print('index $index  data is $data');
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("$data and $index")));
+            .showSnackBar(SnackBar(content: Text("$data")));
       },
     );
 
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: ((context) => TaskScreen(
-                  taskListId:
-                      '${taskListController.taskLists.value?.items?[index].id}',
-                ))));
+    _openShoppingList(index);
+  }
+
+   _openShoppingList(index) async {
+     print(
+         '${taskListController.taskLists.value?.items?[index].id}');
+     await taskController.getTasksList(
+         '${taskListController.taskLists.value?.items?[index].id}');
+
+     Navigator.push(
+         context,
+         MaterialPageRoute(
+             builder: ((context) =>
+                 UserShoppingList(
+                   taskListIndex: index,
+                   taskListId:
+                   '${taskListController.taskLists.value?.items?[index].id}',
+                   taskListName:
+                   '${taskListController.taskLists.value?.items?[index].title}',
+                 ))));
   }
 
   signOut() async {
@@ -172,7 +185,8 @@ class _ShoppingListsState extends State<ShoppingLists> {
                                     ),
                                   ],
                                 ),
-                                onTap: () async {
+                                onTap: () => _openShoppingList(index)
+                                /*async {
                                   // print('ok');
                                   print(
                                       '${taskListController.taskLists.value?.items?[index].id}');
@@ -190,7 +204,7 @@ class _ShoppingListsState extends State<ShoppingLists> {
                                                 taskListName:
                                                     '${taskListController.taskLists.value?.items?[index].title}',
                                               ))));
-                                },
+                                },*/
                               ),
                               ),
                             );
