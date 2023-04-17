@@ -40,6 +40,7 @@ class _NewItemFormState extends State<NewItemForm> {
   bool _click = false;
   String _category = categories.first;
   var _offData;
+  UnfocusDisposition _disposition = UnfocusDisposition.scope;
 
   bool _discardChangesDialog() {
     bool _close = false;
@@ -119,6 +120,8 @@ class _NewItemFormState extends State<NewItemForm> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.07,
                       child: ElevatedButton.icon(
+                        icon: Icon(Icons.add_a_photo_rounded, size: 40,),
+                        label: Text('SCAN EAN', style: TextStyle(fontSize: 20)),
                         onPressed: () async {
                           var res = await Navigator.push(
                               context,
@@ -127,41 +130,29 @@ class _NewItemFormState extends State<NewItemForm> {
                               ));
                           setState(() async {
                             if (res is String && res != '-1') {
+
                               ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(content: Text('Item not found. Input manually')));
+                              .showSnackBar(SnackBar(content: Text('Fetching item data...')));
                               try {
+                                _EANCodeField.text = res;
+                                primaryFocus!.unfocus(disposition: _disposition);
                                 _offData = await getFromJson(res);
                                 _itemName.text = _offData.productName.toString();
-                                _EANCodeField.text = res;
                               } catch (e) {
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                                 ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(content: Text('Item not found. Input manually')));
-                                /*showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) => SizedBox(
-                                    width: 10,
-                                    height: 10,
-                                    child: AlertDialog(
-                                        content: const Text('Item not found\n'
-                                                            'Input manually'),
-                                        actions: <Widget>[
-                                    TextButton(
-                                    child: const Text('OK'),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                ),
-                              ]
-                              ),
-                                  )
-                                );*/
+                                .showSnackBar(SnackBar(content: Text('Item not found. Input manually.')));
+                              }
+                              if(_itemName.text.isNotEmpty) {
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context)
+                                .showSnackBar(SnackBar(content: Text('Item found!')));
                               }
                             }
                           }
                           );
                         },
-                        icon: Icon(Icons.add_a_photo_rounded, size: 40,),
-                        label: Text('SCAN EAN', style: TextStyle(fontSize: 20)),
+
                       ),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.05),
@@ -177,9 +168,10 @@ class _NewItemFormState extends State<NewItemForm> {
                         Positioned(
                           right: -1,
                           child: SizedBox(
-                              height: 58.7,
+                              height: 60,
                               width: 80,
                             child: ElevatedButton(
+                              child: Text('FETCH\n ITEM'),
                               style: ButtonStyle(
                                   shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
@@ -190,29 +182,20 @@ class _NewItemFormState extends State<NewItemForm> {
                               ),
                               onPressed: () async {
                                 if(_EANCodeField.text.isNotEmpty) {
+                                  ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(content: Text('Fetching item data...')));
                                   try {
+                                    primaryFocus!.unfocus(disposition: _disposition);
                                     _offData = await getFromJson(_EANCodeField.text);
                                     _itemName.text = _offData.productName.toString();
                                   } catch (e) {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) => SizedBox(
-                                          width: 10,
-                                          height: 10,
-                                          child: AlertDialog(
-                                              content: const Text('Item not found\n'
-                                                  'Input manually'),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  child: const Text('OK'),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                              ]
-                                          ),
-                                        )
-                                    );
+                                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                    ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(content: Text('Item not found. Input manually.')));
+                                  } if(_itemName.text.isNotEmpty) {
+                                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(content: Text('Item found!')));
                                   }
                                 } else {
                                   showDialog(
@@ -235,7 +218,7 @@ class _NewItemFormState extends State<NewItemForm> {
                                   );
                                 }
                               },
-                              child: Text('FETCH\n ITEM'),
+
                             ),
                           ),
                         )
