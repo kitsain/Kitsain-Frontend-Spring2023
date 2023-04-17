@@ -23,6 +23,17 @@ const List months = [
   'December'
 ];
 
+const List testShoppingLists= [
+  'Shopping list test 1',
+  'Shopping list test 2',
+  'Shopping list test 3',
+  'Shopping list test 4',
+  'Shopping list test 5',
+  'Shopping list test 6',
+  'Shopping list test 7',
+  'Shopping list test 8'
+];
+
 class UsedAndExpired extends StatefulWidget {
   const UsedAndExpired({super.key});
 
@@ -50,12 +61,113 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
     });
   }
 
+  _shoppingLists() {
+    List<PopupMenuItem<String>> list = <PopupMenuItem<String>>[];
+    for(var sList in testShoppingLists) {
+      list.add(PopupMenuItem<String>(
+          child: Text(sList, textAlign: TextAlign.left),
+          onTap: () {Navigator.pop(context);}
+        ));
+    }
+    return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: list
+      );
+  }
+
   Widget _actionPopUpMenu() {
-    return PopupMenuButton<String>(
-      constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
+    return PopupMenuButton(
+      constraints: BoxConstraints(maxHeight: 300, maxWidth: 200),
       icon: Icon(Icons.more_horiz, color: Colors.black),
-      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-        PopupMenuItem<String>(
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<PopupMenuButton>>[
+        PopupMenuItem(
+            child:Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Item action",
+                    style: TextStyle(color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20)),
+                IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.arrow_drop_up, color: Colors.black, size: 35)
+                )
+              ],
+            ),
+        ),
+        PopupMenuItem(
+          child: Text( _selectedTabs[0] ? "MOVE TO BIN": "MOVE TO USED",
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
+          onTap: (){}, //Here the functionality of moving the card
+        ),
+        PopupMenuItem(
+          child: PopupMenuButton(
+            constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
+            child: Text( "ADD TO SHOPPING",
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              PopupMenuItem(
+                child:Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Choose list",
+                        style: TextStyle(color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20)),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(Icons.arrow_drop_up, color: Colors.black, size: 35)
+                    )
+                  ],
+                ),
+              ),
+              PopupMenuItem(child: _shoppingLists()),
+              /*
+              PopupMenuItem(
+                child: Text(testShoppingLists[0]),
+                onTap: () {Navigator.pop(context);}
+              ),
+              PopupMenuItem(
+                child: Text(testShoppingLists[1]),
+                onTap: () {Navigator.pop(context);}
+              ),
+              PopupMenuItem(
+                child: Text(testShoppingLists[2]),
+                onTap: () {Navigator.pop(context);}
+              ),
+              PopupMenuItem(
+                child: Text(testShoppingLists[3]),
+                onTap: () {Navigator.pop(context);}
+              ),
+              PopupMenuItem(
+                child: Text(testShoppingLists[4]),
+                onTap: () {Navigator.pop(context);}
+              ),
+              PopupMenuItem(
+                child: Text(testShoppingLists[5]),
+                onTap: () {Navigator.pop(context);}
+              ),
+              PopupMenuItem(
+                child: Text(testShoppingLists[6]),
+                onTap: () {Navigator.pop(context);}
+              ),
+              PopupMenuItem(
+                child: Text(testShoppingLists[7]),
+                onTap: () {Navigator.pop(context);}
+              )*/
+            ],
+          )
+        ),
+        PopupMenuItem(
+          child: Text("ADD TO PANTRY",
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
+          onTap: (){}, //Here the functionality of moving the card
+        ),
+        /*PopupMenuItem<String>(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -80,13 +192,23 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
         PopupMenuItem<String>(
           child: Text('MOVE TO SHOPPING',
               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
-          onTap: (){}, //Here the functionality of moving the card
+          onTap: (){
+            PopupMenuButton<String>(
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<PopupMenuButton>>[
+            PopupMenuItem(
+                child: PopupMenuButton(
+
+                )
+              )
+            ]
+            );
+          }, //Here the functionality of moving the card
         ),
         PopupMenuItem<String>(
           child: Text('ADD TO PANTRY',
               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
           onTap: (){}, //Here the functionality of moving the card
-        )
+        )*/
       ],
     );
   }
@@ -114,10 +236,7 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                     ),
                   ),
                 ),
-                SizedBox(height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.01),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                 Center(
                   child: DragTarget<String>(
                     onWillAccept: (data) {
@@ -201,7 +320,7 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                                           fontWeight: FontWeight.bold),)
                                 ),
                               ),
-                              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                             ],
                           )
                               : LongPressDraggable<String>(
