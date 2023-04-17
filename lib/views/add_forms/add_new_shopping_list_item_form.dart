@@ -12,7 +12,6 @@ class NewShoppingListItemForm extends StatefulWidget {
 class _NewItemFormState extends State<NewShoppingListItemForm> {
   final _formKey = GlobalKey<FormState>();
   var _itemName = TextEditingController();
-
   var _details = TextEditingController();
 
   bool _discardChangesDialog() {
@@ -78,7 +77,7 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
-                SizedBox( height: MediaQuery.of(context).size.height * 0.03),
+                SizedBox( height: MediaQuery.of(context).size.height * 0.05),
                 Stack(
                     children: [
                       TextFormField(

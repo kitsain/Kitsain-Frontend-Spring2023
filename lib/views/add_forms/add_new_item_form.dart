@@ -132,7 +132,7 @@ class _NewItemFormState extends State<NewItemForm> {
                             if (res is String && res != '-1') {
 
                               ScaffoldMessenger.of(context)
-                              .showSnackBar(SnackBar(content: Text('Fetching item data...')));
+                              .showSnackBar(SnackBar(content: Text('Fetching item...')));
                               try {
                                 _EANCodeField.text = res;
                                 primaryFocus!.unfocus(disposition: _disposition);
@@ -141,7 +141,7 @@ class _NewItemFormState extends State<NewItemForm> {
                               } catch (e) {
                                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                                 ScaffoldMessenger.of(context)
-                                .showSnackBar(SnackBar(content: Text('Item not found. Input manually.')));
+                                .showSnackBar(SnackBar(content: Text('Item not found. Please enter item information.')));
                               }
                               if(_itemName.text.isNotEmpty) {
                                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -218,7 +218,6 @@ class _NewItemFormState extends State<NewItemForm> {
                                   );
                                 }
                               },
-
                             ),
                           ),
                         )

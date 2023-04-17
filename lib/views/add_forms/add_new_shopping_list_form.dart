@@ -62,7 +62,7 @@ class _NewItemFormState extends State<NewShoppingListForm> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.05,
+                    height: MediaQuery.of(context).size.height * 0.04,
                     child: FloatingActionButton(
                       child: Icon(Icons.close),
                       onPressed: () => _discardChangesDialog(),
@@ -72,27 +72,34 @@ class _NewItemFormState extends State<NewShoppingListForm> {
               ),
               SizedBox( height: MediaQuery.of(context).size.height * 0.03),
               Text(
-                'NEW SHOPPING LIST',
+                'NEW\nSHOPPING\nLIST',
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
               SizedBox( height: MediaQuery.of(context).size.height * 0.03),
-              SizedBox(
-                child: TextFormField(
-                  controller: _listName,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'LIST NAME',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter shopping list name";
-                    }
-                    return null;
-                  },
-                ),
+              Stack(
+                  children: [
+                    TextFormField(
+                      controller: _listName,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'LIST NAME',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter list name";
+                        }
+                        return null;
+                      },
+                    ),
+                    Positioned(
+                        right: 27,
+                        top: 15,
+                        child: Icon(Icons.keyboard_alt_outlined)
+                    )
+                  ]
               ),
-              SizedBox( height: MediaQuery.of(context).size.height * 0.375),
+              SizedBox( height: MediaQuery.of(context).size.height * 0.27),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
