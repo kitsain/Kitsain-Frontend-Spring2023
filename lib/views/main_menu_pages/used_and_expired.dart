@@ -126,39 +126,6 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                 ),
               ),
               PopupMenuItem(child: _shoppingLists()),
-              /*
-              PopupMenuItem(
-                child: Text(testShoppingLists[0]),
-                onTap: () {Navigator.pop(context);}
-              ),
-              PopupMenuItem(
-                child: Text(testShoppingLists[1]),
-                onTap: () {Navigator.pop(context);}
-              ),
-              PopupMenuItem(
-                child: Text(testShoppingLists[2]),
-                onTap: () {Navigator.pop(context);}
-              ),
-              PopupMenuItem(
-                child: Text(testShoppingLists[3]),
-                onTap: () {Navigator.pop(context);}
-              ),
-              PopupMenuItem(
-                child: Text(testShoppingLists[4]),
-                onTap: () {Navigator.pop(context);}
-              ),
-              PopupMenuItem(
-                child: Text(testShoppingLists[5]),
-                onTap: () {Navigator.pop(context);}
-              ),
-              PopupMenuItem(
-                child: Text(testShoppingLists[6]),
-                onTap: () {Navigator.pop(context);}
-              ),
-              PopupMenuItem(
-                child: Text(testShoppingLists[7]),
-                onTap: () {Navigator.pop(context);}
-              )*/
             ],
           )
         ),
@@ -167,48 +134,6 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
           onTap: (){}, //Here the functionality of moving the card
         ),
-        /*PopupMenuItem<String>(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Item action",
-                  style: TextStyle(color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
-              IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(Icons.arrow_drop_up, color: Colors.black, size: 35)
-              )
-            ],
-          ),
-        ),
-        PopupMenuItem<String>(
-          child: Text( _selectedTabs[0] ? "MOVE TO BIN": "MOVE TO USED",
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
-          onTap: (){}, //Here the functionality of moving the card
-        ),
-        PopupMenuItem<String>(
-          child: Text('MOVE TO SHOPPING',
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
-          onTap: (){
-            PopupMenuButton<String>(
-              itemBuilder: (BuildContext context) => <PopupMenuEntry<PopupMenuButton>>[
-            PopupMenuItem(
-                child: PopupMenuButton(
-
-                )
-              )
-            ]
-            );
-          }, //Here the functionality of moving the card
-        ),
-        PopupMenuItem<String>(
-          child: Text('ADD TO PANTRY',
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
-          onTap: (){}, //Here the functionality of moving the card
-        )*/
       ],
     );
   }
