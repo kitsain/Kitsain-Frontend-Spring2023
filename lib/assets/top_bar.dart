@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:kitsain_frontend_spring2023/LoginController.dart';
+import 'package:kitsain_frontend_spring2023/views/homepage2.dart';
 
 class TopBar extends StatefulWidget implements PreferredSizeWidget {
   const TopBar(
@@ -21,14 +24,45 @@ class TopBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _TopBarState extends State<TopBar> {
-  VisualDensity topIconsDensity = VisualDensity(horizontal: -4.0, vertical: -4.0);
+  final _loginController = Get.put(LoginController());
+  VisualDensity _topIconsDensity = VisualDensity(horizontal: -4.0, vertical: -4.0);
 
-  _openAccountSettings() {
-    // todo
+  _openAccountSettings(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Signed in as'),
+          content: Text(
+            '${_loginController.googleUser.value?.email}',
+            textAlign: TextAlign.center,
+          ),
+          actions: <Widget>[
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('CANCEL')),
+            TextButton(
+              onPressed: () {
+                _signOut();
+              },
+              child: Text('LOG OUT'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   _openSettings() {
     // todo
+  }
+
+  _signOut() async {
+    await _loginController.googleSignInUser.value?.signOut();
+    Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => HomePage2()), (route) => false);
   }
 
   @override
@@ -54,21 +88,21 @@ class _TopBarState extends State<TopBar> {
                 Row(
                   children: [
                     IconButton(
-                      visualDensity: topIconsDensity,
+                      visualDensity: _topIconsDensity,
                       padding: EdgeInsets.zero,
                       onPressed: () => widget.helpFunction(),
                       icon: const Icon(Icons.help_outline),
                     ),
                     IconButton(
-                      visualDensity: topIconsDensity,
+                      visualDensity: _topIconsDensity,
                       padding: EdgeInsets.zero,
                       onPressed: () => _openSettings(),
                       icon: const Icon(Icons.settings),
                     ),
                     IconButton(
-                      visualDensity: topIconsDensity,
+                      visualDensity: _topIconsDensity,
                       padding: EdgeInsets.zero,
-                      onPressed: () => _openAccountSettings(),
+                      onPressed: () => _openAccountSettings(context),
                       icon: const Icon(Icons.account_circle),
                     ),
                   ],
