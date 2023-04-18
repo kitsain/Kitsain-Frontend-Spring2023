@@ -5,7 +5,6 @@ import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/LoginController.dart';
 import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
 import 'package:kitsain_frontend_spring2023/controller/tasklist_controller.dart';
-import 'package:kitsain_frontend_spring2023/views/homepage2.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/user_shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/edit/edit_shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/add_forms/add_new_shopping_list_form.dart';
@@ -48,7 +47,7 @@ class _ShoppingListsState extends State<ShoppingLists> {
     taskController.createTask(title, '', taskListId);
 
     setState(
-      () {
+          () {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text("$data")));
       },
@@ -57,136 +56,101 @@ class _ShoppingListsState extends State<ShoppingLists> {
     _openShoppingList(index);
   }
 
-   _openShoppingList(index) async {
-     print(
-         '${taskListController.taskLists.value?.items?[index].id}');
-     await taskController.getTasksList(
-         '${taskListController.taskLists.value?.items?[index].id}');
+  _openShoppingList(index) async {
+    print(
+        '${taskListController.taskLists.value?.items?[index].id}');
+    await taskController.getTasksList(
+        '${taskListController.taskLists.value?.items?[index].id}');
 
-     Navigator.push(
-         context,
-         MaterialPageRoute(
-             builder: ((context) =>
-                 UserShoppingList(
-                   taskListIndex: index,
-                   taskListId:
-                   '${taskListController.taskLists.value?.items?[index].id}',
-                   taskListName:
-                   '${taskListController.taskLists.value?.items?[index].title}',
-                 ))));
-  }
-
-  signOut() async {
-    await loginController.googleSignInUser.value?.signOut();
-
-    // loginController.googleUser.close();
-    // loginController.googleSignInUser.close();
-    // taskController.tasksList.close();
-    // taskController.tasksListRemove.close();
-    // taskListController.taskLists.close();
-    // Navigator.pop(context);
-
-    Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => HomePage2()), (route) => false);
-
-    // Navigator.push(
-    //     context, MaterialPageRoute(builder: ((context) => HomePage2())));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: ((context) =>
+                UserShoppingList(
+                  taskListIndex: index,
+                  taskListId:
+                  '${taskListController.taskLists.value?.items?[index].id}',
+                  taskListName:
+                  '${taskListController.taskLists.value?.items?[index].title}',
+                ))));
   }
 
   void _addNewItem() {
-      showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        builder: (BuildContext context) {
-          return const FractionallySizedBox(
-            heightFactor: 1.0,
-            child: NewShoppingListForm(),
-          );
-        },
-      );
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return const FractionallySizedBox(
+          heightFactor: 1.0,
+          child: NewShoppingListForm(),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
-          title: 'SHOPPING LISTS',
-          //title: AppLocalizations.of(context)!.shoppingListsScreen,
-          addFunction: _addNewItem,
-          addIcon: Icons.post_add,
-          helpFunction: _addNewItem,
-        ),
+        title: 'SHOPPING LISTS',
+        //title: AppLocalizations.of(context)!.shoppingListsScreen,
+        addFunction: _addNewItem,
+        addIcon: Icons.post_add,
+        helpFunction: _addNewItem,
+      ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Text(
-                  '      ${loginController.googleUser.value?.email}',
-                ),
-                Icon(Icons.arrow_forward_ios),
-
-                TextButton(
-                  onPressed: () {
-                    signOut();
-                  },
-                  child: Text('LOG OUT'),
-                ),
-                // todo: change the title to come from the model
-              ],
-            ),
-            Obx(() {
-              return ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                itemCount: taskListController.taskLists.value?.items?.length,
-                physics: NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.all(15),
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      DragTarget<String>(
-                          onAccept: (data) => _receiveItem(index, data),
-                          builder: (context, candidateData, rejectedData) {
-                            return Card(
-                              elevation: 2,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                  side: BorderSide(
-                                      width: candidateData.isNotEmpty
-                                          ? 4
-                                          : 1,
-                                      color: candidateData.isNotEmpty
-                                          ? Color.fromRGBO(63, 85, 65, 1)       //TODO: use the universal style color here instead
-                                          : Colors.black38,
-                                  ),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 5, right: 0, top: 5, bottom: 5),
-                              child: ListTile(
-                                title: Row(
-                                  children: [
-                                    Text(
-                                        '${taskListController.taskLists.value?.items?[index].title}'),
-                                    Spacer(),
-                                    IconButton(
-                                      onPressed: () {
-                                        taskListController.deleteTaskLists(
-                                            '${taskListController.taskLists.value?.items?[index].id}',
-                                            index);
-                                      },
-                                      icon: Icon(Icons.delete),
-                                    ),
-                                    IconButton(
-                                      onPressed: () => _editList(
+        child: Obx(() {
+          return ListView.builder(
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            itemCount: taskListController.taskLists.value?.items?.length,
+            physics: NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.all(15),
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  DragTarget<String>(
+                    onAccept: (data) => _receiveItem(index, data),
+                    builder: (context, candidateData, rejectedData) {
+                      return Card(
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          side: BorderSide(
+                            width: candidateData.isNotEmpty ? 4 : 1,
+                            color: candidateData.isNotEmpty
+                                ? Color.fromRGBO(63, 85, 65,
+                                    1) //TODO: use the universal style color here instead
+                                : Colors.black38,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              left: 5, right: 0, top: 5, bottom: 5),
+                          child: ListTile(
+                              title: Row(
+                                children: [
+                                  Text(
+                                      '${taskListController.taskLists.value?.items?[index].title}'),
+                                  Spacer(),
+                                  IconButton(
+                                    onPressed: () {
+                                      taskListController.deleteTaskLists(
                                           '${taskListController.taskLists.value?.items?[index].id}',
-                                          index),
-                                      icon: Icon(Icons.edit),
-                                    ),
-                                  ],
-                                ),
-                                onTap: () => _openShoppingList(index)
-                                /*async {
+                                          index);
+                                    },
+                                    icon: Icon(Icons.delete),
+                                  ),
+                                  IconButton(
+                                    onPressed: () => _editList(
+                                        '${taskListController.taskLists.value?.items?[index].id}',
+                                        index),
+                                    icon: Icon(Icons.edit),
+                                  ),
+                                ],
+                              ),
+                              onTap: () => _openShoppingList(index)
+                              /*async {
                                   // print('ok');
                                   print(
                                       '${taskListController.taskLists.value?.items?[index].id}');
@@ -206,21 +170,18 @@ class _ShoppingListsState extends State<ShoppingLists> {
                                               ))));
                                 },*/
                               ),
-                              ),
-                            );
-                          },
                         ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-            ),
-          ],
-        ),
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                ],
+              );
+            },
+          );
+        }),
       ),
     );
   }
