@@ -39,4 +39,5 @@ class _Item {
   late String? origins;
   late String? location; // Pantry, used, bin, new; Not shown to user
   late bool? everyday = false;
+  late String? details;
 }

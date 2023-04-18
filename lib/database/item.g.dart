@@ -29,6 +29,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     String? origins,
     String? location,
     bool? everyday = false,
+    String? details,
     Iterable<String?> categories = const [],
     Iterable<String?> labels = const [],
     Iterable<String?> ingredients = const [],
@@ -58,6 +59,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     RealmObjectBase.set(this, 'origins', origins);
     RealmObjectBase.set(this, 'location', location);
     RealmObjectBase.set(this, 'everyday', everyday);
+    RealmObjectBase.set(this, 'details', details);
     RealmObjectBase.set<RealmList<String?>>(
         this, 'categories', RealmList<String?>(categories));
     RealmObjectBase.set<RealmList<String?>>(
@@ -211,6 +213,12 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   set everyday(bool? value) => RealmObjectBase.set(this, 'everyday', value);
 
   @override
+  String? get details =>
+      RealmObjectBase.get<String>(this, 'details') as String?;
+  @override
+  set details(String? value) => RealmObjectBase.set(this, 'details', value);
+
+  @override
   Stream<RealmObjectChanges<Item>> get changes =>
       RealmObjectBase.getChanges<Item>(this);
 
@@ -250,6 +258,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
       SchemaProperty('origins', RealmPropertyType.string, optional: true),
       SchemaProperty('location', RealmPropertyType.string, optional: true),
       SchemaProperty('everyday', RealmPropertyType.bool, optional: true),
+      SchemaProperty('details', RealmPropertyType.string, optional: true),
     ]);
   }
 }

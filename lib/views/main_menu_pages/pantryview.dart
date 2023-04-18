@@ -43,6 +43,8 @@ class _PantryViewState extends State<PantryView> {
       return PantryProxy().getPantryItems(selectedSort);
     } else if (selectedView == "opened") {
       return PantryProxy().getOpenedItems(selectedSort);
+    } else if (selectedView == "favorites") {
+      return PantryProxy().getFavouriteItems(selectedSort);
     }
     return null;
   }
@@ -74,15 +76,19 @@ class _PantryViewState extends State<PantryView> {
               return const [
                 PopupMenuItem(
                   value: "all",
-                  child: Text("All"),
+                  child: Text("ALL"),
+                ),
+                PopupMenuItem(
+                  value: "favorites",
+                  child: Text("FAVORITES"),
                 ),
                 PopupMenuItem(
                   value: "opened",
-                  child: Text("Opened"),
+                  child: Text("OPENED"),
                 ),
                 PopupMenuItem(
                   value: "bycat",
-                  child: Text("By category"),
+                  child: Text("BY CATEGORY"),
                 ),
               ];
             },
@@ -139,6 +145,23 @@ class _PantryViewState extends State<PantryView> {
                       children: [
                         const Text(
                           "ALL ITEMS",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                        ItemBuilder(
+                          items: results,
+                          sortMethod: selectedSort,
+                          loc: "pantry",
+                        ),
+                      ],
+                    );
+                  }
+                  if (selectedView == "favorites") {
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "FAVORITES",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),

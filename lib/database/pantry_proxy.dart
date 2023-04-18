@@ -48,6 +48,19 @@ class PantryProxy with ChangeNotifier {
     return result;
   }
 
+  RealmResults<Item> getFavouriteItems([String sortBy = "az"]) {
+    var all = getItems();
+    late RealmResults<Item> result;
+    if (sortBy == "az") {
+      result = all.query("everyday = true SORT(name ASC)");
+    } else if (sortBy == "expdate") {
+      result = all.query("everyday = true SORT(expiryDate ASC)");
+    } else if (sortBy == "addedlast") {
+      result = all.query("everyday = true SORT(addedDate DESC)");
+    }
+    return result;
+  }
+
   RealmResults<Item> getOpenedItems([String sortBy = "az"]) {
     var pantryitems = getPantryItems();
     //var result = all.query("location == \$0", ["Pantry"]);
@@ -106,7 +119,6 @@ class PantryProxy with ChangeNotifier {
   bool upsertItem(Item item) {
     debugPrint("addItem");
     try {
-      debugPrint(item.mainCat);
       realm.write(() {
         realm.add<Item>(item, update: true);
       });
