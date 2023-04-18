@@ -17,7 +17,7 @@ import 'package:realm/realm.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  // PantryProxy().deleteAll();
+  //PantryProxy().deleteAll();
   runApp(const MaterialApp(home: MyApp()));
 }
 

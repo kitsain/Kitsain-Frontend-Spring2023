@@ -6,9 +6,14 @@ import 'package:realm/realm.dart';
 // In this file we build the list of item cards
 
 class ItemBuilder extends StatefulWidget {
-  const ItemBuilder({super.key, required this.items, required this.sortMethod});
+  const ItemBuilder(
+      {super.key,
+      required this.items,
+      required this.sortMethod,
+      required this.loc});
   final RealmResults<Item> items;
   final String sortMethod;
+  final String loc;
 
   @override
   State<ItemBuilder> createState() => _ItemBuilderState();
@@ -22,7 +27,11 @@ class _ItemBuilderState extends State<ItemBuilder> {
       scrollDirection: Axis.vertical,
       itemCount: widget.items.length,
       itemBuilder: (context, index) {
-        return ItemCard(item: widget.items[index]);
+        if (widget.loc == "pantry") {
+          return ItemCard2(item: widget.items[index]);
+        } else if (widget.loc == "history") {
+          return HistoryCard(item: widget.items[index]);
+        }
       },
     );
   }

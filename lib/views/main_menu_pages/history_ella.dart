@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kitsain_frontend_spring2023/assets/itembuilder.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:realm/realm.dart';
@@ -10,7 +11,7 @@ const List<Widget> tabs = <Widget>[
   Text('BIN'),
 ];
 
-const List months = [
+const List<String> months = [
   'January',
   'February',
   'March',
@@ -33,10 +34,30 @@ class History extends StatefulWidget {
 }
 
 class _HistoryState extends State<History> {
-  final month = months[DateTime.now().month - 1];
+  // This variable is passed as a parameter to fetch items from the chosen month
+  int monthInt = DateTime.now().month;
+
+  // This variable controls the string shown in drop-down menu
+  String month = DateFormat("MMMM").format(DateTime(0, DateTime.now().month));
+
   final year = DateTime.now().year;
 
   final List<bool> _selectedTabs = <bool>[true, false];
+
+  final mapMonths = <int, String>{
+    1: 'January',
+    2: 'February',
+    3: 'March',
+    4: 'April',
+    5: 'May',
+    6: 'June',
+    7: 'July',
+    8: 'August',
+    9: 'September',
+    10: 'October',
+    11: 'November',
+    12: 'December'
+  };
 
   // Default to used items -view
   String selectedView = "used";
@@ -45,9 +66,9 @@ class _HistoryState extends State<History> {
   // or only opened items
   RealmResults<Item>? chosenStream(String selectedView) {
     if (selectedView == "used") {
-      return PantryProxy().getUsedItems();
+      return PantryProxy().getByYearMonthUsed(monthInt);
     } else if (selectedView == "bin") {
-      return PantryProxy().getBinItems();
+      return PantryProxy().getByYearMonthBin(monthInt);
     }
     return null;
   }
@@ -61,18 +82,53 @@ class _HistoryState extends State<History> {
             padding: const EdgeInsets.only(left: 8.0, top: 8.0),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.03,
-                child: Text(
-                  'MONTH > $month $year',
-                  textAlign: TextAlign.right,
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                ),
+              // child: SizedBox(
+              //   height: MediaQuery.of(context).size.height * 0.03,
+              //   child: Text(
+              //     'MONTH >  $year',
+              //     textAlign: TextAlign.right,
+              //     style: const TextStyle(
+              //         fontSize: 20, fontWeight: FontWeight.bold),
+              //   ),
+              // ),
+              child: Row(
+                children: const [
+                  Text("MONTH >"),
+                ],
               ),
             ),
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+          DropdownButtonFormField<String>(
+            value: month,
+            onChanged: (String? value) {
+              setState(
+                () {
+                  monthInt =
+                      mapMonths.keys.firstWhere((k) => mapMonths[k] == value);
+                  month = DateFormat("MMMM").format(
+                    DateTime(0, monthInt),
+                  );
+                },
+              );
+            },
+            items: mapMonths
+                .map(
+                  (key, value) {
+                    return MapEntry(
+                      key,
+                      DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      ),
+                    );
+                  },
+                )
+                .values
+                .toList(),
+            style: const TextStyle(
+                color: Colors.black, fontWeight: FontWeight.bold),
+          ),
           Center(
             child: DragTarget<String>(
               onWillAccept: (data) {
@@ -119,7 +175,11 @@ class _HistoryState extends State<History> {
                   child: Text("No items found"),
                 );
               } else {
-                return ItemBuilder(items: results, sortMethod: "az");
+                return ItemBuilder(
+                  items: results,
+                  sortMethod: "az",
+                  loc: "history",
+                );
               }
             },
           ),

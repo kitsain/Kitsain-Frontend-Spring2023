@@ -19,7 +19,8 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     DateTime? addedDate,
     DateTime? openedDate,
     DateTime? expiryDate,
-    DateTime? usedDate,
+    int? usedMonth,
+    int? usedYear,
     String? mainCat,
     String? processing,
     String? nutritionGrade,
@@ -47,7 +48,8 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     RealmObjectBase.set(this, 'addedDate', addedDate);
     RealmObjectBase.set(this, 'openedDate', openedDate);
     RealmObjectBase.set(this, 'expiryDate', expiryDate);
-    RealmObjectBase.set(this, 'usedDate', usedDate);
+    RealmObjectBase.set(this, 'usedMonth', usedMonth);
+    RealmObjectBase.set(this, 'usedYear', usedYear);
     RealmObjectBase.set(this, 'mainCat', mainCat);
     RealmObjectBase.set(this, 'processing', processing);
     RealmObjectBase.set(this, 'nutritionGrade', nutritionGrade);
@@ -121,10 +123,14 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
       RealmObjectBase.set(this, 'expiryDate', value);
 
   @override
-  DateTime? get usedDate =>
-      RealmObjectBase.get<DateTime>(this, 'usedDate') as DateTime?;
+  int? get usedMonth => RealmObjectBase.get<int>(this, 'usedMonth') as int?;
   @override
-  set usedDate(DateTime? value) => RealmObjectBase.set(this, 'usedDate', value);
+  set usedMonth(int? value) => RealmObjectBase.set(this, 'usedMonth', value);
+
+  @override
+  int? get usedYear => RealmObjectBase.get<int>(this, 'usedYear') as int?;
+  @override
+  set usedYear(int? value) => RealmObjectBase.set(this, 'usedYear', value);
 
   @override
   String? get mainCat =>
@@ -225,7 +231,8 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
       SchemaProperty('addedDate', RealmPropertyType.timestamp, optional: true),
       SchemaProperty('openedDate', RealmPropertyType.timestamp, optional: true),
       SchemaProperty('expiryDate', RealmPropertyType.timestamp, optional: true),
-      SchemaProperty('usedDate', RealmPropertyType.timestamp, optional: true),
+      SchemaProperty('usedMonth', RealmPropertyType.int, optional: true),
+      SchemaProperty('usedYear', RealmPropertyType.int, optional: true),
       SchemaProperty('mainCat', RealmPropertyType.string, optional: true),
       SchemaProperty('categories', RealmPropertyType.string,
           optional: true, collectionType: RealmCollectionType.list),

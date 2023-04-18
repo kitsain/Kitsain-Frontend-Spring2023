@@ -145,7 +145,11 @@ class _PantryViewState extends State<PantryView> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),
-                        ItemBuilder(items: results, sortMethod: selectedSort),
+                        ItemBuilder(
+                          items: results,
+                          sortMethod: selectedSort,
+                          loc: "pantry",
+                        ),
                       ],
                     );
                   }
@@ -158,7 +162,11 @@ class _PantryViewState extends State<PantryView> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),
-                        ItemBuilder(items: results, sortMethod: selectedSort),
+                        ItemBuilder(
+                          items: results,
+                          sortMethod: selectedSort,
+                          loc: "pantry",
+                        ),
                       ],
                     );
                   } else {
@@ -176,9 +184,11 @@ class _PantryViewState extends State<PantryView> {
                                       fontSize: 18),
                                 ),
                                 ItemBuilder(
-                                    items: PantryProxy()
-                                        .getByMainCat(cat, selectedSort),
-                                    sortMethod: selectedSort),
+                                  items: PantryProxy()
+                                      .getByMainCat(cat, selectedSort),
+                                  sortMethod: selectedSort,
+                                  loc: "pantry",
+                                ),
                                 const Divider(
                                   height: 4,
                                   color: Colors.black,

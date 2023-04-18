@@ -119,6 +119,8 @@ class PantryProxy with ChangeNotifier {
   }
 
   bool toggleItemEveryday(Item item) {
+    debugPrint("before");
+    debugPrint(item.everyday.toString());
     try {
       realm.write(() {
         if (item.everyday == false) {
@@ -128,6 +130,8 @@ class PantryProxy with ChangeNotifier {
         }
       });
       notifyListeners();
+      debugPrint("after:");
+      debugPrint(item.everyday.toString());
       return true;
     } on RealmException catch (e) {
       debugPrint(e.message);
@@ -142,7 +146,8 @@ class PantryProxy with ChangeNotifier {
 
     if (newLoc == "Used" || newLoc == "Bin") {
       realm.write(() {
-        item.usedDate = DateTime.now();
+        item.usedYear = DateTime.now().year;
+        item.usedMonth = DateTime.now().month;
       });
     }
     notifyListeners();
@@ -172,9 +177,28 @@ class PantryProxy with ChangeNotifier {
   FOR HISTORY/STATS PAGE
   */
 
-  RealmResults<Item> getByYearMonth() {
+  RealmResults<Item> getByYearMonthUsed(int month) {
     var all = getUsedItems();
-    var result = all.query("usedDate == \$0", [4]);
+    var result = all.query(
+        "usedYear == \$0 AND usedMonth == \$1", [DateTime.now().year, month]);
     return result;
+  }
+
+  RealmResults<Item> getByYearMonthBin(int month) {
+    var all = getBinItems();
+    var result = all.query(
+        "usedYear == \$0 AND usedMonth == \$1", [DateTime.now().year, month]);
+    return result;
+  }
+
+  double countByMonth(int month, String usedorbin) {
+    var history;
+    if (usedorbin == "Used") {
+      history = getByYearMonthUsed(month);
+    } else if (usedorbin == "Bin") {
+      history = getByYearMonthBin(month);
+    }
+
+    return 0;
   }
 }
