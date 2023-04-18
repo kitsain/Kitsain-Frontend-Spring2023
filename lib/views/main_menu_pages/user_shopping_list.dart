@@ -4,8 +4,8 @@ import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 import 'package:kitsain_frontend_spring2023/assets/shopping_list_item.dart';
 import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
-import 'package:kitsain_frontend_spring2023/views/add_new_shopping_list_item_form.dart';
 import 'package:kitsain_frontend_spring2023/views/help_pages/user_shopping_list_help_page.dart';
+import 'package:kitsain_frontend_spring2023/views/add_forms/add_new_shopping_list_item_form.dart';
 
 class UserShoppingList extends StatefulWidget {
   const UserShoppingList({super.key, required this.listIndex});
@@ -71,7 +71,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
-          title: AppLocalizations.of(context)!.shoppingListScreen,
+          title: AppLocalizations.of(context)!.shoppingListsScreen,
           addFunction: _addNewItem,
           addIcon: Icons.add_shopping_cart,
           helpFunction: _help,

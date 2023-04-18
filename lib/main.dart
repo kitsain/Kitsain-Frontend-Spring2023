@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
               ) {
                 return NavigationDestination(
                     icon: Icon(Icons.shopping_cart),
-                    label: AppLocalizations.of(context)!.shoppingListScreen);
+                    label: AppLocalizations.of(context)!.shoppingListsScreen);
               },
               onMove: (details) {
                 _navigationMenuIndex = 1;
