@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
+import 'package:kitsain_frontend_spring2023/views/help_pages/shopping_lists_help_page.dart';
 import 'package:kitsain_frontend_spring2023/views/add_forms/add_new_shopping_list_form.dart';
 
 class ShoppingLists extends StatefulWidget {
@@ -46,6 +47,19 @@ class _ShoppingListsState extends State<ShoppingLists> {
       );
   }
 
+  void _help() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return const FractionallySizedBox(
+          //heightFactor: 0.7,
+          child: ShoppingListsHelp(),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +67,7 @@ class _ShoppingListsState extends State<ShoppingLists> {
           title: AppLocalizations.of(context)!.shoppingListsScreen,
           addFunction: _addNewItem,
           addIcon: Icons.post_add,
-          helpFunction: _addNewItem,
+          helpFunction: _help,
         ),
       body: SingleChildScrollView(
         child: Column(
