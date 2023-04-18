@@ -44,10 +44,10 @@ class UsedAndExpired extends StatefulWidget {
 
 class _UsedAndExpiredState extends State<UsedAndExpired> {
   final StateController = Get.put(ItemController());
-  final _expDate = TextEditingController();
-  final _openDate = TextEditingController();
-  final _details = TextEditingController();
-  final bool _favorite = false;
+  var _expDate = TextEditingController();
+  var _openDate = TextEditingController();
+  var _details = TextEditingController();
+  bool _favorite = false;
 
   final month = months[DateTime.now().month - 1];
   final year = DateTime.now().year;

@@ -191,14 +191,15 @@ class PantryProxy with ChangeNotifier {
     return result;
   }
 
-  double countByMonth(int month, String usedorbin) {
-    var history;
-    if (usedorbin == "Used") {
-      history = getByYearMonthUsed(month);
-    } else if (usedorbin == "Bin") {
-      history = getByYearMonthBin(month);
+  String countByMonth(int month) {
+    var usedItems = getByYearMonthUsed(month).length;
+    var binItems = getByYearMonthBin(month).length;
+    var allCount = usedItems + binItems;
+    if (allCount > 0) {
+      var percentage = usedItems / allCount * 100;
+      return percentage.toStringAsFixed(0);
+    } else {
+      return "0";
     }
-
-    return 0;
   }
 }

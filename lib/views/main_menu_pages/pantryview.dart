@@ -116,12 +116,9 @@ class _PantryViewState extends State<PantryView> {
           ),
         ],
       ),
-      body: ListView(
-        children: <Widget>[
-          Container(
-            height: 20, // To give space for the show/sort options
-          ),
-          Expanded(
+      body: Column(
+        children: [
+          Flexible(
             child: StreamBuilder<RealmResultsChanges<Item>>(
               stream: chosenStream(selectedView)?.changes,
               builder: (context, snapshot) {
@@ -137,7 +134,7 @@ class _PantryViewState extends State<PantryView> {
                   );
                 } else {
                   if (selectedView == "all") {
-                    return Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
