@@ -7,11 +7,14 @@
 #include "generated_plugin_registrant.h"
 
 #include <permission_handler_windows/permission_handler_windows_plugin.h>
+#include <realm/realm_plugin.h>
 #include <webview_windows/webview_windows_plugin.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
   PermissionHandlerWindowsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("PermissionHandlerWindowsPlugin"));
+  RealmPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("RealmPlugin"));
   WebviewWindowsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("WebviewWindowsPlugin"));
 }
