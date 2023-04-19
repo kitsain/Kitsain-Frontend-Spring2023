@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kitsain_frontend_spring2023/assets/itembuilder.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:realm/realm.dart';
+import 'package:flutter_gen/gen_l10n/app-localizations.dart';
+import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 
 import '../../database/pantry_proxy.dart';
 
@@ -72,10 +76,20 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
     }
     return null;
   }
+  final StateController = Get.put(ItemController());
+  var _expDate = TextEditingController();
+  var _openDate = TextEditingController();
+  var _details = TextEditingController();
+  String _shoppingList = testShoppingLists.first;
+  bool _favorite = false;
+
+  final month = months[DateTime.now().month -1];
+  final year = DateTime.now().year;
+
+  final List<bool> _selectedTabs = <bool>[true, false];
 
   _receiveItem(String data) {
     setState(() {
-      //_placeholderDataModel = data;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(data),

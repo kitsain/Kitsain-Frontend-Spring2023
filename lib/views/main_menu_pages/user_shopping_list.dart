@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 import 'package:kitsain_frontend_spring2023/assets/shopping_list_item.dart';
+import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
+import 'package:kitsain_frontend_spring2023/views/help_pages/user_shopping_list_help_page.dart';
+import 'package:kitsain_frontend_spring2023/views/add_forms/add_new_shopping_list_item_form.dart';
 
 class UserShoppingList extends StatefulWidget {
   const UserShoppingList({super.key, required this.listIndex});
@@ -28,7 +32,8 @@ class _UserShoppingListState extends State<UserShoppingList> {
 
   _moveSelectedItemsToPantry() {
     // todo (Currently moves all items, not just selected. Needs to be fixed when real model is available.)
-    _stateController.pantryList.addAll(_stateController.shoppingLists[widget.listIndex]);
+    _stateController.pantryList
+        .addAll(_stateController.shoppingLists[widget.listIndex]);
     _stateController.shoppingLists[widget.listIndex].clear();
   }
 
@@ -36,9 +41,41 @@ class _UserShoppingListState extends State<UserShoppingList> {
     // todo
   }
 
+  void _addNewItem() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return FractionallySizedBox(
+          heightFactor: 0.7,
+          child: NewShoppingListItemForm(),
+        );
+      },
+    );
+  }
+
+  void _help() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return const FractionallySizedBox(
+          //heightFactor: 0.7,
+          child: UserShoppingListHelp(),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: TopBar(
+          title: AppLocalizations.of(context)!.shoppingListsScreen,
+          addFunction: _addNewItem,
+          addIcon: Icons.add_shopping_cart,
+          helpFunction: _help,
+        ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -71,7 +108,9 @@ class _UserShoppingListState extends State<UserShoppingList> {
                   onPressed: () => _deselectAll(),
                   child: Text('DESELECT ALL'),
                 ),
-                SizedBox(width: 15,),
+                SizedBox(
+                  width: 15,
+                ),
               ],
             ),
             DragTarget<String>(
@@ -90,9 +129,10 @@ class _UserShoppingListState extends State<UserShoppingList> {
                         return Column(
                           children: [
                             ShoppingListItem(
-                                itemName: _stateController
-                                .shoppingLists[widget.listIndex][index],
-                                itemDescription: 'Additional description',),
+                              itemName: _stateController
+                                  .shoppingLists[widget.listIndex][index],
+                              itemDescription: 'Additional description',
+                            ),
                           ],
                         );
                       },

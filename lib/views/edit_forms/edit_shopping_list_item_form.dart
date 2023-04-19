@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 const List<String> categories = <String>['Meat', 'Seafood', 'Fruit', 'Vegetables',
   'Frozen', 'Drinks', 'Bread', 'Sweets',
   'Dairy', 'Ready meals',
   'Dry & canned goods', 'Other'];
 
-class NewShoppingListItemForm extends StatefulWidget {
-  const NewShoppingListItemForm({super.key});
+class EditShoppingListItemForm extends StatefulWidget {
+  const EditShoppingListItemForm({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _NewItemFormState createState() => _NewItemFormState();
+  _EditItemFormState createState() => _EditItemFormState();
 }
 
 @override
-class _NewItemFormState extends State<NewShoppingListItemForm> {
+class _EditItemFormState extends State<EditShoppingListItemForm> {
   final _formKey = GlobalKey<FormState>();
   final _EANCodeField = TextEditingController();
   var _itemName = TextEditingController();
@@ -69,48 +68,13 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
               ],
             ),
             Text(
-              'ADD TO\n SHOPPING LIST',
+              'EDIT SHOPPING LIST ITEM',
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox( height: MediaQuery.of(context).size.height * 0.03),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.07,
-                  child: ElevatedButton.icon(
-                    onPressed: () async {
-                      var res = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SimpleBarcodeScannerPage(),
-                          ));
-                      setState(() {
-                        if (res is String && res != '-1') {
-                          _EANCodeField.text = res;
-                        }
-                      });
-                      //Res will be the EAN-code
-                      //Here add OFF-api call and populate item name and category
-                      //fields if the product was found
-                      //_itemName.text =
-                    },
-                    icon: Icon(Icons.camera_alt, size: 40,),
-                    label: Text('SCAN EAN', style: TextStyle(fontSize: 20)),
-                  ),
-                ),
-                SizedBox( height: MediaQuery.of(context).size.height * 0.01),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.03,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      //Here check that EAN-code-field is no empty
-                      //And then call OFF-API
-                    },
-                    child: Text('      ADD MANUALLY     '),
-                  ),
-                ),
                 SizedBox( height: MediaQuery.of(context).size.height * 0.03),
                 SizedBox(
                   child: TextFormField(

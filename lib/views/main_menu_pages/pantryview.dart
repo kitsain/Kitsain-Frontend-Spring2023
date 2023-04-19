@@ -59,9 +59,40 @@ class _PantryViewState extends State<PantryView> {
     }
   }
 
+  void _addNewItem() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return const FractionallySizedBox(
+          heightFactor: 0.7,
+          child: NewItemForm(),
+        );
+      },
+    );
+  }
+  void _help() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return const FractionallySizedBox(
+          //heightFactor: 0.7,
+          child: PantryHelp(),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: TopBar(
+        title: AppLocalizations.of(context)!.pantryScreen,
+        addFunction: _addNewItem,
+        addIcon: Icons.add_home,
+        helpFunction: _help,
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
