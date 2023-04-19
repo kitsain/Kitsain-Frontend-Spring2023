@@ -191,8 +191,6 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
     return Scaffold(
         appBar: TopBar(
           title: AppLocalizations.of(context)!.historyScreen,
-          addFunction: _temp,
-          addIcon: Icons.post_add,
           helpFunction: _temp,
         ),
         body: DragTarget<String>(
