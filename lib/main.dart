@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
   final _pages = [
     PantryView(),
     const ShoppingListNavigation(),
-    const History(),
+    const UsedAndExpired(),
   ];
 
   void _navMenuItemSelected(int index) {
