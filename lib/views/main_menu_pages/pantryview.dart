@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
+import 'package:kitsain_frontend_spring2023/views/add_forms/add_new_item_form.dart';
+import 'package:kitsain_frontend_spring2023/views/help_pages/pantry_help_page.dart';
 import 'package:realm/realm.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/assets/itembuilder.dart';
@@ -71,6 +74,7 @@ class _PantryViewState extends State<PantryView> {
       },
     );
   }
+
   void _help() {
     showModalBottomSheet(
       context: context,
@@ -84,11 +88,23 @@ class _PantryViewState extends State<PantryView> {
     );
   }
 
+  _receiveItem(Item data) {
+    print(data.name);
+    PantryProxy().changeLocation(data, "Pantry");
+    setState(() {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(data.name),
+        ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
-        title: AppLocalizations.of(context)!.pantryScreen,
+        title: 'Pantry Screen',
         addFunction: _addNewItem,
         addIcon: Icons.add_home,
         helpFunction: _help,
@@ -156,127 +172,129 @@ class _PantryViewState extends State<PantryView> {
           ),
         ],
       ),
-      body: ListView(
-        children: [
-          Flexible(
-            child: StreamBuilder<RealmResultsChanges<Item>>(
-              stream: chosenStream(selectedView)?.changes,
-              builder: (context, snapshot) {
-                final data = snapshot.data;
-                if (data == null) {
-                  return const CircularProgressIndicator(); // while loading data
-                }
-                final results = data.results;
+      body: DragTarget<Item>(
+          onAccept: (data) => _receiveItem(data),
+          builder: (context, candidateData, rejectedData) {
+            return ListView(
+              children: [
+                StreamBuilder<RealmResultsChanges<Item>>(
+                  stream: chosenStream(selectedView)?.changes,
+                  builder: (context, snapshot) {
+                    final data = snapshot.data;
+                    if (data == null) {
+                      return const CircularProgressIndicator(); // while loading data
+                    }
+                    final results = data.results;
 
-                if (results.isEmpty) {
-                  return const Center(
-                    child: Text("No items found"),
-                  );
-                } else {
-                  if (selectedView == "all") {
-                    debugPrint("all");
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                          child: Text(
-                            "ALL ITEMS",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: HEADERSIZE),
-                          ),
-                        ),
-                        ItemBuilder(
-                          items: results,
-                          sortMethod: selectedSort,
-                          loc: "pantry",
-                        ),
-                      ],
-                    );
-                  }
-                  if (selectedView == "favorites") {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                          child: Text(
-                            "FAVORITE ITEMS",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: HEADERSIZE),
-                          ),
-                        ),
-                        ItemBuilder(
-                          items: results,
-                          sortMethod: selectedSort,
-                          loc: "pantry",
-                        ),
-                      ],
-                    );
-                  }
-                  if (selectedView == "opened") {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                          child: Text(
-                            "OPENED ITEMS",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: HEADERSIZE),
-                          ),
-                        ),
-                        ItemBuilder(
-                          items: results,
-                          sortMethod: selectedSort,
-                          loc: "pantry",
-                        ),
-                      ],
-                    );
-                  } else {
-                    return Column(
-                      children: [
-                        for (var cat in categories)
-                          if (checkIfEmpty(cat))
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(15, 5, 15, 5),
-                                  child: Text(
-                                    cat.toUpperCase(),
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: HEADERSIZE),
-                                  ),
-                                ),
-                                ItemBuilder(
-                                  items: PantryProxy()
-                                      .getByMainCat(cat, selectedSort),
-                                  sortMethod: selectedSort,
-                                  loc: "pantry",
-                                ),
-                                const Divider(
-                                  height: 15,
-                                  indent: 20,
-                                  endIndent: 20,
-                                  color: Colors.black,
-                                )
-                              ],
+                    if (results.isEmpty) {
+                      return const Center(
+                        child: Text("No items found"),
+                      );
+                    } else {
+                      if (selectedView == "all") {
+                        debugPrint("all");
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                              child: Text(
+                                "ALL ITEMS",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: HEADERSIZE),
+                              ),
                             ),
-                      ],
-                    );
-                  }
-                }
-              },
-            ),
-          ),
-        ],
-      ),
+                            ItemBuilder(
+                              items: results,
+                              sortMethod: selectedSort,
+                              loc: "pantry",
+                            ),
+                          ],
+                        );
+                      }
+                      if (selectedView == "favorites") {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                              child: Text(
+                                "FAVORITE ITEMS",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: HEADERSIZE),
+                              ),
+                            ),
+                            ItemBuilder(
+                              items: results,
+                              sortMethod: selectedSort,
+                              loc: "pantry",
+                            ),
+                          ],
+                        );
+                      }
+                      if (selectedView == "opened") {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                              child: Text(
+                                "OPENED ITEMS",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: HEADERSIZE),
+                              ),
+                            ),
+                            ItemBuilder(
+                              items: results,
+                              sortMethod: selectedSort,
+                              loc: "pantry",
+                            ),
+                          ],
+                        );
+                      } else {
+                        return Column(
+                          children: [
+                            for (var cat in categories)
+                              if (checkIfEmpty(cat))
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          15, 5, 15, 5),
+                                      child: Text(
+                                        cat.toUpperCase(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: HEADERSIZE),
+                                      ),
+                                    ),
+                                    ItemBuilder(
+                                      items: PantryProxy()
+                                          .getByMainCat(cat, selectedSort),
+                                      sortMethod: selectedSort,
+                                      loc: "pantry",
+                                    ),
+                                    const Divider(
+                                      height: 15,
+                                      indent: 20,
+                                      endIndent: 20,
+                                      color: Colors.black,
+                                    )
+                                  ],
+                                ),
+                          ],
+                        );
+                      }
+                    }
+                  },
+                ),
+              ],
+            );
+          }),
     );
   }
 }

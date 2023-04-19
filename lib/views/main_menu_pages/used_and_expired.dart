@@ -76,32 +76,43 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
     }
     return null;
   }
-  final StateController = Get.put(ItemController());
+
   var _expDate = TextEditingController();
   var _openDate = TextEditingController();
   var _details = TextEditingController();
-  String _shoppingList = testShoppingLists.first;
+
   bool _favorite = false;
 
-  final month = months[DateTime.now().month -1];
-  final year = DateTime.now().year;
-
-  final List<bool> _selectedTabs = <bool>[true, false];
-
-  _receiveItem(String data) {
+  _receiveItem(Item data) {
+    print(data.name);
+    if (_selectedTabs[0] == true) {
+      print('select00000');
+      PantryProxy().changeLocation(data, "Used");
+    } else {
+      PantryProxy().changeLocation(data, "Bin");
+      print('select1111111');
+    }
     setState(() {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(data),
+          content: Text(data.name),
         ),
       );
     });
   }
 
+  _temp() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: DragTarget<String>(
+      appBar: TopBar(
+        title: AppLocalizations.of(context)!.historyScreen,
+        addFunction: _temp,
+        addIcon: Icons.post_add,
+        helpFunction: _temp,
+      ),
+      body: DragTarget<Item>(
         onAccept: (data) => _receiveItem(data),
         builder: (context, candidateData, rejectedData) {
           return ListView(
@@ -159,10 +170,17 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
               Center(
-                child: DragTarget<String>(
+                child: DragTarget<Item>(
                   onWillAccept: (data) {
-                    _selectedTabs[0] = !_selectedTabs[0];
-                    _selectedTabs[1] = !_selectedTabs[1];
+                    setState(() {
+                      _selectedTabs[0] = !_selectedTabs[0];
+                      _selectedTabs[1] = !_selectedTabs[1];
+                    });
+                    if (_selectedTabs[0] == true) {
+                      selectedView = "used";
+                    } else {
+                      selectedView = "bin";
+                    }
                     return true;
                   },
                   builder: (context, candidateData, rejectedData) {
