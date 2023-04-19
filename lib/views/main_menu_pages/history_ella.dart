@@ -97,19 +97,20 @@ class _HistoryState extends State<History> {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: SizedBox(
-                    //height: MediaQuery.of(context).size.height * 0.03,
-                    // child: Text(
-                    //   'MONTH > $month $year',
-                    //   textAlign: TextAlign.right,
-                    //   style: const TextStyle(
-                    //       fontSize: 20, fontWeight: FontWeight.bold),
-                    // ),
                     child: Row(
                       children: [
-                        const Text("MONTH >"),
+                        const Text(
+                          "MONTH >",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
                         DropdownButton(
                           value: month,
                           style: const TextStyle(color: Colors.black),
+                          iconSize: 0,
                           onChanged: (String? value) {
                             setState(
                               () {
@@ -136,7 +137,7 @@ class _HistoryState extends State<History> {
                               .values
                               .toList(),
                         ),
-                        Text("2023")
+                        const Text("2023")
                       ],
                     ),
                   ),
@@ -178,31 +179,6 @@ class _HistoryState extends State<History> {
                   },
                 ),
               ),
-              // Stack(
-              //   children: <Widget>[
-              //     SizedBox(
-              //       width: 360,
-              //       height: 170,
-              //     ),
-              //     Positioned(
-              //       top: -17,
-              //       left: 20,
-              //       right: 20,
-              //       child: Icon(Icons.circle, size: 200, color: Colors.amber),
-              //     ),
-              //     Positioned(
-              //       top: 90,
-              //       left: 190,
-              //       right: 10,
-              //       bottom: 10,
-              //       child: Text(
-              //         PantryProxy().countByMonth(monthInt).toString(),
-              //         style: TextStyle(fontSize: 60),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              Text(selectedView.toUpperCase()),
               StreamBuilder<RealmResultsChanges<Item>>(
                 stream: chosenStream(selectedView)?.changes,
                 builder: (context, snapshot) {
@@ -219,11 +195,11 @@ class _HistoryState extends State<History> {
                       children: [
                         Stack(
                           children: <Widget>[
-                            SizedBox(
+                            const SizedBox(
                               width: 360,
                               height: 170,
                             ),
-                            Positioned(
+                            const Positioned(
                               top: -17,
                               left: 20,
                               right: 20,
@@ -236,13 +212,20 @@ class _HistoryState extends State<History> {
                               right: 10,
                               bottom: 10,
                               child: Text(
-                                PantryProxy()
-                                    .countByMonth(monthInt, selectedView)
-                                    .toString(),
-                                style: TextStyle(fontSize: 60),
+                                "${PantryProxy().countByMonth(monthInt, selectedView)} %",
+                                style: const TextStyle(fontSize: 60),
                               ),
                             ),
                           ],
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.fromLTRB(20, 10, 20, 5),
+                          child: Text(
+                            "${selectedView.toUpperCase()} ITEMS",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 23),
+                          ),
                         ),
                         ItemBuilder(
                           items: results,

@@ -49,7 +49,7 @@ class PantryProxy with ChangeNotifier {
   }
 
   RealmResults<Item> getFavouriteItems([String sortBy = "az"]) {
-    var all = getItems();
+    var all = getPantryItems();
     late RealmResults<Item> result;
     if (sortBy == "az") {
       result = all.query("everyday = true SORT(name ASC)");

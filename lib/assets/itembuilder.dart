@@ -3,7 +3,8 @@ import 'package:kitsain_frontend_spring2023/assets/item_card.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:realm/realm.dart';
 
-// In this file we build the list of item cards
+// In this file we build the list of item cards, either in the pantry
+// or in the history tab
 
 class ItemBuilder extends StatefulWidget {
   const ItemBuilder(
@@ -24,7 +25,7 @@ class _ItemBuilderState extends State<ItemBuilder> {
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: widget.items.length,
       itemBuilder: (context, index) {
         if (widget.loc == "pantry") {

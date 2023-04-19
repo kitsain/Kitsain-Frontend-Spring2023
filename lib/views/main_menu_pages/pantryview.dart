@@ -8,6 +8,8 @@ import 'package:kitsain_frontend_spring2023/assets/itembuilder.dart';
 // and where the main content goes. Item lists are generated in
 // itembuilder.dart, depending on the user's chosen options
 
+const HEADERSIZE = 23.0;
+
 class PantryView extends StatefulWidget {
   const PantryView({super.key});
 
@@ -65,6 +67,7 @@ class _PantryViewState extends State<PantryView> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           PopupMenuButton(
+            initialValue: selectedView,
             onSelected: (value) {
               setState(() {
                 selectedView = value.toString();
@@ -93,13 +96,14 @@ class _PantryViewState extends State<PantryView> {
             },
           ),
           PopupMenuButton(
+            initialValue: selectedSort,
             onSelected: (value) {
               setState(() {
                 selectedSort = value.toString();
               });
             },
             child: const Icon(
-              Icons.sort_rounded,
+              Icons.tune,
               size: 30,
             ),
             itemBuilder: (BuildContext context) {
@@ -139,13 +143,18 @@ class _PantryViewState extends State<PantryView> {
                   );
                 } else {
                   if (selectedView == "all") {
-                    Column(
+                    debugPrint("all");
+                    return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          "ALL ITEMS",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                          child: Text(
+                            "ALL ITEMS",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: HEADERSIZE),
+                          ),
                         ),
                         ItemBuilder(
                           items: results,
@@ -156,13 +165,17 @@ class _PantryViewState extends State<PantryView> {
                     );
                   }
                   if (selectedView == "favorites") {
-                    Column(
+                    return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          "FAVORITES",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                          child: Text(
+                            "FAVORITE ITEMS",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: HEADERSIZE),
+                          ),
                         ),
                         ItemBuilder(
                           items: results,
@@ -176,10 +189,14 @@ class _PantryViewState extends State<PantryView> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          "OPENED ITEMS",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                          child: Text(
+                            "OPENED ITEMS",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: HEADERSIZE),
+                          ),
                         ),
                         ItemBuilder(
                           items: results,
@@ -196,11 +213,15 @@ class _PantryViewState extends State<PantryView> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  cat.toUpperCase(),
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                  child: Text(
+                                    cat.toUpperCase(),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: HEADERSIZE),
+                                  ),
                                 ),
                                 ItemBuilder(
                                   items: PantryProxy()
@@ -209,7 +230,9 @@ class _PantryViewState extends State<PantryView> {
                                   loc: "pantry",
                                 ),
                                 const Divider(
-                                  height: 4,
+                                  height: 15,
+                                  indent: 20,
+                                  endIndent: 20,
                                   color: Colors.black,
                                 )
                               ],
