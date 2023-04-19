@@ -26,8 +26,6 @@ const List<String> months = [
   'December'
 ];
 
-enum _MenuValues { edit, used, bin, shoppinglist, delete, pantry }
-
 class History extends StatefulWidget {
   const History({super.key});
 
@@ -108,112 +106,43 @@ class _HistoryState extends State<History> {
                     // ),
                     child: Row(
                       children: [
-                        Text("MONTH >"),
-                        TextButton(
-                            onPressed: () {
-                              PopupMenuButton<_MenuValues>(
-                                icon: const Icon(Icons.more_horiz),
-                                itemBuilder: (BuildContext context) {
-                                  return [
-                                    const PopupMenuItem(
-                                      value: _MenuValues.edit,
-                                      child: Text("Edit item"),
+                        const Text("MONTH >"),
+                        DropdownButton(
+                          value: month,
+                          style: const TextStyle(color: Colors.black),
+                          onChanged: (String? value) {
+                            setState(
+                              () {
+                                monthInt = mapMonths.keys
+                                    .firstWhere((k) => mapMonths[k] == value);
+                                month = DateFormat("MMMM").format(
+                                  DateTime(0, monthInt),
+                                );
+                              },
+                            );
+                          },
+                          items: mapMonths
+                              .map(
+                                (key, value) {
+                                  return MapEntry(
+                                    key,
+                                    DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
                                     ),
-                                    const PopupMenuItem(
-                                      value: _MenuValues.used,
-                                      child: Text("Move to used"),
-                                    ),
-                                    const PopupMenuItem(
-                                      value: _MenuValues.bin,
-                                      child: Text("Move to bin"),
-                                    ),
-                                    const PopupMenuItem(
-                                      value: _MenuValues.shoppinglist,
-                                      child: Text("Move to shopping list"),
-                                    ),
-                                    const PopupMenuItem(
-                                      value: _MenuValues.delete,
-                                      child: Text("Delete item"),
-                                    ),
-                                  ];
+                                  );
                                 },
-                                onSelected: (value) {
-                                  switch (value) {
-                                    case _MenuValues.edit:
-                                      break;
-                                    // case _MenuValues.used:
-                                    //   PantryProxy().changeLocation(widget.item, "Used");
-                                    //   break;
-                                    // case _MenuValues.bin:
-                                    //   PantryProxy().changeLocation(widget.item, "Bin");
-                                    //   break;
-                                    // case _MenuValues.shoppinglist:
-                                    //   break;
-                                    // case _MenuValues.delete:
-                                    //   showDialog(
-                                    //     context: context,
-                                    //     builder: (ctx) => AlertDialog(
-                                    //       title: const Text("Delete item"),
-                                    //       content: const Text(
-                                    //           "Are you sure you want to delete this item? This action cannot be undone."),
-                                    //       actions: <Widget>[
-                                    //         TextButton(
-                                    //             onPressed: () {
-                                    //               Navigator.of(ctx).pop();
-                                    //             },
-                                    //             child: const Text("Cancel")),
-                                    //         TextButton(
-                                    //             onPressed: () {
-                                    //               deleteItem(widget.item);
-                                    //               Navigator.of(ctx).pop();
-                                    //             },
-                                    //             child: const Text("Delete"))
-                                    //       ],
-                                    //     ),
-                                    //   );
-                                    //   break;
-                                  }
-                                },
-                              );
-                            },
-                            child: Text(month,
-                                style: TextStyle(color: Colors.black)))
+                              )
+                              .values
+                              .toList(),
+                        ),
+                        Text("2023")
                       ],
                     ),
                   ),
                 ),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-              DropdownButtonFormField<String>(
-                value: month,
-                onChanged: (String? value) {
-                  setState(
-                    () {
-                      monthInt = mapMonths.keys
-                          .firstWhere((k) => mapMonths[k] == value);
-                      month = DateFormat("MMMM").format(
-                        DateTime(0, monthInt),
-                      );
-                    },
-                  );
-                },
-                items: mapMonths
-                    .map(
-                      (key, value) {
-                        return MapEntry(
-                          key,
-                          DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          ),
-                        );
-                      },
-                    )
-                    .values
-                    .toList(),
-                style: const TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
-              ),
               Center(
                 child: DragTarget<String>(
                   onWillAccept: (data) {
@@ -249,30 +178,31 @@ class _HistoryState extends State<History> {
                   },
                 ),
               ),
-              Stack(
-                children: <Widget>[
-                  SizedBox(
-                    width: 360,
-                    height: 170,
-                  ),
-                  Positioned(
-                    top: -17,
-                    left: 20,
-                    right: 20,
-                    child: Icon(Icons.circle, size: 200, color: Colors.amber),
-                  ),
-                  Positioned(
-                    top: 90,
-                    left: 190,
-                    right: 10,
-                    bottom: 10,
-                    child: Text(
-                      PantryProxy().countByMonth(monthInt).toString(),
-                      style: TextStyle(fontSize: 60),
-                    ),
-                  ),
-                ],
-              ),
+              // Stack(
+              //   children: <Widget>[
+              //     SizedBox(
+              //       width: 360,
+              //       height: 170,
+              //     ),
+              //     Positioned(
+              //       top: -17,
+              //       left: 20,
+              //       right: 20,
+              //       child: Icon(Icons.circle, size: 200, color: Colors.amber),
+              //     ),
+              //     Positioned(
+              //       top: 90,
+              //       left: 190,
+              //       right: 10,
+              //       bottom: 10,
+              //       child: Text(
+              //         PantryProxy().countByMonth(monthInt).toString(),
+              //         style: TextStyle(fontSize: 60),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              Text(selectedView.toUpperCase()),
               StreamBuilder<RealmResultsChanges<Item>>(
                 stream: chosenStream(selectedView)?.changes,
                 builder: (context, snapshot) {
@@ -285,10 +215,41 @@ class _HistoryState extends State<History> {
                       child: Text("No items found"),
                     );
                   } else {
-                    return ItemBuilder(
-                      items: results,
-                      sortMethod: "az",
-                      loc: "history",
+                    return Column(
+                      children: [
+                        Stack(
+                          children: <Widget>[
+                            SizedBox(
+                              width: 360,
+                              height: 170,
+                            ),
+                            Positioned(
+                              top: -17,
+                              left: 20,
+                              right: 20,
+                              child: Icon(Icons.circle,
+                                  size: 200, color: Colors.amber),
+                            ),
+                            Positioned(
+                              top: 90,
+                              left: 190,
+                              right: 10,
+                              bottom: 10,
+                              child: Text(
+                                PantryProxy()
+                                    .countByMonth(monthInt, selectedView)
+                                    .toString(),
+                                style: TextStyle(fontSize: 60),
+                              ),
+                            ),
+                          ],
+                        ),
+                        ItemBuilder(
+                          items: results,
+                          sortMethod: "az",
+                          loc: "history",
+                        ),
+                      ],
                     );
                   }
                 },

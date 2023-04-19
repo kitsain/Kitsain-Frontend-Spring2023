@@ -121,7 +121,7 @@ class _PantryViewState extends State<PantryView> {
           ),
         ],
       ),
-      body: Column(
+      body: ListView(
         children: [
           Flexible(
             child: StreamBuilder<RealmResultsChanges<Item>>(

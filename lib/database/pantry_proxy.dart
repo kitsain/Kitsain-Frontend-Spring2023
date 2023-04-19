@@ -203,13 +203,17 @@ class PantryProxy with ChangeNotifier {
     return result;
   }
 
-  String countByMonth(int month) {
+  String countByMonth(int month, String selectedView) {
     var usedItems = getByYearMonthUsed(month).length;
     var binItems = getByYearMonthBin(month).length;
     var allCount = usedItems + binItems;
     if (allCount > 0) {
       var percentage = usedItems / allCount * 100;
-      return percentage.toStringAsFixed(0);
+      if (selectedView == "used") {
+        return percentage.toStringAsFixed(0);
+      } else {
+        return (100 - percentage).toStringAsFixed(0);
+      }
     } else {
       return "0";
     }

@@ -24,11 +24,11 @@ class _ItemBuilderState extends State<ItemBuilder> {
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
-      scrollDirection: Axis.vertical,
+      physics: NeverScrollableScrollPhysics(),
       itemCount: widget.items.length,
       itemBuilder: (context, index) {
         if (widget.loc == "pantry") {
-          return ItemCard2(item: widget.items[index]);
+          return ItemCard(item: widget.items[index]);
         } else if (widget.loc == "history") {
           return HistoryCard(item: widget.items[index]);
         }

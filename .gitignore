@@ -90,3 +90,4 @@ doc/api/
 *.js_
 *.js.deps
 *.js.map
+.vscode/launch.json
