@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
+import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 
 const List<Widget> tabs = <Widget>[
   Text('USED'),
@@ -23,7 +26,7 @@ const List months = [
   'December'
 ];
 
-const List testShoppingLists= [
+const List<String> testShoppingLists = <String>[
   'Shopping list test 1',
   'Shopping list test 2',
   'Shopping list test 3',
@@ -46,6 +49,7 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
   var _expDate = TextEditingController();
   var _openDate = TextEditingController();
   var _details = TextEditingController();
+  String _shoppingList = testShoppingLists.first;
   bool _favorite = false;
 
   final month = months[DateTime.now().month -1];
@@ -75,11 +79,76 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
       );
   }
 
+  _addToShoppingDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text('Move to shopping list'),
+          content:
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(5)
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownButtonFormField<String>(
+                menuMaxHeight: 200,
+                value: _shoppingList,
+                icon: Positioned(
+                    right: 30,
+                    child: Icon(Icons.arrow_drop_down)),
+                decoration: InputDecoration.collapsed(
+                    hintText: ''),
+                onChanged: (String? value) {
+                  setState(() {
+                    _shoppingList = value!;
+                  });
+                },
+                items: testShoppingLists.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('CANCEL'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: const Text('DONE'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+    );
+  }
+
   Widget _actionPopUpMenu() {
     return PopupMenuButton(
       constraints: BoxConstraints(maxHeight: 300, maxWidth: 200),
       icon: Icon(Icons.more_horiz, color: Colors.black),
-      itemBuilder: (BuildContext context) => <PopupMenuEntry<PopupMenuButton>>[
+      onSelected: (newValue) {
+        setState(() {
+          if(newValue == "0") {
+            //Move to bin or used
+          }else if(newValue == "1") {
+            //Add to shopping list
+            _addToShoppingDialog();
+          } else {
+            //Add to pantry
+          }
+        });
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
         PopupMenuItem(
             child:Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -97,50 +166,35 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
               ],
             ),
         ),
-        PopupMenuItem(
+        PopupMenuItem<String>(
           child: Text( _selectedTabs[0] ? "MOVE TO BIN": "MOVE TO USED",
               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
-          onTap: (){}, //Here the functionality of moving the card
+          value: "0",
         ),
         PopupMenuItem(
-          child: PopupMenuButton(
-            constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
-            child: Text( "ADD TO SHOPPING",
-            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              PopupMenuItem(
-                child:Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Choose list",
-                        style: TextStyle(color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20)),
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(Icons.arrow_drop_up, color: Colors.black, size: 35)
-                    )
-                  ],
-                ),
-              ),
-              PopupMenuItem(child: _shoppingLists()),
-            ],
-          )
+          child: Text('ADD TO SHOPPING', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
+          value: "1",
         ),
         PopupMenuItem(
           child: Text("ADD TO PANTRY",
               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
-          onTap: (){}, //Here the functionality of moving the card
+          value: "2",
         ),
       ],
     );
   }
 
+  _temp() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: TopBar(
+          title: AppLocalizations.of(context)!.historyScreen,
+          addFunction: _temp,
+          addIcon: Icons.post_add,
+          helpFunction: _temp,
+        ),
         body: DragTarget<String>(
         onAccept: (data) => _receiveItem(data),
         builder: (context, candidateData, rejectedData) {
