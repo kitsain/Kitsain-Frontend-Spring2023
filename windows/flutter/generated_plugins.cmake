@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   permission_handler_windows
+  realm
   webview_windows
 )
 

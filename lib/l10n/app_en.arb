@@ -1,0 +1,42 @@
+{
+    "pantryScreen": "MY PANTRY",
+    "@pantryScreen": {
+        "description": "Name to describe pantry screen"
+    },
+    "shoppingListsScreen": "SHOPPING LISTS",
+    "@shoppingListsScreen": {
+        "description": "Name to describe shopping lists screen"
+    },
+    "historyScreen": "HISTORY",
+    "@historyScreen": {
+        "description": "Name to describe history screen"
+    },
+    "addNewItem": "Add new item",
+    "@addNewItem": {
+        "description": "Tooltip for adding new item"
+    },
+    "dragComplete": "drag complete",
+    "@dragComplete": {
+        "description": "Text when drag is completed"
+    },
+    "dropTarget": "Drop",
+    "@dropTarget": {
+        "description": "Text to show in the drop target on history page"
+    },
+    "openScanner": "Open Scanner",
+    "@openScanner": {
+        "description": "Text to show for opening scanner"
+    },
+    "barcode": "Barcode",
+    "@barcode": {
+        "description": "Placeholder text for barcode field when adding new item"
+    },
+    "pantryItem": "pantry",
+    "@pantryItem": {
+        "description": "Name to show on the demo pantry items"
+    },
+    "shoppingListItem": "shopping list",
+    "@shoppingListItem": {
+        "description": "Name to show on the demo shopping list items"
+    }
+}
