@@ -7,7 +7,7 @@ import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 import 'package:kitsain_frontend_spring2023/database/openfoodfacts.dart';
 
 const List<String> categories = <String>[
-
+  'ITEM CATEGORY',
   'Meat',
   'Seafood',
   'Fruit',
@@ -39,7 +39,7 @@ class _NewItemFormState extends State<NewItemForm> {
   var _openDate = TextEditingController();
   var _details = TextEditingController();
   bool _click = false;
-  String _category = categories.first;
+  String _category = 'ITEM CATEGORY';
   var _offData;
   UnfocusDisposition _disposition = UnfocusDisposition.scope;
 
@@ -159,7 +159,6 @@ class _NewItemFormState extends State<NewItemForm> {
                     SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                     TextFormField(
                       controller: _EANCodeField,
-
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'EAN CODE',
@@ -257,6 +256,7 @@ class _NewItemFormState extends State<NewItemForm> {
                           decoration: InputDecoration.collapsed(
                               hintText: ''),
                           onChanged: (String? value) {
+                            print(value);
                             setState(() {
                               _category = value!;
                             });
@@ -267,6 +267,12 @@ class _NewItemFormState extends State<NewItemForm> {
                               child: Text(value),
                             );
                           }).toList(),
+                          validator: (value) {
+                            if (value == categories.first) {
+                              return "Please enter a category";
+                            }
+                            return null;
+                          },
                         ),
                       ),
                     ),
