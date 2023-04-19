@@ -7,6 +7,7 @@ import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 import 'package:kitsain_frontend_spring2023/database/openfoodfacts.dart';
 
 const List<String> categories = <String>[
+
   'Meat',
   'Seafood',
   'Fruit',
@@ -111,7 +112,7 @@ class _NewItemFormState extends State<NewItemForm> {
                     style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
               ),
-              SizedBox( height: MediaQuery.of(context).size.height * 0.05),
+              SizedBox( height: MediaQuery.of(context).size.height * 0.06),
               Padding(
                 padding: const EdgeInsets.only(left: 7, right: 7),
                 child: Column(
@@ -156,22 +157,16 @@ class _NewItemFormState extends State<NewItemForm> {
                       ),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                    Stack(
-                      children: [
-                        TextFormField(
-                          controller: _EANCodeField,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'EAN CODE',
-                          ),
-                        ),
-                        Positioned(
-                          right: -1,
-                          child: SizedBox(
-                              height: 60,
-                              width: 80,
-                            child: ElevatedButton(
-                              child: Text('FETCH\n ITEM'),
+                    TextFormField(
+                      controller: _EANCodeField,
+
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'EAN CODE',
+                        suffixIcon: Container(
+                          width: 80,
+                          height: 60,
+                          child: ElevatedButton(
                               style: ButtonStyle(
                                   shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
@@ -183,7 +178,7 @@ class _NewItemFormState extends State<NewItemForm> {
                               onPressed: () async {
                                 if(_EANCodeField.text.isNotEmpty) {
                                   ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(content: Text('Fetching item data...')));
+                                      .showSnackBar(SnackBar(content: Text('Fetching item data...')));
                                   try {
                                     primaryFocus!.unfocus(disposition: _disposition);
                                     _offData = await getFromJson(_EANCodeField.text);
@@ -191,7 +186,7 @@ class _NewItemFormState extends State<NewItemForm> {
                                   } catch (e) {
                                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
                                     ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(content: Text('Item not found. Input manually.')));
+                                        .showSnackBar(SnackBar(content: Text('Item not found. Input manually.')));
                                   } if(_itemName.text.isNotEmpty) {
                                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
                                     ScaffoldMessenger.of(context)
@@ -218,10 +213,9 @@ class _NewItemFormState extends State<NewItemForm> {
                                   );
                                 }
                               },
-                            ),
-                          ),
+                              child: Text('FETCH\n ITEM')),
                         )
-                      ]
+                      ),
                     ),
                     SizedBox( height: MediaQuery.of(context).size.height * 0.03),
                     Stack(
@@ -247,22 +241,33 @@ class _NewItemFormState extends State<NewItemForm> {
                       ]
                     ),
                     SizedBox( height: MediaQuery.of(context).size.height * 0.03),
-                    SizedBox(
-                      child: DropdownButtonFormField<String>(
-                        menuMaxHeight: 200,
-                        value: _category,
-                        decoration: InputDecoration(labelText: 'ITEM CATEGORY'),
-                        onChanged: (String? value) {
-                          setState(() {
-                            _category = value!;
-                          });
-                        },
-                        items: categories.map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(5)
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DropdownButtonFormField<String>(
+                          menuMaxHeight: 200,
+                          value: _category,
+                          icon: Positioned(
+                              right: 30,
+                              child: Icon(Icons.arrow_drop_down)),
+                          decoration: InputDecoration.collapsed(
+                              hintText: ''),
+                          onChanged: (String? value) {
+                            setState(() {
+                              _category = value!;
+                            });
+                          },
+                          items: categories.map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
                       ),
                     ),
                     SizedBox( height: MediaQuery.of(context).size.height * 0.04),
