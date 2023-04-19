@@ -460,7 +460,7 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                                                 .size
                                                 .height * 0.12,
                                             child: TextField(
-                                              enabled: true,
+                                              enabled: false,
                                               readOnly: true,
                                               controller: _details,
                                               decoration: InputDecoration(
