@@ -421,6 +421,18 @@ class _HistoryCardState extends State<HistoryCard> {
               icon: const Icon(Icons.more_horiz),
               itemBuilder: (BuildContext context) {
                 return [
+                  if (widget.item.location == "Bin") ...[
+                    const PopupMenuItem(
+                      value: _MenuValues.used,
+                      child: Text("Move to used"),
+                    ),
+                  ],
+                  if (widget.item.location == "Used") ...[
+                    const PopupMenuItem(
+                      value: _MenuValues.bin,
+                      child: Text("Move to bin"),
+                    ),
+                  ],
                   const PopupMenuItem(
                     value: _MenuValues.pantry,
                     child: Text("Move to pantry"),
@@ -437,6 +449,12 @@ class _HistoryCardState extends State<HistoryCard> {
               },
               onSelected: (value) {
                 switch (value) {
+                  case _MenuValues.bin:
+                    PantryProxy().changeLocation(widget.item, "Bin");
+                    break;
+                  case _MenuValues.used:
+                    PantryProxy().changeLocation(widget.item, "Used");
+                    break;
                   case _MenuValues.pantry:
                     PantryProxy().changeLocation(widget.item, "Pantry");
                     break;

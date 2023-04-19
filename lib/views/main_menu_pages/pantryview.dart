@@ -36,8 +36,7 @@ class _PantryViewState extends State<PantryView> {
     'Other'
   ];
 
-  // Choose whether to show all items (either as one list or by category)
-  // or only opened items
+  // Choose what items to query from db based on user selection
   RealmResults<Item>? chosenStream(String selectedView) {
     if (selectedView == "all" || selectedView == "bycat") {
       return PantryProxy().getPantryItems(selectedSort);
