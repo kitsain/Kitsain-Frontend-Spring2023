@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
-import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
+import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:kitsain_frontend_spring2023/views/add_forms/add_new_item_form.dart';
 import 'package:kitsain_frontend_spring2023/views/help_pages/pantry_help_page.dart';
@@ -105,7 +105,7 @@ class _PantryViewState extends State<PantryView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
-        title: 'Pantry Screen',
+        title: AppLocalizations.of(context)!.pantryScreen,
         addFunction: _addNewItem,
         addIcon: Icons.add_home,
         helpFunction: _help,

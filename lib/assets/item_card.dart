@@ -9,7 +9,7 @@ import 'statuscolor.dart';
 enum _MenuValues { edit, used, bin, shoppinglist, delete, pantry }
 
 const BORDERWIDTH = 20.0;
-const NULLCOLOR = Color(0xff979797);
+const NULLCOLOR = Color(0xffF0EBE5);
 
 class ItemCard extends StatefulWidget {
   ItemCard({super.key, required this.item});
@@ -94,7 +94,7 @@ class _ItemCardState extends State<ItemCard> {
                 border: Border(
                   left: BorderSide(
                       color: widget.item.expiryDate == null
-                          ? const Color(0xffF0EBE5)
+                          ? NULLCOLOR
                           : returnColor(widget.item.expiryDate!),
                       width: BORDERWIDTH),
                 ),
@@ -338,7 +338,7 @@ class _HistoryCardState extends State<HistoryCard> {
                 border: Border(
                   left: BorderSide(
                       color: widget.item.expiryDate == null
-                          ? const Color(0xffFFF8F0)
+                          ? NULLCOLOR
                           : returnColor(widget.item.expiryDate!),
                       width: BORDERWIDTH),
                 ),
