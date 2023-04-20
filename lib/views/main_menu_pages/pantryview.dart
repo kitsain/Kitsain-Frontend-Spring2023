@@ -12,7 +12,7 @@ import 'package:kitsain_frontend_spring2023/assets/itembuilder.dart';
 // and where the main content goes. Item lists are generated in
 // itembuilder.dart, depending on the user's chosen options
 
-const HEADERSIZE = 23.0;
+const double HEADERSIZE = 23.0;
 
 class PantryView extends StatefulWidget {
   const PantryView({super.key});
@@ -89,7 +89,6 @@ class _PantryViewState extends State<PantryView> {
   }
 
   _receiveItem(Item data) {
-    print(data.name);
     PantryProxy().changeLocation(data, "Pantry");
     setState(() {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -109,74 +108,136 @@ class _PantryViewState extends State<PantryView> {
         addIcon: Icons.add_home,
         helpFunction: _help,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          PopupMenuButton(
-            initialValue: selectedView,
-            onSelected: (value) {
-              setState(() {
-                selectedView = value.toString();
-              });
-            },
-            child: const Text("SHOW"),
-            itemBuilder: (BuildContext context) {
-              return const [
-                PopupMenuItem(
-                  value: "all",
-                  child: Text("ALL"),
-                ),
-                PopupMenuItem(
-                  value: "favorites",
-                  child: Text("FAVORITES"),
-                ),
-                PopupMenuItem(
-                  value: "opened",
-                  child: Text("OPENED"),
-                ),
-                PopupMenuItem(
-                  value: "bycat",
-                  child: Text("BY CATEGORY"),
-                ),
-              ];
-            },
-          ),
-          PopupMenuButton(
-            initialValue: selectedSort,
-            onSelected: (value) {
-              setState(() {
-                selectedSort = value.toString();
-              });
-            },
-            child: const Icon(
-              Icons.tune,
-              size: 30,
-            ),
-            itemBuilder: (BuildContext context) {
-              return const [
-                PopupMenuItem(
-                  value: "expdate",
-                  child: Text("Expiration date"),
-                ),
-                PopupMenuItem(
-                  value: "addedlast",
-                  child: Text("Added last"),
-                ),
-                PopupMenuItem(
-                  value: "az",
-                  child: Text("A - Z"),
-                ),
-              ];
-            },
-          ),
-        ],
-      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      // floatingActionButton: Row(
+      //   mainAxisAlignment: MainAxisAlignment.end,
+      //   children: [
+      //     PopupMenuButton(
+      //       initialValue: selectedView,
+      //       onSelected: (value) {
+      //         setState(() {
+      //           selectedView = value.toString();
+      //         });
+      //       },
+      //       child: const Text("SHOW"),
+      //       itemBuilder: (BuildContext context) {
+      //         return const [
+      //           PopupMenuItem(
+      //             value: "all",
+      //             child: Text("ALL"),
+      //           ),
+      //           PopupMenuItem(
+      //             value: "favorites",
+      //             child: Text("FAVORITES"),
+      //           ),
+      //           PopupMenuItem(
+      //             value: "opened",
+      //             child: Text("OPENED"),
+      //           ),
+      //           PopupMenuItem(
+      //             value: "bycat",
+      //             child: Text("BY CATEGORY"),
+      //           ),
+      //         ];
+      //       },
+      //     ),
+      //     PopupMenuButton(
+      //       initialValue: selectedSort,
+      //       onSelected: (value) {
+      //         setState(() {
+      //           selectedSort = value.toString();
+      //         });
+      //       },
+      //       child: const Icon(
+      //         Icons.tune,
+      //         size: 30,
+      //       ),
+      //       itemBuilder: (BuildContext context) {
+      //         return const [
+      //           PopupMenuItem(
+      //             value: "expdate",
+      //             child: Text("Expiration date"),
+      //           ),
+      //           PopupMenuItem(
+      //             value: "addedlast",
+      //             child: Text("Added last"),
+      //           ),
+      //           PopupMenuItem(
+      //             value: "az",
+      //             child: Text("A - Z"),
+      //           ),
+      //         ];
+      //       },
+      //     ),
+      //   ],
+      // ),
       body: DragTarget<Item>(
           onAccept: (data) => _receiveItem(data),
           builder: (context, candidateData, rejectedData) {
             return ListView(
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    PopupMenuButton(
+                      initialValue: selectedView,
+                      onSelected: (value) {
+                        setState(() {
+                          selectedView = value.toString();
+                        });
+                      },
+                      child: const Text("SHOW"),
+                      itemBuilder: (BuildContext context) {
+                        return const [
+                          PopupMenuItem(
+                            value: "all",
+                            child: Text("ALL"),
+                          ),
+                          PopupMenuItem(
+                            value: "favorites",
+                            child: Text("FAVORITES"),
+                          ),
+                          PopupMenuItem(
+                            value: "opened",
+                            child: Text("OPENED"),
+                          ),
+                          PopupMenuItem(
+                            value: "bycat",
+                            child: Text("BY CATEGORY"),
+                          ),
+                        ];
+                      },
+                    ),
+                    PopupMenuButton(
+                      initialValue: selectedSort,
+                      onSelected: (value) {
+                        setState(() {
+                          selectedSort = value.toString();
+                        });
+                      },
+                      child: const Icon(
+                        Icons.tune,
+                        size: 30,
+                      ),
+                      itemBuilder: (BuildContext context) {
+                        return const [
+                          PopupMenuItem(
+                            value: "expdate",
+                            child: Text("Expiration date"),
+                          ),
+                          PopupMenuItem(
+                            value: "addedlast",
+                            child: Text("Added last"),
+                          ),
+                          PopupMenuItem(
+                            value: "az",
+                            child: Text("A - Z"),
+                          ),
+                        ];
+                      },
+                    ),
+                  ],
+                ),
                 StreamBuilder<RealmResultsChanges<Item>>(
                   stream: chosenStream(selectedView)?.changes,
                   builder: (context, snapshot) {
@@ -192,7 +253,6 @@ class _PantryViewState extends State<PantryView> {
                       );
                     } else {
                       if (selectedView == "all") {
-                        debugPrint("all");
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

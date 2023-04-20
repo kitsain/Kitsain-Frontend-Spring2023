@@ -11,7 +11,10 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
 
   Item(
     String id,
-    String name, {
+    String name,
+    String location,
+    String mainCat, {
+    bool everyday = false,
     String? barcode,
     String? brand,
     int? quantity,
@@ -21,14 +24,11 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     DateTime? expiryDate,
     int? usedMonth,
     int? usedYear,
-    String? mainCat,
     String? processing,
     String? nutritionGrade,
     String? ecoscoreGrade,
     String? packaging,
     String? origins,
-    String? location,
-    bool? everyday = false,
     String? details,
     Iterable<String?> categories = const [],
     Iterable<String?> labels = const [],
@@ -42,6 +42,9 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     }
     RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set(this, 'name', name);
+    RealmObjectBase.set(this, 'location', location);
+    RealmObjectBase.set(this, 'mainCat', mainCat);
+    RealmObjectBase.set(this, 'everyday', everyday);
     RealmObjectBase.set(this, 'barcode', barcode);
     RealmObjectBase.set(this, 'brand', brand);
     RealmObjectBase.set(this, 'quantity', quantity);
@@ -51,14 +54,11 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     RealmObjectBase.set(this, 'expiryDate', expiryDate);
     RealmObjectBase.set(this, 'usedMonth', usedMonth);
     RealmObjectBase.set(this, 'usedYear', usedYear);
-    RealmObjectBase.set(this, 'mainCat', mainCat);
     RealmObjectBase.set(this, 'processing', processing);
     RealmObjectBase.set(this, 'nutritionGrade', nutritionGrade);
     RealmObjectBase.set(this, 'ecoscoreGrade', ecoscoreGrade);
     RealmObjectBase.set(this, 'packaging', packaging);
     RealmObjectBase.set(this, 'origins', origins);
-    RealmObjectBase.set(this, 'location', location);
-    RealmObjectBase.set(this, 'everyday', everyday);
     RealmObjectBase.set(this, 'details', details);
     RealmObjectBase.set<RealmList<String?>>(
         this, 'categories', RealmList<String?>(categories));
@@ -81,6 +81,22 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   String get name => RealmObjectBase.get<String>(this, 'name') as String;
   @override
   set name(String value) => RealmObjectBase.set(this, 'name', value);
+
+  @override
+  String get location =>
+      RealmObjectBase.get<String>(this, 'location') as String;
+  @override
+  set location(String value) => RealmObjectBase.set(this, 'location', value);
+
+  @override
+  String get mainCat => RealmObjectBase.get<String>(this, 'mainCat') as String;
+  @override
+  set mainCat(String value) => RealmObjectBase.set(this, 'mainCat', value);
+
+  @override
+  bool get everyday => RealmObjectBase.get<bool>(this, 'everyday') as bool;
+  @override
+  set everyday(bool value) => RealmObjectBase.set(this, 'everyday', value);
 
   @override
   String? get barcode =>
@@ -133,12 +149,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   int? get usedYear => RealmObjectBase.get<int>(this, 'usedYear') as int?;
   @override
   set usedYear(int? value) => RealmObjectBase.set(this, 'usedYear', value);
-
-  @override
-  String? get mainCat =>
-      RealmObjectBase.get<String>(this, 'mainCat') as String?;
-  @override
-  set mainCat(String? value) => RealmObjectBase.set(this, 'mainCat', value);
 
   @override
   RealmList<String?> get categories =>
@@ -202,17 +212,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   set origins(String? value) => RealmObjectBase.set(this, 'origins', value);
 
   @override
-  String? get location =>
-      RealmObjectBase.get<String>(this, 'location') as String?;
-  @override
-  set location(String? value) => RealmObjectBase.set(this, 'location', value);
-
-  @override
-  bool? get everyday => RealmObjectBase.get<bool>(this, 'everyday') as bool?;
-  @override
-  set everyday(bool? value) => RealmObjectBase.set(this, 'everyday', value);
-
-  @override
   String? get details =>
       RealmObjectBase.get<String>(this, 'details') as String?;
   @override
@@ -232,6 +231,9 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     return const SchemaObject(ObjectType.realmObject, Item, 'Item', [
       SchemaProperty('id', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('name', RealmPropertyType.string),
+      SchemaProperty('location', RealmPropertyType.string),
+      SchemaProperty('mainCat', RealmPropertyType.string),
+      SchemaProperty('everyday', RealmPropertyType.bool),
       SchemaProperty('barcode', RealmPropertyType.string, optional: true),
       SchemaProperty('brand', RealmPropertyType.string, optional: true),
       SchemaProperty('quantity', RealmPropertyType.int, optional: true),
@@ -241,7 +243,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
       SchemaProperty('expiryDate', RealmPropertyType.timestamp, optional: true),
       SchemaProperty('usedMonth', RealmPropertyType.int, optional: true),
       SchemaProperty('usedYear', RealmPropertyType.int, optional: true),
-      SchemaProperty('mainCat', RealmPropertyType.string, optional: true),
       SchemaProperty('categories', RealmPropertyType.string,
           optional: true, collectionType: RealmCollectionType.list),
       SchemaProperty('labels', RealmPropertyType.string,
@@ -256,8 +257,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
       SchemaProperty('ecoscoreGrade', RealmPropertyType.string, optional: true),
       SchemaProperty('packaging', RealmPropertyType.string, optional: true),
       SchemaProperty('origins', RealmPropertyType.string, optional: true),
-      SchemaProperty('location', RealmPropertyType.string, optional: true),
-      SchemaProperty('everyday', RealmPropertyType.bool, optional: true),
       SchemaProperty('details', RealmPropertyType.string, optional: true),
     ]);
   }

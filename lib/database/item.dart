@@ -18,6 +18,9 @@ class _Item {
   @PrimaryKey()
   late final String id; // This will NOT be shown to the user
   late String name;
+  late String location;
+  late String mainCat;
+  late bool everyday = false;
   late String? barcode;
   late String? brand;
   late int? quantity;
@@ -27,7 +30,7 @@ class _Item {
   late DateTime? expiryDate;
   late int? usedMonth;
   late int? usedYear;
-  late String? mainCat;
+
   late List<String?> categories;
   late List<String?> labels;
   late List<String?> ingredients;
@@ -37,7 +40,5 @@ class _Item {
   late String? ecoscoreGrade;
   late String? packaging;
   late String? origins;
-  late String? location; // Pantry, used, bin, new; Not shown to user
-  late bool? everyday = false;
   late String? details;
 }

@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
+import 'package:kitsain_frontend_spring2023/views/edit_forms/edit_item_form.dart';
 import 'statuscolor.dart';
 
 enum _MenuValues { edit, used, bin, shoppinglist, delete, pantry }
 
-const BORDERWIDTH = 20.0;
-const NULLCOLOR = Color(0xffF0EBE5);
+const double BORDERWIDTH = 20.0;
+const Color NULLCOLOR = Color(0xffF0EBE5);
 
 class ItemCard extends StatefulWidget {
   ItemCard({super.key, required this.item});
@@ -26,12 +27,23 @@ class _ItemCardState extends State<ItemCard> {
     });
   }
 
+  void _editItem(Item item) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return FractionallySizedBox(
+          child: EditItemForm(item: item),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return LongPressDraggable<Item>(
       data: widget.item,
       onDragCompleted: () {
-        print('drag complete');
         //StateController.pantryList.removeAt(index);
       },
       feedback: SizedBox(
@@ -105,7 +117,7 @@ class _ItemCardState extends State<ItemCard> {
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 23),
                 ),
-                subtitle: Text(widget.item.mainCat!.toUpperCase()),
+                subtitle: Text(widget.item.mainCat.toUpperCase()),
                 trailing: PopupMenuButton<_MenuValues>(
                   icon: const Icon(Icons.more_horiz),
                   itemBuilder: (BuildContext context) {
@@ -135,6 +147,7 @@ class _ItemCardState extends State<ItemCard> {
                   onSelected: (value) {
                     switch (value) {
                       case _MenuValues.edit:
+                        _editItem(widget.item);
                         break;
                       case _MenuValues.used:
                         PantryProxy().changeLocation(widget.item, "Used");
@@ -166,6 +179,8 @@ class _ItemCardState extends State<ItemCard> {
                             ],
                           ),
                         );
+                        break;
+                      case _MenuValues.pantry:
                         break;
                     }
                   },
@@ -275,10 +290,9 @@ class _HistoryCardState extends State<HistoryCard> {
     return LongPressDraggable<Item>(
       data: widget.item,
       onDragCompleted: () {
-        print('drag complete');
         //StateController.pantryList.removeAt(index);
       },
-      feedback: Container(
+      feedback: SizedBox(
         height: 85,
         width: 320,
         child: Card(
@@ -347,7 +361,7 @@ class _HistoryCardState extends State<HistoryCard> {
                 title: Text(widget.item.name.toUpperCase(),
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 23)),
-                subtitle: Text(widget.item.mainCat!.toUpperCase()),
+                subtitle: Text(widget.item.mainCat.toUpperCase()),
                 trailing: PopupMenuButton<_MenuValues>(
                   icon: const Icon(Icons.more_horiz),
                   itemBuilder: (BuildContext context) {
@@ -413,6 +427,8 @@ class _HistoryCardState extends State<HistoryCard> {
                             ],
                           ),
                         );
+                        break;
+                      case _MenuValues.edit:
                         break;
                     }
                   },

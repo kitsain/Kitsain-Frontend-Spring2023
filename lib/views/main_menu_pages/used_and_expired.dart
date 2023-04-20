@@ -78,7 +78,12 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
     return null;
   }
 
-  _receiveItem(Item data) {
+  _receiveItem(Item data, String tab) {
+    if (tab == "used") {
+      PantryProxy().changeLocation(data, "Used");
+    } else {
+      PantryProxy().changeLocation(data, "Bin");
+    }
     setState(() {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -110,7 +115,7 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
         helpFunction: _help,
       ),
       body: DragTarget<Item>(
-        onAccept: (data) => _receiveItem(data),
+        onAccept: (data) => _receiveItem(data, selectedView),
         builder: (context, candidateData, rejectedData) {
           return ListView(
             children: [

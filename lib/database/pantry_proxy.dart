@@ -119,7 +119,6 @@ class PantryProxy with ChangeNotifier {
   */
 
   bool upsertItem(Item item) {
-    debugPrint("addItem");
     try {
       realm.write(() {
         realm.add<Item>(item, update: true);
@@ -133,8 +132,6 @@ class PantryProxy with ChangeNotifier {
   }
 
   bool toggleItemEveryday(Item item) {
-    debugPrint("before");
-    debugPrint(item.everyday.toString());
     try {
       realm.write(() {
         if (item.everyday == false) {
@@ -144,8 +141,6 @@ class PantryProxy with ChangeNotifier {
         }
       });
       notifyListeners();
-      debugPrint("after:");
-      debugPrint(item.everyday.toString());
       return true;
     } on RealmException catch (e) {
       debugPrint(e.message);
@@ -170,12 +165,10 @@ class PantryProxy with ChangeNotifier {
   }
 
   void deleteItem(Item item) {
-    debugPrint("deleteItem");
     try {
       realm.write(() {
         realm.delete(item);
       });
-      debugPrint("Item deleted");
       notifyListeners();
     } on RealmException catch (e) {
       debugPrint(e.message);

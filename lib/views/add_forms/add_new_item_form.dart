@@ -1,11 +1,4 @@
-import 'dart:io';
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:kitsain_frontend_spring2023/database/item.dart';
-import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
-import 'package:realm/realm.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:realm/realm.dart';
@@ -41,11 +34,15 @@ class _NewItemFormState extends State<NewItemForm> {
   final _formKey = GlobalKey<FormState>();
   final _EANCodeField = TextEditingController();
   var _itemName = TextEditingController();
-  var _expDate = TextEditingController();
-  var _openDate = TextEditingController();
+  // These dates control the date string user sees in the form
+  var _expDateString = TextEditingController();
+  var _openDateString = TextEditingController();
   var _details = TextEditingController();
-  var _expiryDate;
-  var _oDate;
+
+  // These values are actually saved to the db as DateTime
+  var _openDateDT;
+  var _expDateDT;
+
   bool _favorite = false;
   String _category = 'ITEM CATEGORY';
   var _offData;
@@ -55,30 +52,31 @@ class _NewItemFormState extends State<NewItemForm> {
     if (discardForm ||
         (_itemName.text.isEmpty &&
             _EANCodeField.text.isEmpty &&
-            _openDate.text.isEmpty &&
-            _expDate.text.isEmpty)) {
+            _openDateString.text.isEmpty &&
+            _expDateString.text.isEmpty)) {
       Navigator.pop(context);
     } else {
       showDialog(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-                content: const Text('Discard changes?'),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('CANCEL'),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  TextButton(
-                    child: const Text('DISCARD'),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      _discardChangesDialog(true);
-                    },
-                  ),
-                ],
-              ));
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          content: const Text('Discard changes?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('CANCEL'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: const Text('DISCARD'),
+              onPressed: () {
+                Navigator.pop(context);
+                _discardChangesDialog(true);
+              },
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -97,7 +95,7 @@ class _NewItemFormState extends State<NewItemForm> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.04,
                   child: FloatingActionButton(
-                    child: Icon(Icons.close),
+                    child: const Icon(Icons.close),
                     onPressed: () => _discardChangesDialog(false),
                   ),
                 )
@@ -106,11 +104,10 @@ class _NewItemFormState extends State<NewItemForm> {
             SizedBox(height: MediaQuery.of(context).size.height * 0.01),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.08,
-              child: Text(
+              child: const Text(
                 'ADD ITEM\nTO PANTRY',
                 textAlign: TextAlign.center,
-                style:
-                    const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.06),
@@ -122,21 +119,24 @@ class _NewItemFormState extends State<NewItemForm> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.07,
                     child: ElevatedButton.icon(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.add_a_photo_rounded,
                         size: 40,
                       ),
-                      label: Text('SCAN EAN', style: TextStyle(fontSize: 20)),
+                      label: const Text('SCAN EAN',
+                          style: TextStyle(fontSize: 20)),
                       onPressed: () async {
                         var res = await Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SimpleBarcodeScannerPage(),
+                              builder: (context) =>
+                                  const SimpleBarcodeScannerPage(),
                             ));
                         setState(() async {
                           if (res is String && res != '-1') {
                             ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Fetching item...')));
+                                const SnackBar(
+                                    content: Text('Fetching item...')));
                             try {
                               _EANCodeField.text = res;
                               primaryFocus!.unfocus(disposition: _disposition);
@@ -145,15 +145,16 @@ class _NewItemFormState extends State<NewItemForm> {
                             } catch (e) {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  content: Text(
-                                      'Item not found. Please enter item information.')));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          'Item not found. Please enter item information.')));
                             }
                             if (_itemName.text.isNotEmpty) {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('Item found!')));
+                                  const SnackBar(content: Text('Item found!')));
                             }
                           }
                         });
@@ -164,13 +165,13 @@ class _NewItemFormState extends State<NewItemForm> {
                   TextFormField(
                     controller: _EANCodeField,
                     decoration: InputDecoration(
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                         labelText: 'EAN CODE',
-                        suffixIcon: Container(
+                        suffixIcon: SizedBox(
                           width: 80,
                           height: 60,
                           child: ElevatedButton(
-                              style: ButtonStyle(
+                              style: const ButtonStyle(
                                   shape: MaterialStatePropertyAll<
                                           RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
@@ -182,7 +183,7 @@ class _NewItemFormState extends State<NewItemForm> {
                               onPressed: () async {
                                 if (_EANCodeField.text.isNotEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
+                                      const SnackBar(
                                           content:
                                               Text('Fetching item data...')));
                                   try {
@@ -196,7 +197,7 @@ class _NewItemFormState extends State<NewItemForm> {
                                     ScaffoldMessenger.of(context)
                                         .hideCurrentSnackBar();
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
+                                        const SnackBar(
                                             content: Text(
                                                 'Item not found. Input manually.')));
                                   }
@@ -204,7 +205,8 @@ class _NewItemFormState extends State<NewItemForm> {
                                     ScaffoldMessenger.of(context)
                                         .hideCurrentSnackBar();
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(content: Text('Item found!')));
+                                        const SnackBar(
+                                            content: Text('Item found!')));
                                   }
                                 } else {
                                   showDialog(
@@ -227,7 +229,7 @@ class _NewItemFormState extends State<NewItemForm> {
                                           ));
                                 }
                               },
-                              child: Text('FETCH\n ITEM')),
+                              child: const Text('FETCH\n ITEM')),
                         )),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
@@ -245,7 +247,7 @@ class _NewItemFormState extends State<NewItemForm> {
                         return null;
                       },
                     ),
-                    Positioned(
+                    const Positioned(
                         right: 27,
                         top: 15,
                         child: Icon(Icons.keyboard_alt_outlined))
@@ -260,11 +262,11 @@ class _NewItemFormState extends State<NewItemForm> {
                       child: DropdownButtonFormField<String>(
                         menuMaxHeight: 200,
                         value: _category,
-                        icon: Positioned(
+                        icon: const Positioned(
                             right: 30, child: Icon(Icons.arrow_drop_down)),
-                        decoration: InputDecoration.collapsed(hintText: ''),
+                        decoration:
+                            const InputDecoration.collapsed(hintText: ''),
                         onChanged: (String? value) {
-                          print(value);
                           setState(() {
                             _category = value!;
                           });
@@ -295,11 +297,11 @@ class _NewItemFormState extends State<NewItemForm> {
                       },
                       icon: Icon(
                           _favorite ? Icons.favorite : Icons.favorite_border),
-                      label: Text('Mark as favorite'),
+                      label: const Text('Mark as favorite'),
                     ),
                   ),
                   TextFormField(
-                    controller: _expDate,
+                    controller: _expDateString,
                     decoration: const InputDecoration(
                         icon: Icon(Icons.calendar_today),
                         labelText: "EXPIRATION DATE"),
@@ -311,21 +313,18 @@ class _NewItemFormState extends State<NewItemForm> {
                           firstDate: DateTime(2000),
                           lastDate: DateTime(2101));
                       if (pickedDate != null) {
-                        String expirationDate = pickedDate.day.toString() +
-                            "." +
-                            pickedDate.month.toString() +
-                            "." +
-                            pickedDate.year.toString();
-                        _expDate.text = expirationDate;
-                        _expiryDate = pickedDate;
+                        String expirationDate =
+                            "${pickedDate.day}.${pickedDate.month}.${pickedDate.year}";
+                        _expDateString.text = expirationDate;
+                        _expDateDT = pickedDate;
                       } else {
-                        _expDate.text = "";
+                        _expDateString.text = "";
                       }
                       ;
                     },
                   ),
                   TextFormField(
-                    controller: _openDate,
+                    controller: _openDateString,
                     decoration: const InputDecoration(
                         icon: Icon(Icons.calendar_today),
                         labelText: "OPENING DATE"),
@@ -337,15 +336,12 @@ class _NewItemFormState extends State<NewItemForm> {
                           firstDate: DateTime(2000),
                           lastDate: DateTime(2101));
                       if (pickedDate != null) {
-                        String openedDate = pickedDate.day.toString() +
-                            "." +
-                            pickedDate.month.toString() +
-                            "." +
-                            pickedDate.year.toString();
-                        _openDate.text = openedDate;
-                        _oDate = pickedDate;
+                        String openedDate =
+                            "${pickedDate.day}.${pickedDate.month}.${pickedDate.year}";
+                        _openDateString.text = openedDate;
+                        _openDateDT = pickedDate;
                       } else {
-                        _openDate.text = "";
+                        _openDateString.text = "";
                       }
                       ;
                     },
@@ -353,7 +349,7 @@ class _NewItemFormState extends State<NewItemForm> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                   TextFormField(
                     controller: _details,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Details',
                     ),
@@ -367,7 +363,7 @@ class _NewItemFormState extends State<NewItemForm> {
                         height: MediaQuery.of(context).size.height * 0.07,
                         child: ElevatedButton(
                           onPressed: () => _discardChangesDialog(false),
-                          child: Text('CANCEL'),
+                          child: const Text('CANCEL'),
                         ),
                       ),
                       SizedBox(
@@ -381,10 +377,11 @@ class _NewItemFormState extends State<NewItemForm> {
                               var newItem = Item(
                                 ObjectId().toString(),
                                 _itemName.text,
-                                mainCat: _category,
-                                openedDate: _oDate,
-                                expiryDate: _expiryDate,
-                                location: "Pantry",
+                                "Pantry",
+                                _category,
+                                everyday: _favorite,
+                                openedDate: _openDateDT,
+                                expiryDate: _expDateDT,
                                 addedDate: DateTime.now(),
                               );
                               PantryProxy().upsertItem(newItem);
@@ -392,7 +389,7 @@ class _NewItemFormState extends State<NewItemForm> {
                               Navigator.pop(context);
                             }
                           },
-                          child: Text('ADD ITEM'),
+                          child: const Text('ADD ITEM'),
                         ),
                       ),
                     ],
