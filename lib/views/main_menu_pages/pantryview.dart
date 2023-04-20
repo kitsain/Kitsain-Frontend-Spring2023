@@ -69,7 +69,6 @@ class _PantryViewState extends State<PantryView> {
       isScrollControlled: true,
       builder: (BuildContext context) {
         return const FractionallySizedBox(
-          heightFactor: 0.7,
           child: NewItemForm(),
         );
       },
