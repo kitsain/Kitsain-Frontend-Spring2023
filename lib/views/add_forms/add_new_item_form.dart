@@ -388,6 +388,7 @@ class _NewItemFormState extends State<NewItemForm> {
                               );
                               PantryProxy().upsertItem(newItem);
                               setState(() {});
+                              Navigator.pop(context);
                             }
                           },
                           child: Text('ADD ITEM'),
