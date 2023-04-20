@@ -48,26 +48,25 @@ class _EditItemFormState extends State<EditItemForm> {
     showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          content: const Text('Discard changes?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('CANCEL'),
-              onPressed: () {
-                Navigator.pop(context);
-                _close = false;
-              },
-            ),
-            TextButton(
-              child: const Text('DISCARD'),
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-                _close = true;
-              },
-            ),
-          ],
-        )
-    );
+              content: const Text('Discard changes?'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('CANCEL'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _close = false;
+                  },
+                ),
+                TextButton(
+                  child: const Text('DISCARD'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    _close = true;
+                  },
+                ),
+              ],
+            ));
     return _close;
   }
 
@@ -101,7 +100,8 @@ class _EditItemFormState extends State<EditItemForm> {
                 child: Text(
                   'EDIT ITEM',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 30, fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(
@@ -119,101 +119,107 @@ class _EditItemFormState extends State<EditItemForm> {
                             height: 60,
                             child: ElevatedButton(
                                 style: ButtonStyle(
-                                    shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
+                                    shape: MaterialStatePropertyAll<
+                                            RoundedRectangleBorder>(
                                         RoundedRectangleBorder(
-                                            borderRadius: BorderRadiusDirectional.only(
-                                                topEnd: Radius.circular(5), bottomEnd: Radius.circular(5))
-                                        )
-                                    )
-                                ),
+                                            borderRadius:
+                                                BorderRadiusDirectional.only(
+                                                    topEnd: Radius.circular(5),
+                                                    bottomEnd:
+                                                        Radius.circular(5))))),
                                 onPressed: () async {
-                                  if(_EANCodeField.text.isNotEmpty) {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(content: Text('Fetching item data...')));
+                                  if (_EANCodeField.text.isNotEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content:
+                                                Text('Fetching item data...')));
                                     try {
-                                      primaryFocus!.unfocus(disposition: _disposition);
-                                      _offData = await getFromJson(_EANCodeField.text);
-                                      _itemName.text = _offData.productName.toString();
+                                      primaryFocus!
+                                          .unfocus(disposition: _disposition);
+                                      _offData =
+                                          await getFromJson(_EANCodeField.text);
+                                      _itemName.text =
+                                          _offData.productName.toString();
                                     } catch (e) {
-                                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
                                       ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(content: Text('Item not found. Input manually.')));
-                                    } if(_itemName.text.isNotEmpty) {
-                                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                          .hideCurrentSnackBar();
                                       ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(content: Text('Item found!')));
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  'Item not found. Input manually.')));
+                                    }
+                                    if (_itemName.text.isNotEmpty) {
+                                      ScaffoldMessenger.of(context)
+                                          .hideCurrentSnackBar();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text('Item found!')));
                                     }
                                   } else {
                                     showDialog(
                                         context: context,
-                                        builder: (BuildContext context) => SizedBox(
-                                          width: 10,
-                                          height: 10,
-                                          child: AlertDialog(
-                                              content: const Text('Please input EAN-code'),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  child: const Text('OK'),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                              ]
-                                          ),
-                                        )
-                                    );
+                                        builder: (BuildContext context) =>
+                                            SizedBox(
+                                              width: 10,
+                                              height: 10,
+                                              child: AlertDialog(
+                                                  content: const Text(
+                                                      'Please input EAN-code'),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      child: const Text('OK'),
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                    ),
+                                                  ]),
+                                            ));
                                   }
                                 },
                                 child: Text('FETCH\n ITEM')),
-                          )
+                          )),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                    Stack(children: [
+                      TextFormField(
+                        controller: _itemName,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'ITEM NAME',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter item name";
+                          }
+                          return null;
+                        },
                       ),
-                    ),
-                    SizedBox( height: MediaQuery.of(context).size.height * 0.03),
-                    Stack(
-                        children: [
-                          TextFormField(
-                            controller: _itemName,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'ITEM NAME',
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please enter item name";
-                              }
-                              return null;
-                            },
-                          ),
-                          Positioned(
-                              right: 27,
-                              top: 15,
-                              child: Icon(Icons.keyboard_alt_outlined)
-                          )
-                        ]
-                    ),
-                    SizedBox( height: MediaQuery.of(context).size.height * 0.03),
+                      Positioned(
+                          right: 27,
+                          top: 15,
+                          child: Icon(Icons.keyboard_alt_outlined))
+                    ]),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                     Container(
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(5)
-                      ),
+                          borderRadius: BorderRadius.circular(5)),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: DropdownButtonFormField<String>(
                           menuMaxHeight: 200,
                           value: _category,
                           icon: Positioned(
-                              right: 30,
-                              child: Icon(Icons.arrow_drop_down)),
-                          decoration: InputDecoration.collapsed(
-                              hintText: ''),
+                              right: 30, child: Icon(Icons.arrow_drop_down)),
+                          decoration: InputDecoration.collapsed(hintText: ''),
                           onChanged: (String? value) {
                             print(value);
                             setState(() {
                               _category = value!;
                             });
                           },
-                          items: categories.map<DropdownMenuItem<String>>((String value) {
+                          items: categories
+                              .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value),
@@ -228,7 +234,7 @@ class _EditItemFormState extends State<EditItemForm> {
                         ),
                       ),
                     ),
-                    SizedBox( height: MediaQuery.of(context).size.height * 0.04),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.04),
                     SizedBox(
                       child: TextButton.icon(
                         onPressed: () {
@@ -236,7 +242,8 @@ class _EditItemFormState extends State<EditItemForm> {
                             _click = !_click;
                           });
                         },
-                        icon: Icon(_click ? Icons.favorite : Icons.favorite_border),
+                        icon: Icon(
+                            _click ? Icons.favorite : Icons.favorite_border),
                         label: Text('Mark as favorite'),
                       ),
                     ),
@@ -244,45 +251,53 @@ class _EditItemFormState extends State<EditItemForm> {
                       controller: _expDate,
                       decoration: const InputDecoration(
                           icon: Icon(Icons.calendar_today),
-                          labelText: "EXPIRATION DATE"
-                      ),
+                          labelText: "EXPIRATION DATE"),
                       readOnly: true,
                       onTap: () async {
                         DateTime? pickedDate = await showDatePicker(
                             context: context,
                             initialDate: DateTime.now(),
-                            firstDate:DateTime(2000),
+                            firstDate: DateTime(2000),
                             lastDate: DateTime(2101));
-                        if(pickedDate != null) {
-                          String expirationDate = pickedDate.day.toString() + "." +  pickedDate.month.toString() + "." + pickedDate.year.toString();
+                        if (pickedDate != null) {
+                          String expirationDate = pickedDate.day.toString() +
+                              "." +
+                              pickedDate.month.toString() +
+                              "." +
+                              pickedDate.year.toString();
                           _expDate.text = expirationDate;
                         } else {
                           _expDate.text = "";
-                        };
+                        }
+                        ;
                       },
                     ),
                     TextFormField(
                       controller: _openDate,
                       decoration: const InputDecoration(
                           icon: Icon(Icons.calendar_today),
-                          labelText: "OPENING DATE"
-                      ),
+                          labelText: "OPENING DATE"),
                       readOnly: true,
                       onTap: () async {
                         DateTime? pickedDate = await showDatePicker(
                             context: context,
                             initialDate: DateTime.now(),
-                            firstDate:DateTime(2000),
+                            firstDate: DateTime(2000),
                             lastDate: DateTime(2101));
-                        if(pickedDate != null) {
-                          String openedDate = pickedDate.day.toString() + "." +  pickedDate.month.toString() + "." + pickedDate.year.toString();
+                        if (pickedDate != null) {
+                          String openedDate = pickedDate.day.toString() +
+                              "." +
+                              pickedDate.month.toString() +
+                              "." +
+                              pickedDate.year.toString();
                           _openDate.text = openedDate;
                         } else {
                           _openDate.text = "";
-                        };
+                        }
+                        ;
                       },
                     ),
-                    SizedBox( height: MediaQuery.of(context).size.height * 0.05),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                     TextFormField(
                       controller: _details,
                       decoration: InputDecoration(
@@ -291,7 +306,7 @@ class _EditItemFormState extends State<EditItemForm> {
                       ),
                       maxLines: 5,
                     ),
-                    SizedBox( height: MediaQuery.of(context).size.height * 0.05),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -303,13 +318,14 @@ class _EditItemFormState extends State<EditItemForm> {
                             child: Text('CANCEL'),
                           ),
                         ),
-                        SizedBox( width: MediaQuery.of(context).size.width * 0.05),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.05),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.07,
                           width: MediaQuery.of(context).size.height * 0.15,
                           child: ElevatedButton(
                             onPressed: () {
-                              if(_formKey.currentState!.validate()) {
+                              if (_formKey.currentState!.validate()) {
                                 print("OK");
                               }
                             },

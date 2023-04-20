@@ -82,8 +82,6 @@ class _NewItemFormState extends State<NewItemForm> {
     }
   }
 
-  var _expiryDte;
-  var _oDate;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -318,7 +316,7 @@ class _NewItemFormState extends State<NewItemForm> {
                             "." +
                             pickedDate.year.toString();
                         _expDate.text = expirationDate;
-                        _expiryDte = pickedDate;
+                        _expiryDate = pickedDate;
                       } else {
                         _expDate.text = "";
                       }
@@ -384,7 +382,7 @@ class _NewItemFormState extends State<NewItemForm> {
                                 _itemName.text,
                                 mainCat: _category,
                                 openedDate: _oDate,
-                                expiryDate: _expiryDte,
+                                expiryDate: _expiryDate,
                                 location: "Pantry",
                                 addedDate: DateTime.now(),
                               );

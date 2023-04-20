@@ -9,7 +9,7 @@ import 'statuscolor.dart';
 enum _MenuValues { edit, used, bin, shoppinglist, delete, pantry }
 
 const BORDERWIDTH = 20.0;
-const NULLCOLOR = Color(0xffF0EBE5);
+const NULLCOLOR = Color(0xff979797);
 
 class ItemCard extends StatefulWidget {
   ItemCard({super.key, required this.item});
@@ -34,7 +34,7 @@ class _ItemCardState extends State<ItemCard> {
         print('drag complete');
         //StateController.pantryList.removeAt(index);
       },
-      feedback: Container(
+      feedback: SizedBox(
         height: 85,
         width: 320,
         child: Card(
