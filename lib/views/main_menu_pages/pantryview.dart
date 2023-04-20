@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
+import 'package:kitsain_frontend_spring2023/views/add_forms/add_new_item_form.dart';
+import 'package:kitsain_frontend_spring2023/views/help_pages/pantry_help_page.dart';
 import 'package:realm/realm.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/assets/itembuilder.dart';
@@ -71,6 +74,7 @@ class _PantryViewState extends State<PantryView> {
       },
     );
   }
+
   void _help() {
     showModalBottomSheet(
       context: context,
@@ -88,76 +92,81 @@ class _PantryViewState extends State<PantryView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
-        title: AppLocalizations.of(context)!.pantryScreen,
+        //title: AppLocalizations.of(context)!.pantryScreen,
+        title: "Temp title",
         addFunction: _addNewItem,
         addIcon: Icons.add_home,
         helpFunction: _help,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          PopupMenuButton(
-            initialValue: selectedView,
-            onSelected: (value) {
-              setState(() {
-                selectedView = value.toString();
-              });
-            },
-            child: const Text("SHOW"),
-            itemBuilder: (BuildContext context) {
-              return const [
-                PopupMenuItem(
-                  value: "all",
-                  child: Text("ALL"),
-                ),
-                PopupMenuItem(
-                  value: "favorites",
-                  child: Text("FAVORITES"),
-                ),
-                PopupMenuItem(
-                  value: "opened",
-                  child: Text("OPENED"),
-                ),
-                PopupMenuItem(
-                  value: "bycat",
-                  child: Text("BY CATEGORY"),
-                ),
-              ];
-            },
-          ),
-          PopupMenuButton(
-            initialValue: selectedSort,
-            onSelected: (value) {
-              setState(() {
-                selectedSort = value.toString();
-              });
-            },
-            child: const Icon(
-              Icons.tune,
-              size: 30,
-            ),
-            itemBuilder: (BuildContext context) {
-              return const [
-                PopupMenuItem(
-                  value: "expdate",
-                  child: Text("Expiration date"),
-                ),
-                PopupMenuItem(
-                  value: "addedlast",
-                  child: Text("Added last"),
-                ),
-                PopupMenuItem(
-                  value: "az",
-                  child: Text("A - Z"),
-                ),
-              ];
-            },
-          ),
-        ],
-      ),
       body: ListView(
         children: [
+          Positioned(
+            top: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                PopupMenuButton(
+                  initialValue: selectedView,
+                  onSelected: (value) {
+                    setState(
+                      () {
+                        selectedView = value.toString();
+                      },
+                    );
+                  },
+                  child: const Text("SHOW"),
+                  itemBuilder: (BuildContext context) {
+                    return const [
+                      PopupMenuItem(
+                        value: "all",
+                        child: Text("ALL"),
+                      ),
+                      PopupMenuItem(
+                        value: "favorites",
+                        child: Text("FAVORITES"),
+                      ),
+                      PopupMenuItem(
+                        value: "opened",
+                        child: Text("OPENED"),
+                      ),
+                      PopupMenuItem(
+                        value: "bycat",
+                        child: Text("BY CATEGORY"),
+                      ),
+                    ];
+                  },
+                ),
+                PopupMenuButton(
+                  initialValue: selectedSort,
+                  onSelected: (value) {
+                    setState(() {
+                      selectedSort = value.toString();
+                    });
+                  },
+                  child: const Icon(
+                    Icons.tune,
+                    size: 30,
+                  ),
+                  itemBuilder: (BuildContext context) {
+                    return const [
+                      PopupMenuItem(
+                        value: "expdate",
+                        child: Text("Expiration date"),
+                      ),
+                      PopupMenuItem(
+                        value: "addedlast",
+                        child: Text("Added last"),
+                      ),
+                      PopupMenuItem(
+                        value: "az",
+                        child: Text("A - Z"),
+                      ),
+                    ];
+                  },
+                ),
+              ],
+            ),
+          ),
           Flexible(
             child: StreamBuilder<RealmResultsChanges<Item>>(
               stream: chosenStream(selectedView)?.changes,
