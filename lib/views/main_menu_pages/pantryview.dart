@@ -70,6 +70,8 @@ class _PantryViewState extends State<PantryView> {
         addFunction: _addNewItem,
         addIcon: Icons.add_home,
         helpFunction: _help,
+        backgroundImageName: 'assets/images/pantry_banner_B1.jpg',
+        titleBackgroundColor: Color.fromRGBO(152, 88, 75, 0.75),
       ),
       body: FutureBuilder<RealmResults>(
         future: _getPantryItems(),

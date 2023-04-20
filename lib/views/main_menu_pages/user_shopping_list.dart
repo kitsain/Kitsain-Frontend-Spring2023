@@ -71,10 +71,12 @@ class _UserShoppingListState extends State<UserShoppingList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
-          title: AppLocalizations.of(context)!.shoppingListsScreen,
+          title: AppLocalizations.of(context)!.shoppingListsScreenTopBarTitle,
           addFunction: _addNewItem,
           addIcon: Icons.add_shopping_cart,
           helpFunction: _help,
+          backgroundImageName: 'assets/images/shopping_flipped_B1.jpeg',
+          titleBackgroundColor: Color.fromRGBO(152, 88, 75, 0.75),
         ),
       body: SingleChildScrollView(
         child: Column(
