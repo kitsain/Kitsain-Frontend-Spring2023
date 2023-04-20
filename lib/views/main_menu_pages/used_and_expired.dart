@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kitsain_frontend_spring2023/assets/itembuilder.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
+import 'package:kitsain_frontend_spring2023/views/help_pages/used_and_expired_help_page.dart';
 import 'package:realm/realm.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
@@ -77,21 +78,7 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
     return null;
   }
 
-  var _expDate = TextEditingController();
-  var _openDate = TextEditingController();
-  var _details = TextEditingController();
-
-  bool _favorite = false;
-
   _receiveItem(Item data) {
-    print(data.name);
-    if (_selectedTabs[0] == true) {
-      print('select00000');
-      PantryProxy().changeLocation(data, "Used");
-    } else {
-      PantryProxy().changeLocation(data, "Bin");
-      print('select1111111');
-    }
     setState(() {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -101,16 +88,26 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
     });
   }
 
-  _temp() {}
+  void _help() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return const FractionallySizedBox(
+          //heightFactor: 0.7,
+          child: UsedAndExpiredHelp(),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
         title: AppLocalizations.of(context)!.historyScreen,
-        addFunction: _temp,
         addIcon: Icons.post_add,
-        helpFunction: _temp,
+        helpFunction: _help,
       ),
       body: DragTarget<Item>(
         onAccept: (data) => _receiveItem(data),
@@ -120,15 +117,10 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
               Padding(
                 padding: const EdgeInsets.only(left: 8.0, top: 8.0),
                 child: Align(
-                  alignment: Alignment.centerLeft,
                   child: SizedBox(
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          "MONTH >",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        ),
                         const SizedBox(
                           width: 5,
                         ),
@@ -252,7 +244,7 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                         ),
                         Container(
                           alignment: Alignment.centerLeft,
-                          padding: EdgeInsets.fromLTRB(20, 10, 20, 5),
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
                           child: Text(
                             "${selectedView.toUpperCase()} ITEMS",
                             style: const TextStyle(

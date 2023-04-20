@@ -6,6 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:realm/realm.dart';
+import 'package:kitsain_frontend_spring2023/database/item.dart';
+import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
+import 'package:realm/realm.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 import 'package:kitsain_frontend_spring2023/database/openfoodfacts.dart';
 
@@ -41,7 +44,9 @@ class _NewItemFormState extends State<NewItemForm> {
   var _expDate = TextEditingController();
   var _openDate = TextEditingController();
   var _details = TextEditingController();
-  bool _click = false;
+  var _expiryDate;
+  var _oDate;
+  bool _favorite = false;
   String _category = 'ITEM CATEGORY';
   var _offData;
   UnfocusDisposition _disposition = UnfocusDisposition.scope;
@@ -286,11 +291,11 @@ class _NewItemFormState extends State<NewItemForm> {
                     child: TextButton.icon(
                       onPressed: () {
                         setState(() {
-                          _click = !_click;
+                          _favorite = !_favorite;
                         });
                       },
-                      icon:
-                          Icon(_click ? Icons.favorite : Icons.favorite_border),
+                      icon: Icon(
+                          _favorite ? Icons.favorite : Icons.favorite_border),
                       label: Text('Mark as favorite'),
                     ),
                   ),

@@ -19,15 +19,17 @@ class PantryProxy with ChangeNotifier {
 
   subscribe() {
     final items = getItems();
-    items.changes.listen((changes) {
-      changes.inserted; // indexes of inserted objects
-      changes.modified; // indexes of modified objects
-      changes.deleted; // indexes of deleted objects
-      changes.newModified; // indexes of modified objects
-      // after deletions and insertions are accounted for
-      changes.moved; // indexes of moved objects
-      changes.results; // the full List of objects
-    });
+    items.changes.listen(
+      (changes) {
+        changes.inserted; // indexes of inserted objects
+        changes.modified; // indexes of modified objects
+        changes.deleted; // indexes of deleted objects
+        changes.newModified; // indexes of modified objects
+        // after deletions and insertions are accounted for
+        changes.moved; // indexes of moved objects
+        changes.results; // the full List of objects
+      },
+    );
   }
 
   /*
@@ -157,10 +159,12 @@ class PantryProxy with ChangeNotifier {
     });
 
     if (newLoc == "Used" || newLoc == "Bin") {
-      realm.write(() {
-        item.usedYear = DateTime.now().year;
-        item.usedMonth = DateTime.now().month;
-      });
+      realm.write(
+        () {
+          item.usedYear = DateTime.now().year;
+          item.usedMonth = DateTime.now().month;
+        },
+      );
     }
     notifyListeners();
   }
