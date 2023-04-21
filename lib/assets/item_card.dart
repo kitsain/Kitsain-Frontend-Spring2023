@@ -102,196 +102,217 @@ class _ItemCardState extends State<ItemCard> {
                 borderRadius: BorderRadius.circular(5),
               ),
             ),
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  left: BorderSide(
-                      color: widget.item.expiryDate == null
-                          ? NULLSTATUSCOLOR
-                          : returnColor(widget.item.expiryDate!),
-                      width: BORDERWIDTH),
-                ),
-              ),
-              child: ExpansionTile(
-                title: Text(
-                  widget.item.name.toUpperCase(),
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 23),
-                ),
-                subtitle: Text(widget.item.mainCat.toUpperCase()),
-                trailing: PopupMenuButton<_MenuValues>(
-                  icon: const Icon(Icons.more_horiz),
-                  itemBuilder: (BuildContext context) {
-                    return [
-                      const PopupMenuItem(
-                        value: _MenuValues.edit,
-                        child: Text("Edit item"),
-                      ),
-                      const PopupMenuItem(
-                        value: _MenuValues.used,
-                        child: Text("Move to used"),
-                      ),
-                      const PopupMenuItem(
-                        value: _MenuValues.bin,
-                        child: Text("Move to bin"),
-                      ),
-                      const PopupMenuItem(
-                        value: _MenuValues.shoppinglist,
-                        child: Text("Move to shopping list"),
-                      ),
-                      const PopupMenuItem(
-                        value: _MenuValues.delete,
-                        child: Text("Delete item"),
-                      ),
-                    ];
-                  },
-                  onSelected: (value) {
-                    switch (value) {
-                      case _MenuValues.edit:
-                        _editItem(widget.item);
-                        break;
-                      case _MenuValues.used:
-                        PantryProxy().changeLocation(widget.item, "Used");
-                        break;
-                      case _MenuValues.bin:
-                        PantryProxy().changeLocation(widget.item, "Bin");
-                        break;
-                      case _MenuValues.shoppinglist:
-                        break;
-                      case _MenuValues.delete:
-                        showDialog(
-                          context: context,
-                          builder: (ctx) => AlertDialog(
-                            title: const Text("Delete item"),
-                            content: const Text(
-                                "Are you sure you want to delete this item? This action cannot be undone."),
-                            actions: <Widget>[
-                              TextButton(
-                                  onPressed: () {
-                                    Navigator.of(ctx).pop();
-                                  },
-                                  child: const Text("Cancel")),
-                              TextButton(
-                                  onPressed: () {
-                                    deleteItem(widget.item);
-                                    Navigator.of(ctx).pop();
-                                  },
-                                  child: const Text("Delete"))
-                            ],
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      left: BorderSide(
+                          color: widget.item.expiryDate == null
+                              ? NULLSTATUSCOLOR
+                              : returnColor(widget.item.expiryDate!),
+                          width: BORDERWIDTH),
+                    ),
+                  ),
+                  child: ExpansionTile(
+                    title: Text(
+                      widget.item.name.toUpperCase(),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 23),
+                    ),
+                    subtitle: Text(widget.item.mainCat.toUpperCase()),
+                    trailing: PopupMenuButton<_MenuValues>(
+                      icon: const Icon(Icons.more_horiz),
+                      itemBuilder: (BuildContext context) {
+                        return [
+                          const PopupMenuItem(
+                            value: _MenuValues.edit,
+                            child: Text("Edit item"),
                           ),
-                        );
-                        break;
-                      case _MenuValues.pantry:
-                        break;
-                    }
-                  },
-                ),
-                leading: Transform.translate(
-                  offset: const Offset(0, 0),
-                  child: const Icon(Icons.fastfood, size: 35),
-                ),
-                children: [
-                  Row(
+                          const PopupMenuItem(
+                            value: _MenuValues.used,
+                            child: Text("Move to used"),
+                          ),
+                          const PopupMenuItem(
+                            value: _MenuValues.bin,
+                            child: Text("Move to bin"),
+                          ),
+                          const PopupMenuItem(
+                            value: _MenuValues.shoppinglist,
+                            child: Text("Move to shopping list"),
+                          ),
+                          const PopupMenuItem(
+                            value: _MenuValues.delete,
+                            child: Text("Delete item"),
+                          ),
+                        ];
+                      },
+                      onSelected: (value) {
+                        switch (value) {
+                          case _MenuValues.edit:
+                            _editItem(widget.item);
+                            break;
+                          case _MenuValues.used:
+                            PantryProxy().changeLocation(widget.item, "Used");
+                            break;
+                          case _MenuValues.bin:
+                            PantryProxy().changeLocation(widget.item, "Bin");
+                            break;
+                          case _MenuValues.shoppinglist:
+                            break;
+                          case _MenuValues.delete:
+                            showDialog(
+                              context: context,
+                              builder: (ctx) => AlertDialog(
+                                title: const Text("Delete item"),
+                                content: const Text(
+                                    "Are you sure you want to delete this item? This action cannot be undone."),
+                                actions: <Widget>[
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.of(ctx).pop();
+                                      },
+                                      child: const Text("Cancel")),
+                                  TextButton(
+                                      onPressed: () {
+                                        deleteItem(widget.item);
+                                        Navigator.of(ctx).pop();
+                                      },
+                                      child: const Text("Delete"))
+                                ],
+                              ),
+                            );
+                            break;
+                          case _MenuValues.pantry:
+                            break;
+                        }
+                      },
+                    ),
+                    leading: Transform.translate(
+                      offset: const Offset(0, 0),
+                      child: const Icon(Icons.fastfood, size: 35),
+                    ),
                     children: [
-                      const SizedBox(
-                        width: 70,
+                      Row(
+                        children: [
+                          const SizedBox(
+                            width: 70,
+                          ),
+                          const Icon(Icons.edit_calendar),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          if (widget.item.openedDate != null) ...[
+                            Text(
+                              DateFormat('d.M.yyyy')
+                                  .format(widget.item.openedDate!),
+                            )
+                          ] else ...[
+                            const Text(
+                              "ADDED",
+                              style: TextStyle(color: NULLTEXTCOLOR),
+                            )
+                          ]
+                        ],
                       ),
-                      const Icon(Icons.edit_calendar),
                       const SizedBox(
-                        width: 15,
+                        height: 10,
                       ),
-                      if (widget.item.openedDate != null) ...[
-                        Text(
-                          DateFormat('d.M.yyyy')
-                              .format(widget.item.openedDate!),
-                        )
-                      ] else ...[
-                        const Text(
-                          "ADDED",
-                          style: TextStyle(color: NULLTEXTCOLOR),
-                        )
-                      ]
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      const SizedBox(
-                        width: 70,
+                      Row(
+                        children: [
+                          const SizedBox(
+                            width: 70,
+                          ),
+                          const Icon(Icons.calendar_month),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          if (widget.item.expiryDate != null) ...[
+                            Text(DateFormat('d.M.yyyy')
+                                .format(widget.item.expiryDate!))
+                          ] else ...[
+                            const Text(
+                              "EXPIRATION",
+                              style: TextStyle(color: NULLTEXTCOLOR),
+                            )
+                          ]
+                        ],
                       ),
-                      const Icon(Icons.calendar_month),
-                      const SizedBox(
-                        width: 15,
+                      Row(
+                        children: [
+                          const SizedBox(
+                            width: 60,
+                          ),
+                          if (widget.item.everyday == true) ...[
+                            IconButton(
+                              onPressed: () {
+                                PantryProxy().toggleItemEveryday(widget.item);
+                              },
+                              icon: const Icon(Icons.favorite,
+                                  color: Colors.black),
+                            ),
+                          ] else ...[
+                            IconButton(
+                              onPressed: () {
+                                PantryProxy().toggleItemEveryday(widget.item);
+                              },
+                              icon: const Icon(Icons.favorite_border,
+                                  color: Colors.grey),
+                            ),
+                          ],
+                          const Text("MARK AS FAVORITE")
+                        ],
                       ),
-                      if (widget.item.expiryDate != null) ...[
-                        Text(DateFormat('d.M.yyyy')
-                            .format(widget.item.expiryDate!))
-                      ] else ...[
-                        const Text(
-                          "EXPIRATION",
-                          style: TextStyle(color: NULLTEXTCOLOR),
-                        )
-                      ]
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const SizedBox(
-                        width: 60,
-                      ),
-                      if (widget.item.everyday == true) ...[
-                        IconButton(
-                          onPressed: () {
-                            PantryProxy().toggleItemEveryday(widget.item);
-                          },
-                          icon: const Icon(Icons.favorite, color: Colors.black),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02),
+                      if (widget.item.details != null) ...[
+                        Container(
+                          width: 200,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Text(widget.item.details!),
+                          ),
                         ),
                       ] else ...[
-                        IconButton(
-                          onPressed: () {
-                            PantryProxy().toggleItemEveryday(widget.item);
-                          },
-                          icon: const Icon(Icons.favorite_border,
-                              color: Colors.grey),
+                        Container(
+                          width: 200,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: NULLTEXTCOLOR),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Text(
+                              "Details",
+                              style: TextStyle(color: NULLTEXTCOLOR),
+                            ),
+                          ),
                         ),
                       ],
-                      const Text("MARK AS FAVORITE")
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02),
                     ],
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  if (widget.item.details != null) ...[
-                    Container(
-                      width: 200,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Text(widget.item.details!),
-                      ),
-                    ),
-                  ] else ...[
-                    Container(
-                      width: 200,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: NULLTEXTCOLOR),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Text(
-                          "Details",
-                          style: TextStyle(color: NULLTEXTCOLOR),
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 9, top: 9),
+                  child: Column(
+                    children: [
+                      for (var rune in getAbbreviation(widget.item.expiryDate!)
+                          .runes) ...[
+                        Text(
+                          String.fromCharCode(rune),
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                      ),
-                    ),
-                  ],
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                ],
-              ),
+                      ]
+                    ],
+                  ),
+                )
+              ],
             ),
           ),
         ),
