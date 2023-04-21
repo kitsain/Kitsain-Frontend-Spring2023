@@ -21,6 +21,22 @@ const List<String> categories = <String>[
   'Other'
 ];
 
+final catEnglish = <int, String>{
+  1: 'ITEM CATEGORY',
+  2: 'Meat',
+  3: 'Seafood',
+  4: 'Fruit',
+  5: 'Vegetables',
+  6: 'Frozen',
+  7: 'Drinks',
+  8: 'Bread',
+  9: 'Treats',
+  10: 'Dairy',
+  11: 'Ready meals',
+  12: 'Dry & canned goods',
+  13: 'Other'
+};
+
 class NewItemForm extends StatefulWidget {
   const NewItemForm({super.key});
 
@@ -34,10 +50,10 @@ class _NewItemFormState extends State<NewItemForm> {
   final _formKey = GlobalKey<FormState>();
   final _EANCodeField = TextEditingController();
   var _itemName = TextEditingController();
+
   // These dates control the date string user sees in the form
   var _expDateString = TextEditingController();
   var _openDateString = TextEditingController();
-  var _details = TextEditingController();
 
   // These values are actually saved to the db as DateTime
   var _openDateDT;
@@ -45,6 +61,9 @@ class _NewItemFormState extends State<NewItemForm> {
 
   bool _favorite = false;
   String _category = 'ITEM CATEGORY';
+  var _catInt;
+  var _details = TextEditingController();
+
   var _offData;
   UnfocusDisposition _disposition = UnfocusDisposition.scope;
 
@@ -98,7 +117,7 @@ class _NewItemFormState extends State<NewItemForm> {
                     child: const Icon(Icons.close),
                     onPressed: () => _discardChangesDialog(false),
                   ),
-                )
+                ),
               ],
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.01),
@@ -263,21 +282,28 @@ class _NewItemFormState extends State<NewItemForm> {
                         menuMaxHeight: 200,
                         value: _category,
                         icon: const Positioned(
-                            right: 30, child: Icon(Icons.arrow_drop_down)),
+                          right: 30,
+                          child: Icon(Icons.arrow_drop_down),
+                        ),
                         decoration:
                             const InputDecoration.collapsed(hintText: ''),
                         onChanged: (String? value) {
-                          setState(() {
-                            _category = value!;
-                          });
-                        },
-                        items: categories
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
+                          setState(
+                            () {
+                              _category = value!;
+                              _catInt = catEnglish.keys
+                                  .firstWhere((k) => categories[k] == value);
+                            },
                           );
-                        }).toList(),
+                        },
+                        items: categories.map<DropdownMenuItem<String>>(
+                          (String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          },
+                        ).toList(),
                         validator: (value) {
                           if (value == categories.first) {
                             return "Please enter a category";
@@ -378,7 +404,7 @@ class _NewItemFormState extends State<NewItemForm> {
                                 ObjectId().toString(),
                                 _itemName.text,
                                 "Pantry",
-                                _category,
+                                _catInt + 1,
                                 everyday: _favorite,
                                 openedDate: _openDateDT,
                                 expiryDate: _expDateDT,

@@ -13,7 +13,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     String id,
     String name,
     String location,
-    String mainCat, {
+    int mainCat, {
     bool everyday = false,
     String? barcode,
     String? brand,
@@ -89,9 +89,9 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   set location(String value) => RealmObjectBase.set(this, 'location', value);
 
   @override
-  String get mainCat => RealmObjectBase.get<String>(this, 'mainCat') as String;
+  int get mainCat => RealmObjectBase.get<int>(this, 'mainCat') as int;
   @override
-  set mainCat(String value) => RealmObjectBase.set(this, 'mainCat', value);
+  set mainCat(int value) => RealmObjectBase.set(this, 'mainCat', value);
 
   @override
   bool get everyday => RealmObjectBase.get<bool>(this, 'everyday') as bool;
@@ -232,7 +232,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
       SchemaProperty('id', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('name', RealmPropertyType.string),
       SchemaProperty('location', RealmPropertyType.string),
-      SchemaProperty('mainCat', RealmPropertyType.string),
+      SchemaProperty('mainCat', RealmPropertyType.int),
       SchemaProperty('everyday', RealmPropertyType.bool),
       SchemaProperty('barcode', RealmPropertyType.string, optional: true),
       SchemaProperty('brand', RealmPropertyType.string, optional: true),

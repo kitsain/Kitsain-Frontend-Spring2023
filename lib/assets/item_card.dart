@@ -6,13 +6,28 @@ import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/views/edit_forms/edit_item_form.dart';
 import 'statuscolor.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 
 enum _MenuValues { edit, used, bin, shoppinglist, delete, pantry }
 
 const double BORDERWIDTH = 30.0;
 const Color NULLSTATUSCOLOR = Color(0xffF0EBE5);
 const Color NULLTEXTCOLOR = Color(0xff979797);
+
+final catEnglish = <int, String>{
+  1: 'New',
+  2: 'Meat',
+  3: 'Seafood',
+  4: 'Fruit',
+  5: 'Vegetables',
+  6: 'Frozen',
+  7: 'Drinks',
+  8: 'Bread',
+  9: 'Treats',
+  10: 'Dairy',
+  11: 'Ready meals',
+  12: 'Dry & canned goods',
+  13: 'Other'
+};
 
 class ItemCard extends StatefulWidget {
   ItemCard({super.key, required this.item});
@@ -24,9 +39,11 @@ class ItemCard extends StatefulWidget {
 
 class _ItemCardState extends State<ItemCard> {
   void deleteItem(Item item) {
-    realm.write(() {
-      realm.delete(item);
-    });
+    realm.write(
+      () {
+        realm.delete(item);
+      },
+    );
   }
 
   void _editItem(Item item) {
@@ -47,9 +64,7 @@ class _ItemCardState extends State<ItemCard> {
   Widget build(BuildContext context) {
     return LongPressDraggable<Item>(
       data: widget.item,
-      onDragCompleted: () {
-        //StateController.pantryList.removeAt(index);
-      },
+      onDragCompleted: () {},
       feedback: SizedBox(
         height: 85,
         width: 320,
@@ -59,7 +74,9 @@ class _ItemCardState extends State<ItemCard> {
             side: BorderSide(
               color: Colors.grey,
             ),
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(5),
+            ),
           ),
           child: ClipPath(
             child: Container(
@@ -72,8 +89,10 @@ class _ItemCardState extends State<ItemCard> {
                   title: Text(widget.item.name,
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 23)),
-                  subtitle: Text('ITEM CATEGORY',
-                      style: TextStyle(color: Colors.black)),
+                  subtitle: Text(
+                    'ITEM CATEGORY',
+                    style: TextStyle(color: Colors.black),
+                  ),
                   trailing: Transform.translate(
                     offset: Offset(0, -15),
                     child: Icon(Icons.more_horiz),
@@ -125,7 +144,10 @@ class _ItemCardState extends State<ItemCard> {
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 23),
                     ),
-                    subtitle: Text(widget.item.mainCat.toUpperCase()),
+                    subtitle: Text(
+                      catEnglish[widget.item.mainCat]!.toUpperCase(),
+                    ),
+                    //widget.item.mainCat!.toString()),
                     trailing: PopupMenuButton<_MenuValues>(
                       icon: const Icon(Icons.more_horiz),
                       itemBuilder: (BuildContext context) {
@@ -307,30 +329,32 @@ class _ItemCardState extends State<ItemCard> {
                   padding: EdgeInsets.only(left: 9, top: 9),
                   child: Column(
                     children: [
-                      if (widget.item.expiryDate!
-                              .difference(DateTime.now())
-                              .inDays <
-                          7) ...[
-                        if (showAbbreviation) ...[
-                          for (var rune in DateFormat(DateFormat.ABBR_WEEKDAY)
-                              .format(widget.item.expiryDate!)
-                              .runes) ...[
-                            Text(
-                              String.fromCharCode(rune),
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ]
-                        ] else ...[
-                          for (var rune in DateFormat(DateFormat.WEEKDAY)
-                              .format(widget.item.expiryDate!)
-                              .runes) ...[
-                            Text(
-                              String.fromCharCode(rune),
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ]
+                      if (widget.item.expiryDate != null) ...[
+                        if (widget.item.expiryDate!
+                                .difference(DateTime.now())
+                                .inDays <
+                            7) ...[
+                          if (showAbbreviation) ...[
+                            for (var rune in DateFormat(DateFormat.ABBR_WEEKDAY)
+                                .format(widget.item.expiryDate!)
+                                .runes) ...[
+                              Text(
+                                String.fromCharCode(rune),
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ]
+                          ] else ...[
+                            for (var rune in DateFormat(DateFormat.WEEKDAY)
+                                .format(widget.item.expiryDate!)
+                                .runes) ...[
+                              Text(
+                                String.fromCharCode(rune),
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ]
+                          ],
                         ],
-                      ],
+                      ]
                     ],
                   ),
                 )
@@ -434,7 +458,9 @@ class _HistoryCardState extends State<HistoryCard> {
                 title: Text(widget.item.name.toUpperCase(),
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 23)),
-                subtitle: Text(widget.item.mainCat.toUpperCase()),
+                subtitle: Text(
+                  catEnglish[widget.item.mainCat]!.toUpperCase(),
+                ),
                 trailing: PopupMenuButton<_MenuValues>(
                   icon: const Icon(Icons.more_horiz),
                   itemBuilder: (BuildContext context) {

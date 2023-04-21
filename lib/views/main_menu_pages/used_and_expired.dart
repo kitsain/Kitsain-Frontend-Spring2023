@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kitsain_frontend_spring2023/assets/itembuilder.dart';
@@ -84,13 +82,15 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
     } else {
       PantryProxy().changeLocation(data, "Bin");
     }
-    setState(() {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(data.name),
-        ),
-      );
-    });
+    setState(
+      () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(data.name),
+          ),
+        );
+      },
+    );
   }
 
   void _help() {
@@ -259,7 +259,7 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                         ItemBuilder(
                           items: results,
                           sortMethod: "az",
-                          loc: "history",
+                          loc: "History",
                         ),
                       ],
                     );

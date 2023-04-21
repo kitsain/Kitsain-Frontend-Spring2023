@@ -28,10 +28,14 @@ class _ItemBuilderState extends State<ItemBuilder> {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: widget.items.length,
       itemBuilder: (context, index) {
-        if (widget.loc == "pantry") {
-          return ItemCard(item: widget.items[index]);
-        } else if (widget.loc == "history") {
-          return HistoryCard(item: widget.items[index]);
+        if (widget.loc == "Pantry") {
+          return ItemCard(
+            item: widget.items[index],
+          );
+        } else if (widget.loc == "History") {
+          return HistoryCard(
+            item: widget.items[index],
+          );
         }
       },
     );

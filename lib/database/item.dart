@@ -7,7 +7,7 @@ class _Item {
   late final String id; // This will NOT be shown to the user
   late String name;
   late String location;
-  late String mainCat;
+  late int mainCat;
   late bool everyday = false;
   late String? barcode;
   late String? brand;

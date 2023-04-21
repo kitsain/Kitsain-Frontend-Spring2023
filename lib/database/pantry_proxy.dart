@@ -39,7 +39,6 @@ class PantryProxy with ChangeNotifier {
   RealmResults<Item> getPantryItems([String sortBy = "az"]) {
     var all = getItems();
     late RealmResults<Item> result;
-    // var result = all.query("location == \$0", ["Pantry"]);
     if (sortBy == "az") {
       result = all.query("location = \$0 SORT(name ASC)", ["Pantry"]);
     } else if (sortBy == "expdate") {
@@ -65,7 +64,6 @@ class PantryProxy with ChangeNotifier {
 
   RealmResults<Item> getOpenedItems([String sortBy = "az"]) {
     var pantryitems = getPantryItems();
-    //var result = all.query("location == \$0", ["Pantry"]);
     var opened = pantryitems.query(
       "openedDate != null",
     );
@@ -92,12 +90,12 @@ class PantryProxy with ChangeNotifier {
     return result;
   }
 
-  int getCatCount(String category) {
+  int getCatCount(int category) {
     var count = getPantryItems().query("mainCat == \$0", [category]).length;
     return count;
   }
 
-  RealmResults<Item> getByMainCat(String category, [String sortBy = "az"]) {
+  RealmResults<Item> getByMainCat(int category, [String sortBy = "az"]) {
     var pantryitems = getPantryItems();
     late RealmResults<Item> result;
     if (sortBy == "az") {
@@ -133,13 +131,15 @@ class PantryProxy with ChangeNotifier {
 
   bool toggleItemEveryday(Item item) {
     try {
-      realm.write(() {
-        if (item.everyday == false) {
-          item.everyday = true;
-        } else {
-          item.everyday = false;
-        }
-      });
+      realm.write(
+        () {
+          if (item.everyday == false) {
+            item.everyday = true;
+          } else {
+            item.everyday = false;
+          }
+        },
+      );
       notifyListeners();
       return true;
     } on RealmException catch (e) {

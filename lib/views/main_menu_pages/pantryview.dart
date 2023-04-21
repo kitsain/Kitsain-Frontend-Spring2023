@@ -55,7 +55,7 @@ class _PantryViewState extends State<PantryView> {
   }
 
   // If the category has no items, the header for it will not be shown
-  bool checkIfEmpty(String cat) {
+  bool checkIfEmpty(int cat) {
     if (PantryProxy().getCatCount(cat) > 0) {
       return true;
     } else {
@@ -90,16 +90,18 @@ class _PantryViewState extends State<PantryView> {
 
   _receiveItem(Item data) {
     PantryProxy().changeLocation(data, "Pantry");
-    setState(() {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(data.name),
-        ),
-      );
-    });
+    setState(
+      () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(data.name),
+          ),
+        );
+      },
+    );
   }
 
-  Map catEnglish = {
+  final catEnglish = <int, String>{
     1: 'New',
     2: 'Meat',
     3: 'Seafood',
@@ -141,195 +143,200 @@ class _PantryViewState extends State<PantryView> {
         helpFunction: _help,
       ),
       body: DragTarget<Item>(
-          onAccept: (data) => _receiveItem(data),
-          builder: (context, candidateData, rejectedData) {
-            return ListView(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    PopupMenuButton(
-                      initialValue: selectedView,
-                      onSelected: (value) {
-                        setState(() {
+        onAccept: (data) => _receiveItem(data),
+        builder: (context, candidateData, rejectedData) {
+          return ListView(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  PopupMenuButton(
+                    initialValue: selectedView,
+                    onSelected: (value) {
+                      setState(
+                        () {
                           selectedView = value.toString();
-                        });
-                      },
-                      child: const Text("SHOW"),
-                      itemBuilder: (BuildContext context) {
-                        return const [
-                          PopupMenuItem(
-                            value: "all",
-                            child: Text("ALL"),
-                          ),
-                          PopupMenuItem(
-                            value: "favorites",
-                            child: Text("FAVORITES"),
-                          ),
-                          PopupMenuItem(
-                            value: "opened",
-                            child: Text("OPENED"),
-                          ),
-                          PopupMenuItem(
-                            value: "bycat",
-                            child: Text("BY CATEGORY"),
-                          ),
-                        ];
-                      },
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    PopupMenuButton(
-                      initialValue: selectedSort,
-                      onSelected: (value) {
-                        setState(() {
+                        },
+                      );
+                    },
+                    child: const Text("SHOW"),
+                    itemBuilder: (BuildContext context) {
+                      return const [
+                        PopupMenuItem(
+                          value: "all",
+                          child: Text("ALL"),
+                        ),
+                        PopupMenuItem(
+                          value: "favorites",
+                          child: Text("FAVORITES"),
+                        ),
+                        PopupMenuItem(
+                          value: "opened",
+                          child: Text("OPENED"),
+                        ),
+                        PopupMenuItem(
+                          value: "bycat",
+                          child: Text("BY CATEGORY"),
+                        ),
+                      ];
+                    },
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  PopupMenuButton(
+                    initialValue: selectedSort,
+                    onSelected: (value) {
+                      setState(
+                        () {
                           selectedSort = value.toString();
-                        });
-                      },
-                      child: const Icon(
-                        Icons.tune,
-                        size: 30,
-                      ),
-                      itemBuilder: (BuildContext context) {
-                        return const [
-                          PopupMenuItem(
-                            value: "expdate",
-                            child: Text("Expiration date"),
-                          ),
-                          PopupMenuItem(
-                            value: "addedlast",
-                            child: Text("Added last"),
-                          ),
-                          PopupMenuItem(
-                            value: "az",
-                            child: Text("A - Z"),
-                          ),
-                        ];
-                      },
+                        },
+                      );
+                    },
+                    child: const Icon(
+                      Icons.tune,
+                      size: 30,
                     ),
-                    const SizedBox(
-                      width: 10,
-                    )
-                  ],
-                ),
-                StreamBuilder<RealmResultsChanges<Item>>(
-                  stream: chosenStream(selectedView)?.changes,
-                  builder: (context, snapshot) {
-                    final data = snapshot.data;
-                    if (data == null) {
-                      return const CircularProgressIndicator(); // while loading data
-                    }
-                    final results = data.results;
+                    itemBuilder: (BuildContext context) {
+                      return const [
+                        PopupMenuItem(
+                          value: "expdate",
+                          child: Text("Expiration date"),
+                        ),
+                        PopupMenuItem(
+                          value: "addedlast",
+                          child: Text("Added last"),
+                        ),
+                        PopupMenuItem(
+                          value: "az",
+                          child: Text("A - Z"),
+                        ),
+                      ];
+                    },
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  )
+                ],
+              ),
+              StreamBuilder<RealmResultsChanges<Item>>(
+                stream: chosenStream(selectedView)?.changes,
+                builder: (context, snapshot) {
+                  final data = snapshot.data;
+                  if (data == null) {
+                    return const CircularProgressIndicator(); // while loading data
+                  }
+                  final results = data.results;
 
-                    if (results.isEmpty) {
-                      return const Center(
-                        child: Text("No items found"),
+                  if (results.isEmpty) {
+                    return const Center(
+                      child: Text("No items found"),
+                    );
+                  } else {
+                    if (selectedView == "all") {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                            child: Text(
+                              "ALL ITEMS",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: HEADERSIZE),
+                            ),
+                          ),
+                          ItemBuilder(
+                            items: results,
+                            sortMethod: selectedSort,
+                            loc: "Pantry",
+                          ),
+                        ],
+                      );
+                    }
+                    if (selectedView == "favorites") {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                            child: Text(
+                              "FAVORITE ITEMS",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: HEADERSIZE),
+                            ),
+                          ),
+                          ItemBuilder(
+                            items: results,
+                            sortMethod: selectedSort,
+                            loc: "Pantry",
+                          ),
+                        ],
+                      );
+                    }
+                    if (selectedView == "opened") {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                            child: Text(
+                              "OPENED ITEMS",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: HEADERSIZE),
+                            ),
+                          ),
+                          ItemBuilder(
+                            items: results,
+                            sortMethod: selectedSort,
+                            loc: "Pantry",
+                          ),
+                        ],
                       );
                     } else {
-                      if (selectedView == "all") {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                              child: Text(
-                                "ALL ITEMS",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: HEADERSIZE),
-                              ),
-                            ),
-                            ItemBuilder(
-                              items: results,
-                              sortMethod: selectedSort,
-                              loc: "pantry",
-                            ),
-                          ],
-                        );
-                      }
-                      if (selectedView == "favorites") {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                              child: Text(
-                                "FAVORITE ITEMS",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: HEADERSIZE),
-                              ),
-                            ),
-                            ItemBuilder(
-                              items: results,
-                              sortMethod: selectedSort,
-                              loc: "pantry",
-                            ),
-                          ],
-                        );
-                      }
-                      if (selectedView == "opened") {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                              child: Text(
-                                "OPENED ITEMS",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: HEADERSIZE),
-                              ),
-                            ),
-                            ItemBuilder(
-                              items: results,
-                              sortMethod: selectedSort,
-                              loc: "pantry",
-                            ),
-                          ],
-                        );
-                      } else {
-                        return Column(
-                          children: [
-                            for (var cat in categories)
-                              if (checkIfEmpty(cat))
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          15, 5, 15, 5),
-                                      child: Text(
-                                        cat.toUpperCase(),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: HEADERSIZE),
-                                      ),
+                      return Column(
+                        children: [
+                          for (var cat in catEnglish.keys)
+                            if (checkIfEmpty(cat))
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    child: Text(
+                                      catEnglish[cat]!.toUpperCase(),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: HEADERSIZE),
                                     ),
-                                    ItemBuilder(
-                                      items: PantryProxy()
-                                          .getByMainCat(cat, selectedSort),
-                                      sortMethod: selectedSort,
-                                      loc: "pantry",
-                                    ),
-                                    const Divider(
-                                      height: 15,
-                                      indent: 20,
-                                      endIndent: 20,
-                                      color: Colors.black,
-                                    )
-                                  ],
-                                ),
-                          ],
-                        );
-                      }
+                                  ),
+                                  ItemBuilder(
+                                    items: PantryProxy()
+                                        .getByMainCat(cat, selectedSort),
+                                    sortMethod: selectedSort,
+                                    loc: "Pantry",
+                                  ),
+                                  const Divider(
+                                    height: 15,
+                                    indent: 20,
+                                    endIndent: 20,
+                                    color: Colors.black,
+                                  ),
+                                ],
+                              ),
+                        ],
+                      );
                     }
-                  },
-                ),
-              ],
-            );
-          }),
+                  }
+                },
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

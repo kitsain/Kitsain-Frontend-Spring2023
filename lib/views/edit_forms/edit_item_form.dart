@@ -20,6 +20,22 @@ const List<String> categories = <String>[
   'Other'
 ];
 
+Map catEnglish = {
+  1: 'ITEM CATEGORY',
+  2: 'Meat',
+  3: 'Seafood',
+  4: 'Fruit',
+  5: 'Vegetables',
+  6: 'Frozen',
+  7: 'Drinks',
+  8: 'Bread',
+  9: 'Treats',
+  10: 'Dairy',
+  11: 'Ready meals',
+  12: 'Dry & canned goods',
+  13: 'Other'
+};
+
 class EditItemForm extends StatefulWidget {
   EditItemForm({super.key, required this.item});
   late Item item;
@@ -38,7 +54,6 @@ class _EditItemFormState extends State<EditItemForm> {
   // These dates control the date string user sees in the form
   var _expDateString = TextEditingController();
   var _openDateString = TextEditingController();
-  var _details = TextEditingController();
 
   // These values are actually saved to the db as DateTime
   var _openDateDT;
@@ -46,6 +61,9 @@ class _EditItemFormState extends State<EditItemForm> {
 
   bool _favorite = false;
   String _category = 'ITEM CATEGORY';
+  var _catInt;
+  var _details = TextEditingController();
+
   var _offData;
   UnfocusDisposition _disposition = UnfocusDisposition.scope;
 
@@ -85,19 +103,23 @@ class _EditItemFormState extends State<EditItemForm> {
   @override
   void initState() {
     super.initState();
+
+    // Mandatory fields
+    _itemName.text = widget.item.name;
+    _category = catEnglish[widget.item.mainCat];
+    _favorite = widget.item.everyday;
+    _catInt = widget.item.mainCat;
+
+    // Optional fields
     if (widget.item.barcode != null) {
       _EANCodeField.text = widget.item.barcode!;
     }
-
-    _itemName.text = widget.item.name;
-
-    _category = widget.item.mainCat;
 
     if (widget.item.openedDate != null) {
       _openDateDT = widget.item.openedDate!;
       String openedDate =
           "${_openDateDT.day}.${_openDateDT.month}.${_openDateDT.year}";
-      openedDate = openedDate;
+      _openDateString.text = openedDate;
     }
     if (widget.item.expiryDate != null) {
       _expDateDT = widget.item.expiryDate!;
@@ -147,72 +169,73 @@ class _EditItemFormState extends State<EditItemForm> {
                   TextFormField(
                     controller: _EANCodeField,
                     decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        labelText: 'EAN CODE',
-                        suffixIcon: SizedBox(
-                          width: 80,
-                          height: 60,
-                          child: ElevatedButton(
-                              style: const ButtonStyle(
-                                  shape: MaterialStatePropertyAll<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadiusDirectional.only(
-                                                  topEnd: Radius.circular(5),
-                                                  bottomEnd:
-                                                      Radius.circular(5))))),
-                              onPressed: () async {
-                                if (_EANCodeField.text.isNotEmpty) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content:
-                                              Text('Fetching item data...')));
-                                  try {
-                                    primaryFocus!
-                                        .unfocus(disposition: _disposition);
-                                    _offData =
-                                        await getFromJson(_EANCodeField.text);
-                                    _itemName.text =
-                                        _offData.productName.toString();
-                                  } catch (e) {
-                                    ScaffoldMessenger.of(context)
-                                        .hideCurrentSnackBar();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                            content: Text(
-                                                'Item not found. Input manually.')));
-                                  }
-                                  if (_itemName.text.isNotEmpty) {
-                                    ScaffoldMessenger.of(context)
-                                        .hideCurrentSnackBar();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                            content: Text('Item found!')));
-                                  }
-                                } else {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          SizedBox(
-                                            width: 10,
-                                            height: 10,
-                                            child: AlertDialog(
-                                                content: const Text(
-                                                    'Please input EAN-code'),
-                                                actions: <Widget>[
-                                                  TextButton(
-                                                    child: const Text('OK'),
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                ]),
-                                          ));
-                                }
-                              },
-                              child: const Text('FETCH\n ITEM')),
-                        )),
+                      border: const OutlineInputBorder(),
+                      labelText: 'EAN CODE',
+                      suffixIcon: SizedBox(
+                        width: 80,
+                        height: 60,
+                        child: ElevatedButton(
+                          style: const ButtonStyle(
+                              shape: MaterialStatePropertyAll<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadiusDirectional.only(
+                                              topEnd: Radius.circular(5),
+                                              bottomEnd: Radius.circular(5))))),
+                          onPressed: () async {
+                            if (_EANCodeField.text.isNotEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Fetching item data...')));
+                              try {
+                                primaryFocus!
+                                    .unfocus(disposition: _disposition);
+                                _offData =
+                                    await getFromJson(_EANCodeField.text);
+                                _itemName.text =
+                                    _offData.productName.toString();
+                              } catch (e) {
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            'Item not found. Input manually.')));
+                              }
+                              if (_itemName.text.isNotEmpty) {
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('Item found!')));
+                              }
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) => SizedBox(
+                                  width: 10,
+                                  height: 10,
+                                  child: AlertDialog(
+                                    content:
+                                        const Text('Please input EAN-code'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: const Text('OK'),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          child: const Text('FETCH\n ITEM'),
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Stack(children: [
@@ -245,22 +268,29 @@ class _EditItemFormState extends State<EditItemForm> {
                         menuMaxHeight: 200,
                         value: _category,
                         icon: const Positioned(
-                            right: 30, child: Icon(Icons.arrow_drop_down)),
+                          right: 30,
+                          child: Icon(Icons.arrow_drop_down),
+                        ),
                         decoration:
                             const InputDecoration.collapsed(hintText: ''),
                         onChanged: (String? value) {
-                          print(value);
-                          setState(() {
-                            _category = value!;
-                          });
-                        },
-                        items: categories
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
+                          setState(
+                            () {
+                              _category = value!;
+                              _catInt = catEnglish.keys.firstWhere(
+                                      (k) => categories[k] == value) +
+                                  1;
+                            },
                           );
-                        }).toList(),
+                        },
+                        items: categories.map<DropdownMenuItem<String>>(
+                          (String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          },
+                        ).toList(),
                         validator: (value) {
                           if (value == categories.first) {
                             return "Please enter a category";
@@ -326,7 +356,6 @@ class _EditItemFormState extends State<EditItemForm> {
                       } else {
                         _openDateString.text = "";
                       }
-                      ;
                     },
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),
@@ -358,7 +387,7 @@ class _EditItemFormState extends State<EditItemForm> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               var item = Item(widget.item.id, _itemName.text,
-                                  widget.item.location, _category,
+                                  widget.item.location, _catInt,
                                   everyday: _favorite,
                                   openedDate: _openDateDT,
                                   expiryDate: _expDateDT,
