@@ -108,69 +108,6 @@ class _PantryViewState extends State<PantryView> {
         addIcon: Icons.add_home,
         helpFunction: _help,
       ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      // floatingActionButton: Row(
-      //   mainAxisAlignment: MainAxisAlignment.end,
-      //   children: [
-      //     PopupMenuButton(
-      //       initialValue: selectedView,
-      //       onSelected: (value) {
-      //         setState(() {
-      //           selectedView = value.toString();
-      //         });
-      //       },
-      //       child: const Text("SHOW"),
-      //       itemBuilder: (BuildContext context) {
-      //         return const [
-      //           PopupMenuItem(
-      //             value: "all",
-      //             child: Text("ALL"),
-      //           ),
-      //           PopupMenuItem(
-      //             value: "favorites",
-      //             child: Text("FAVORITES"),
-      //           ),
-      //           PopupMenuItem(
-      //             value: "opened",
-      //             child: Text("OPENED"),
-      //           ),
-      //           PopupMenuItem(
-      //             value: "bycat",
-      //             child: Text("BY CATEGORY"),
-      //           ),
-      //         ];
-      //       },
-      //     ),
-      //     PopupMenuButton(
-      //       initialValue: selectedSort,
-      //       onSelected: (value) {
-      //         setState(() {
-      //           selectedSort = value.toString();
-      //         });
-      //       },
-      //       child: const Icon(
-      //         Icons.tune,
-      //         size: 30,
-      //       ),
-      //       itemBuilder: (BuildContext context) {
-      //         return const [
-      //           PopupMenuItem(
-      //             value: "expdate",
-      //             child: Text("Expiration date"),
-      //           ),
-      //           PopupMenuItem(
-      //             value: "addedlast",
-      //             child: Text("Added last"),
-      //           ),
-      //           PopupMenuItem(
-      //             value: "az",
-      //             child: Text("A - Z"),
-      //           ),
-      //         ];
-      //       },
-      //     ),
-      //   ],
-      // ),
       body: DragTarget<Item>(
           onAccept: (data) => _receiveItem(data),
           builder: (context, candidateData, rejectedData) {

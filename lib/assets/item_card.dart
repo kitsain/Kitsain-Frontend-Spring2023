@@ -9,7 +9,7 @@ import 'statuscolor.dart';
 
 enum _MenuValues { edit, used, bin, shoppinglist, delete, pantry }
 
-const double BORDERWIDTH = 20.0;
+const double BORDERWIDTH = 30.0;
 const Color NULLSTATUSCOLOR = Color(0xffF0EBE5);
 const Color NULLTEXTCOLOR = Color(0xff979797);
 

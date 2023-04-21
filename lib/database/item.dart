@@ -1,18 +1,6 @@
 import 'package:realm/realm.dart';
 part 'item.g.dart';
 
-/*
-If a change is made to the item model, a migration error will occur,
-as the item's no longer follow it. If that happens, either navigate to 
-your phone's data folder and delete realm files. For me this is 
-this is /data/data/com.example.kitsain_frontend_spring2023/files. You can also
-delete the database by running Realm.deleteRealm(Configuration.defaultPath)
-
-The only mandatory fields for an item are:
-- String id, generated from Realm's ObjectID-class
-- String name, inputted either through scanning a barcode or through Add item -form,
-*/
-
 @RealmModel()
 class _Item {
   @PrimaryKey()
@@ -30,7 +18,6 @@ class _Item {
   late DateTime? expiryDate;
   late int? usedMonth;
   late int? usedYear;
-
   late List<String?> categories;
   late List<String?> labels;
   late List<String?> ingredients;
@@ -41,4 +28,38 @@ class _Item {
   late String? packaging;
   late String? origins;
   late String? details;
+}
+
+class CategoryMaps {
+  Map catEnglish = {
+    1: 'New',
+    2: 'Meat',
+    3: 'Seafood',
+    4: 'Fruit',
+    5: 'Vegetables',
+    6: 'Frozen',
+    7: 'Drinks',
+    8: 'Bread',
+    9: 'Treats',
+    10: 'Dairy',
+    11: 'Ready meals',
+    12: 'Dry & canned goods',
+    13: 'Other'
+  };
+
+  Map catFinnish = {
+    1: 'Uudet',
+    2: 'Liha',
+    3: 'Merenantimet',
+    4: 'Hedelmät',
+    5: 'Vihannekset',
+    6: 'Pakasteet',
+    7: 'Juomat',
+    8: 'Leivät',
+    9: 'Herkut',
+    10: 'Maitotuotteet',
+    11: 'Valmisateriat',
+    12: 'Kuivatuotteet',
+    13: 'Muut'
+  };
 }
