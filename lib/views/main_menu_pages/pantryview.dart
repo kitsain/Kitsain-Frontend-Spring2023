@@ -177,6 +177,9 @@ class _PantryViewState extends State<PantryView> {
                         ];
                       },
                     ),
+                    const SizedBox(
+                      width: 5,
+                    ),
                     PopupMenuButton(
                       initialValue: selectedSort,
                       onSelected: (value) {
@@ -205,6 +208,9 @@ class _PantryViewState extends State<PantryView> {
                         ];
                       },
                     ),
+                    const SizedBox(
+                      width: 10,
+                    )
                   ],
                 ),
                 StreamBuilder<RealmResultsChanges<Item>>(

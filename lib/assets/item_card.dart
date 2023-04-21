@@ -6,6 +6,7 @@ import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/views/edit_forms/edit_item_form.dart';
 import 'statuscolor.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 enum _MenuValues { edit, used, bin, shoppinglist, delete, pantry }
 
@@ -39,6 +40,8 @@ class _ItemCardState extends State<ItemCard> {
       },
     );
   }
+
+  bool showAbbreviation = true;
 
   @override
   Widget build(BuildContext context) {
@@ -115,6 +118,8 @@ class _ItemCardState extends State<ItemCard> {
                     ),
                   ),
                   child: ExpansionTile(
+                    onExpansionChanged: (val) =>
+                        setState(() => showAbbreviation = !val),
                     title: Text(
                       widget.item.name.toUpperCase(),
                       style: const TextStyle(
@@ -302,13 +307,30 @@ class _ItemCardState extends State<ItemCard> {
                   padding: EdgeInsets.only(left: 9, top: 9),
                   child: Column(
                     children: [
-                      for (var rune in getAbbreviation(widget.item.expiryDate!)
-                          .runes) ...[
-                        Text(
-                          String.fromCharCode(rune),
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ]
+                      if (widget.item.expiryDate!
+                              .difference(DateTime.now())
+                              .inDays <
+                          7) ...[
+                        if (showAbbreviation) ...[
+                          for (var rune in DateFormat(DateFormat.ABBR_WEEKDAY)
+                              .format(widget.item.expiryDate!)
+                              .runes) ...[
+                            Text(
+                              String.fromCharCode(rune),
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ]
+                        ] else ...[
+                          for (var rune in DateFormat(DateFormat.WEEKDAY)
+                              .format(widget.item.expiryDate!)
+                              .runes) ...[
+                            Text(
+                              String.fromCharCode(rune),
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ]
+                        ],
+                      ],
                     ],
                   ),
                 )
