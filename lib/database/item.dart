@@ -8,7 +8,7 @@ class _Item {
   late String name;
   late String location;
   late int mainCat;
-  late bool everyday = false;
+  late bool favorite = false;
   late String? barcode;
   late String? brand;
   late int? quantity;

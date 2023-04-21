@@ -14,7 +14,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     String name,
     String location,
     int mainCat, {
-    bool everyday = false,
+    bool favorite = false,
     String? barcode,
     String? brand,
     int? quantity,
@@ -37,14 +37,14 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   }) {
     if (!_defaultsSet) {
       _defaultsSet = RealmObjectBase.setDefaults<Item>({
-        'everyday': false,
+        'favorite': false,
       });
     }
     RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set(this, 'name', name);
     RealmObjectBase.set(this, 'location', location);
     RealmObjectBase.set(this, 'mainCat', mainCat);
-    RealmObjectBase.set(this, 'everyday', everyday);
+    RealmObjectBase.set(this, 'favorite', favorite);
     RealmObjectBase.set(this, 'barcode', barcode);
     RealmObjectBase.set(this, 'brand', brand);
     RealmObjectBase.set(this, 'quantity', quantity);
@@ -94,9 +94,9 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   set mainCat(int value) => RealmObjectBase.set(this, 'mainCat', value);
 
   @override
-  bool get everyday => RealmObjectBase.get<bool>(this, 'everyday') as bool;
+  bool get favorite => RealmObjectBase.get<bool>(this, 'favorite') as bool;
   @override
-  set everyday(bool value) => RealmObjectBase.set(this, 'everyday', value);
+  set favorite(bool value) => RealmObjectBase.set(this, 'favorite', value);
 
   @override
   String? get barcode =>
@@ -233,7 +233,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
       SchemaProperty('name', RealmPropertyType.string),
       SchemaProperty('location', RealmPropertyType.string),
       SchemaProperty('mainCat', RealmPropertyType.int),
-      SchemaProperty('everyday', RealmPropertyType.bool),
+      SchemaProperty('favorite', RealmPropertyType.bool),
       SchemaProperty('barcode', RealmPropertyType.string, optional: true),
       SchemaProperty('brand', RealmPropertyType.string, optional: true),
       SchemaProperty('quantity', RealmPropertyType.int, optional: true),

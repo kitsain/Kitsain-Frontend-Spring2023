@@ -413,7 +413,7 @@ class _NewItemFormState extends State<NewItemForm> {
                                 _itemName.text,
                                 "Pantry",
                                 _catInt,
-                                everyday: _favorite,
+                                favorite: _favorite,
                                 openedDate: _openDateDT,
                                 expiryDate: _expDateDT,
                                 addedDate: DateTime.now().toUtc(),

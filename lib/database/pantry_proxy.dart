@@ -129,14 +129,14 @@ class PantryProxy with ChangeNotifier {
     }
   }
 
-  bool toggleItemEveryday(Item item) {
+  bool toggleItemFavorite(Item item) {
     try {
       realm.write(
         () {
-          if (item.everyday == false) {
-            item.everyday = true;
+          if (item.favorite == false) {
+            item.favorite = true;
           } else {
-            item.everyday = false;
+            item.favorite = false;
           }
         },
       );

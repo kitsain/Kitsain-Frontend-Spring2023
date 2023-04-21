@@ -351,10 +351,10 @@ class _ItemCardState extends State<ItemCard> {
                           const SizedBox(
                             width: 60,
                           ),
-                          if (widget.item.everyday == true) ...[
+                          if (widget.item.favorite == true) ...[
                             IconButton(
                               onPressed: () {
-                                PantryProxy().toggleItemEveryday(widget.item);
+                                PantryProxy().toggleItemFavorite(widget.item);
                               },
                               icon: const Icon(Icons.favorite,
                                   color: Colors.black),
@@ -362,7 +362,7 @@ class _ItemCardState extends State<ItemCard> {
                           ] else ...[
                             IconButton(
                               onPressed: () {
-                                PantryProxy().toggleItemEveryday(widget.item);
+                                PantryProxy().toggleItemFavorite(widget.item);
                               },
                               icon: const Icon(Icons.favorite_border,
                                   color: Colors.grey),

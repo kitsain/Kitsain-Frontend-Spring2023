@@ -107,7 +107,7 @@ class _EditItemFormState extends State<EditItemForm> {
     // Mandatory fields
     _itemName.text = widget.item.name;
     _category = catEnglish[widget.item.mainCat];
-    _favorite = widget.item.everyday;
+    _favorite = widget.item.favorite;
     _catInt = widget.item.mainCat;
 
     // Optional fields
@@ -387,7 +387,7 @@ class _EditItemFormState extends State<EditItemForm> {
                             if (_formKey.currentState!.validate()) {
                               var item = Item(widget.item.id, _itemName.text,
                                   widget.item.location, _catInt,
-                                  everyday: _favorite,
+                                  favorite: _favorite,
                                   openedDate: _openDateDT,
                                   expiryDate: _expDateDT,
                                   details: _details.text);
