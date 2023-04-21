@@ -10,7 +10,8 @@ import 'statuscolor.dart';
 enum _MenuValues { edit, used, bin, shoppinglist, delete, pantry }
 
 const double BORDERWIDTH = 20.0;
-const Color NULLCOLOR = Color(0xffF0EBE5);
+const Color NULLSTATUSCOLOR = Color(0xffF0EBE5);
+const Color NULLTEXTCOLOR = Color(0xff979797);
 
 class ItemCard extends StatefulWidget {
   ItemCard({super.key, required this.item});
@@ -106,7 +107,7 @@ class _ItemCardState extends State<ItemCard> {
                 border: Border(
                   left: BorderSide(
                       color: widget.item.expiryDate == null
-                          ? NULLCOLOR
+                          ? NULLSTATUSCOLOR
                           : returnColor(widget.item.expiryDate!),
                       width: BORDERWIDTH),
                 ),
@@ -207,7 +208,7 @@ class _ItemCardState extends State<ItemCard> {
                       ] else ...[
                         const Text(
                           "ADDED",
-                          style: TextStyle(color: NULLCOLOR),
+                          style: TextStyle(color: NULLTEXTCOLOR),
                         )
                       ]
                     ],
@@ -230,7 +231,7 @@ class _ItemCardState extends State<ItemCard> {
                       ] else ...[
                         const Text(
                           "EXPIRATION",
-                          style: TextStyle(color: NULLCOLOR),
+                          style: TextStyle(color: NULLTEXTCOLOR),
                         )
                       ]
                     ],
@@ -259,6 +260,35 @@ class _ItemCardState extends State<ItemCard> {
                       const Text("MARK AS FAVORITE")
                     ],
                   ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  if (widget.item.details != null) ...[
+                    Container(
+                      width: 200,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Text(widget.item.details!),
+                      ),
+                    ),
+                  ] else ...[
+                    Container(
+                      width: 200,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: NULLTEXTCOLOR),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Text(
+                          "Details",
+                          style: TextStyle(color: NULLTEXTCOLOR),
+                        ),
+                      ),
+                    ),
+                  ],
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 ],
               ),
@@ -352,7 +382,7 @@ class _HistoryCardState extends State<HistoryCard> {
                 border: Border(
                   left: BorderSide(
                       color: widget.item.expiryDate == null
-                          ? NULLCOLOR
+                          ? NULLSTATUSCOLOR
                           : returnColor(widget.item.expiryDate!),
                       width: BORDERWIDTH),
                 ),
@@ -453,7 +483,7 @@ class _HistoryCardState extends State<HistoryCard> {
                       ] else ...[
                         const Text(
                           "ADDED",
-                          style: TextStyle(color: NULLCOLOR),
+                          style: TextStyle(color: NULLTEXTCOLOR),
                         )
                       ]
                     ],
@@ -478,7 +508,7 @@ class _HistoryCardState extends State<HistoryCard> {
                       ] else ...[
                         const Text(
                           "EXPIRATION",
-                          style: TextStyle(color: NULLCOLOR),
+                          style: TextStyle(color: NULLTEXTCOLOR),
                         )
                       ]
                     ],
@@ -507,6 +537,35 @@ class _HistoryCardState extends State<HistoryCard> {
                       const Text("MARK AS FAVORITE")
                     ],
                   ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  if (widget.item.details != null) ...[
+                    Container(
+                      width: 200,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Text(widget.item.details!),
+                      ),
+                    ),
+                  ] else ...[
+                    Container(
+                      width: 200,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: NULLTEXTCOLOR),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Text(
+                          "Details",
+                          style: TextStyle(color: NULLTEXTCOLOR),
+                        ),
+                      ),
+                    ),
+                  ],
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 ],
               ),

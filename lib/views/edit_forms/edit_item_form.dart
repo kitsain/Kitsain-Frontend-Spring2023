@@ -357,15 +357,12 @@ class _EditItemFormState extends State<EditItemForm> {
                         child: ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              var item = Item(
-                                widget.item.id,
-                                _itemName.text,
-                                widget.item.location,
-                                _category,
-                                everyday: _favorite,
-                                openedDate: _openDateDT,
-                                expiryDate: _expDateDT,
-                              );
+                              var item = Item(widget.item.id, _itemName.text,
+                                  widget.item.location, _category,
+                                  everyday: _favorite,
+                                  openedDate: _openDateDT,
+                                  expiryDate: _expDateDT,
+                                  details: _details.text);
                               PantryProxy().upsertItem(item);
                               setState(() {});
                               Navigator.pop(context);
