@@ -16,6 +16,8 @@ class _Item {
   late DateTime? addedDate;
   late DateTime? openedDate;
   late DateTime? expiryDate;
+  late bool?
+      hasExpiryDate; // used to put items with no expiry date to the bottom of the results when querying by expdate
   late int? usedMonth;
   late int? usedYear;
   late List<String?> categories;

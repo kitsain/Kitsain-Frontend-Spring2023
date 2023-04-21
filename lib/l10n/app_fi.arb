@@ -2,7 +2,7 @@
     "pantryScreen": "RUOKAKOMERO",
     "shoppingListsScreen": "KAUPPALISTAT",
     "historyScreen": "HISTORIA",
-    "addNewItem": "lisää uusi tuote",
+    "addNewItem": "Lisää uusi tuote",
     "dragComplete": "Tuote vedetty",
     "dropTarget": "Pudota",
     "openScanner": "Avaa viivakoodinlukija",

@@ -288,7 +288,8 @@ class _ItemCardState extends State<ItemCard> {
                           fontWeight: FontWeight.bold, fontSize: 23),
                     ),
                     subtitle: Text(
-                      catEnglish[widget.item.mainCat]!.toUpperCase(),
+                      //catEnglish[widget.item.mainCat]!.toUpperCase(),
+                      widget.item.hasExpiryDate.toString(),
                     ),
                     trailing: widget.loc == "Pantry"
                         ? popupMenuButton

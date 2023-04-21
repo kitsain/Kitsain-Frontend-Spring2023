@@ -60,6 +60,7 @@ class _NewItemFormState extends State<NewItemForm> {
   var _expDateDT;
 
   bool _favorite = false;
+  bool _hasExpiryDate = false;
   String _category = "Choose category";
   var _catInt;
   var _details = TextEditingController();
@@ -375,6 +376,7 @@ class _NewItemFormState extends State<NewItemForm> {
                             "${pickedDate.day}.${pickedDate.month}.${pickedDate.year}";
                         _expDateString.text = expirationDate;
                         _expDateDT = pickedDate;
+                        _hasExpiryDate = true;
                       } else {
                         _expDateString.text = "";
                       }
@@ -416,6 +418,7 @@ class _NewItemFormState extends State<NewItemForm> {
                                 favorite: _favorite,
                                 openedDate: _openDateDT,
                                 expiryDate: _expDateDT,
+                                hasExpiryDate: _hasExpiryDate,
                                 addedDate: DateTime.now().toUtc(),
                               );
                               PantryProxy().upsertItem(newItem);

@@ -40,11 +40,16 @@ class PantryProxy with ChangeNotifier {
     var all = getItems();
     late RealmResults<Item> result;
     if (sortBy == "az") {
-      result = all.query("location = \$0 SORT(name ASC)", ["Pantry"]);
+      result = all.query(
+          "location = \$0 SORT(hasExpiryDate DESC, name ASC)", ["Pantry"]);
     } else if (sortBy == "expdate") {
-      result = all.query("location = \$0 SORT(expiryDate ASC)", ["Pantry"]);
+      result = all.query(
+          "location = \$0 SORT(hasExpiryDate DESC, expiryDate ASC)",
+          ["Pantry"]);
     } else if (sortBy == "addedlast") {
-      result = all.query("location = \$0 SORT(addedDate DESC)", ["Pantry"]);
+      result = all.query(
+          "location = \$0 SORT(hasExpiryDate DESC, addedDate DESC)",
+          ["Pantry"]);
     }
     return result;
   }
@@ -53,11 +58,11 @@ class PantryProxy with ChangeNotifier {
     var all = getPantryItems();
     late RealmResults<Item> result;
     if (sortBy == "az") {
-      result = all.query("everyday = true SORT(name ASC)");
+      result = all.query("favorite = true SORT(name ASC)");
     } else if (sortBy == "expdate") {
-      result = all.query("everyday = true SORT(expiryDate ASC)");
+      result = all.query("favorite = true SORT(expiryDate ASC)");
     } else if (sortBy == "addedlast") {
-      result = all.query("everyday = true SORT(addedDate DESC)");
+      result = all.query("favorite = true SORT(addedDate DESC)");
     }
     return result;
   }

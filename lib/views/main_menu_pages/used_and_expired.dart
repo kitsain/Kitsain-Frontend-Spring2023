@@ -29,9 +29,6 @@ const List<String> months = [
   'December'
 ];
 
-
-
-
 class UsedAndExpired extends StatefulWidget {
   const UsedAndExpired({super.key});
 
@@ -67,8 +64,6 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
 
   // Default to used items -view
   String selectedView = "used";
-
-
 
   // Choose whether to show all items (either as one list or by category)
   // or only opened items
@@ -113,7 +108,9 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
 
   @override
   Widget build(BuildContext context) {
-    var usedPercent = double.parse(PantryProxy().countByMonth(monthInt, selectedView));
+    var usedPercent = double.parse(
+      PantryProxy().countByMonth(monthInt, selectedView),
+    );
     return Scaffold(
       appBar: TopBar(
         title: AppLocalizations.of(context)!.historyScreen,
@@ -230,65 +227,39 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(200),
-                            child: SizedBox(
-                              height: 200,
-                              width: 200,
-                              child: Stack(
-                                  alignment: Alignment.center,
-                                  children: <Widget>[
-                                    Container(
-                                      color: Colors.white,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: Container(
-                                        height: 200 * usedPercent/100,
-                                        width: 200,
-                                        color: Colors.amber,
-                                      ),
-                                    ),
-                                    Image(
-                                      image: AssetImage('assets/images/plate1.png'),
-                                      height: 200,
-                                    ),
-                                    Positioned(
-                                      left: 120,
-                                      bottom: 15,
-                                      child: Text(
-                                          "${PantryProxy().countByMonth(monthInt, selectedView)}%",
-                                          style: const TextStyle(fontSize: 55),
-                                      ),
-                                    ),
-                                  ]
-                              ),
+                          child: SizedBox(
+                            height: 200,
+                            width: 200,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: <Widget>[
+                                Container(
+                                  color: Colors.white,
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Container(
+                                    height: 200 * usedPercent / 100,
+                                    width: 200,
+                                    color: Colors.amber,
+                                  ),
+                                ),
+                                const Image(
+                                  image: AssetImage('assets/images/plate1.png'),
+                                  height: 200,
+                                ),
+                                Positioned(
+                                  left: 120,
+                                  bottom: 15,
+                                  child: Text(
+                                    "${PantryProxy().countByMonth(monthInt, selectedView)}%",
+                                    style: const TextStyle(fontSize: 55),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-
-                        /*Stack(
-                          children: <Widget>[
-                            const SizedBox(
-                              width: 360,
-                              height: 170,
-                            ),
-                            const Positioned(
-                              top: -17,
-                              left: 20,
-                              right: 20,
-                              child: Icon(Icons.circle,
-                                  size: 200, color: Colors.amber),
-                            ),
-                            Positioned(
-                              top: 90,
-                              left: 190,
-                              right: 10,
-                              bottom: 10,
-                              child: Text(
-                                "${PantryProxy().countByMonth(monthInt, selectedView)} %",
-                                style: const TextStyle(fontSize: 60),
-                              ),
-                            ),
-                          ],
-                        ),*/
+                        ),
                         Container(
                           alignment: Alignment.centerLeft,
                           padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),

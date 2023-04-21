@@ -62,6 +62,7 @@ class _EditItemFormState extends State<EditItemForm> {
   bool _favorite = false;
   String _category = 'ITEM CATEGORY';
   var _catInt;
+  var _hasExpiryDate;
   var _details = TextEditingController();
 
   var _offData;
@@ -130,6 +131,8 @@ class _EditItemFormState extends State<EditItemForm> {
     if (widget.item.details != null) {
       _details.text = widget.item.details!;
     }
+
+    _hasExpiryDate = widget.item.hasExpiryDate;
   }
 
   @override
@@ -352,8 +355,11 @@ class _EditItemFormState extends State<EditItemForm> {
                             "${pickedDate.day}.${pickedDate.month}.${pickedDate.year}";
                         _expDateString.text = expirationDate;
                         _expDateDT = pickedDate.toUtc();
+                        _hasExpiryDate = true;
                       } else {
                         _expDateString.text = "";
+                        _expDateDT = null;
+                        _hasExpiryDate = false;
                       }
                     },
                   ),
@@ -390,6 +396,7 @@ class _EditItemFormState extends State<EditItemForm> {
                                   favorite: _favorite,
                                   openedDate: _openDateDT,
                                   expiryDate: _expDateDT,
+                                  hasExpiryDate: _hasExpiryDate,
                                   details: _details.text);
                               PantryProxy().upsertItem(item);
                               setState(() {});

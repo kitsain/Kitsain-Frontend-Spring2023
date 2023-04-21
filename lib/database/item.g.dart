@@ -22,6 +22,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     DateTime? addedDate,
     DateTime? openedDate,
     DateTime? expiryDate,
+    bool? hasExpiryDate,
     int? usedMonth,
     int? usedYear,
     String? processing,
@@ -52,6 +53,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     RealmObjectBase.set(this, 'addedDate', addedDate);
     RealmObjectBase.set(this, 'openedDate', openedDate);
     RealmObjectBase.set(this, 'expiryDate', expiryDate);
+    RealmObjectBase.set(this, 'hasExpiryDate', hasExpiryDate);
     RealmObjectBase.set(this, 'usedMonth', usedMonth);
     RealmObjectBase.set(this, 'usedYear', usedYear);
     RealmObjectBase.set(this, 'processing', processing);
@@ -139,6 +141,13 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   @override
   set expiryDate(DateTime? value) =>
       RealmObjectBase.set(this, 'expiryDate', value);
+
+  @override
+  bool? get hasExpiryDate =>
+      RealmObjectBase.get<bool>(this, 'hasExpiryDate') as bool?;
+  @override
+  set hasExpiryDate(bool? value) =>
+      RealmObjectBase.set(this, 'hasExpiryDate', value);
 
   @override
   int? get usedMonth => RealmObjectBase.get<int>(this, 'usedMonth') as int?;
@@ -241,6 +250,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
       SchemaProperty('addedDate', RealmPropertyType.timestamp, optional: true),
       SchemaProperty('openedDate', RealmPropertyType.timestamp, optional: true),
       SchemaProperty('expiryDate', RealmPropertyType.timestamp, optional: true),
+      SchemaProperty('hasExpiryDate', RealmPropertyType.bool, optional: true),
       SchemaProperty('usedMonth', RealmPropertyType.int, optional: true),
       SchemaProperty('usedYear', RealmPropertyType.int, optional: true),
       SchemaProperty('categories', RealmPropertyType.string,

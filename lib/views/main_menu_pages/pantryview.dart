@@ -200,16 +200,16 @@ class _PantryViewState extends State<PantryView> {
                     itemBuilder: (BuildContext context) {
                       return const [
                         PopupMenuItem(
+                          value: "az",
+                          child: Text("A - Z"),
+                        ),
+                        PopupMenuItem(
                           value: "expdate",
                           child: Text("Expiration date"),
                         ),
                         PopupMenuItem(
                           value: "addedlast",
                           child: Text("Added last"),
-                        ),
-                        PopupMenuItem(
-                          value: "az",
-                          child: Text("A - Z"),
                         ),
                       ];
                     },
