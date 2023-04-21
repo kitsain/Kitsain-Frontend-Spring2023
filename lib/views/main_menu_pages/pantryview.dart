@@ -99,6 +99,38 @@ class _PantryViewState extends State<PantryView> {
     });
   }
 
+  Map catEnglish = {
+    1: 'New',
+    2: 'Meat',
+    3: 'Seafood',
+    4: 'Fruit',
+    5: 'Vegetables',
+    6: 'Frozen',
+    7: 'Drinks',
+    8: 'Bread',
+    9: 'Treats',
+    10: 'Dairy',
+    11: 'Ready meals',
+    12: 'Dry & canned goods',
+    13: 'Other'
+  };
+
+  Map catFinnish = {
+    1: 'Uudet',
+    2: 'Liha',
+    3: 'Merenantimet',
+    4: 'Hedelmät',
+    5: 'Vihannekset',
+    6: 'Pakasteet',
+    7: 'Juomat',
+    8: 'Leivät',
+    9: 'Herkut',
+    10: 'Maitotuotteet',
+    11: 'Valmisateriat',
+    12: 'Kuivatuotteet',
+    13: 'Muut'
+  };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

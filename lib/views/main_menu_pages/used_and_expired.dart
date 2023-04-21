@@ -16,6 +16,21 @@ const List<Widget> tabs = <Widget>[
   Text('BIN'),
 ];
 
+const List<String> months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+];
+
 class UsedAndExpired extends StatefulWidget {
   const UsedAndExpired({super.key});
 
@@ -28,13 +43,13 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
   int monthInt = DateTime.now().month;
 
   // This variable controls the string shown in drop-down menu
-  //String month = DateFormat("MMMM").format(DateTime(0, DateTime.now().month));
+  String month = DateFormat("MMMM").format(DateTime(0, DateTime.now().month));
 
   final year = DateTime.now().year;
 
   final List<bool> _selectedTabs = <bool>[true, false];
 
-  var localeMonths = <int, String>{
+  final mapMonths = <int, String>{
     1: 'January',
     2: 'February',
     3: 'March',
@@ -48,42 +63,6 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
     11: 'November',
     12: 'December'
   };
-
-  final mapMonthsEn = <int, String>{
-    1: 'January',
-    2: 'February',
-    3: 'March',
-    4: 'April',
-    5: 'May',
-    6: 'June',
-    7: 'July',
-    8: 'August',
-    9: 'September',
-    10: 'October',
-    11: 'November',
-    12: 'December'
-  };
-
-  final mapMonthsFi = <int, String>{
-    1: 'Tammikuu',
-    2: 'Helmikuu',
-    3: 'Maaliskuu',
-    4: 'Huhtikuu',
-    5: 'Toukokuu',
-    6: 'Kesäkuu',
-    7: 'Heinäkuu',
-    8: 'Elokuu',
-    9: 'Syyskuu',
-    10: 'Lokakuu',
-    11: 'Marraskuu',
-    12: 'Joulukuu'
-  };
-
-  late String month;
-  String? changeLocale() {
-    String? month = localeMonths[monthInt];
-    return month;
-  }
 
   // Default to used items -view
   String selectedView = "used";
@@ -105,15 +84,13 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
     } else {
       PantryProxy().changeLocation(data, "Bin");
     }
-    setState(
-      () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(data.name),
-          ),
-        );
-      },
-    );
+    setState(() {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(data.name),
+        ),
+      );
+    });
   }
 
   void _help() {
@@ -153,19 +130,21 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                           width: 5,
                         ),
                         DropdownButton(
-                          value: changeLocale(),
+                          value: month,
                           style: const TextStyle(color: Colors.black),
                           iconSize: 0,
                           onChanged: (String? value) {
                             setState(
                               () {
-                                monthInt = localeMonths.keys.firstWhere(
-                                    (k) => localeMonths[k] == value);
-                                month = localeMonths[monthInt]!;
+                                monthInt = mapMonths.keys
+                                    .firstWhere((k) => mapMonths[k] == value);
+                                month = DateFormat("MMMM").format(
+                                  DateTime(0, monthInt),
+                                );
                               },
                             );
                           },
-                          items: localeMonths
+                          items: mapMonths
                               .map(
                                 (key, value) {
                                   return MapEntry(
