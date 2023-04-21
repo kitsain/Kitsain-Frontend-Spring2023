@@ -6,7 +6,7 @@ import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 import 'package:kitsain_frontend_spring2023/database/openfoodfacts.dart';
 
 const List<String> categories = <String>[
-  'ITEM CATEGORY',
+  'Choose category',
   'Meat',
   'Seafood',
   'Fruit',
@@ -14,7 +14,7 @@ const List<String> categories = <String>[
   'Frozen',
   'Drinks',
   'Bread',
-  'Sweets',
+  'Treats',
   'Dairy',
   'Ready meals',
   'Dry & canned goods',
@@ -22,7 +22,7 @@ const List<String> categories = <String>[
 ];
 
 final catEnglish = <int, String>{
-  1: 'ITEM CATEGORY',
+  1: 'New',
   2: 'Meat',
   3: 'Seafood',
   4: 'Fruit',
@@ -60,7 +60,7 @@ class _NewItemFormState extends State<NewItemForm> {
   var _expDateDT;
 
   bool _favorite = false;
-  String _category = 'ITEM CATEGORY';
+  String _category = "Choose category";
   var _catInt;
   var _details = TextEditingController();
 
@@ -184,72 +184,80 @@ class _NewItemFormState extends State<NewItemForm> {
                   TextFormField(
                     controller: _EANCodeField,
                     decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        labelText: 'EAN CODE',
-                        suffixIcon: SizedBox(
-                          width: 80,
-                          height: 60,
-                          child: ElevatedButton(
-                              style: const ButtonStyle(
-                                  shape: MaterialStatePropertyAll<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadiusDirectional.only(
-                                                  topEnd: Radius.circular(5),
-                                                  bottomEnd:
-                                                      Radius.circular(5))))),
-                              onPressed: () async {
-                                if (_EANCodeField.text.isNotEmpty) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content:
-                                              Text('Fetching item data...')));
-                                  try {
-                                    primaryFocus!
-                                        .unfocus(disposition: _disposition);
-                                    _offData =
-                                        await getFromJson(_EANCodeField.text);
-                                    _itemName.text =
-                                        _offData.productName.toString();
-                                  } catch (e) {
-                                    ScaffoldMessenger.of(context)
-                                        .hideCurrentSnackBar();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                            content: Text(
-                                                'Item not found. Input manually.')));
-                                  }
-                                  if (_itemName.text.isNotEmpty) {
-                                    ScaffoldMessenger.of(context)
-                                        .hideCurrentSnackBar();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                            content: Text('Item found!')));
-                                  }
-                                } else {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          SizedBox(
-                                            width: 10,
-                                            height: 10,
-                                            child: AlertDialog(
-                                                content: const Text(
-                                                    'Please input EAN-code'),
-                                                actions: <Widget>[
-                                                  TextButton(
-                                                    child: const Text('OK'),
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                ]),
-                                          ));
-                                }
-                              },
-                              child: const Text('FETCH\n ITEM')),
-                        )),
+                      border: const OutlineInputBorder(),
+                      labelText: 'EAN CODE',
+                      suffixIcon: SizedBox(
+                        width: 80,
+                        height: 60,
+                        child: ElevatedButton(
+                          style: const ButtonStyle(
+                            shape: MaterialStatePropertyAll<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadiusDirectional.only(
+                                  topEnd: Radius.circular(5),
+                                  bottomEnd: Radius.circular(5),
+                                ),
+                              ),
+                            ),
+                          ),
+                          onPressed: () async {
+                            if (_EANCodeField.text.isNotEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Fetching item data...')));
+                              try {
+                                primaryFocus!
+                                    .unfocus(disposition: _disposition);
+                                _offData =
+                                    await getFromJson(_EANCodeField.text);
+                                _itemName.text =
+                                    _offData.productName.toString();
+                              } catch (e) {
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content:
+                                        Text('Item not found. Input manually.'),
+                                  ),
+                                );
+                              }
+                              if (_itemName.text.isNotEmpty) {
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Item found!'),
+                                  ),
+                                );
+                              }
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) => SizedBox(
+                                  width: 10,
+                                  height: 10,
+                                  child: AlertDialog(
+                                    content:
+                                        const Text('Please input EAN-code'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: const Text('OK'),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          child: const Text('FETCH\n ITEM'),
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Stack(children: [
@@ -274,8 +282,9 @@ class _NewItemFormState extends State<NewItemForm> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Container(
                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(5)),
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: DropdownButtonFormField<String>(
@@ -291,8 +300,9 @@ class _NewItemFormState extends State<NewItemForm> {
                           setState(
                             () {
                               _category = value!;
-                              _catInt = catEnglish.keys
-                                  .firstWhere((k) => categories[k] == value);
+                              _catInt = catEnglish.keys.firstWhere(
+                                      (key) => categories[key] == value) +
+                                  1;
                             },
                           );
                         },
@@ -327,29 +337,6 @@ class _NewItemFormState extends State<NewItemForm> {
                     ),
                   ),
                   TextFormField(
-                    controller: _expDateString,
-                    decoration: const InputDecoration(
-                        icon: Icon(Icons.calendar_today),
-                        labelText: "EXPIRATION DATE"),
-                    readOnly: true,
-                    onTap: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2101));
-                      if (pickedDate != null) {
-                        String expirationDate =
-                            "${pickedDate.day}.${pickedDate.month}.${pickedDate.year}";
-                        _expDateString.text = expirationDate;
-                        _expDateDT = pickedDate;
-                      } else {
-                        _expDateString.text = "";
-                      }
-                      ;
-                    },
-                  ),
-                  TextFormField(
                     controller: _openDateString,
                     decoration: const InputDecoration(
                         icon: Icon(Icons.calendar_today),
@@ -369,7 +356,28 @@ class _NewItemFormState extends State<NewItemForm> {
                       } else {
                         _openDateString.text = "";
                       }
-                      ;
+                    },
+                  ),
+                  TextFormField(
+                    controller: _expDateString,
+                    decoration: const InputDecoration(
+                        icon: Icon(Icons.calendar_today),
+                        labelText: "EXPIRATION DATE"),
+                    readOnly: true,
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2101));
+                      if (pickedDate != null) {
+                        String expirationDate =
+                            "${pickedDate.day}.${pickedDate.month}.${pickedDate.year}";
+                        _expDateString.text = expirationDate;
+                        _expDateDT = pickedDate;
+                      } else {
+                        _expDateString.text = "";
+                      }
                     },
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),
@@ -404,11 +412,11 @@ class _NewItemFormState extends State<NewItemForm> {
                                 ObjectId().toString(),
                                 _itemName.text,
                                 "Pantry",
-                                _catInt + 1,
+                                _catInt,
                                 everyday: _favorite,
                                 openedDate: _openDateDT,
                                 expiryDate: _expDateDT,
-                                addedDate: DateTime.now(),
+                                addedDate: DateTime.now().toUtc(),
                               );
                               PantryProxy().upsertItem(newItem);
                               setState(() {});

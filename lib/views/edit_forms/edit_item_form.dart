@@ -314,29 +314,6 @@ class _EditItemFormState extends State<EditItemForm> {
                     ),
                   ),
                   TextFormField(
-                    controller: _expDateString,
-                    decoration: const InputDecoration(
-                        icon: Icon(Icons.calendar_today),
-                        labelText: "EXPIRATION DATE"),
-                    readOnly: true,
-                    onTap: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2101));
-                      if (pickedDate != null) {
-                        String expirationDate =
-                            "${pickedDate.day}.${pickedDate.month}.${pickedDate.year}";
-                        _expDateString.text = expirationDate;
-                        _expDateDT = pickedDate;
-                      } else {
-                        _expDateString.text = "";
-                      }
-                      ;
-                    },
-                  ),
-                  TextFormField(
                     controller: _openDateString,
                     decoration: const InputDecoration(
                         icon: Icon(Icons.calendar_today),
@@ -352,9 +329,31 @@ class _EditItemFormState extends State<EditItemForm> {
                         String openedDate =
                             "${pickedDate.day}.${pickedDate.month}.${pickedDate.year}";
                         _openDateString.text = openedDate;
-                        _openDateDT = pickedDate;
+                        _openDateDT = pickedDate.toUtc();
                       } else {
                         _openDateString.text = "";
+                      }
+                    },
+                  ),
+                  TextFormField(
+                    controller: _expDateString,
+                    decoration: const InputDecoration(
+                        icon: Icon(Icons.calendar_today),
+                        labelText: "EXPIRATION DATE"),
+                    readOnly: true,
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2101));
+                      if (pickedDate != null) {
+                        String expirationDate =
+                            "${pickedDate.day}.${pickedDate.month}.${pickedDate.year}";
+                        _expDateString.text = expirationDate;
+                        _expDateDT = pickedDate.toUtc();
+                      } else {
+                        _expDateString.text = "";
                       }
                     },
                   ),

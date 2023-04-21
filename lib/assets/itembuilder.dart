@@ -31,11 +31,10 @@ class _ItemBuilderState extends State<ItemBuilder> {
         if (widget.loc == "Pantry") {
           return ItemCard(
             item: widget.items[index],
+            loc: "Pantry",
           );
         } else if (widget.loc == "History") {
-          return HistoryCard(
-            item: widget.items[index],
-          );
+          return ItemCard(item: widget.items[index], loc: "History");
         }
       },
     );
