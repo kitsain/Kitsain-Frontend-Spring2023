@@ -76,7 +76,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
           addIcon: Icons.add_shopping_cart,
           helpFunction: _help,
           backgroundImageName: 'assets/images/shopping_flipped_B1.jpeg',
-          titleBackgroundColor: Color.fromRGBO(152, 88, 75, 0.75),
+          titleBackgroundColor: const Color.fromRGBO(77, 24, 9, 0.6),
         ),
       body: SingleChildScrollView(
         child: Column(

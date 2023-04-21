@@ -69,7 +69,7 @@ class _ShoppingListsState extends State<ShoppingLists> {
           addIcon: Icons.post_add,
           helpFunction: _help,
           backgroundImageName: 'assets/images/aisle-3105629_1280_B1.jpg',
-          titleBackgroundColor: Color.fromRGBO(152, 88, 75, 0.75),
+          titleBackgroundColor: const Color.fromRGBO(77, 24, 9, 0.6),
         ),
       body: SingleChildScrollView(
         child: Column(
