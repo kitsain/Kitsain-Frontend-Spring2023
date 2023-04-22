@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
+import 'package:kitsain_frontend_spring2023/views/help_pages/shopping_lists_help_page.dart';
 import 'package:kitsain_frontend_spring2023/LoginController.dart';
 import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
 import 'package:kitsain_frontend_spring2023/controller/tasklist_controller.dart';
@@ -88,16 +89,31 @@ class _ShoppingListsState extends State<ShoppingLists> {
     );
   }
 
+  void _help() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return const FractionallySizedBox(
+          //heightFactor: 0.7,
+          child: ShoppingListsHelp(),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
-        title: 'SHOPPING LISTS',
-        //title: AppLocalizations.of(context)!.shoppingListsScreen,
-        addFunction: _addNewItem,
-        addIcon: Icons.post_add,
-        helpFunction: _addNewItem,
-      ),
+          title: 'SHOPPING \u200e\n\u200e LISTS',
+          //title: AppLocalizations.of(context)!.shoppingListsScreenTopBarTitle,
+          addFunction: _addNewItem,
+          addIcon: Icons.post_add,
+          helpFunction: _help,
+          backgroundImageName: 'assets/images/aisle-3105629_1280_B1.jpg',
+          titleBackgroundColor: const Color.fromRGBO(77, 24, 9, 0.6),
+        ),
       body: SingleChildScrollView(
         child: Obx(() {
           return ListView.builder(

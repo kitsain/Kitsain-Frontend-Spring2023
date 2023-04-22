@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 Color returnColor(DateTime bbdate) {
   DateTime currentDate = DateTime.now();
-  if (currentDate.isAfter(bbdate.add(const Duration(days: 1)))) {
-    return Colors.red;
+  if (currentDate.isAfter(
+    bbdate.add(
+      const Duration(days: 1),
+    ),
+  )) {
+    return const Color(0xff1C1311);
   }
   if (bbdate.difference(currentDate).inDays < 1) {
-    return Colors.orange;
+    return const Color(0xFFA66051);
   }
-  if (bbdate.difference(currentDate).inDays < 3) {
-    return Colors.yellow;
+  if (bbdate.difference(currentDate).inDays < 7) {
+    return const Color(0xffE3AB4D);
   } else {
-    return Colors.green;
+    return const Color(0xff5C785E);
   }
 }

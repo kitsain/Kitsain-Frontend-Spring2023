@@ -16,11 +16,13 @@ class _NewItemFormState extends State<NewShoppingListForm> {
   final _listName = TextEditingController();
   final _taskListController = Get.put(TaskListController());
 
-  void _discardChangesDialog() {
+  bool _discardChangesDialog() {
     BuildContext outerContext = context;
-
+    bool _close = false;
     if(_listName.text.isEmpty) {
       Navigator.pop(context);
+      _close = true;
+      return _close;
     } else {
       showDialog(
           context: context,
@@ -31,6 +33,7 @@ class _NewItemFormState extends State<NewShoppingListForm> {
                 child: const Text('CANCEL'),
                 onPressed: () {
                   Navigator.pop(context);
+                  _close = false;
                 },
               ),
               TextButton(
@@ -38,83 +41,97 @@ class _NewItemFormState extends State<NewShoppingListForm> {
                 onPressed: () {
                   Navigator.pop(context);
                   Navigator.pop(outerContext);
+                  _close = true;
                 },
               ),
             ],
           )
       );
+      return _close;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(8),
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.05,
-                  child: FloatingActionButton(
-                    child: Icon(Icons.close),
-                    onPressed: () => _discardChangesDialog(),
-                  ),
-                )
-              ],
-            ),
-            SizedBox( height: MediaQuery.of(context).size.height * 0.03),
-            Text(
-              'NEW SHOPPING LIST',
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
-            SizedBox( height: MediaQuery.of(context).size.height * 0.03),
-            SizedBox(
-              child: TextFormField(
-                controller: _listName,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'LIST NAME',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter shopping list name";
-                  }
-                  return null;
-                },
+    return WillPopScope(
+      onWillPop: () async {
+        return _discardChangesDialog();
+      },
+      child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsets.all(8),
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.04,
+                    child: FloatingActionButton(
+                      child: Icon(Icons.close),
+                      onPressed: () => _discardChangesDialog(),
+                    ),
+                  )
+                ],
               ),
-            ),
-            SizedBox( height: MediaQuery.of(context).size.height * 0.375),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.07,
-                  child: ElevatedButton(
-                    onPressed: () => _discardChangesDialog(),
-                    child: Text('CANCEL'),
+              SizedBox( height: MediaQuery.of(context).size.height * 0.03),
+              Text(
+                'NEW\nSHOPPING\nLIST',
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
+              SizedBox( height: MediaQuery.of(context).size.height * 0.03),
+              Stack(
+                  children: [
+                    TextFormField(
+                      controller: _listName,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'LIST NAME',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter list name";
+                        }
+                        return null;
+                      },
+                    ),
+                    Positioned(
+                        right: 27,
+                        top: 15,
+                        child: Icon(Icons.keyboard_alt_outlined)
+                    )
+                  ]
+              ),
+              SizedBox( height: MediaQuery.of(context).size.height * 0.27),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    child: ElevatedButton(
+                      onPressed: () => _discardChangesDialog(),
+                      child: Text('CANCEL'),
+                    ),
                   ),
-                ),
-                SizedBox( width: MediaQuery.of(context).size.width * 0.05),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.07,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if(_formKey.currentState!.validate()) {
-                        _taskListController.createTaskLists(_listName.text);
-                        Navigator.pop(context);
-                      }
-                    },
-                    child: Text('  DONE  '),
+                  SizedBox( width: MediaQuery.of(context).size.width * 0.05),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if(_formKey.currentState!.validate()) {
+                          _taskListController.createTaskLists(_listName.text);
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: Text('  DONE  '),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
-        )
+                ],
+              ),
+            ],
+          )
+      ),
     );
   }
 }

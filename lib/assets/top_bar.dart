@@ -4,17 +4,22 @@ import 'package:kitsain_frontend_spring2023/LoginController.dart';
 import 'package:kitsain_frontend_spring2023/views/homepage2.dart';
 
 class TopBar extends StatefulWidget implements PreferredSizeWidget {
-  const TopBar(
-      {super.key,
-      required this.title,
-      this.addFunction,
-      this.addIcon = Icons.add,
-      required this.helpFunction});
+  const TopBar({
+    super.key,
+    required this.title,
+    this.addFunction,
+    this.addIcon = Icons.add,
+    required this.helpFunction,
+    required this.backgroundImageName,
+    required this.titleBackgroundColor,
+  });
 
   final String title;
   final Function? addFunction;
   final IconData addIcon;
   final Function helpFunction;
+  final String backgroundImageName;
+  final Color titleBackgroundColor;
 
   @override
   State<TopBar> createState() => _TopBarState();
@@ -71,15 +76,28 @@ class _TopBarState extends State<TopBar> {
       preferredSize: widget.preferredSize,
       child: Container(
         height: MediaQuery.of(context).size.height * 0.2,
-        color: Colors.green,
+        //color: Colors.green,
         padding: const EdgeInsets.only(left: 15, top: 25, bottom: 1, right: 15),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            //image: AssetImage("assets/images/pantry_banner_2.jpg"),
+            //image: AssetImage("assets/images/ue_banner_darker_3.png"),
+            image: AssetImage(widget.backgroundImageName),
+            fit: BoxFit.cover,
+            alignment: Alignment.bottomCenter,
+          ),
+        ),
         child: Row(
           children: [
             Container(
               width: MediaQuery.of(context).size.width * 0.64,
               child: Text(
-                widget.title,
-                style: const TextStyle(fontSize: 32),
+                ' ${widget.title} ${'\u200e'}',
+                style: TextStyle(
+                    fontSize: 32,
+                    color: Colors.white,
+                    backgroundColor: widget.titleBackgroundColor,
+                ),
               ),
             ),
             const Spacer(),

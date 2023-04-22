@@ -5,6 +5,7 @@ import 'package:kitsain_frontend_spring2023/assets/shopping_list_item.dart';
 import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
+import 'package:kitsain_frontend_spring2023/views/help_pages/user_shopping_list_help_page.dart';
 import 'package:kitsain_frontend_spring2023/views/add_forms/add_new_shopping_list_item_form.dart';
 
 class UserShoppingList extends StatefulWidget {
@@ -81,6 +82,19 @@ class _UserShoppingListState extends State<UserShoppingList> {
     );
   }
 
+  void _help() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return const FractionallySizedBox(
+          //heightFactor: 0.7,
+          child: UserShoppingListHelp(),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // these are here so that the buttons on the bottom will never overflow off screen
@@ -90,12 +104,14 @@ class _UserShoppingListState extends State<UserShoppingList> {
 
     return Scaffold(
       appBar: TopBar(
-        title: 'SHOPPING LISTS',
-        //title: AppLocalizations.of(context)!.shoppingListScreen,
-        addFunction: _addNewItem,
-        addIcon: Icons.add_shopping_cart,
-        helpFunction: _addNewItem,
-      ),
+          title: 'SHOPPING \u200e\n\u200e LISTS',
+          //title: AppLocalizations.of(context)!.shoppingListsScreenTopBarTitle,
+          addFunction: _addNewItem,
+          addIcon: Icons.add_shopping_cart,
+          helpFunction: _help,
+          backgroundImageName: 'assets/images/shopping_flipped_B1.jpeg',
+          titleBackgroundColor: const Color.fromRGBO(77, 24, 9, 0.6),
+        ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(paddingWidth),
         child: Column(

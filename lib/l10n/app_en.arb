@@ -7,7 +7,11 @@
     "@shoppingListsScreen": {
         "description": "Name to describe shopping lists screen"
     },
-    "historyScreen": "HISTORY",
+    "shoppingListsScreenTopBarTitle": "SHOPPING \u200e\n\u200e LISTS",
+    "@shoppingListsScreenTopBarTitle": {
+        "description": "Name to describe shopping lists screen top bar title"
+    },
+    "historyScreen": "PANTRY HISTORY",
     "@historyScreen": {
         "description": "Name to describe history screen"
     },
