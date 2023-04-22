@@ -9,6 +9,7 @@ import 'package:kitsain_frontend_spring2023/controller/tasklist_controller.dart'
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/user_shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/edit/edit_shopping_list.dart';
 import 'package:kitsain_frontend_spring2023/views/add_forms/add_new_shopping_list_form.dart';
+import 'package:kitsain_frontend_spring2023/database/item.dart';
 
 class ShoppingLists extends StatefulWidget {
   const ShoppingLists({super.key, required this.setActiveShoppingListIndex});
@@ -20,8 +21,6 @@ class ShoppingLists extends StatefulWidget {
 }
 
 class _ShoppingListsState extends State<ShoppingLists> {
-  // final _stateController = Get.put(ItemController());
-
   final taskListController = Get.put(TaskListController());
 
   final taskController = Get.put(TaskController());
@@ -41,16 +40,18 @@ class _ShoppingListsState extends State<ShoppingLists> {
     );
   }
 
-  _receiveItem(int index, String data) {
-    String taskListId = '${taskListController.taskLists.value?.items?[index].id}';
-    String title = data;
+  _receiveItem(int index, Item data) {
+    String taskListId =
+        '${taskListController.taskLists.value?.items?[index].id}';
+    String title = data.name;
+    String? details = data.details;
 
-    taskController.createTask(title, '', taskListId);
+    taskController.createTask(title, details ?? '', taskListId);
 
     setState(
-          () {
+      () {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("$data")));
+            .showSnackBar(SnackBar(content: Text("$title added")));
       },
     );
 
@@ -58,21 +59,18 @@ class _ShoppingListsState extends State<ShoppingLists> {
   }
 
   _openShoppingList(index) async {
-    print(
-        '${taskListController.taskLists.value?.items?[index].id}');
     await taskController.getTasksList(
         '${taskListController.taskLists.value?.items?[index].id}');
 
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: ((context) =>
-                UserShoppingList(
+            builder: ((context) => UserShoppingList(
                   taskListIndex: index,
                   taskListId:
-                  '${taskListController.taskLists.value?.items?[index].id}',
+                      '${taskListController.taskLists.value?.items?[index].id}',
                   taskListName:
-                  '${taskListController.taskLists.value?.items?[index].title}',
+                      '${taskListController.taskLists.value?.items?[index].title}',
                 ))));
   }
 
@@ -95,7 +93,6 @@ class _ShoppingListsState extends State<ShoppingLists> {
       isScrollControlled: true,
       builder: (BuildContext context) {
         return const FractionallySizedBox(
-          //heightFactor: 0.7,
           child: ShoppingListsHelp(),
         );
       },
@@ -106,26 +103,26 @@ class _ShoppingListsState extends State<ShoppingLists> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
-          title: 'SHOPPING \u200e\n\u200e LISTS',
-          //title: AppLocalizations.of(context)!.shoppingListsScreenTopBarTitle,
-          addFunction: _addNewItem,
-          addIcon: Icons.post_add,
-          helpFunction: _help,
-          backgroundImageName: 'assets/images/aisle-3105629_1280_B1.jpg',
-          titleBackgroundColor: const Color.fromRGBO(77, 24, 9, 0.6),
-        ),
+        title: 'SHOPPING \u200e\n\u200e LISTS',
+        //title: AppLocalizations.of(context)!.shoppingListsScreenTopBarTitle,
+        addFunction: _addNewItem,
+        addIcon: Icons.post_add,
+        helpFunction: _help,
+        backgroundImageName: 'assets/images/aisle-3105629_1280_B1.jpg',
+        titleBackgroundColor: const Color.fromRGBO(77, 24, 9, 0.6),
+      ),
       body: SingleChildScrollView(
         child: Obx(() {
           return ListView.builder(
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
             itemCount: taskListController.taskLists.value?.items?.length,
-            physics: NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.all(15),
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(15),
             itemBuilder: (context, index) {
               return Column(
                 children: [
-                  DragTarget<String>(
+                  DragTarget<Item>(
                     onAccept: (data) => _receiveItem(index, data),
                     builder: (context, candidateData, rejectedData) {
                       return Card(
@@ -135,64 +132,42 @@ class _ShoppingListsState extends State<ShoppingLists> {
                           side: BorderSide(
                             width: candidateData.isNotEmpty ? 4 : 1,
                             color: candidateData.isNotEmpty
-                                ? Color.fromRGBO(63, 85, 65,
+                                ? const Color.fromRGBO(63, 85, 65,
                                     1) //TODO: use the universal style color here instead
                                 : Colors.black38,
                           ),
                         ),
                         child: Padding(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                               left: 5, right: 0, top: 5, bottom: 5),
                           child: ListTile(
                               title: Row(
                                 children: [
                                   Text(
                                       '${taskListController.taskLists.value?.items?[index].title}'),
-                                  Spacer(),
+                                  const Spacer(),
                                   IconButton(
                                     onPressed: () {
                                       taskListController.deleteTaskLists(
                                           '${taskListController.taskLists.value?.items?[index].id}',
                                           index);
                                     },
-                                    icon: Icon(Icons.delete),
+                                    icon: const Icon(Icons.delete),
                                   ),
                                   IconButton(
                                     onPressed: () => _editList(
                                         '${taskListController.taskLists.value?.items?[index].id}',
                                         index),
-                                    icon: Icon(Icons.edit),
+                                    icon: const Icon(Icons.edit),
                                   ),
                                 ],
                               ),
-                              onTap: () => _openShoppingList(index)
-                              /*async {
-                                  // print('ok');
-                                  print(
-                                      '${taskListController.taskLists.value?.items?[index].id}');
-                                  await taskController.getTasksList(
-                                      '${taskListController.taskLists.value?.items?[index].id}');
-
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: ((context) =>
-                                              UserShoppingList(
-                                                taskListIndex: index,
-                                                taskListId:
-                                                    '${taskListController.taskLists.value?.items?[index].id}',
-                                                taskListName:
-                                                    '${taskListController.taskLists.value?.items?[index].title}',
-                                              ))));
-                                },*/
-                              ),
+                              onTap: () => _openShoppingList(index)),
                         ),
                       );
                     },
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
+                  const SizedBox(height: 5),
                 ],
               );
             },

@@ -58,6 +58,7 @@ class _EditItemFormState extends State<EditShoppingListForm> {
         child: ListView(
           padding: const EdgeInsets.all(8),
           children: <Widget>[
+            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

@@ -7,6 +7,11 @@ import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
 import 'package:kitsain_frontend_spring2023/views/help_pages/user_shopping_list_help_page.dart';
 import 'package:kitsain_frontend_spring2023/views/add_forms/add_new_shopping_list_item_form.dart';
+import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
+import 'package:kitsain_frontend_spring2023/database/item.dart';
+import 'package:realm/realm.dart';
+
+
 
 class UserShoppingList extends StatefulWidget {
   const UserShoppingList(
@@ -34,10 +39,57 @@ class _UserShoppingListState extends State<UserShoppingList> {
     );
   }
 
+  _removeSelectedItems() async {
+    taskController.tasksListRemove.value?.forEach(
+          (element) async {
+        taskController.shoppingListItem.value?[element]
+            .checkBox = false;
+        await taskController.deleteTask(
+            widget.taskListId,
+            '${taskController.shoppingListItem.value?[element].id}',
+            element);
+      },
+    );
+    taskController.tasksListRemove.value?.clear();
+  }
+
   _moveSelectedItemsToPantry() {
-    _stateController.pantryList
-        .addAll(_stateController.shoppingLists[widget.taskListIndex]);
-    _stateController.shoppingLists[widget.taskListIndex].clear();
+    taskController.tasksListRemove.value?.forEach(
+          (element) async {
+
+        taskController.shoppingListItem.value?[element]
+            .checkBox = false;
+
+        // adding the item to pantry
+        String? itemName = taskController.shoppingListItem.value?[element].title;
+        String? itemDescription = taskController.shoppingListItem.value?[element].description;
+
+        var newItem = Item(
+          ObjectId().toString(),
+          itemName ?? '',
+          "Pantry",
+          1,
+          favorite: false,
+          openedDate: null,
+          expiryDate: null,
+          hasExpiryDate: false,
+          addedDate: DateTime.now().toUtc(),
+          details: itemDescription,
+        );
+
+        PantryProxy().upsertItem(newItem);
+        setState(() {});
+        Navigator.pop(context);
+
+        // removing item from shopping list
+        await taskController.deleteTask(
+            widget.taskListId,
+            '${taskController.shoppingListItem.value?[element].id}',
+            element);
+      },
+    );
+
+    taskController.tasksListRemove.value?.clear();
   }
 
   _deselectAll() {
@@ -210,25 +262,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
                 Container(
                   width: bottomButtonWidth,
                   child: OutlinedButton(
-                    // onPressed: _moveSelectedItemsToPantry,
-                    onPressed: () async {
-                      taskController.tasksListRemove.value?.forEach(
-                        (element) async {
-                          taskController.shoppingListItem.value?[element]
-                              .checkBox = false;
-                          // print('$element' +
-                          //     '${taskController.shoppingListItem.value?[element].title} ' +
-                          //     '${taskController.shoppingListItem.value?.length}');
-
-                          await taskController.deleteTask(
-                              widget.taskListId,
-                              '${taskController.shoppingListItem.value?[element].id}',
-                              element);
-                        },
-                      );
-
-                      taskController.tasksListRemove.value?.clear();
-                    },
+                    onPressed: _removeSelectedItems,
                     child: Text(
                       'Remove Items From List',
                       textAlign: TextAlign.center,
@@ -239,19 +273,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
                 Container(
                   width: bottomButtonWidth,
                   child: OutlinedButton(
-                    // onPressed: _moveSelectedItemsToPantry,
-                    onPressed: () {
-                      // taskController.tasksListRemove.value
-                      //     ?.sort((a, b) => b.compareTo(a));
-
-                      /*taskController.createTask(
-                          'newtask', 'descrip', widget.taskListId);
-
-                      print(taskController.tasksListRemove.value?.length);
-                      taskController.tasksListRemove.value?.forEach((element) {
-                        print('pp  $element');
-                      });*/
-                    },
+                    onPressed: _moveSelectedItemsToPantry,
                     child: Text(
                       'ADD ITEMS TO PANTRY',
                       textAlign: TextAlign.center,
