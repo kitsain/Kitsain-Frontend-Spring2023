@@ -24,22 +24,19 @@ class _ShoppingListNavigationState extends State<ShoppingListNavigation> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Navigator(
-        pages: [
-          MaterialPage(
-            child: ShoppingLists(
-                setActiveShoppingListIndex: setActiveShoppingListIndex),
-          ),
-          if (_activeList != '')
+          pages: [
             MaterialPage(
-              child: UserShoppingList(
-                listIndex: _activeShoppingListIndex,
-              ),
-            ),
-        ],
-        onPopPage: (route, result) {
-          return route.didPop(result);
-        },
-      ),
+                child: ShoppingLists(
+                    setActiveShoppingListIndex: setActiveShoppingListIndex)),
+            // if (_activeList != '')
+            //   MaterialPage(
+            //       child: UserShoppingList(
+            //     taskListIndex: _activeShoppingListIndex,
+            //   )),
+          ],
+          onPopPage: (route, result) {
+            return route.didPop(result);
+          }),
     );
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:kitsain_frontend_spring2023/controller/tasklist_controller.dart';
 
 class NewShoppingListForm extends StatefulWidget {
   const NewShoppingListForm({super.key});
@@ -12,8 +14,10 @@ class NewShoppingListForm extends StatefulWidget {
 class _NewItemFormState extends State<NewShoppingListForm> {
   final _formKey = GlobalKey<FormState>();
   final _listName = TextEditingController();
+  final _taskListController = Get.put(TaskListController());
 
   bool _discardChangesDialog() {
+    BuildContext outerContext = context;
     bool _close = false;
     if(_listName.text.isEmpty) {
       Navigator.pop(context);
@@ -36,7 +40,7 @@ class _NewItemFormState extends State<NewShoppingListForm> {
                 child: const Text('DISCARD'),
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.pop(context);
+                  Navigator.pop(outerContext);
                   _close = true;
                 },
               ),
@@ -116,7 +120,8 @@ class _NewItemFormState extends State<NewShoppingListForm> {
                     child: ElevatedButton(
                       onPressed: () {
                         if(_formKey.currentState!.validate()) {
-                          print("OK");
+                          _taskListController.createTaskLists(_listName.text);
+                          Navigator.pop(context);
                         }
                       },
                       child: Text('  DONE  '),

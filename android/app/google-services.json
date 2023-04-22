@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "333896637366",
+    "project_id": "kitsain2023",
+    "storage_bucket": "kitsain2023.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:333896637366:android:b208b04046c68a09b6bf17",
+        "android_client_info": {
+          "package_name": "com.kitsain.kitsain_frontend_spring2023"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "333896637366-lm3q8ubod1cfehjon4fq6uoh18iqqmeo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1msQeFHEiCm4XpRAMgK3kn1grpDqzNaw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "333896637366-d62fo0q07e17mhdo2chdtq86g0m8r1q7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

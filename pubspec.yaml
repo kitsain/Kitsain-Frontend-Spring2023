@@ -43,6 +43,12 @@ dependencies:
   async: ^2.10.0
   get: ^4.6.5
   provider: ^6.0.5
+  expansion_tile_card: ^2.0.0
+  firebase_auth: ^4.3.0
+  simple_barcode_scanner: ^0.0.6
+  googleapis: ^10.1.0
+  google_sign_in: ^6.0.2
+  extension_google_sign_in_as_googleapis_auth: ^2.0.9
 
 dev_dependencies:
   flutter_test:
@@ -56,7 +62,6 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
   # Barcode scanner
-  simple_barcode_scanner: ^0.0.6
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

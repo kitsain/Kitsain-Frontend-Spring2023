@@ -7,12 +7,14 @@ import 'package:kitsain_frontend_spring2023/views/main_menu_pages/pantryview.dar
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/used_and_expired.dart';
 import 'package:kitsain_frontend_spring2023/l10n/l10n.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
+import 'package:kitsain_frontend_spring2023/views/homepage2.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/shopping_list_navigation.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //PantryProxy().deleteAll();
-  runApp(MaterialApp(home: const MyApp()));
+  await Firebase.initializeApp();
+  runApp(MaterialApp(home: HomePage2()));
 }
 
 class MyApp extends StatelessWidget {
@@ -90,7 +92,8 @@ class _HomePageState extends State<HomePage> {
               ) {
                 return NavigationDestination(
                     icon: Icon(Icons.house),
-                    label: AppLocalizations.of(context)!.pantryScreen);
+                    label: 'MY PANTRY');
+                    //label: AppLocalizations.of(context)!.pantryScreen);
               },
               onMove: (details) {
                 _navigationMenuIndex = 0;
@@ -105,7 +108,8 @@ class _HomePageState extends State<HomePage> {
               ) {
                 return NavigationDestination(
                     icon: Icon(Icons.shopping_cart),
-                    label: AppLocalizations.of(context)!.shoppingListsScreen);
+                    label: 'SHOPPING LISTS');
+                    //label: AppLocalizations.of(context)!.shoppingListsScreen);
               },
               onMove: (details) {
                 _navigationMenuIndex = 1;
@@ -120,7 +124,8 @@ class _HomePageState extends State<HomePage> {
               ) {
                 return NavigationDestination(
                     icon: Icon(Icons.recycling),
-                    label: AppLocalizations.of(context)!.historyScreen);
+                    label: 'USED & EXPIRED');
+                    //label: AppLocalizations.of(context)!.historyScreen);
               },
               onMove: (details) {
                 _navigationMenuIndex = 2;
