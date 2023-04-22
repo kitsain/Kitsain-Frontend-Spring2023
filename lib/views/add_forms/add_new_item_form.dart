@@ -122,13 +122,10 @@ class _NewItemFormState extends State<NewItemForm> {
               ],
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.08,
-              child: const Text(
-                'ADD ITEM\nTO PANTRY',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              ),
+            Text(
+              'ADD ITEM\nTO PANTRY',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.06),
             Padding(
