@@ -192,6 +192,8 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
         appBar: TopBar(
           title: AppLocalizations.of(context)!.historyScreen,
           helpFunction: _temp,
+          backgroundImageName: 'assets/images/ue_banner_darker_B2.png',
+          titleBackgroundColor: const Color.fromRGBO(47, 56, 41, 0.6),
         ),
         body: DragTarget<String>(
         onAccept: (data) => _receiveItem(data),

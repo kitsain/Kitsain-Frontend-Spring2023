@@ -64,10 +64,12 @@ class _ShoppingListsState extends State<ShoppingLists> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
-          title: AppLocalizations.of(context)!.shoppingListsScreen,
+          title: AppLocalizations.of(context)!.shoppingListsScreenTopBarTitle,
           addFunction: _addNewItem,
           addIcon: Icons.post_add,
           helpFunction: _help,
+          backgroundImageName: 'assets/images/aisle-3105629_1280_B1.jpg',
+          titleBackgroundColor: const Color.fromRGBO(77, 24, 9, 0.6),
         ),
       body: SingleChildScrollView(
         child: Column(
