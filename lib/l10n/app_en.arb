@@ -11,7 +11,7 @@
     "@shoppingListsScreenTopBarTitle": {
         "description": "Name to describe shopping lists screen top bar title"
     },
-    "historyScreen": "HISTORY",
+    "historyScreen": "PANTRY HISTORY",
     "@historyScreen": {
         "description": "Name to describe history screen"
     },

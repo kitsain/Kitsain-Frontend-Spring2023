@@ -124,7 +124,7 @@ class _HomePageState extends State<HomePage> {
               ) {
                 return NavigationDestination(
                     icon: Icon(Icons.recycling),
-                    label: 'USED & EXPIRED');
+                    label: 'PANTRY HISTORY');
                     //label: AppLocalizations.of(context)!.historyScreen);
               },
               onMove: (details) {
