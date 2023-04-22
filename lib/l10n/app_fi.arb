@@ -1,6 +1,7 @@
 {
     "pantryScreen": "RUOKAKOMERO",
     "shoppingListsScreen": "KAUPPALISTAT",
+    "shoppingListsScreenTopBarTitle": "KAUPPALISTAT",
     "historyScreen": "HISTORIA",
     "addNewItem": "Lisää uusi tuote",
     "dragComplete": "Tuote vedetty",

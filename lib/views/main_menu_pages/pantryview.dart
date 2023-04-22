@@ -141,6 +141,8 @@ class _PantryViewState extends State<PantryView> {
         addFunction: _addNewItem,
         addIcon: Icons.add_home,
         helpFunction: _help,
+        backgroundImageName: 'assets/images/pantry_banner_B1.jpg',
+        titleBackgroundColor: const Color.fromRGBO(77, 24, 9, 0.6),
       ),
       body: DragTarget<Item>(
         onAccept: (data) => _receiveItem(data),

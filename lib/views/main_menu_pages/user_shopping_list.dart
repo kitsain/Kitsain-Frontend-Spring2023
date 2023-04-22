@@ -71,11 +71,13 @@ class _UserShoppingListState extends State<UserShoppingList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
-        title: AppLocalizations.of(context)!.shoppingListsScreen,
-        addFunction: _addNewItem,
-        addIcon: Icons.add_shopping_cart,
-        helpFunction: _help,
-      ),
+          title: AppLocalizations.of(context)!.shoppingListsScreenTopBarTitle,
+          addFunction: _addNewItem,
+          addIcon: Icons.add_shopping_cart,
+          helpFunction: _help,
+          backgroundImageName: 'assets/images/shopping_flipped_B1.jpeg',
+          titleBackgroundColor: const Color.fromRGBO(77, 24, 9, 0.6),
+        ),
       body: SingleChildScrollView(
         child: Column(
           children: [
