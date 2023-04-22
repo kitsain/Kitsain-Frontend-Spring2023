@@ -420,6 +420,7 @@ class _NewItemFormState extends State<NewItemForm> {
                                 expiryDate: _expDateDT,
                                 hasExpiryDate: _hasExpiryDate,
                                 addedDate: DateTime.now().toUtc(),
+                                details: _details.text,
                               );
                               PantryProxy().upsertItem(newItem);
                               setState(() {});

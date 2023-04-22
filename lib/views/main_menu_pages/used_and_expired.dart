@@ -225,40 +225,50 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                   } else {
                     return Column(
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(200),
-                          child: SizedBox(
-                            height: 200,
-                            width: 200,
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: <Widget>[
-                                Container(
-                                  color: Colors.white,
+                        Stack(
+                          alignment: Alignment.bottomCenter,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(200),
+                              child: SizedBox(
+                                height: 200,
+                                width: 200,
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      color: Colors.white,
+                                    ),
+                                    Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Container(
+                                        height: 200 * usedPercent / 100,
+                                        width: 200,
+                                        color: Colors.amber,
+                                      ),
+                                    ),
+                                    const Image(
+                                      image: AssetImage(
+                                          'assets/images/plate1.png'),
+                                      height: 200,
+                                    ),
+                                  ],
                                 ),
-                                Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: Container(
-                                    height: 200 * usedPercent / 100,
-                                    width: 200,
-                                    color: Colors.amber,
-                                  ),
-                                ),
-                                const Image(
-                                  image: AssetImage('assets/images/plate1.png'),
-                                  height: 200,
-                                ),
-                                Positioned(
-                                  left: 120,
-                                  bottom: 15,
-                                  child: Text(
-                                    "${PantryProxy().countByMonth(monthInt, selectedView)}%",
-                                    style: const TextStyle(fontSize: 55),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Container(
+                                padding: EdgeInsets.only(right: 20),
+                                child: Text(
+                                  "${PantryProxy().countByMonth(monthInt, selectedView)}%",
+                                  style: const TextStyle(
+                                    fontSize: 55,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         Container(
                           alignment: Alignment.centerLeft,
