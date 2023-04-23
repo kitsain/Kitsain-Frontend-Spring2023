@@ -78,8 +78,6 @@ class _UserShoppingListState extends State<UserShoppingList> {
         );
 
         PantryProxy().upsertItem(newItem);
-        setState(() {});
-        Navigator.pop(context);
 
         // removing item from shopping list
         await taskController.deleteTask(
@@ -90,6 +88,9 @@ class _UserShoppingListState extends State<UserShoppingList> {
     );
 
     taskController.tasksListRemove.value?.clear();
+
+    setState(() {});
+    Navigator.pop(context);
   }
 
   _deselectAll() {
