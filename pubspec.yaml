@@ -49,6 +49,7 @@ dependencies:
   googleapis: ^10.1.0
   google_sign_in: ^6.0.2
   extension_google_sign_in_as_googleapis_auth: ^2.0.9
+  flutter_signin_button: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -78,7 +79,7 @@ flutter:
   assets:
     # - images/a_dot_burr.jpeg
     - assets/
-    # - assets/images
+    - assets/images/
     - assets/images/Kitsain_logo.png
     - assets/images/plate1.png
   #   - images/a_dot_ham.jpeg

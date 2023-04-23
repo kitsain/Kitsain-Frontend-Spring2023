@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:get/get.dart';
 import 'package:googleapis/tasks/v1.dart';
 import 'package:kitsain_frontend_spring2023/controller/tasklist_controller.dart';
@@ -27,30 +29,66 @@ class HomePage2 extends StatelessWidget {
           SizedBox(
             height: 150,
           ),
+          Container(
+            height: MediaQuery.of(context).size.height * .8,
+            width: MediaQuery.of(context).size.width * .8,
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black, width: 5),
+              borderRadius: BorderRadius.all(Radius.circular(35)),
+            ),
+            child: Column(children: [
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: ClipRRect(
+                      clipBehavior: Clip.antiAlias,
+                      borderRadius: BorderRadius.all(Radius.circular(25)),
+                      child: Image.asset(
+                        "assets/images/sign_in.jpg",
+                        height: MediaQuery.of(context).size.height * .6,
+                        fit: BoxFit.cover,
+                        isAntiAlias: true,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Text(
+                      'WELCOME TO KITSAIN',
+                      style: TextStyle(
+                        fontSize: 55,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+              SignInButton(
+                Buttons.Google,
+                shape: RoundedRectangleBorder(
+                    side: new BorderSide(color: Colors.white),
+                    borderRadius:
+                        new BorderRadius.all(new Radius.circular(10))),
+                onPressed: () async {
+                  await loginController.googleLogin();
+                  await taskListController.getTaskLists();
+
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: ((context) => HomePage(
+                            title: 'Kitsain MVP Spring 2023',
+                          ))));
+
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: ((context) => TaskListsScreen())));
+                },
+              ),
+            ]),
+          ),
           // Text(loginController.googleUser.value!.email),
-          ElevatedButton(
-            onPressed: () async {
-              await loginController.googleLogin();
-              await taskListController.getTaskLists();
 
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: ((context) => HomePage(
-                        title: 'Kitsain MVP Spring 2023',
-                      ))));
-
-              // Navigator.of(context).push(MaterialPageRoute(
-              //     builder: ((context) => TaskListsScreen())));
-            },
-            child: const Text('Google Sign In'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              loginController.googleSignInUser.value
-                  ?.signOut()
-                  .whenComplete(() => print('done'));
-            },
-            child: const Text('Google Sign OUT'),
-          ),
           // ElevatedButton(
           //   onPressed: () async {
           //     await taskListController.createTaskLists('name');
