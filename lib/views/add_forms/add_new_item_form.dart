@@ -148,33 +148,30 @@ class _NewItemFormState extends State<NewItemForm> {
                             MaterialPageRoute(
                               builder: (context) =>
                                   const SimpleBarcodeScannerPage(),
-                            ));
-                        setState(() async {
-                          if (res is String && res != '-1') {
+                          ),
+                        );
+                        if (res is String && res != '-1') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Fetching item...')));
+                          try {
+                            _EANCodeField.text = res;
+                            primaryFocus!.unfocus(disposition: _disposition);
+                            _offData = await getFromJson(res);
+                            _itemName.text = _offData.productName.toString();
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                    content: Text('Fetching item...')));
-                            try {
-                              _EANCodeField.text = res;
-                              primaryFocus!.unfocus(disposition: _disposition);
-                              _offData = await getFromJson(res);
-                              _itemName.text = _offData.productName.toString();
-                            } catch (e) {
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text(
-                                          'Item not found. Please enter item information.')));
-                            }
-                            if (_itemName.text.isNotEmpty) {
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Item found!')));
-                            }
+                                    content: Text(
+                                        'Item not found. Please enter item information.')));
                           }
-                        });
+                          if (_itemName.text.isNotEmpty) {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Item found!')));
+                          }
+                        }
                       },
                     ),
                   ),
