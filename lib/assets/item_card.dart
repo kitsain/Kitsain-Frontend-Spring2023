@@ -7,7 +7,14 @@ import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/views/edit_forms/edit_item_form.dart';
 import 'statuscolor.dart';
 
-enum _MenuValues { edit, used, bin, shoppinglist, delete, pantry }
+enum _MenuValues {
+  edit,
+  used,
+  bin,
+// shoppinglist,
+  delete,
+  pantry
+}
 
 const double BORDERWIDTH = 30.0;
 const Color NULLSTATUSCOLOR = Color(0xffF0EBE5);
@@ -79,10 +86,10 @@ class _ItemCardState extends State<ItemCard> {
             value: _MenuValues.bin,
             child: Text("Move to bin"),
           ),
-          const PopupMenuItem(
-            value: _MenuValues.shoppinglist,
-            child: Text("Move to shopping list"),
-          ),
+          // const PopupMenuItem(
+          //   value: _MenuValues.shoppinglist,
+          //   child: Text("Move to shopping list"),
+          // ),
           const PopupMenuItem(
             value: _MenuValues.delete,
             child: Text("Delete item"),
@@ -100,8 +107,8 @@ class _ItemCardState extends State<ItemCard> {
           case _MenuValues.bin:
             PantryProxy().changeLocation(widget.item, "Bin");
             break;
-          case _MenuValues.shoppinglist:
-            break;
+          // case _MenuValues.shoppinglist:
+          //   break;
           case _MenuValues.delete:
             showDialog(
               context: context,
@@ -151,10 +158,10 @@ class _ItemCardState extends State<ItemCard> {
             value: _MenuValues.pantry,
             child: Text("Move to pantry"),
           ),
-          const PopupMenuItem(
-            value: _MenuValues.shoppinglist,
-            child: Text("Move to shopping list"),
-          ),
+          // const PopupMenuItem(
+          //   value: _MenuValues.shoppinglist,
+          //   child: Text("Move to shopping list"),
+          // ),
           const PopupMenuItem(
             value: _MenuValues.delete,
             child: Text("Delete item"),
@@ -172,8 +179,8 @@ class _ItemCardState extends State<ItemCard> {
           case _MenuValues.pantry:
             PantryProxy().changeLocation(widget.item, "Pantry");
             break;
-          case _MenuValues.shoppinglist:
-            break;
+          // case _MenuValues.shoppinglist:
+          //   break;
           case _MenuValues.delete:
             showDialog(
               context: context,

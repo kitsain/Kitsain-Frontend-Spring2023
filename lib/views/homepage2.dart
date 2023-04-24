@@ -22,98 +22,68 @@ class HomePage2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
+          child: Container(
+        height: MediaQuery.of(context).size.height * .8,
+        width: MediaQuery.of(context).size.width * .8,
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black, width: 5),
+          borderRadius: BorderRadius.all(Radius.circular(35)),
+        ),
+        child: Column(children: [
           SizedBox(
-            height: 150,
+            height: MediaQuery.of(context).size.height * .05,
           ),
-          Container(
-            height: MediaQuery.of(context).size.height * .8,
-            width: MediaQuery.of(context).size.width * .8,
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black, width: 5),
-              borderRadius: BorderRadius.all(Radius.circular(35)),
-            ),
-            child: Column(children: [
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ClipRRect(
-                      clipBehavior: Clip.antiAlias,
-                      borderRadius: BorderRadius.all(Radius.circular(25)),
-                      child: Image.asset(
-                        "assets/images/sign_in.jpg",
-                        height: MediaQuery.of(context).size.height * .6,
-                        fit: BoxFit.cover,
-                        isAntiAlias: true,
-                      ),
-                    ),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: ClipRRect(
+                  clipBehavior: Clip.antiAlias,
+                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                  child: Image.asset(
+                    "assets/images/sign_in.jpg",
+                    height: MediaQuery.of(context).size.height * .6,
+                    fit: BoxFit.cover,
+                    isAntiAlias: true,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Text(
-                      'WELCOME TO KITSAIN',
-                      style: TextStyle(
-                        fontSize: 55,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Text(
+                  'WELCOME TO KITSAIN',
+                  style: TextStyle(
+                    fontSize: 55,
                   ),
-                ],
+                  textAlign: TextAlign.center,
+                ),
               ),
-              SignInButton(
-                Buttons.Google,
-                shape: RoundedRectangleBorder(
-                    side: new BorderSide(color: Colors.white),
-                    borderRadius:
-                        new BorderRadius.all(new Radius.circular(10))),
-                onPressed: () async {
-                  await loginController.googleLogin();
-                  await taskListController.getTaskLists();
-
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: ((context) => HomePage(
-                            title: 'Kitsain MVP Spring 2023',
-                          ))));
-
-                  // Navigator.of(context).push(MaterialPageRoute(
-                  //     builder: ((context) => TaskListsScreen())));
-                },
-              ),
-            ]),
+            ],
           ),
-          // Text(loginController.googleUser.value!.email),
+          SignInButton(
+            Buttons.Google,
+            shape: RoundedRectangleBorder(
+                side: new BorderSide(color: Colors.white),
+                borderRadius: new BorderRadius.all(new Radius.circular(10))),
+            onPressed: () async {
+              await loginController.googleLogin();
+              await taskListController.getTaskLists();
 
-          // ElevatedButton(
-          //   onPressed: () async {
-          //     await taskListController.createTaskLists('name');
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: ((context) => HomePage(
+                        title: 'Kitsain MVP Spring 2023',
+                      ))));
 
-          //     ///creating taskList
-
-          //     // await loginController.taskApiAuthenticated.value!.tasklists
-          //     //     .insert(TaskList(title: 'kitsaintest'), $fields: '')
-          //     //     .whenComplete(() => print("done"));
-
-          //     //// creating task
-          //     await loginController.taskApiAuthenticated.value!.tasks
-          //         .insert(
-          //             Task(
-          //                 title: 'kitsain task',
-          //                 deleted: false,
-
-          //                 // status: 'completed',
-          //                 notes: 'notes describing taskss'),
-          //             'MDQzNDg5NjY4OTE0NzE0ODQwMjM6MDow')
-          //         .whenComplete(() => print('done'));
-          //   },
-          //   child: const Text('Create Task'),
-          // ),
-        ],
+              // Navigator.of(context).push(MaterialPageRoute(
+              //     builder: ((context) => TaskListsScreen())));
+            },
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * .05,
+          ),
+        ]),
       )),
     );
   }

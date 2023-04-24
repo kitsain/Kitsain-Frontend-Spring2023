@@ -11,11 +11,12 @@ import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:realm/realm.dart';
 
-
-
 class UserShoppingList extends StatefulWidget {
   const UserShoppingList(
-      {super.key, required this.taskListIndex, required this.taskListId, required this.taskListName});
+      {super.key,
+      required this.taskListIndex,
+      required this.taskListId,
+      required this.taskListName});
 
   final int taskListIndex;
   final String taskListId;
@@ -41,13 +42,10 @@ class _UserShoppingListState extends State<UserShoppingList> {
 
   _removeSelectedItems() async {
     taskController.tasksListRemove.value?.forEach(
-          (element) async {
-        taskController.shoppingListItem.value?[element]
-            .checkBox = false;
-        await taskController.deleteTask(
-            widget.taskListId,
-            '${taskController.shoppingListItem.value?[element].id}',
-            element);
+      (element) async {
+        taskController.shoppingListItem.value?[element].checkBox = false;
+        await taskController.deleteTask(widget.taskListId,
+            '${taskController.shoppingListItem.value?[element].id}', element);
       },
     );
     taskController.tasksListRemove.value?.clear();
@@ -55,14 +53,14 @@ class _UserShoppingListState extends State<UserShoppingList> {
 
   _moveSelectedItemsToPantry() {
     taskController.tasksListRemove.value?.forEach(
-          (element) async {
-
-        taskController.shoppingListItem.value?[element]
-            .checkBox = false;
+      (element) async {
+        taskController.shoppingListItem.value?[element].checkBox = false;
 
         // adding the item to pantry
-        String? itemName = taskController.shoppingListItem.value?[element].title;
-        String? itemDescription = taskController.shoppingListItem.value?[element].description;
+        String? itemName =
+            taskController.shoppingListItem.value?[element].title;
+        String? itemDescription =
+            taskController.shoppingListItem.value?[element].description;
 
         var newItem = Item(
           ObjectId().toString(),
@@ -80,10 +78,8 @@ class _UserShoppingListState extends State<UserShoppingList> {
         PantryProxy().upsertItem(newItem);
 
         // removing item from shopping list
-        await taskController.deleteTask(
-            widget.taskListId,
-            '${taskController.shoppingListItem.value?[element].id}',
-            element);
+        await taskController.deleteTask(widget.taskListId,
+            '${taskController.shoppingListItem.value?[element].id}', element);
       },
     );
 
@@ -95,7 +91,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
 
   _deselectAll() {
     taskController.tasksListRemove.value?.forEach(
-          (element) {
+      (element) {
         taskController.shoppingListItem.value?[element].checkBox = false;
         print('$element' +
             '${taskController.shoppingListItem.value?[element].checkBox}');
@@ -129,7 +125,9 @@ class _UserShoppingListState extends State<UserShoppingList> {
       builder: (BuildContext context) {
         return FractionallySizedBox(
           heightFactor: 1.0,
-          child: NewShoppingListItemForm(taskListId: widget.taskListId,),
+          child: NewShoppingListItemForm(
+            taskListId: widget.taskListId,
+          ),
         );
       },
     );
@@ -157,14 +155,14 @@ class _UserShoppingListState extends State<UserShoppingList> {
 
     return Scaffold(
       appBar: TopBar(
-          title: 'SHOPPING \u200e\n\u200e LISTS',
-          //title: AppLocalizations.of(context)!.shoppingListsScreenTopBarTitle,
-          addFunction: _addNewItem,
-          addIcon: Icons.add_shopping_cart,
-          helpFunction: _help,
-          backgroundImageName: 'assets/images/shopping_flipped_B1.jpeg',
-          titleBackgroundColor: const Color.fromRGBO(77, 24, 9, 0.6),
-        ),
+        title: 'SHOPPING \u200e\n\u200e LISTS',
+        //title: AppLocalizations.of(context)!.shoppingListsScreenTopBarTitle,
+        addFunction: _addNewItem,
+        addIcon: Icons.add_shopping_cart,
+        helpFunction: _help,
+        backgroundImageName: 'assets/images/shopping_flipped_B1.jpeg',
+        titleBackgroundColor: const Color.fromRGBO(77, 24, 9, 0.6),
+      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(paddingWidth),
         child: Column(
@@ -192,8 +190,9 @@ class _UserShoppingListState extends State<UserShoppingList> {
                 const SizedBox(width: 2),
                 const Icon(
                   Icons.arrow_forward_ios,
-                  size: 16,                                                     // TODO: base this on the font size of surrounding text
-                                                                                // TODO: e.g., fontsize 16 => icon size 16
+                  size:
+                      16, // TODO: base this on the font size of surrounding text
+                  // TODO: e.g., fontsize 16 => icon size 16
                 ),
                 const SizedBox(width: 2),
                 Text(widget.taskListName),

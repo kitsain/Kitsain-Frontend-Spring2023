@@ -81,7 +81,8 @@ class _EditItemFormState extends State<EditItemForm> {
   }
 
   void _discardChangesDialog(bool discardForm) {
-    if (discardForm || _noEditsWereMade() ||
+    if (discardForm ||
+        _noEditsWereMade() ||
         (_itemName.text.isEmpty &&
             _EANCodeField.text.isEmpty &&
             _openDateString.text.isEmpty &&
@@ -90,25 +91,24 @@ class _EditItemFormState extends State<EditItemForm> {
     } else {
       showDialog(
         context: context,
-        builder: (BuildContext context) =>
-            AlertDialog(
-              content: const Text('Discard changes?'),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('CANCEL'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                TextButton(
-                  child: const Text('DISCARD'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    _discardChangesDialog(true);
-                  },
-                ),
-              ],
+        builder: (BuildContext context) => AlertDialog(
+          content: const Text('Discard changes?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('CANCEL'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
+            TextButton(
+              child: const Text('DISCARD'),
+              onPressed: () {
+                Navigator.pop(context);
+                _discardChangesDialog(true);
+              },
+            ),
+          ],
+        ),
       );
     }
   }
@@ -156,18 +156,12 @@ class _EditItemFormState extends State<EditItemForm> {
         child: ListView(
           padding: const EdgeInsets.all(8),
           children: <Widget>[
-            SizedBox(height: MediaQuery
-                .of(context)
-                .size
-                .height * 0.05),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 SizedBox(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.04,
+                  height: MediaQuery.of(context).size.height * 0.04,
                   child: FloatingActionButton(
                     child: const Icon(Icons.close),
                     onPressed: () => _discardChangesDialog(false),
@@ -175,16 +169,13 @@ class _EditItemFormState extends State<EditItemForm> {
                 )
               ],
             ),
-            SizedBox(height: MediaQuery
-                .of(context)
-                .size
-                .height * 0.01),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.01),
             Text(
-                'EDIT ITEM',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              ),
-            SizedBox( height: MediaQuery.of(context).size.height * 0.05),
+              'EDIT ITEM',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
             Padding(
               padding: const EdgeInsets.only(left: 7, right: 7),
               child: Column(
@@ -201,12 +192,12 @@ class _EditItemFormState extends State<EditItemForm> {
                         child: ElevatedButton(
                           style: const ButtonStyle(
                               shape: MaterialStatePropertyAll<
-                                  RoundedRectangleBorder>(
+                                      RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       borderRadius:
-                                      BorderRadiusDirectional.only(
-                                          topEnd: Radius.circular(5),
-                                          bottomEnd: Radius.circular(5))))),
+                                          BorderRadiusDirectional.only(
+                                              topEnd: Radius.circular(5),
+                                              bottomEnd: Radius.circular(5))))),
                           onPressed: () async {
                             if (_EANCodeField.text.isNotEmpty) {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -216,7 +207,7 @@ class _EditItemFormState extends State<EditItemForm> {
                                 primaryFocus!
                                     .unfocus(disposition: _disposition);
                                 _offData =
-                                await getFromJson(_EANCodeField.text);
+                                    await getFromJson(_EANCodeField.text);
                                 _itemName.text =
                                     _offData.productName.toString();
                               } catch (e) {
@@ -237,23 +228,22 @@ class _EditItemFormState extends State<EditItemForm> {
                             } else {
                               showDialog(
                                 context: context,
-                                builder: (BuildContext context) =>
-                                    SizedBox(
-                                      width: 10,
-                                      height: 10,
-                                      child: AlertDialog(
-                                        content:
+                                builder: (BuildContext context) => SizedBox(
+                                  width: 10,
+                                  height: 10,
+                                  child: AlertDialog(
+                                    content:
                                         const Text('Please input EAN-code'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            child: const Text('OK'),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                        ],
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: const Text('OK'),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
                                       ),
-                                    ),
+                                    ],
+                                  ),
+                                ),
                               );
                             }
                           },
@@ -262,10 +252,7 @@ class _EditItemFormState extends State<EditItemForm> {
                       ),
                     ),
                   ),
-                  SizedBox(height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.03),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Stack(children: [
                     TextFormField(
                       controller: _itemName,
@@ -285,10 +272,7 @@ class _EditItemFormState extends State<EditItemForm> {
                         top: 15,
                         child: Icon(Icons.keyboard_alt_outlined))
                   ]),
-                  SizedBox(height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.03),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Container(
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
@@ -298,15 +282,12 @@ class _EditItemFormState extends State<EditItemForm> {
                       child: DropdownButtonFormField<String>(
                         menuMaxHeight: 200,
                         value: _category,
-                        icon: const Positioned(
-                          right: 30,
-                          child: Icon(Icons.arrow_drop_down),
-                        ),
+                        icon: Icon(Icons.arrow_drop_down),
                         decoration:
-                        const InputDecoration.collapsed(hintText: ''),
+                            const InputDecoration.collapsed(hintText: ''),
                         onChanged: (String? value) {
                           setState(
-                                () {
+                            () {
                               _category = value!;
                               _catInt = catEnglish.keys.firstWhere(
                                       (k) => categories[k] == value) +
@@ -315,7 +296,7 @@ class _EditItemFormState extends State<EditItemForm> {
                           );
                         },
                         items: categories.map<DropdownMenuItem<String>>(
-                              (String value) {
+                          (String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value),
@@ -331,10 +312,7 @@ class _EditItemFormState extends State<EditItemForm> {
                       ),
                     ),
                   ),
-                  SizedBox(height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.04),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
                   SizedBox(
                     child: TextButton.icon(
                       onPressed: () {
@@ -361,8 +339,7 @@ class _EditItemFormState extends State<EditItemForm> {
                           lastDate: DateTime(2101));
                       if (pickedDate != null) {
                         String openedDate =
-                            "${pickedDate.day}.${pickedDate.month}.${pickedDate
-                            .year}";
+                            "${pickedDate.day}.${pickedDate.month}.${pickedDate.year}";
                         _openDateString.text = openedDate;
                         _openDateDT = pickedDate.toUtc();
                       } else {
@@ -384,8 +361,7 @@ class _EditItemFormState extends State<EditItemForm> {
                           lastDate: DateTime(2101));
                       if (pickedDate != null) {
                         String expirationDate =
-                            "${pickedDate.day}.${pickedDate.month}.${pickedDate
-                            .year}";
+                            "${pickedDate.day}.${pickedDate.month}.${pickedDate.year}";
                         _expDateString.text = expirationDate;
                         _expDateDT = pickedDate.toUtc();
                         _hasExpiryDate = true;
@@ -396,10 +372,7 @@ class _EditItemFormState extends State<EditItemForm> {
                       }
                     },
                   ),
-                  SizedBox(height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.05),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                   TextFormField(
                     controller: _details,
                     decoration: const InputDecoration(
@@ -408,40 +381,22 @@ class _EditItemFormState extends State<EditItemForm> {
                     ),
                     maxLines: 5,
                   ),
-                  SizedBox(height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.05),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        height: MediaQuery
-                            .of(context)
-                            .size
-                            .height * 0.07,
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .height * 0.15,
+                        height: MediaQuery.of(context).size.height * 0.07,
+                        width: MediaQuery.of(context).size.height * 0.15,
                         child: ElevatedButton(
                           onPressed: () => _discardChangesDialog(false),
                           child: const Text('CANCEL'),
                         ),
                       ),
-                      SizedBox(width: MediaQuery
-                          .of(context)
-                          .size
-                          .width * 0.05),
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
                       SizedBox(
-                        height: MediaQuery
-                            .of(context)
-                            .size
-                            .height * 0.07,
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .height * 0.15,
+                        height: MediaQuery.of(context).size.height * 0.07,
+                        width: MediaQuery.of(context).size.height * 0.15,
                         child: ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {

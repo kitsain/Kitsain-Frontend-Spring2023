@@ -75,64 +75,66 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Scaffold(
-        body: Center(
-          child: _pages[_navigationMenuIndex],
-        ), // This trailing comma makes auto-formatting nicer for build methods.
-        bottomNavigationBar: NavigationBar(
-          selectedIndex: _navigationMenuIndex,
-          onDestinationSelected: (index) => _navMenuItemSelected(index),
-          destinations: [
-            DragTarget(
-              builder: (
-                BuildContext context,
-                List<dynamic> accepted,
-                List<dynamic> rejected,
-              ) {
-                return NavigationDestination(
-                    icon: Icon(Icons.house),
-                    label: 'MY PANTRY');
-                    //label: AppLocalizations.of(context)!.pantryScreen);
-              },
-              onMove: (details) {
-                _navigationMenuIndex = 0;
-                _navMenuItemSelected(0);
-              },
-            ),
-            DragTarget(
-              builder: (
-                BuildContext context,
-                List<dynamic> accepted,
-                List<dynamic> rejected,
-              ) {
-                return NavigationDestination(
-                    icon: Icon(Icons.shopping_cart),
-                    label: 'SHOPPING LISTS');
-                    //label: AppLocalizations.of(context)!.shoppingListsScreen);
-              },
-              onMove: (details) {
-                _navigationMenuIndex = 1;
-                _navMenuItemSelected(1);
-              },
-            ),
-            DragTarget(
-              builder: (
-                BuildContext context,
-                List<dynamic> accepted,
-                List<dynamic> rejected,
-              ) {
-                return NavigationDestination(
-                    icon: Icon(Icons.recycling),
-                    label: 'PANTRY HISTORY');
-                    //label: AppLocalizations.of(context)!.historyScreen);
-              },
-              onMove: (details) {
-                _navigationMenuIndex = 2;
-                _navMenuItemSelected(2);
-              },
-            ),
-          ],
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Material(
+        child: Scaffold(
+          body: Center(
+            child: _pages[_navigationMenuIndex],
+          ), // This trailing comma makes auto-formatting nicer for build methods.
+          bottomNavigationBar: NavigationBar(
+            selectedIndex: _navigationMenuIndex,
+            onDestinationSelected: (index) => _navMenuItemSelected(index),
+            destinations: [
+              DragTarget(
+                builder: (
+                  BuildContext context,
+                  List<dynamic> accepted,
+                  List<dynamic> rejected,
+                ) {
+                  return NavigationDestination(
+                      icon: Icon(Icons.house), label: 'MY PANTRY');
+                  //label: AppLocalizations.of(context)!.pantryScreen);
+                },
+                onMove: (details) {
+                  _navigationMenuIndex = 0;
+                  _navMenuItemSelected(0);
+                },
+              ),
+              DragTarget(
+                builder: (
+                  BuildContext context,
+                  List<dynamic> accepted,
+                  List<dynamic> rejected,
+                ) {
+                  return NavigationDestination(
+                      icon: Icon(Icons.shopping_cart), label: 'SHOPPING LISTS');
+                  //label: AppLocalizations.of(context)!.shoppingListsScreen);
+                },
+                onMove: (details) {
+                  _navigationMenuIndex = 1;
+                  _navMenuItemSelected(1);
+                },
+              ),
+              DragTarget(
+                builder: (
+                  BuildContext context,
+                  List<dynamic> accepted,
+                  List<dynamic> rejected,
+                ) {
+                  return NavigationDestination(
+                      icon: Icon(Icons.recycling), label: 'PANTRY HISTORY');
+                  //label: AppLocalizations.of(context)!.historyScreen);
+                },
+                onMove: (details) {
+                  _navigationMenuIndex = 2;
+                  _navMenuItemSelected(2);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -144,10 +144,10 @@ class _NewItemFormState extends State<NewItemForm> {
                           style: TextStyle(fontSize: 20)),
                       onPressed: () async {
                         var res = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const SimpleBarcodeScannerPage(),
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const SimpleBarcodeScannerPage(),
                           ),
                         );
                         if (res is String && res != '-1') {
@@ -285,10 +285,7 @@ class _NewItemFormState extends State<NewItemForm> {
                       child: DropdownButtonFormField<String>(
                         menuMaxHeight: 200,
                         value: _category,
-                        icon: const Positioned(
-                          right: 30,
-                          child: Icon(Icons.arrow_drop_down),
-                        ),
+                        icon: Icon(Icons.arrow_drop_down),
                         decoration:
                             const InputDecoration.collapsed(hintText: ''),
                         onChanged: (String? value) {
