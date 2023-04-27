@@ -53,7 +53,7 @@ class HomePage2 extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Text(
-                  'WELCOME TO KITSAIN',
+                  'WELCOME TO KITSAIN!',
                   style: TextStyle(
                     fontSize: 55,
                   ),
