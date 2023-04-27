@@ -220,18 +220,24 @@ class _ItemCardState extends State<ItemCard> {
             ),
           ),
           child: ClipPath(
+            // The following container is the item card during dragging
             child: Container(
                 decoration: BoxDecoration(
                   border: Border(
-                    left: BorderSide(color: Colors.black, width: 13),
+                    left: BorderSide(
+                        color: widget.item.expiryDate == null
+                            ? NULLSTATUSCOLOR
+                            : returnColor(widget.item.expiryDate!),
+                        width: BORDERWIDTH),
                   ),
                 ),
                 child: ListTile(
-                  title: Text(widget.item.name,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 23)),
+                  title: Text(
+                    widget.item.name.toUpperCase(),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+                  ),
                   subtitle: Text(
-                    'ITEM CATEGORY',
+                    catEnglish[widget.item.mainCat]!.toUpperCase(),
                     style: TextStyle(color: Colors.black),
                   ),
                   trailing: Transform.translate(
@@ -254,12 +260,15 @@ class _ItemCardState extends State<ItemCard> {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
         child: Card(
+          // This card is the normal card in the pantry
           elevation: 7,
           shape: const RoundedRectangleBorder(
             side: BorderSide(
               color: Colors.grey,
             ),
-            borderRadius: BorderRadius.all(Radius.circular(5)),
+            borderRadius: BorderRadius.all(
+              Radius.circular(5),
+            ),
           ),
           child: ClipPath(
             clipper: ShapeBorderClipper(
@@ -315,7 +324,7 @@ class _ItemCardState extends State<ItemCard> {
                             )
                           ] else ...[
                             const Text(
-                              "ADDED",
+                              "OPENED",
                               style: TextStyle(color: NULLTEXTCOLOR),
                             )
                           ]
@@ -407,7 +416,8 @@ class _ItemCardState extends State<ItemCard> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 9, top: 9),
+                  // Controlling the weekday shown on color bar
+                  padding: EdgeInsets.only(left: 12, top: 9),
                   child: Column(
                     children: [
                       if (widget.item.expiryDate != null) ...[
