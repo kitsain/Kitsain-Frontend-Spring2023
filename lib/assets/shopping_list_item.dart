@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
 
 class ShoppingListItem extends StatefulWidget {
   const ShoppingListItem({super.key, required this.itemName, this.itemDescription = ''});
@@ -31,10 +32,12 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(widget.itemName),
+                  Text(widget.itemName,
+                    style: AppTypography.smallTitle,
+                  ),
                   Text(
                     widget.itemDescription,//'Additional description',
-                    style: TextStyle(color: Colors.black45),
+                    style: AppTypography.paragraph,
                   ),
                 ],
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
 import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
 import 'package:kitsain_frontend_spring2023/views/help_pages/shopping_lists_help_page.dart';
@@ -66,10 +67,13 @@ class _ShoppingListsState extends State<ShoppingLists> {
       appBar: TopBar(
           title: AppLocalizations.of(context)!.shoppingListsScreenTopBarTitle,
           addFunction: _addNewItem,
-          addIcon: Icons.post_add,
+          addIcon: Image.asset('assets/images/post_add.png',
+            fit: BoxFit.cover,
+            color: Colors.white,
+          ),
           helpFunction: _help,
           backgroundImageName: 'assets/images/aisle-3105629_1280_B1.jpg',
-          titleBackgroundColor: const Color.fromRGBO(77, 24, 9, 0.6),
+          titleBackgroundColor: AppColors.titleBackgroundBrown,
         ),
       body: SingleChildScrollView(
         child: Column(
