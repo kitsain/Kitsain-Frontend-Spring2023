@@ -161,7 +161,10 @@ class _PantryViewState extends State<PantryView> {
                         },
                       );
                     },
-                    child: const Text("SHOW"),
+                    child: const Icon(
+                      Icons.tune,
+                      size: 30,
+                    ),
                     itemBuilder: (BuildContext context) {
                       return const [
                         PopupMenuItem(
@@ -196,7 +199,7 @@ class _PantryViewState extends State<PantryView> {
                       );
                     },
                     child: const Icon(
-                      Icons.tune,
+                      Icons.filter_list,
                       size: 30,
                     ),
                     itemBuilder: (BuildContext context) {
