@@ -40,16 +40,13 @@ class PantryProxy with ChangeNotifier {
     var all = getItems();
     late RealmResults<Item> result;
     if (sortBy == "az") {
-      result = all.query(
-          "location = \$0 SORT(hasExpiryDate DESC, name ASC)", ["Pantry"]);
+      result = all.query("location = \$0 SORT(name ASC)", ["Pantry"]);
     } else if (sortBy == "expdate") {
       result = all.query(
           "location = \$0 SORT(hasExpiryDate DESC, expiryDate ASC)",
           ["Pantry"]);
     } else if (sortBy == "addedlast") {
-      result = all.query(
-          "location = \$0 SORT(hasExpiryDate DESC, addedDate DESC)",
-          ["Pantry"]);
+      result = all.query("location = \$0 SORT(addedDate DESC)", ["Pantry"]);
     }
     return result;
   }
