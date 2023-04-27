@@ -222,25 +222,15 @@ class _UserShoppingListState extends State<UserShoppingList> {
                       itemBuilder: (context, index) {
                         return Column(
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                taskController.editTask(
-                                    '${taskController.shoppingListItem.value?[index].title}$index',
-                                    '${taskController.shoppingListItem.value?[index].description}',
-                                    widget.taskListId,
-                                    '${taskController.shoppingListItem.value?[index].id}',
-                                    index);
-                              },
-                              child: ShoppingListItem(
-                                itemId:
-                                    '${taskController.shoppingListItem.value?[index].id}',
-                                itemName:
-                                    '${taskController.shoppingListItem.value?[index].title}',
-                                itemDescription:
-                                    '${taskController.shoppingListItem.value?[index].description}',
-                                itemIndex: index,
-                                listId: widget.taskListId,
-                              ),
+                            ShoppingListItem(
+                              itemId:
+                                  '${taskController.shoppingListItem.value?[index].id}',
+                              itemName:
+                                  '${taskController.shoppingListItem.value?[index].title}',
+                              itemDescription:
+                                  '${taskController.shoppingListItem.value?[index].description}',
+                              itemIndex: index,
+                              listId: widget.taskListId,
                             ),
                             const SizedBox(
                               height: 10,
