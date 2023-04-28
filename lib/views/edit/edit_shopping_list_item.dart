@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
 
 class EditShoppingListItemForm extends StatefulWidget {
@@ -69,6 +71,8 @@ class _EditItemFormState extends State<EditShoppingListItemForm> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.05,
                   child: FloatingActionButton(
+                    foregroundColor: AppColors.main2,
+                    backgroundColor: AppColors.main3,
                     child: Icon(Icons.close),
                     onPressed: () => _discardChangesDialog(),
                   ),
@@ -79,11 +83,12 @@ class _EditItemFormState extends State<EditShoppingListItemForm> {
             Text(
               'EDIT SHOPPING LIST ITEM',
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              style: AppTypography.heading2.copyWith(color: AppColors.main3),
             ),
             SizedBox( height: MediaQuery.of(context).size.height * 0.03),
             SizedBox(
               child: TextFormField(
+                style: AppTypography.smallTitle,
                 controller: _itemTitle,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -100,6 +105,7 @@ class _EditItemFormState extends State<EditShoppingListItemForm> {
             SizedBox( height: MediaQuery.of(context).size.height * 0.03),
             SizedBox(
               child: TextFormField(
+                style: AppTypography.smallTitle,
                 controller: _itemDescription,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -113,7 +119,7 @@ class _EditItemFormState extends State<EditShoppingListItemForm> {
                 },
               ),
             ),
-            SizedBox( height: MediaQuery.of(context).size.height * 0.375),
+            SizedBox( height: MediaQuery.of(context).size.height * 0.275),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -121,13 +127,25 @@ class _EditItemFormState extends State<EditShoppingListItemForm> {
                   height: MediaQuery.of(context).size.height * 0.07,
                   child: ElevatedButton(
                     onPressed: () => _discardChangesDialog(),
-                    child: Text('CANCEL'),
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                      backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.white),
+                      side: MaterialStateProperty.resolveWith((states) => const BorderSide(width: 3, color: AppColors.main3)),
+                    ),
+                    child: Text(
+                      'CANCEL',
+                      style: AppTypography.category,
+                    ),
                   ),
                 ),
-                SizedBox( width: MediaQuery.of(context).size.width * 0.05),
+                SizedBox(width: MediaQuery.of(context).size.width * 0.05),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.07,
                   child: ElevatedButton(
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                      backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                    ),
                     onPressed: () {
                       if(_formKey.currentState!.validate()) {
                         int index = widget.itemIndex;
@@ -140,7 +158,7 @@ class _EditItemFormState extends State<EditShoppingListItemForm> {
                         Navigator.pop(context);
                       }
                     },
-                    child: Text('  DONE  '),
+                    child: Text('  DONE  ', style: AppTypography.category,),
                   ),
                 ),
               ],

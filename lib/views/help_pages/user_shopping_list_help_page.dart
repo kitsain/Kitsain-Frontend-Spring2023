@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
 
 const List<List<String>> paragraphs = [
   [
@@ -41,7 +43,7 @@ class _UserShoppingListHelp extends State<UserShoppingListHelp> {
   Widget _createParagraph(List<String> paragraph, bool icons) {
     List<Widget> list = <Widget>[];
     for(var line in paragraph) {
-      list.add(Text(line, style: TextStyle(fontSize: 15)));
+      list.add(Text(line, style: AppTypography.paragraph));
       //After last row don't add empty space
       if(line != paragraph[paragraph.length -1]) {
         list.add(SizedBox(height: 3));
@@ -73,18 +75,21 @@ class _UserShoppingListHelp extends State<UserShoppingListHelp> {
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height * 0.05,
                       child: FloatingActionButton(
-                          child: Icon(Icons.close),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          }
+                        foregroundColor: AppColors.main2,
+                        backgroundColor: AppColors.main3,
+                        child: const Icon(Icons.close),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }
                       ),
                     ),
                   ),
                 ),
                 SizedBox(height: 15),
-                Text("WHAT CAN I DO", style: TextStyle(fontSize: 35)),
-                Text("WITH AN OPENED", style: TextStyle(fontSize: 35)),
-                Text("SHOPPING LIST?", style: TextStyle(fontSize: 35)),
+                Text("WHAT CAN I DO\nWITH AN OPENED\nSHOPPING LIST?",
+                  style: AppTypography.heading2.copyWith(color: AppColors.main3),
+                  textAlign: TextAlign.center,
+                ),
                 SizedBox(height: 15),
                 _createParagraph(paragraphs[0], true),
                 _createParagraph(paragraphs[1], true),
@@ -95,10 +100,16 @@ class _UserShoppingListHelp extends State<UserShoppingListHelp> {
                   width: 100,
                   height: 50,
                   child: ElevatedButton(
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                      backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                    ),
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text("GOT IT"),
+                    child: const Text("GOT IT",
+                      style: AppTypography.category,
+                    ),
                   ),
                 ),
                 SizedBox(height: 50),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import 'package:kitsain_frontend_spring2023/controller/tasklist_controller.dart';
 
 class EditShoppingListForm extends StatefulWidget {
@@ -65,6 +67,8 @@ class _EditItemFormState extends State<EditShoppingListForm> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.05,
                   child: FloatingActionButton(
+                    foregroundColor: AppColors.main2,
+                    backgroundColor: AppColors.main3,
                     child: Icon(Icons.close),
                     onPressed: () => _discardChangesDialog(),
                   ),
@@ -75,11 +79,12 @@ class _EditItemFormState extends State<EditShoppingListForm> {
             Text(
               'EDIT SHOPPING LIST',
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              style: AppTypography.heading2.copyWith(color: AppColors.main3),
             ),
             SizedBox( height: MediaQuery.of(context).size.height * 0.03),
             SizedBox(
               child: TextFormField(
+              style: AppTypography.smallTitle,
                 controller: _listName,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -100,14 +105,26 @@ class _EditItemFormState extends State<EditShoppingListForm> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.07,
                   child: ElevatedButton(
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                      backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.white),
+                      side: MaterialStateProperty.resolveWith((states) => const BorderSide(width: 3, color: AppColors.main3)),
+                    ),
                     onPressed: () => _discardChangesDialog(),
-                    child: Text('CANCEL'),
+                    child: Text(
+                      'CANCEL',
+                      style: AppTypography.category,
+                    ),
                   ),
                 ),
-                SizedBox( width: MediaQuery.of(context).size.width * 0.05),
+                SizedBox(width: MediaQuery.of(context).size.width * 0.05),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.07,
                   child: ElevatedButton(
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                      backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                    ),
                     onPressed: () {
                       if(_formKey.currentState!.validate()) {
                         int index = widget.listIndex;
@@ -118,7 +135,10 @@ class _EditItemFormState extends State<EditShoppingListForm> {
                         Navigator.pop(context);
                       }
                     },
-                    child: Text('  DONE  '),
+                    child: Text(
+                      '  DONE  ',
+                      style: AppTypography.category,
+                    ),
                   ),
                 ),
               ],

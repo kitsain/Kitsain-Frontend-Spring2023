@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import 'package:kitsain_frontend_spring2023/LoginController.dart';
 import 'package:kitsain_frontend_spring2023/views/homepage2.dart';
 
@@ -93,10 +95,8 @@ class _TopBarState extends State<TopBar> {
               width: MediaQuery.of(context).size.width * 0.64,
               child: Text(
                 ' ${widget.title} ${'\u200e'}',
-                style: TextStyle(
-                    fontSize: 32,
-                    color: Colors.white,
-                    backgroundColor: widget.titleBackgroundColor,
+                style: AppTypography.whiteHeading2.copyWith(
+                  backgroundColor: widget.titleBackgroundColor,
                 ),
               ),
             ),
@@ -109,29 +109,39 @@ class _TopBarState extends State<TopBar> {
                       visualDensity: _topIconsDensity,
                       padding: EdgeInsets.zero,
                       onPressed: () => widget.helpFunction(),
-                      icon: const Icon(Icons.help_outline),
+                      icon: const Icon(Icons.help_outline,
+                        color: AppColors.main2,
+                      ),
                     ),
                     IconButton(
                       visualDensity: _topIconsDensity,
                       padding: EdgeInsets.zero,
                       onPressed: () => _openSettings(),
-                      icon: const Icon(Icons.settings),
+                      icon: const Icon(Icons.settings,
+                        color: AppColors.main2,
+                      ),
                     ),
                     IconButton(
                       visualDensity: _topIconsDensity,
                       padding: EdgeInsets.zero,
                       onPressed: () => _openAccountSettings(context),
-                      icon: const Icon(Icons.account_circle),
+                      icon: const Icon(Icons.account_circle,
+                        color: AppColors.main2,
+                      ),
                     ),
                   ],
                 ),
                 if (widget.addFunction != null)
                   Container(
-                    height: 48,
-                    width: 48,
+                    height: 44,
+                    width: 44,
                     child: FloatingActionButton(
                       onPressed: () => widget.addFunction!(),
-                      child: Icon(widget.addIcon),
+                      backgroundColor: AppColors.main2,
+                      child: Icon(
+                        widget.addIcon,
+                        color: AppColors.main1,
+                      ),
                     ),
                   ),
               ],

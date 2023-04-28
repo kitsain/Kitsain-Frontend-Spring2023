@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
 import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
 import 'package:kitsain_frontend_spring2023/views/edit/edit_shopping_list_item.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
 
 class ShoppingListItem extends StatefulWidget {
   const ShoppingListItem(
@@ -58,7 +60,7 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
-      color: Colors.greenAccent,
+      color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
       ),
@@ -76,21 +78,28 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
                       const SizedBox(
                         height: 15,
                       ),
-                      Text(widget.itemName),
+                      Text(
+                        widget.itemName.toUpperCase(),
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       Text(
                         widget.itemDescription, //'Additional description',
-                        style: TextStyle(color: Colors.black45),
+                        style: AppTypography.paragraph.copyWith(color: Colors.black45),
                       ),
                     ],
                   ),
                   Spacer(),
                   IconButton(
                     onPressed: () => _editItem(),
-                    icon: Icon(Icons.edit),
+                    icon: Icon(
+                        Icons.edit,
+                        color: AppColors.main1
+                    ),
                   ),
                   Checkbox(
                     value: taskController
                         .shoppingListItem.value?[widget.itemIndex].checkBox,
+                    activeColor: AppColors.main1,
                     onChanged: (newValue) {
                       _checkBoxChanged(newValue);
                     },

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kitsain_frontend_spring2023/controller/tasklist_controller.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
 
 class NewShoppingListForm extends StatefulWidget {
   const NewShoppingListForm({super.key});
@@ -69,7 +71,9 @@ class _NewItemFormState extends State<NewShoppingListForm> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.04,
                     child: FloatingActionButton(
-                      child: Icon(Icons.close),
+                      foregroundColor: AppColors.main2,
+                      backgroundColor: AppColors.main3,
+                      child: const Icon(Icons.close),
                       onPressed: () => _discardChangesDialog(),
                     ),
                   )
@@ -79,12 +83,13 @@ class _NewItemFormState extends State<NewShoppingListForm> {
               Text(
                 'NEW\nSHOPPING\nLIST',
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                style: AppTypography.heading2.copyWith(color: AppColors.main3),
               ),
               SizedBox( height: MediaQuery.of(context).size.height * 0.03),
               Stack(
                   children: [
                     TextFormField(
+                      style: AppTypography.smallTitle,
                       controller: _listName,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
@@ -100,7 +105,9 @@ class _NewItemFormState extends State<NewShoppingListForm> {
                     Positioned(
                         right: 27,
                         top: 15,
-                        child: Icon(Icons.keyboard_alt_outlined)
+                        child: Icon(Icons.keyboard_alt_outlined,
+                          color: AppColors.main3,
+                        )
                     )
                   ]
               ),
@@ -111,6 +118,11 @@ class _NewItemFormState extends State<NewShoppingListForm> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.07,
                     child: ElevatedButton(
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                        backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.white),
+                        side: MaterialStateProperty.resolveWith((states) => const BorderSide(width: 3, color: AppColors.main3)),
+                      ),
                       onPressed: () => _discardChangesDialog(),
                       child: Text('CANCEL'),
                     ),
@@ -119,6 +131,10 @@ class _NewItemFormState extends State<NewShoppingListForm> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.07,
                     child: ElevatedButton(
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                        backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                      ),
                       onPressed: () {
                         if(_formKey.currentState!.validate()) {
                           _taskListController.createTaskLists(_listName.text);

@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
 
 const List<List<String>> paragraphs = [
   [
@@ -49,7 +51,7 @@ class _UsedAndExpiredHelp extends State<UsedAndExpiredHelp> {
   Widget _createParagraph(List<String> paragraph, bool icons) {
     List<Widget> list = <Widget>[];
     for(var line in paragraph) {
-      list.add(Text(line, style: TextStyle(fontSize: 15)));
+      list.add(Text(line, style: AppTypography.paragraph));
       //After last row don't add empty space
       if(line != paragraph[paragraph.length -1]) {
         list.add(SizedBox(height: 3));
@@ -81,17 +83,21 @@ class _UsedAndExpiredHelp extends State<UsedAndExpiredHelp> {
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height * 0.05,
                       child: FloatingActionButton(
-                          child: Icon(Icons.close),
-                          onPressed: () {
+                        foregroundColor: AppColors.main2,
+                        backgroundColor: AppColors.main3,
+                        child: const Icon(Icons.close),
+                        onPressed: () {
                             Navigator.pop(context);
                           }
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 15),
-                Text("WHAT IS", style: TextStyle(fontSize: 35)),
-                Text("PANTRY HISTORY?", style: TextStyle(fontSize: 35)),
+                const SizedBox(height: 15),
+                Text("WHAT IS\nPANTRY HISTORY?",
+                  style: AppTypography.heading2.copyWith(color: AppColors.main3),
+                  textAlign: TextAlign.center,
+                ),
                 SizedBox(height: 15),
                 _createParagraph(paragraphs[0], true),
                 _createParagraph(paragraphs[1], true),
@@ -104,10 +110,16 @@ class _UsedAndExpiredHelp extends State<UsedAndExpiredHelp> {
                   width: 100,
                   height: 50,
                   child: ElevatedButton(
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                      backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                    ),
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text("GOT IT"),
+                    child: Text("GOT IT",
+                      style: AppTypography.category,
+                    ),
                   ),
                 ),
                 SizedBox(height: 50),
