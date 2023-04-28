@@ -139,11 +139,11 @@ class _PantryViewState extends State<PantryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.main2,
       appBar: TopBar(
         title: 'MY PANTRY',
         //title: AppLocalizations.of(context)!.pantryScreen,
         addFunction: _addNewItem,
-        addIcon: Image.asset('assets/images/new_card_plus.png'),
         helpFunction: _help,
         backgroundImageName: 'assets/images/pantry_banner_B1.jpg',
         titleBackgroundColor: AppColors.titleBackgroundBrown,

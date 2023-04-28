@@ -91,6 +91,7 @@ class _NewItemFormState extends State<NewItemForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.main2,
       body: Form(
         key: _formKey,
         child: ListView(
@@ -435,7 +436,7 @@ class _NewItemFormState extends State<NewItemForm> {
                         height: MediaQuery.of(context).size.height * 0.07,
                         child: ElevatedButton(
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                            backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.white),
                             foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
                             side: MaterialStateProperty.resolveWith((states) => const BorderSide(width: 3, color: AppColors.main3)),
                           ),

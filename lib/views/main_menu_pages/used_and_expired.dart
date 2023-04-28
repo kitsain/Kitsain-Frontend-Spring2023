@@ -118,6 +118,7 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
       PantryProxy().countByMonth(monthInt, selectedView),
     );
     return Scaffold(
+      backgroundColor: AppColors.main2,
       appBar: TopBar(
         title: 'PANTRY HISTORY',
         // title: AppLocalizations.of(context)!.historyScreen,

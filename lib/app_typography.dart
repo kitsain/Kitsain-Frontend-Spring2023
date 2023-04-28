@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
+
 
 class AppTypography {
   static const TextStyle heading1 = TextStyle(
@@ -43,6 +45,6 @@ class AppTypography {
     letterSpacing: 0,
   );
   static TextStyle whiteHeading2 = heading2.copyWith(
-    color: Colors.white,
+    color: AppColors.main2,
   );
 }

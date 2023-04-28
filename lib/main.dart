@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: AppColors.main2,
         primarySwatch: Colors.lightGreen,
       ),
-      home: const HomePage(title: 'Kitsain MVP 2023'),
+      //home: const HomePage(title: 'Kitsain MVP 2023'),
       supportedLocales: L10n.all,
       localizationsDelegates: [
         AppLocalizations.delegate,
@@ -83,10 +83,12 @@ class _HomePageState extends State<HomePage> {
       },
       child: Material(
         child: Scaffold(
+          backgroundColor: AppColors.main2,
           body: Center(
             child: _pages[_navigationMenuIndex],
           ), // This trailing comma makes auto-formatting nicer for build methods.
           bottomNavigationBar: NavigationBar(
+            //backgroundColor: AppColors.main1,
             selectedIndex: _navigationMenuIndex,
             onDestinationSelected: (index) => _navMenuItemSelected(index),
             destinations: [
@@ -97,7 +99,11 @@ class _HomePageState extends State<HomePage> {
                   List<dynamic> rejected,
                 ) {
                   return NavigationDestination(
-                      icon: Icon(Icons.house), label: 'MY PANTRY');
+                      icon: Icon(
+                        Icons.house,
+                        //color: AppColors.main2,
+                      ),
+                      label: 'MY PANTRY');
                   //label: AppLocalizations.of(context)!.pantryScreen);
                 },
                 onMove: (details) {
@@ -112,7 +118,11 @@ class _HomePageState extends State<HomePage> {
                   List<dynamic> rejected,
                 ) {
                   return NavigationDestination(
-                      icon: Icon(Icons.shopping_cart), label: 'SHOPPING LISTS');
+                      icon: Icon(
+                        Icons.shopping_cart,
+                        //color: AppColors.main2,
+                      ),
+                      label: 'SHOPPING LISTS');
                   //label: AppLocalizations.of(context)!.shoppingListsScreen);
                 },
                 onMove: (details) {
@@ -127,7 +137,11 @@ class _HomePageState extends State<HomePage> {
                   List<dynamic> rejected,
                 ) {
                   return NavigationDestination(
-                      icon: Icon(Icons.recycling), label: 'PANTRY HISTORY');
+                      icon: Icon(
+                        Icons.recycling,
+                        //color: AppColors.main2,
+                      ),
+                      label: 'PANTRY HISTORY');
                   //label: AppLocalizations.of(context)!.historyScreen);
                 },
                 onMove: (details) {

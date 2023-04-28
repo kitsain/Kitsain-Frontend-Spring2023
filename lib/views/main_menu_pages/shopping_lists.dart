@@ -103,14 +103,12 @@ class _ShoppingListsState extends State<ShoppingLists> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.main2,
       appBar: TopBar(
         title: 'SHOPPING \u200e\n\u200e LISTS',
         //title: AppLocalizations.of(context)!.shoppingListsScreenTopBarTitle,
         addFunction: _addNewItem,
-        addIcon: Image.asset('assets/images/post_add.png',
-          fit: BoxFit.cover,
-          color: Colors.white,
-        ),
+        addIcon: Icons.post_add,
         helpFunction: _help,
         backgroundImageName: 'assets/images/aisle-3105629_1280_B1.jpg',
         titleBackgroundColor: AppColors.titleBackgroundBrown,
@@ -136,8 +134,7 @@ class _ShoppingListsState extends State<ShoppingLists> {
                           side: BorderSide(
                             width: candidateData.isNotEmpty ? 4 : 1,
                             color: candidateData.isNotEmpty
-                                ? const Color.fromRGBO(63, 85, 65,
-                                    1) //TODO: use the universal style color here instead
+                                ? AppColors.main1
                                 : Colors.black38,
                           ),
                         ),
@@ -156,13 +153,19 @@ class _ShoppingListsState extends State<ShoppingLists> {
                                           '${taskListController.taskLists.value?.items?[index].id}',
                                           index);
                                     },
-                                    icon: const Icon(Icons.delete),
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: AppColors.main1,
+                                    ),
                                   ),
                                   IconButton(
                                     onPressed: () => _editList(
                                         '${taskListController.taskLists.value?.items?[index].id}',
                                         index),
-                                    icon: const Icon(Icons.edit),
+                                    icon: const Icon(
+                                      Icons.edit,
+                                      color: AppColors.main1,
+                                    ),
                                   ),
                                 ],
                               ),

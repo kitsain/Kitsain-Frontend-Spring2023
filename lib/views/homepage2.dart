@@ -7,6 +7,7 @@ import 'package:googleapis/tasks/v1.dart';
 import 'package:kitsain_frontend_spring2023/controller/tasklist_controller.dart';
 import 'package:kitsain_frontend_spring2023/LoginController.dart';
 import 'package:kitsain_frontend_spring2023/main.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
 
 class HomePage2 extends StatelessWidget {
   HomePage2({super.key});
@@ -21,13 +22,17 @@ class HomePage2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.main2,
       body: Center(
         child: Container(
           height: MediaQuery.of(context).size.height * .8,
           width: MediaQuery.of(context).size.width * .8,
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 5),
+            border: Border.all(
+                color: AppColors.main1,
+                width: 3
+            ),
             borderRadius: BorderRadius.all(Radius.circular(35)),
           ),
           child: Column(

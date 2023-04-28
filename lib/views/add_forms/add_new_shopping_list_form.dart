@@ -120,7 +120,7 @@ class _NewItemFormState extends State<NewShoppingListForm> {
                     child: ElevatedButton(
                       style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
-                        backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                        backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.white),
                         side: MaterialStateProperty.resolveWith((states) => const BorderSide(width: 3, color: AppColors.main3)),
                       ),
                       onPressed: () => _discardChangesDialog(),

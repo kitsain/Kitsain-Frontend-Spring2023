@@ -156,11 +156,12 @@ class _UserShoppingListState extends State<UserShoppingList> {
     double bottomButtonWidth = (fullWidth - (3 * paddingWidth)) / 2;
 
     return Scaffold(
+      backgroundColor: AppColors.main2,
       appBar: TopBar(
         title: 'SHOPPING \u200e\n\u200e LISTS',
         //title: AppLocalizations.of(context)!.shoppingListsScreenTopBarTitle,
         addFunction: _addNewItem,
-        addIcon: Image.asset('assets/images/post_add.png'),
+        addIcon: Icons.post_add,
         helpFunction: _help,
         backgroundImageName: 'assets/images/shopping_flipped_B1.jpeg',
         titleBackgroundColor: AppColors.titleBackgroundBrown,
@@ -260,12 +261,17 @@ class _UserShoppingListState extends State<UserShoppingList> {
                   width: bottomButtonWidth,
                   child: OutlinedButton(
                     style: ButtonStyle(
-                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
-                      backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),
+                      padding: MaterialStateProperty.all<EdgeInsets>(
+                          const EdgeInsets.all(10),
+                      ),
+                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),
+                      side: MaterialStateProperty.resolveWith((states) => const BorderSide(
+                          width: 3, 
+                          color: AppColors.main1)),
                     ),
                     onPressed: _removeSelectedItems,
                     child: Text(
-                      'Remove Items\nFrom List',
+                      'REMOVE ITEMS\nFROM LIST',
                       style: AppTypography.category,
                       textAlign: TextAlign.center,
                     ),
@@ -276,6 +282,9 @@ class _UserShoppingListState extends State<UserShoppingList> {
                   width: bottomButtonWidth,
                   child: OutlinedButton(
                     style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsets>(
+                          const EdgeInsets.all(10),
+                      ),
                       foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
                       backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),
                     ),
