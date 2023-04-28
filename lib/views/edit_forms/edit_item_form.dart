@@ -4,7 +4,6 @@ import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/database/openfoodfacts.dart';
-import 'package:kitsain_frontend_spring2023/app_colors.dart';
 
 const List<String> categories = <String>[
   'ITEM CATEGORY',
@@ -465,7 +464,7 @@ class _EditItemFormState extends State<EditItemForm> {
                         child: ElevatedButton(
                           style: ButtonStyle(
                             foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
-                            backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                            backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.white),
                             side: MaterialStateProperty.resolveWith((states) => const BorderSide(width: 3, color: AppColors.main3)),
                           ),
                           onPressed: () => _discardChangesDialog(false),
