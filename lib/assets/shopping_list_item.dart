@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
 import 'package:kitsain_frontend_spring2023/views/edit/edit_shopping_list_item.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
 
 class ShoppingListItem extends StatefulWidget {
   const ShoppingListItem(
@@ -76,10 +77,14 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
                       const SizedBox(
                         height: 15,
                       ),
-                      Text(widget.itemName),
+                      Text(
+                        widget.itemName,
+                        style: AppTypography.smallTitle,
+                      ),
                       Text(
                         widget.itemDescription, //'Additional description',
                         style: TextStyle(color: Colors.black45),
+                        //style: AppTypography.paragraph, todo
                       ),
                     ],
                   ),

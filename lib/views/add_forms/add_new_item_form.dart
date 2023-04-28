@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
+import 'package:kitsain_frontend_spring2023/categories.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:realm/realm.dart';
@@ -21,21 +24,6 @@ const List<String> categories = <String>[
   'Other'
 ];
 
-final catEnglish = <int, String>{
-  1: 'New',
-  2: 'Meat',
-  3: 'Seafood',
-  4: 'Fruit',
-  5: 'Vegetables',
-  6: 'Frozen',
-  7: 'Drinks',
-  8: 'Bread',
-  9: 'Treats',
-  10: 'Dairy',
-  11: 'Ready meals',
-  12: 'Dry & canned goods',
-  13: 'Other'
-};
 
 class NewItemForm extends StatefulWidget {
   const NewItemForm({super.key});
@@ -115,8 +103,10 @@ class _NewItemFormState extends State<NewItemForm> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.04,
                   child: FloatingActionButton(
-                    child: const Icon(Icons.close),
                     onPressed: () => _discardChangesDialog(false),
+                    foregroundColor: AppColors.main2,
+                    backgroundColor: AppColors.main3,
+                    child: const Icon(Icons.close),
                   ),
                 ),
               ],
@@ -125,7 +115,7 @@ class _NewItemFormState extends State<NewItemForm> {
             Text(
               'ADD ITEM\nTO PANTRY',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              style: AppTypography.heading2.copyWith(color: AppColors.main3),
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.06),
             Padding(
@@ -136,12 +126,17 @@ class _NewItemFormState extends State<NewItemForm> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.07,
                     child: ElevatedButton.icon(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                      ),
                       icon: const Icon(
                         Icons.add_a_photo_rounded,
+                        color: AppColors.main2,
                         size: 40,
                       ),
-                      label: const Text('SCAN EAN',
-                          style: TextStyle(fontSize: 20)),
+                      label: Text('SCAN EAN',
+                          style: AppTypography.category.copyWith(color: AppColors.main2)
+                      ),
                       onPressed: () async {
                         var res = await Navigator.push(
                           context,
@@ -177,6 +172,7 @@ class _NewItemFormState extends State<NewItemForm> {
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                   TextFormField(
+                    style: AppTypography.smallTitle,
                     controller: _EANCodeField,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
@@ -185,8 +181,10 @@ class _NewItemFormState extends State<NewItemForm> {
                         width: 80,
                         height: 60,
                         child: ElevatedButton(
-                          style: const ButtonStyle(
-                            shape: MaterialStatePropertyAll<
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                            foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                            shape: const MaterialStatePropertyAll<
                                 RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadiusDirectional.only(
@@ -257,6 +255,7 @@ class _NewItemFormState extends State<NewItemForm> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Stack(children: [
                     TextFormField(
+                      style: AppTypography.smallTitle,
                       controller: _itemName,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
@@ -272,7 +271,10 @@ class _NewItemFormState extends State<NewItemForm> {
                     const Positioned(
                         right: 27,
                         top: 15,
-                        child: Icon(Icons.keyboard_alt_outlined))
+                        child: Icon(Icons.keyboard_alt_outlined,
+                          color: AppColors.main3,
+                        )
+                    )
                   ]),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Container(
@@ -283,6 +285,7 @@ class _NewItemFormState extends State<NewItemForm> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: DropdownButtonFormField<String>(
+                        style: AppTypography.smallTitle.copyWith(color: Colors.black),
                         menuMaxHeight: 200,
                         value: _category,
                         icon: Icon(Icons.arrow_drop_down),
@@ -292,7 +295,7 @@ class _NewItemFormState extends State<NewItemForm> {
                           setState(
                             () {
                               _category = value!;
-                              _catInt = catEnglish.keys.firstWhere(
+                              _catInt = Categories.categoriesByIndex.keys.firstWhere(
                                       (key) => categories[key] == value) +
                                   1;
                             },
@@ -324,11 +327,16 @@ class _NewItemFormState extends State<NewItemForm> {
                         });
                       },
                       icon: Icon(
-                          _favorite ? Icons.favorite : Icons.favorite_border),
-                      label: const Text('Mark as favorite'),
+                          _favorite ? Icons.favorite : Icons.favorite_border,
+                        color: Colors.black,
+                      ),
+                      label: Text('Mark as favorite',
+                        style: AppTypography.paragraph.copyWith(color: Colors.black),
+                      ),
                     ),
                   ),
                   TextFormField(
+                    style: AppTypography.smallTitle.copyWith(color: Colors.black),
                     controller: _openDateString,
                     decoration: const InputDecoration(
                         icon: Icon(Icons.calendar_today),
@@ -336,10 +344,28 @@ class _NewItemFormState extends State<NewItemForm> {
                     readOnly: true,
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2101));
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2101),
+                        builder: (context, child) {
+                          return Theme(
+                            data: Theme.of(context).copyWith(
+                              colorScheme: const ColorScheme.light(
+                                primary: AppColors.main1,
+                                onPrimary: AppColors.main2,
+                                onSurface: AppColors.main3,
+                              ),
+                              textButtonTheme: TextButtonThemeData(
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Colors.black,
+                                )
+                              ),
+                            ),
+                            child: child!,
+                          );
+                        },
+                      );
                       if (pickedDate != null) {
                         String openedDate =
                             "${pickedDate.day}.${pickedDate.month}.${pickedDate.year}";
@@ -351,6 +377,7 @@ class _NewItemFormState extends State<NewItemForm> {
                     },
                   ),
                   TextFormField(
+                    style: AppTypography.smallTitle.copyWith(color: Colors.black),
                     controller: _expDateString,
                     decoration: const InputDecoration(
                         icon: Icon(Icons.calendar_today),
@@ -358,10 +385,28 @@ class _NewItemFormState extends State<NewItemForm> {
                     readOnly: true,
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2101));
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2101),
+                        builder: (context, child) {
+                        return Theme(
+                          data: Theme.of(context).copyWith(
+                            colorScheme: const ColorScheme.light(
+                              primary: AppColors.main1,
+                              onPrimary: AppColors.main2,
+                              onSurface: AppColors.main3,
+                            ),
+                            textButtonTheme: TextButtonThemeData(
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.black,
+                              )
+                            ),
+                          ),
+                          child: child!,
+                        );
+                      },
+                      );
                       if (pickedDate != null) {
                         String expirationDate =
                             "${pickedDate.day}.${pickedDate.month}.${pickedDate.year}";
@@ -389,8 +434,15 @@ class _NewItemFormState extends State<NewItemForm> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.07,
                         child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                            foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                            side: MaterialStateProperty.resolveWith((states) => const BorderSide(width: 3, color: AppColors.main3)),
+                          ),
                           onPressed: () => _discardChangesDialog(false),
-                          child: const Text('CANCEL'),
+                          child: const Text('CANCEL',
+                            style: AppTypography.category,
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -399,6 +451,10 @@ class _NewItemFormState extends State<NewItemForm> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.07,
                         child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                            foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                          ),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               var newItem = Item(
@@ -418,7 +474,9 @@ class _NewItemFormState extends State<NewItemForm> {
                               Navigator.pop(context);
                             }
                           },
-                          child: const Text('ADD ITEM'),
+                          child: const Text('ADD ITEM',
+                            style: AppTypography.category,
+                          ),
                         ),
                       ),
                     ],

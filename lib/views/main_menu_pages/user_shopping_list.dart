@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import 'package:kitsain_frontend_spring2023/assets/shopping_list_item.dart';
 import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
@@ -10,6 +11,7 @@ import 'package:kitsain_frontend_spring2023/views/add_forms/add_new_shopping_lis
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:realm/realm.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
 
 class UserShoppingList extends StatefulWidget {
   const UserShoppingList(
@@ -158,10 +160,10 @@ class _UserShoppingListState extends State<UserShoppingList> {
         title: 'SHOPPING \u200e\n\u200e LISTS',
         //title: AppLocalizations.of(context)!.shoppingListsScreenTopBarTitle,
         addFunction: _addNewItem,
-        addIcon: Icons.add_shopping_cart,
+        addIcon: Image.asset('assets/images/post_add.png'),
         helpFunction: _help,
         backgroundImageName: 'assets/images/shopping_flipped_B1.jpeg',
-        titleBackgroundColor: const Color.fromRGBO(77, 24, 9, 0.6),
+        titleBackgroundColor: AppColors.titleBackgroundBrown,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(paddingWidth),
@@ -180,7 +182,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
                       List<dynamic> accepted,
                       List<dynamic> rejected,
                     ) {
-                      return Text('SHOPPING LISTS');
+                      return Text('SHOPPING LISTS', style: AppTypography.category.copyWith(color: Colors.black),);
                     },
                     onMove: (details) {
                       Navigator.pop(context);
@@ -195,7 +197,10 @@ class _UserShoppingListState extends State<UserShoppingList> {
                   // TODO: e.g., fontsize 16 => icon size 16
                 ),
                 const SizedBox(width: 2),
-                Text(widget.taskListName),
+                Text(
+                    widget.taskListName,
+                    style: AppTypography.paragraph
+                ),
               ],
             ),
             Row(
@@ -206,7 +211,9 @@ class _UserShoppingListState extends State<UserShoppingList> {
                     child: Text('DESELECT ALL'),
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.all(4),
-                    )),
+                    ),
+                    //style: AppTypography.smallTitle.copyWith(color: Colors.black),
+                ),
               ],
             ),
             DragTarget<String>(
@@ -252,9 +259,14 @@ class _UserShoppingListState extends State<UserShoppingList> {
                 Container(
                   width: bottomButtonWidth,
                   child: OutlinedButton(
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                      backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),
+                    ),
                     onPressed: _removeSelectedItems,
                     child: Text(
-                      'Remove Items From List',
+                      'Remove Items\nFrom List',
+                      style: AppTypography.category,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -263,9 +275,14 @@ class _UserShoppingListState extends State<UserShoppingList> {
                 Container(
                   width: bottomButtonWidth,
                   child: OutlinedButton(
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                      backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),
+                    ),
                     onPressed: _moveSelectedItemsToPantry,
                     child: Text(
-                      'ADD ITEMS TO PANTRY',
+                      'ADD ITEMS\nTO PANTRY',
+                      style: AppTypography.category,
                       textAlign: TextAlign.center,
                     ),
                   ),

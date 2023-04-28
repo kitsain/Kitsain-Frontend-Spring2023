@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kitsain_frontend_spring2023/controller/task_controller.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
 
 class NewShoppingListItemForm extends StatefulWidget {
   const NewShoppingListItemForm({super.key, required this.taskListId});
@@ -30,17 +32,29 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
       showDialog(
           context: context,
           builder: (BuildContext context) => AlertDialog(
-            content: const Text('Discard changes?'),
+            content: const Text('Discard changes?',
+              style: AppTypography.paragraph,
+            ),
             actions: <Widget>[
               TextButton(
-                child: const Text('CANCEL'),
+                style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.cancelGrey),
+                ),
+                child: const Text('CANCEL',
+                  style: AppTypography.category,
+                ),
                 onPressed: () {
                   Navigator.pop(context);
                   _close = false;
                 },
               ),
               TextButton(
-                child: const Text('DISCARD'),
+                style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),
+                ),
+                child: const Text('DISCARD',
+                  style: AppTypography.category,
+                ),
                 onPressed: () {
                   Navigator.pop(context);
                   Navigator.pop(outerContext);
@@ -73,7 +87,9 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.04,
                       child: FloatingActionButton(
-                        child: Icon(Icons.close),
+                        foregroundColor: AppColors.main2,
+                        backgroundColor: AppColors.main3,
+                        child: const Icon(Icons.close),
                         onPressed: () => _discardChangesDialog(),
                       ),
                     )
@@ -82,12 +98,13 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                 Text(
                   'ADD ITEM\nTO SHOPPING LIST',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  style: AppTypography.heading2.copyWith(color: AppColors.main3),
                 ),
                 SizedBox( height: MediaQuery.of(context).size.height * 0.05),
                 Stack(
                     children: [
                       TextFormField(
+                        style: AppTypography.smallTitle,
                         controller: _itemName,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
@@ -100,15 +117,18 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                           return null;
                         },
                       ),
-                      Positioned(
-                          right: 27,
-                          top: 15,
-                          child: Icon(Icons.keyboard_alt_outlined)
+                      const Positioned(
+                        right: 27,
+                        top: 15,
+                        child: Icon(Icons.keyboard_alt_outlined,
+                          color: AppColors.main3,
+                        ),
                       )
                     ]
                 ),
                 SizedBox( height: MediaQuery.of(context).size.height * 0.025),
                 TextFormField(
+                  style: AppTypography.smallTitle,
                   controller: _details,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -123,14 +143,25 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.07,
                       child: ElevatedButton(
+                        style: ButtonStyle(
+                          foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                          backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                          side: MaterialStateProperty.resolveWith((states) => const BorderSide(width: 3, color: AppColors.main3)),
+                        ),
                         onPressed: () => _discardChangesDialog(),
-                        child: Text(' CANCEL '),
+                        child: const Text(' CANCEL ',
+                          style: AppTypography.category,
+                        ),
                       ),
                     ),
                     SizedBox( width: MediaQuery.of(context).size.width * 0.05),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.07,
                       child: ElevatedButton(
+                        style: ButtonStyle(
+                          foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                          backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                        ),
                         onPressed: () {
                           if(_formKey.currentState!.validate()) {
                             _taskController.createTask(
@@ -140,7 +171,9 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                             Navigator.pop(context);
                           }
                         },
-                        child: Text('ADD ITEM'),
+                        child: const Text('ADD ITEM',
+                          style: AppTypography.category,
+                        ),
                       ),
                     ),
                   ],
