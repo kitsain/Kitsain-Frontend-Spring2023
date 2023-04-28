@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 import 'package:kitsain_frontend_spring2023/app_colors.dart';
-import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/views/help_pages/shopping_lists_help_page.dart';
 import 'package:kitsain_frontend_spring2023/LoginController.dart';
@@ -147,7 +146,9 @@ class _ShoppingListsState extends State<ShoppingLists> {
                                 children: [
                                   Text(
                                       '${taskListController.taskLists.value?.items?[index].title}',
-                                      style: AppTypography.smallTitle, ),
+                                      style: TextStyle(fontWeight: FontWeight.bold),
+                                      //style: AppTypography.paragraph.copyWith(fontWeight: FontWeight.bold),
+                                  ),
                                   const Spacer(),
                                   IconButton(
                                     onPressed: () {

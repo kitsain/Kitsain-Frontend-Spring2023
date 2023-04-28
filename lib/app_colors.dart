@@ -16,4 +16,6 @@ class AppColors {
 
   static const titleBackgroundBrown = Color.fromRGBO(77, 24, 9, 0.6);
   static const titleBackgroundGreen = Color.fromRGBO(47, 56, 41, 0.6);
+  
+  static const loginTitleColor = Color.fromRGBO(107, 59, 72, 1);
 }

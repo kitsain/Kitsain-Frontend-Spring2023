@@ -79,13 +79,12 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
                         height: 15,
                       ),
                       Text(
-                        widget.itemName,
-                        style: AppTypography.smallTitle,
+                        widget.itemName.toUpperCase(),
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Text(
                         widget.itemDescription, //'Additional description',
-                        style: TextStyle(color: Colors.black45),
-                        //style: AppTypography.paragraph, todo
+                        style: AppTypography.paragraph.copyWith(color: Colors.black45),
                       ),
                     ],
                   ),
@@ -94,7 +93,8 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
                     onPressed: () => _editItem(),
                     icon: Icon(
                         Icons.edit,
-                        color: AppColors.main1),
+                        color: AppColors.main1
+                    ),
                   ),
                   Checkbox(
                     value: taskController

@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:get/get.dart';
 import 'package:googleapis/tasks/v1.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import 'package:kitsain_frontend_spring2023/controller/tasklist_controller.dart';
 import 'package:kitsain_frontend_spring2023/LoginController.dart';
 import 'package:kitsain_frontend_spring2023/main.dart';
@@ -30,7 +31,7 @@ class HomePage2 extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             border: Border.all(
-                color: AppColors.main1,
+                color: AppColors.expiresIn7PlusDays,
                 width: 3
             ),
             borderRadius: BorderRadius.all(Radius.circular(35)),
@@ -56,13 +57,11 @@ class HomePage2 extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                     child: Text(
                       'WELCOME\nTO\nKITSAIN!',
-                      style: TextStyle(
-                        fontSize: 44,
-                      ),
+                      style: AppTypography.heading2.copyWith(color: AppColors.loginTitleColor),
                       textAlign: TextAlign.center,
                     ),
                   ),
