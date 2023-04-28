@@ -194,29 +194,33 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                   },
                   builder: (context, candidateData, rejectedData) {
                     return ToggleButtons(
-                        direction: Axis.horizontal,
-                        onPressed: (int index) {
-                          setState(
-                            () {
-                              for (int i = 0; i < _selectedTabs.length; i++) {
-                                _selectedTabs[i] = i == index;
-                                if (_selectedTabs[0] == true) {
-                                  selectedView = "used";
-                                } else {
-                                  selectedView = "bin";
-                                }
+                      color: Colors.black,
+                      selectedColor: AppColors.main2,
+                      fillColor: AppColors.main1,
+                      borderColor: AppColors.main1,
+                      direction: Axis.horizontal,
+                      onPressed: (int index) {
+                        setState(
+                          () {
+                            for (int i = 0; i < _selectedTabs.length; i++) {
+                              _selectedTabs[i] = i == index;
+                              if (_selectedTabs[0] == true) {
+                                selectedView = "used";
+                              } else {
+                                selectedView = "bin";
                               }
-                            },
-                          );
-                        },
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
-                        constraints: const BoxConstraints(
-                          minHeight: 40.0,
-                          minWidth: 100.0,
-                        ),
-                        isSelected: _selectedTabs,
-                        children: tabs);
+                            }
+                          },
+                        );
+                      },
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(8)),
+                      constraints: const BoxConstraints(
+                        minHeight: 40.0,
+                        minWidth: 100.0,
+                      ),
+                      isSelected: _selectedTabs,
+                      children: tabs);
                   },
                 ),
               ),
@@ -273,7 +277,9 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                                 padding: EdgeInsets.only(right: 20),
                                 child: Text(
                                   "${PantryProxy().countByMonth(monthInt, selectedView)}%",
-                                  style: AppTypography.heading1.copyWith(fontSize: 80),
+                                  style: AppTypography.heading1.copyWith(fontSize: 80,
+                                    color: AppColors.main1,
+                                  ),
                                 ),
                               ),
                             ),

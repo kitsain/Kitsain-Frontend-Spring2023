@@ -93,7 +93,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
                       List<dynamic> accepted,
                       List<dynamic> rejected,
                     ) {
-                      return Text('SHOPPING LISTS', style: AppTypography.smallTitle,);
+                      return Text('SHOPPING LISTS', style: AppTypography.category.copyWith(color: Colors.black),);
                     },
                     onMove: (details) {
                       Navigator.pop(context);
@@ -101,7 +101,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
                   ),
                 ),
                 Icon(Icons.arrow_forward_ios),
-                Text('Shopping list ${widget.listIndex + 1}', style: AppTypography.smallTitle,),
+                Text('Shopping list ${widget.listIndex + 1}', style: AppTypography.paragraph,),
                 // todo: change the title to come from the model
               ],
             ),
@@ -110,7 +110,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
               children: [
                 TextButton(
                   onPressed: () => _deselectAll(),
-                  child: Text('DESELECT ALL', style: AppTypography.smallTitle,),
+                  child: Text('DESELECT ALL', style: AppTypography.smallTitle.copyWith(color: Colors.black),),
                 ),
                 SizedBox(
                   width: 15,
@@ -146,9 +146,14 @@ class _UserShoppingListState extends State<UserShoppingList> {
               },
             ),
             OutlinedButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),
+              ),
               onPressed: _moveSelectedItemsToPantry,
-              child: Text('ADD ITEMS TO PANTRY',
+              child: const Text('ADD ITEMS\nTO PANTRY',
                 style: AppTypography.category,
+                textAlign: TextAlign.center,
               ),
             ),
             SizedBox(

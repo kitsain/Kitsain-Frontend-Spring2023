@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
 import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
@@ -66,7 +67,9 @@ class _ItemCardState extends State<ItemCard> {
   @override
   Widget build(BuildContext context) {
     var popupMenuButton = PopupMenuButton<_MenuValues>(
-      icon: const Icon(Icons.more_horiz),
+      icon: const Icon(Icons.more_horiz,
+        color: Colors.black,
+      ),
       itemBuilder: (BuildContext context) {
         return [
           const PopupMenuItem(
@@ -114,16 +117,26 @@ class _ItemCardState extends State<ItemCard> {
                   style: AppTypography.paragraph,),
                 actions: <Widget>[
                   TextButton(
-                      onPressed: () {
-                        Navigator.of(ctx).pop();
-                      },
-                      child: const Text("Cancel")),
+                    onPressed: () {
+                      Navigator.of(ctx).pop();
+                    },
+                    child: const Text("Cancel"),
+                    style: ButtonStyle(
+                      textStyle: MaterialStateProperty.resolveWith((states) => AppTypography.category),
+                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.cancelGrey),
+                    ),
+                  ),
                   TextButton(
-                      onPressed: () {
-                        deleteItem(widget.item);
-                        Navigator.of(ctx).pop();
-                      },
-                      child: const Text("Delete"))
+                    onPressed: () {
+                      deleteItem(widget.item);
+                      Navigator.of(ctx).pop();
+                    },
+                    child: const Text("Delete"),
+                    style: ButtonStyle(
+                      textStyle: MaterialStateProperty.resolveWith((states) => AppTypography.category),
+                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),
+                    )
+                  )
                 ],
               ),
             );
@@ -135,7 +148,9 @@ class _ItemCardState extends State<ItemCard> {
     );
 
     var popupMenuButtonHistory = PopupMenuButton<_MenuValues>(
-      icon: const Icon(Icons.more_horiz),
+      icon: const Icon(Icons.more_horiz,
+        color: Colors.black,
+      ),
       itemBuilder: (BuildContext context) {
         return [
           if (widget.item.location == "Bin") ...[
@@ -187,16 +202,26 @@ class _ItemCardState extends State<ItemCard> {
                 style: AppTypography.paragraph,),
                 actions: <Widget>[
                   TextButton(
-                      onPressed: () {
-                        Navigator.of(ctx).pop();
-                      },
-                      child: const Text("Cancel")),
+                    onPressed: () {
+                      Navigator.of(ctx).pop();
+                    },
+                    child: const Text("Cancel"),
+                    style: ButtonStyle(
+                      textStyle: MaterialStateProperty.resolveWith((states) => AppTypography.category),
+                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.cancelGrey),
+                    ),
+                  ),
                   TextButton(
-                      onPressed: () {
-                        deleteItem(widget.item);
-                        Navigator.of(ctx).pop();
-                      },
-                      child: const Text("Delete"))
+                    onPressed: () {
+                      deleteItem(widget.item);
+                      Navigator.of(ctx).pop();
+                    },
+                    child: const Text("Delete"),
+                    style: ButtonStyle(
+                      textStyle: MaterialStateProperty.resolveWith((states) => AppTypography.category),
+                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),
+                    )
+                  ),
                 ],
               ),
             );
@@ -297,11 +322,11 @@ class _ItemCardState extends State<ItemCard> {
                         setState(() => showAbbreviation = !val),
                     title: Text(
                       widget.item.name.toUpperCase(),
-                      style: AppTypography.heading3,
+                      style: AppTypography.heading3.copyWith(color: Colors.black),
                     ),
                     subtitle: Text(
                       Categories.categoriesByIndex[widget.item.mainCat]!.toUpperCase(),
-                        style: AppTypography.smallTitle,
+                        style: AppTypography.smallTitle.copyWith(color: Colors.black),
                     ),
                     trailing: widget.loc == "Pantry"
                         ? popupMenuButton

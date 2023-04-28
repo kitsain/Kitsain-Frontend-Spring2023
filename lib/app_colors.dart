@@ -12,6 +12,8 @@ class AppColors {
   static const expiresIn7PlusDays = Color(0xff5c785e);
   static const noDateAdded = Color(0xfff0ebe5);
 
+  static const cancelGrey = Color(0xff979797);
+
   static const titleBackgroundBrown = Color.fromRGBO(77, 24, 9, 0.6);
   static const titleBackgroundGreen = Color.fromRGBO(47, 56, 41, 0.6);
 }
