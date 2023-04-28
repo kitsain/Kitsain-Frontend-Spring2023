@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import 'package:kitsain_frontend_spring2023/assets/shopping_list_item.dart';
 import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
 import 'package:kitsain_frontend_spring2023/views/help_pages/user_shopping_list_help_page.dart';
 import 'package:kitsain_frontend_spring2023/views/add_forms/add_new_shopping_list_item_form.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
 
 class UserShoppingList extends StatefulWidget {
   const UserShoppingList({super.key, required this.listIndex});
@@ -73,10 +75,10 @@ class _UserShoppingListState extends State<UserShoppingList> {
       appBar: TopBar(
           title: AppLocalizations.of(context)!.shoppingListsScreenTopBarTitle,
           addFunction: _addNewItem,
-          addIcon: Icons.add_shopping_cart,
+          addIcon: Image.asset('assets/images/post_add.png'),
           helpFunction: _help,
           backgroundImageName: 'assets/images/shopping_flipped_B1.jpeg',
-          titleBackgroundColor: const Color.fromRGBO(77, 24, 9, 0.6),
+          titleBackgroundColor: AppColors.titleBackgroundBrown,
         ),
       body: SingleChildScrollView(
         child: Column(
@@ -91,7 +93,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
                       List<dynamic> accepted,
                       List<dynamic> rejected,
                     ) {
-                      return Text('SHOPPING LISTS');
+                      return Text('SHOPPING LISTS', style: AppTypography.category.copyWith(color: Colors.black),);
                     },
                     onMove: (details) {
                       Navigator.pop(context);
@@ -99,7 +101,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
                   ),
                 ),
                 Icon(Icons.arrow_forward_ios),
-                Text('Shopping list ${widget.listIndex + 1}'),
+                Text('Shopping list ${widget.listIndex + 1}', style: AppTypography.paragraph,),
                 // todo: change the title to come from the model
               ],
             ),
@@ -108,7 +110,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
               children: [
                 TextButton(
                   onPressed: () => _deselectAll(),
-                  child: Text('DESELECT ALL'),
+                  child: Text('DESELECT ALL', style: AppTypography.smallTitle.copyWith(color: Colors.black),),
                 ),
                 SizedBox(
                   width: 15,
@@ -144,8 +146,15 @@ class _UserShoppingListState extends State<UserShoppingList> {
               },
             ),
             OutlinedButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),
+              ),
               onPressed: _moveSelectedItemsToPantry,
-              child: Text('ADD ITEMS TO PANTRY'),
+              child: const Text('ADD ITEMS\nTO PANTRY',
+                style: AppTypography.category,
+                textAlign: TextAlign.center,
+              ),
             ),
             SizedBox(
               height: 100,

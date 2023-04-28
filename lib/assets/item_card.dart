@@ -2,10 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/views/edit_forms/edit_item_form.dart';
 import 'statuscolor.dart';
+import 'package:kitsain_frontend_spring2023/categories.dart';
 
 enum _MenuValues { edit, used, bin, shoppinglist, delete, pantry }
 
@@ -13,21 +16,21 @@ const double BORDERWIDTH = 30.0;
 const Color NULLSTATUSCOLOR = Color(0xffF0EBE5);
 const Color NULLTEXTCOLOR = Color(0xff979797);
 
-final catEnglish = <int, String>{
-  1: 'New',
-  2: 'Meat',
-  3: 'Seafood',
-  4: 'Fruit',
-  5: 'Vegetables',
-  6: 'Frozen',
-  7: 'Drinks',
-  8: 'Bread',
-  9: 'Treats',
-  10: 'Dairy',
-  11: 'Ready meals',
-  12: 'Dry & canned goods',
-  13: 'Other'
-};
+// final catEnglish = <int, String>{
+//   1: 'New',
+//   2: 'Meat',
+//   3: 'Seafood',
+//   4: 'Fruit',
+//   5: 'Vegetables',
+//   6: 'Frozen',
+//   7: 'Drinks',
+//   8: 'Bread',
+//   9: 'Treats',
+//   10: 'Dairy',
+//   11: 'Ready meals',
+//   12: 'Dry & canned goods',
+//   13: 'Other'
+// };
 
 class ItemCard extends StatefulWidget {
   ItemCard({super.key, required this.item, required this.loc});
@@ -64,28 +67,30 @@ class _ItemCardState extends State<ItemCard> {
   @override
   Widget build(BuildContext context) {
     var popupMenuButton = PopupMenuButton<_MenuValues>(
-      icon: const Icon(Icons.more_horiz),
+      icon: const Icon(Icons.more_horiz,
+        color: Colors.black,
+      ),
       itemBuilder: (BuildContext context) {
         return [
           const PopupMenuItem(
             value: _MenuValues.edit,
-            child: Text("Edit item"),
+            child: Text("Edit item", style: AppTypography.smallTitle,),
           ),
           const PopupMenuItem(
             value: _MenuValues.used,
-            child: Text("Move to used"),
+            child: Text("Move to used", style: AppTypography.smallTitle,),
           ),
           const PopupMenuItem(
             value: _MenuValues.bin,
-            child: Text("Move to bin"),
+            child: Text("Move to bin", style: AppTypography.smallTitle,),
           ),
           const PopupMenuItem(
             value: _MenuValues.shoppinglist,
-            child: Text("Move to shopping list"),
+            child: Text("Move to shopping list", style: AppTypography.smallTitle,),
           ),
           const PopupMenuItem(
             value: _MenuValues.delete,
-            child: Text("Delete item"),
+            child: Text("Delete item", style: AppTypography.smallTitle,),
           ),
         ];
       },
@@ -106,21 +111,32 @@ class _ItemCardState extends State<ItemCard> {
             showDialog(
               context: context,
               builder: (ctx) => AlertDialog(
-                title: const Text("Delete item"),
+                title: const Text("Delete item", style: AppTypography.heading3,),
                 content: const Text(
-                    "Are you sure you want to delete this item? This action cannot be undone."),
+                    "Are you sure you want to delete this item? This action cannot be undone.",
+                  style: AppTypography.paragraph,),
                 actions: <Widget>[
                   TextButton(
-                      onPressed: () {
-                        Navigator.of(ctx).pop();
-                      },
-                      child: const Text("Cancel")),
+                    onPressed: () {
+                      Navigator.of(ctx).pop();
+                    },
+                    child: const Text("Cancel"),
+                    style: ButtonStyle(
+                      textStyle: MaterialStateProperty.resolveWith((states) => AppTypography.category),
+                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.cancelGrey),
+                    ),
+                  ),
                   TextButton(
-                      onPressed: () {
-                        deleteItem(widget.item);
-                        Navigator.of(ctx).pop();
-                      },
-                      child: const Text("Delete"))
+                    onPressed: () {
+                      deleteItem(widget.item);
+                      Navigator.of(ctx).pop();
+                    },
+                    child: const Text("Delete"),
+                    style: ButtonStyle(
+                      textStyle: MaterialStateProperty.resolveWith((states) => AppTypography.category),
+                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),
+                    )
+                  )
                 ],
               ),
             );
@@ -132,32 +148,34 @@ class _ItemCardState extends State<ItemCard> {
     );
 
     var popupMenuButtonHistory = PopupMenuButton<_MenuValues>(
-      icon: const Icon(Icons.more_horiz),
+      icon: const Icon(Icons.more_horiz,
+        color: Colors.black,
+      ),
       itemBuilder: (BuildContext context) {
         return [
           if (widget.item.location == "Bin") ...[
             const PopupMenuItem(
               value: _MenuValues.used,
-              child: Text("Move to used"),
+              child: Text("Move to used", style: AppTypography.smallTitle,),
             ),
           ],
           if (widget.item.location == "Used") ...[
             const PopupMenuItem(
               value: _MenuValues.bin,
-              child: Text("Move to bin"),
+              child: Text("Move to bin", style: AppTypography.smallTitle,),
             ),
           ],
           const PopupMenuItem(
             value: _MenuValues.pantry,
-            child: Text("Move to pantry"),
+            child: Text("Move to pantry", style: AppTypography.smallTitle,),
           ),
           const PopupMenuItem(
             value: _MenuValues.shoppinglist,
-            child: Text("Move to shopping list"),
+            child: Text("Move to shopping list", style: AppTypography.smallTitle,),
           ),
           const PopupMenuItem(
             value: _MenuValues.delete,
-            child: Text("Delete item"),
+            child: Text("Delete item", style: AppTypography.smallTitle,),
           ),
         ];
       },
@@ -178,21 +196,32 @@ class _ItemCardState extends State<ItemCard> {
             showDialog(
               context: context,
               builder: (ctx) => AlertDialog(
-                title: const Text("Delete item"),
+                title: const Text("Delete item", style: AppTypography.heading3,),
                 content: const Text(
-                    "Are you sure you want to delete this item? This action cannot be undone."),
+                    "Are you sure you want to delete this item? This action cannot be undone.",
+                style: AppTypography.paragraph,),
                 actions: <Widget>[
                   TextButton(
-                      onPressed: () {
-                        Navigator.of(ctx).pop();
-                      },
-                      child: const Text("Cancel")),
+                    onPressed: () {
+                      Navigator.of(ctx).pop();
+                    },
+                    child: const Text("Cancel"),
+                    style: ButtonStyle(
+                      textStyle: MaterialStateProperty.resolveWith((states) => AppTypography.category),
+                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.cancelGrey),
+                    ),
+                  ),
                   TextButton(
-                      onPressed: () {
-                        deleteItem(widget.item);
-                        Navigator.of(ctx).pop();
-                      },
-                      child: const Text("Delete"))
+                    onPressed: () {
+                      deleteItem(widget.item);
+                      Navigator.of(ctx).pop();
+                    },
+                    child: const Text("Delete"),
+                    style: ButtonStyle(
+                      textStyle: MaterialStateProperty.resolveWith((states) => AppTypography.category),
+                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),
+                    )
+                  ),
                 ],
               ),
             );
@@ -234,11 +263,11 @@ class _ItemCardState extends State<ItemCard> {
                 child: ListTile(
                   title: Text(
                     widget.item.name.toUpperCase(),
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+                    style: AppTypography.heading3,
                   ),
                   subtitle: Text(
                     catEnglish[widget.item.mainCat]!.toUpperCase(),
-                    style: TextStyle(color: Colors.black),
+                    style: AppTypography.smallTitle,
                   ),
                   trailing: Transform.translate(
                     offset: Offset(0, -15),
@@ -246,7 +275,7 @@ class _ItemCardState extends State<ItemCard> {
                   ),
                   leading: Transform.translate(
                     offset: Offset(0, 0),
-                    child: Icon(Icons.fastfood, size: 35),
+                    child: Categories.categoryImages[widget.item.mainCat - 1],
                   ),
                 )),
             clipper: ShapeBorderClipper(
@@ -293,18 +322,18 @@ class _ItemCardState extends State<ItemCard> {
                         setState(() => showAbbreviation = !val),
                     title: Text(
                       widget.item.name.toUpperCase(),
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 23),
+                      style: AppTypography.heading3.copyWith(color: Colors.black),
                     ),
                     subtitle: Text(
-                      catEnglish[widget.item.mainCat]!.toUpperCase(),
+                      Categories.categoriesByIndex[widget.item.mainCat]!.toUpperCase(),
+                        style: AppTypography.smallTitle.copyWith(color: Colors.black),
                     ),
                     trailing: widget.loc == "Pantry"
                         ? popupMenuButton
                         : popupMenuButtonHistory,
                     leading: Transform.translate(
                       offset: const Offset(0, 0),
-                      child: const Icon(Icons.fastfood, size: 35),
+                      child: Categories.categoryImages[widget.item.mainCat - 1],
                     ),
                     children: [
                       Row(
@@ -321,11 +350,12 @@ class _ItemCardState extends State<ItemCard> {
                               DateFormat('d.M.yyyy').format(
                                 widget.item.openedDate!.toLocal(),
                               ),
+                              style: AppTypography.smallTitle,
                             )
                           ] else ...[
-                            const Text(
+                            Text(
                               "OPENED",
-                              style: TextStyle(color: NULLTEXTCOLOR),
+                              style: AppTypography.smallTitle.copyWith(color: NULLTEXTCOLOR),
                             )
                           ]
                         ],
@@ -346,11 +376,12 @@ class _ItemCardState extends State<ItemCard> {
                             Text(
                               DateFormat('d.M.yyyy')
                                   .format(widget.item.expiryDate!.toLocal()),
+                              style: AppTypography.smallTitle,
                             )
                           ] else ...[
-                            const Text(
+                            Text(
                               "EXPIRATION",
-                              style: TextStyle(color: NULLTEXTCOLOR),
+                              style: AppTypography.smallTitle.copyWith(color: NULLTEXTCOLOR),
                             )
                           ]
                         ],
@@ -377,7 +408,7 @@ class _ItemCardState extends State<ItemCard> {
                                   color: Colors.grey),
                             ),
                           ],
-                          const Text("MARK AS FAVORITE")
+                          const Text("MARK AS FAVORITE", style: AppTypography.smallTitle,)
                         ],
                       ),
                       SizedBox(
@@ -391,7 +422,9 @@ class _ItemCardState extends State<ItemCard> {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
-                            child: Text(widget.item.details!),
+                            child: Text(widget.item.details!,
+                              style: AppTypography.paragraph,
+                            ),
                           ),
                         ),
                       ] else ...[
@@ -405,7 +438,7 @@ class _ItemCardState extends State<ItemCard> {
                             padding: const EdgeInsets.all(5.0),
                             child: Text(
                               "Details",
-                              style: TextStyle(color: NULLTEXTCOLOR),
+                              style: AppTypography.paragraph.copyWith(color: NULLTEXTCOLOR),
                             ),
                           ),
                         ),
@@ -431,7 +464,7 @@ class _ItemCardState extends State<ItemCard> {
                                 .runes) ...[
                               Text(
                                 String.fromCharCode(rune),
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: AppTypography.smallTitle,
                               ),
                             ]
                           ] else ...[
@@ -440,7 +473,7 @@ class _ItemCardState extends State<ItemCard> {
                                 .runes) ...[
                               Text(
                                 String.fromCharCode(rune),
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: AppTypography.smallTitle,
                               ),
                             ]
                           ],

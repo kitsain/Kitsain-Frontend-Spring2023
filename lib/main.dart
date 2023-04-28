@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/pantryview.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Kitsain 2023 MVP',
       theme: ThemeData(
+        scaffoldBackgroundColor: AppColors.main2,
         primarySwatch: Colors.lightGreen,
       ),
       home: const HomePage(title: 'Kitsain MVP 2023'),

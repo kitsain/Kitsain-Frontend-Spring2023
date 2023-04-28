@@ -6,12 +6,18 @@ import 'package:kitsain_frontend_spring2023/views/help_pages/used_and_expired_he
 import 'package:realm/realm.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
 
 import '../../database/pantry_proxy.dart';
 
 const List<Widget> tabs = <Widget>[
-  Text('USED'),
-  Text('BIN'),
+  Text('USED',
+    style: AppTypography.category,
+  ),
+  Text('BIN',
+    style: AppTypography.category,
+  ),
 ];
 
 const List<String> months = [
@@ -114,10 +120,9 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
     return Scaffold(
       appBar: TopBar(
         title: AppLocalizations.of(context)!.historyScreen,
-        addIcon: Icons.post_add,
         helpFunction: _help,
         backgroundImageName: 'assets/images/ue_banner_darker_B2.png',
-        titleBackgroundColor: const Color.fromRGBO(47, 56, 41, 0.6),
+        titleBackgroundColor: AppColors.titleBackgroundGreen,
       ),
       body: DragTarget<Item>(
         onAccept: (data) => _receiveItem(data, selectedView),
@@ -136,7 +141,7 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                         ),
                         DropdownButton(
                           value: month,
-                          style: const TextStyle(color: Colors.black),
+                          style: AppTypography.category.copyWith(color: Colors.black),
                           iconSize: 0,
                           onChanged: (String? value) {
                             setState(
@@ -164,7 +169,9 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                               .values
                               .toList(),
                         ),
-                        const Text("2023")
+                        const Text("2023",
+                          style: AppTypography.category,
+                        )
                       ],
                     ),
                   ),
@@ -187,29 +194,33 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                   },
                   builder: (context, candidateData, rejectedData) {
                     return ToggleButtons(
-                        direction: Axis.horizontal,
-                        onPressed: (int index) {
-                          setState(
-                            () {
-                              for (int i = 0; i < _selectedTabs.length; i++) {
-                                _selectedTabs[i] = i == index;
-                                if (_selectedTabs[0] == true) {
-                                  selectedView = "used";
-                                } else {
-                                  selectedView = "bin";
-                                }
+                      color: Colors.black,
+                      selectedColor: AppColors.main2,
+                      fillColor: AppColors.main1,
+                      borderColor: AppColors.main1,
+                      direction: Axis.horizontal,
+                      onPressed: (int index) {
+                        setState(
+                          () {
+                            for (int i = 0; i < _selectedTabs.length; i++) {
+                              _selectedTabs[i] = i == index;
+                              if (_selectedTabs[0] == true) {
+                                selectedView = "used";
+                              } else {
+                                selectedView = "bin";
                               }
-                            },
-                          );
-                        },
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
-                        constraints: const BoxConstraints(
-                          minHeight: 40.0,
-                          minWidth: 100.0,
-                        ),
-                        isSelected: _selectedTabs,
-                        children: tabs);
+                            }
+                          },
+                        );
+                      },
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(8)),
+                      constraints: const BoxConstraints(
+                        minHeight: 40.0,
+                        minWidth: 100.0,
+                      ),
+                      isSelected: _selectedTabs,
+                      children: tabs);
                   },
                 ),
               ),
@@ -222,7 +233,9 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
 
                   if (results.isEmpty) {
                     return const Center(
-                      child: Text("No items found"),
+                      child: Text("No items found",
+                        style: AppTypography.smallTitle,
+                      ),
                     );
                   } else {
                     return Column(
@@ -264,8 +277,8 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                                 padding: EdgeInsets.only(right: 20),
                                 child: Text(
                                   "${PantryProxy().countByMonth(monthInt, selectedView)}%",
-                                  style: const TextStyle(
-                                    fontSize: 55,
+                                  style: AppTypography.heading1.copyWith(fontSize: 80,
+                                    color: AppColors.main1,
                                   ),
                                 ),
                               ),
@@ -277,8 +290,7 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                           padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
                           child: Text(
                             "${selectedView.toUpperCase()} ITEMS",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 23),
+                            style: AppTypography.heading3,
                           ),
                         ),
                         ItemBuilder(

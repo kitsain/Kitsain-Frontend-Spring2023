@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
 
 class TopBar extends StatefulWidget implements PreferredSizeWidget {
   const TopBar({
     super.key,
     required this.title,
     this.addFunction,
-    this.addIcon = Icons.add,
+    this.addIcon,
     required this.helpFunction,
     required this.backgroundImageName,
     required this.titleBackgroundColor,
@@ -13,7 +15,7 @@ class TopBar extends StatefulWidget implements PreferredSizeWidget {
 
   final String title;
   final Function? addFunction;
-  final IconData addIcon;
+  final Image? addIcon;
   final Function helpFunction;
   final String backgroundImageName;
   final Color titleBackgroundColor;
@@ -59,10 +61,8 @@ class _TopBarState extends State<TopBar> {
               width: MediaQuery.of(context).size.width * 0.64,
               child: Text(
                 ' ${widget.title} ${'\u200e'}',
-                style: TextStyle(
-                    fontSize: 32,
-                    color: Colors.white,
-                    backgroundColor: widget.titleBackgroundColor,
+                style: AppTypography.whiteHeading2.copyWith(
+                  backgroundColor: widget.titleBackgroundColor,
                 ),
               ),
             ),
@@ -75,29 +75,39 @@ class _TopBarState extends State<TopBar> {
                       visualDensity: topIconsDensity,
                       padding: EdgeInsets.zero,
                       onPressed: () => widget.helpFunction(),
-                      icon: const Icon(Icons.help_outline),
+                      icon: const Icon(Icons.help_outline,
+                        color: Colors.white,
+                      ),
                     ),
                     IconButton(
                       visualDensity: topIconsDensity,
                       padding: EdgeInsets.zero,
                       onPressed: () => _openSettings(),
-                      icon: const Icon(Icons.settings),
+                      icon: const Icon(Icons.settings,
+                        color: Colors.white,
+                      ),
                     ),
                     IconButton(
                       visualDensity: topIconsDensity,
                       padding: EdgeInsets.zero,
                       onPressed: () => _openAccountSettings(),
-                      icon: const Icon(Icons.account_circle),
+                      icon: const Icon(Icons.account_circle,
+                        color: Colors.white,
+                      ),
                     ),
                   ],
                 ),
                 if (widget.addFunction != null)
                   Container(
-                    height: 48,
-                    width: 48,
-                    child: FloatingActionButton(
-                      onPressed: () => widget.addFunction!(),
-                      child: Icon(widget.addIcon),
+                    height: 60,
+                    width: 60,
+                    child: InkWell(
+                      onTap: () => widget.addFunction!(),
+                      child: widget.addIcon ?? Image.asset('assets/images/post_add.png'),
+                      // child: Image.asset('assets/images/post_add.png',
+                      //   color: Colors.white,
+                      //   fit: BoxFit.cover,
+                      // ),
                     ),
                   ),
               ],
