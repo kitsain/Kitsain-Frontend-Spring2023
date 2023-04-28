@@ -16,7 +16,7 @@ const List<String> categories = <String>[
   'Frozen',
   'Drinks',
   'Bread',
-  'Sweets',
+  'Treats',
   'Dairy',
   'Ready meals',
   'Dry & canned goods',
@@ -82,15 +82,18 @@ class _EditItemFormState extends State<EditItemForm> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          content: const Text('Discard changes?',
+          content: const Text(
+            'Discard changes?',
             style: AppTypography.paragraph,
           ),
           actions: <Widget>[
             TextButton(
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.cancelGrey),
+                foregroundColor: MaterialStateProperty.resolveWith(
+                    (states) => AppColors.cancelGrey),
               ),
-              child: const Text('CANCEL',
+              child: const Text(
+                'CANCEL',
                 style: AppTypography.category,
               ),
               onPressed: () {
@@ -99,9 +102,11 @@ class _EditItemFormState extends State<EditItemForm> {
             ),
             TextButton(
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),
+                foregroundColor: MaterialStateProperty.resolveWith(
+                    (states) => AppColors.main1),
               ),
-              child: const Text('DISCARD',
+              child: const Text(
+                'DISCARD',
                 style: AppTypography.category,
               ),
               onPressed: () {
@@ -197,9 +202,13 @@ class _EditItemFormState extends State<EditItemForm> {
                         height: 60,
                         child: ElevatedButton(
                           style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
-                            backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
-                            shape: const MaterialStatePropertyAll<
+                              foregroundColor:
+                                  MaterialStateProperty.resolveWith(
+                                      (states) => AppColors.main2),
+                              backgroundColor:
+                                  MaterialStateProperty.resolveWith(
+                                      (states) => AppColors.main3),
+                              shape: const MaterialStatePropertyAll<
                                       RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       borderRadius:
@@ -240,14 +249,16 @@ class _EditItemFormState extends State<EditItemForm> {
                                   width: 10,
                                   height: 10,
                                   child: AlertDialog(
-                                    content:
-                                        const Text('Please input EAN-code',
-                                          style: AppTypography.paragraph,
-                                        ),
+                                    content: const Text(
+                                      'Please input EAN-code',
+                                      style: AppTypography.paragraph,
+                                    ),
                                     actions: <Widget>[
                                       TextButton(
-                                        child: Text('OK',
-                                          style: AppTypography.category.copyWith(color: AppColors.main1),
+                                        child: Text(
+                                          'OK',
+                                          style: AppTypography.category
+                                              .copyWith(color: AppColors.main1),
                                         ),
                                         onPressed: () {
                                           Navigator.pop(context);
@@ -259,8 +270,9 @@ class _EditItemFormState extends State<EditItemForm> {
                               );
                             }
                           },
-                          child: const Text('FETCH\n ITEM',
-                           style: AppTypography.smallTitle,
+                          child: const Text(
+                            'FETCH\n ITEM',
+                            style: AppTypography.smallTitle,
                           ),
                         ),
                       ),
@@ -285,10 +297,10 @@ class _EditItemFormState extends State<EditItemForm> {
                     const Positioned(
                         right: 27,
                         top: 15,
-                        child: Icon(Icons.keyboard_alt_outlined,
+                        child: Icon(
+                          Icons.keyboard_alt_outlined,
                           color: AppColors.main3,
-                        )
-                    )
+                        ))
                   ]),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Container(
@@ -298,7 +310,8 @@ class _EditItemFormState extends State<EditItemForm> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: DropdownButtonFormField<String>(
-                        style: AppTypography.smallTitle.copyWith(color: Colors.black),
+                        style: AppTypography.smallTitle
+                            .copyWith(color: Colors.black),
                         menuMaxHeight: 200,
                         value: _category,
                         icon: const Positioned(
@@ -343,11 +356,13 @@ class _EditItemFormState extends State<EditItemForm> {
                         });
                       },
                       icon: Icon(
-                          _favorite ? Icons.favorite : Icons.favorite_border,
+                        _favorite ? Icons.favorite : Icons.favorite_border,
                         color: Colors.black,
                       ),
-                      label: Text('Mark as favorite',
-                        style: AppTypography.paragraph.copyWith(color: Colors.black),
+                      label: Text(
+                        'Mark as favorite',
+                        style: AppTypography.paragraph
+                            .copyWith(color: Colors.black),
                       ),
                     ),
                   ),
@@ -360,26 +375,24 @@ class _EditItemFormState extends State<EditItemForm> {
                     readOnly: true,
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2101),
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2101),
                         builder: (context, child) {
-                            return Theme(
-                              data: Theme.of(context).copyWith(
+                          return Theme(
+                            data: Theme.of(context).copyWith(
                                 colorScheme: const ColorScheme.light(
                                   primary: AppColors.main1,
                                   onPrimary: AppColors.main2,
                                   onSurface: AppColors.main3,
                                 ),
                                 textButtonTheme: TextButtonThemeData(
-                                  style: TextButton.styleFrom(
-                                    foregroundColor: Colors.black,
-                                  )
-                                )
-                              ),
-                              child: child!,
-                            );
+                                    style: TextButton.styleFrom(
+                                  foregroundColor: Colors.black,
+                                ))),
+                            child: child!,
+                          );
                         },
                       );
                       if (pickedDate != null) {
@@ -401,10 +414,10 @@ class _EditItemFormState extends State<EditItemForm> {
                     readOnly: true,
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2101),
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2101),
                         builder: (context, child) {
                           return Theme(
                             data: Theme.of(context).copyWith(
@@ -415,10 +428,8 @@ class _EditItemFormState extends State<EditItemForm> {
                                 ),
                                 textButtonTheme: TextButtonThemeData(
                                     style: TextButton.styleFrom(
-                                      foregroundColor: Colors.black,
-                                    )
-                                )
-                            ),
+                                  foregroundColor: Colors.black,
+                                ))),
                             child: child!,
                           );
                         },
@@ -455,12 +466,17 @@ class _EditItemFormState extends State<EditItemForm> {
                         width: MediaQuery.of(context).size.height * 0.15,
                         child: ElevatedButton(
                           style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
-                            backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
-                            side: MaterialStateProperty.resolveWith((states) => const BorderSide(width: 3, color: AppColors.main3)),
+                            foregroundColor: MaterialStateProperty.resolveWith(
+                                (states) => AppColors.main3),
+                            backgroundColor: MaterialStateProperty.resolveWith(
+                                (states) => AppColors.main2),
+                            side: MaterialStateProperty.resolveWith((states) =>
+                                const BorderSide(
+                                    width: 3, color: AppColors.main3)),
                           ),
                           onPressed: () => _discardChangesDialog(false),
-                          child: const Text('CANCEL',
+                          child: const Text(
+                            'CANCEL',
                             style: AppTypography.category,
                           ),
                         ),
@@ -471,8 +487,10 @@ class _EditItemFormState extends State<EditItemForm> {
                         width: MediaQuery.of(context).size.height * 0.15,
                         child: ElevatedButton(
                           style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
-                            backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                            foregroundColor: MaterialStateProperty.resolveWith(
+                                (states) => AppColors.main2),
+                            backgroundColor: MaterialStateProperty.resolveWith(
+                                (states) => AppColors.main3),
                           ),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
@@ -488,7 +506,8 @@ class _EditItemFormState extends State<EditItemForm> {
                               Navigator.pop(context);
                             }
                           },
-                          child: const Text(' DONE ',
+                          child: const Text(
+                            ' DONE ',
                             style: AppTypography.category,
                           ),
                         ),

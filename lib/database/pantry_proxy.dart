@@ -63,7 +63,8 @@ class PantryProxy with ChangeNotifier {
     if (sortBy == "az") {
       result = all.query("favorite = true SORT(name ASC)");
     } else if (sortBy == "expdate") {
-      result = all.query("favorite = true SORT(expiryDate ASC)");
+      result =
+          all.query("favorite = true SORT(hasExpiryDate DESC, expiryDate ASC)");
     } else if (sortBy == "addedlast") {
       result = all.query("favorite = true SORT(addedDate DESC)");
     }
@@ -79,7 +80,9 @@ class PantryProxy with ChangeNotifier {
     if (sortBy == "az") {
       sorted = opened.query("location = \$0 SORT(name ASC)", ["Pantry"]);
     } else if (sortBy == "expdate") {
-      sorted = opened.query("location = \$0 SORT(expiryDate ASC)", ["Pantry"]);
+      sorted = opened.query(
+          "location = \$0 SORT(hasExpiryDate DESC, expiryDate ASC)",
+          ["Pantry"]);
     } else if (sortBy == "addedlast") {
       sorted = opened.query("location = \$0 SORT(addedDate DESC)", ["Pantry"]);
     }
@@ -109,8 +112,8 @@ class PantryProxy with ChangeNotifier {
     if (sortBy == "az") {
       result = pantryitems.query("mainCat = \$0 SORT(name ASC)", [category]);
     } else if (sortBy == "expdate") {
-      result =
-          pantryitems.query("mainCat = \$0 SORT(expiryDate ASC)", [category]);
+      result = pantryitems.query(
+          "mainCat = \$0 SORT(hasExpiryDate DESC, expiryDate ASC)", [category]);
     } else if (sortBy == "addedlast") {
       result =
           pantryitems.query("mainCat = \$0 SORT(addedDate DESC)", [category]);
