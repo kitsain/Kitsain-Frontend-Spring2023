@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 import 'package:kitsain_frontend_spring2023/database/openfoodfacts.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
 
 const List<String> categories = <String>[
   'ITEM CATEGORY',
@@ -79,16 +82,28 @@ class _EditItemFormState extends State<EditItemForm> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          content: const Text('Discard changes?'),
+          content: const Text('Discard changes?',
+            style: AppTypography.paragraph,
+          ),
           actions: <Widget>[
             TextButton(
-              child: const Text('CANCEL'),
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.cancelGrey),
+              ),
+              child: const Text('CANCEL',
+                style: AppTypography.category,
+              ),
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
             TextButton(
-              child: const Text('DISCARD'),
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),
+              ),
+              child: const Text('DISCARD',
+                style: AppTypography.category,
+              ),
               onPressed: () {
                 Navigator.pop(context);
                 _discardChangesDialog(true);
@@ -149,6 +164,8 @@ class _EditItemFormState extends State<EditItemForm> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.04,
                   child: FloatingActionButton(
+                    foregroundColor: AppColors.main2,
+                    backgroundColor: AppColors.main3,
                     child: const Icon(Icons.close),
                     onPressed: () => _discardChangesDialog(false),
                   ),
@@ -158,10 +175,10 @@ class _EditItemFormState extends State<EditItemForm> {
             SizedBox(height: MediaQuery.of(context).size.height * 0.01),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.08,
-              child: const Text(
+              child: Text(
                 'EDIT ITEM',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                style: AppTypography.heading2.copyWith(color: AppColors.main3),
               ),
             ),
             Padding(
@@ -170,6 +187,7 @@ class _EditItemFormState extends State<EditItemForm> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextFormField(
+                    style: AppTypography.smallTitle,
                     controller: _EANCodeField,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
@@ -178,8 +196,10 @@ class _EditItemFormState extends State<EditItemForm> {
                         width: 80,
                         height: 60,
                         child: ElevatedButton(
-                          style: const ButtonStyle(
-                              shape: MaterialStatePropertyAll<
+                          style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                            backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                            shape: const MaterialStatePropertyAll<
                                       RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       borderRadius:
@@ -221,10 +241,14 @@ class _EditItemFormState extends State<EditItemForm> {
                                   height: 10,
                                   child: AlertDialog(
                                     content:
-                                        const Text('Please input EAN-code'),
+                                        const Text('Please input EAN-code',
+                                          style: AppTypography.paragraph,
+                                        ),
                                     actions: <Widget>[
                                       TextButton(
-                                        child: const Text('OK'),
+                                        child: Text('OK',
+                                          style: AppTypography.category.copyWith(color: AppColors.main1),
+                                        ),
                                         onPressed: () {
                                           Navigator.pop(context);
                                         },
@@ -235,7 +259,9 @@ class _EditItemFormState extends State<EditItemForm> {
                               );
                             }
                           },
-                          child: const Text('FETCH\n ITEM'),
+                          child: const Text('FETCH\n ITEM',
+                           style: AppTypography.smallTitle,
+                          ),
                         ),
                       ),
                     ),
@@ -243,6 +269,7 @@ class _EditItemFormState extends State<EditItemForm> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Stack(children: [
                     TextFormField(
+                      style: AppTypography.smallTitle,
                       controller: _itemName,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
@@ -258,7 +285,10 @@ class _EditItemFormState extends State<EditItemForm> {
                     const Positioned(
                         right: 27,
                         top: 15,
-                        child: Icon(Icons.keyboard_alt_outlined))
+                        child: Icon(Icons.keyboard_alt_outlined,
+                          color: AppColors.main3,
+                        )
+                    )
                   ]),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Container(
@@ -268,6 +298,7 @@ class _EditItemFormState extends State<EditItemForm> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: DropdownButtonFormField<String>(
+                        style: AppTypography.smallTitle.copyWith(color: Colors.black),
                         menuMaxHeight: 200,
                         value: _category,
                         icon: const Positioned(
@@ -312,11 +343,16 @@ class _EditItemFormState extends State<EditItemForm> {
                         });
                       },
                       icon: Icon(
-                          _favorite ? Icons.favorite : Icons.favorite_border),
-                      label: const Text('Mark as favorite'),
+                          _favorite ? Icons.favorite : Icons.favorite_border,
+                        color: Colors.black,
+                      ),
+                      label: Text('Mark as favorite',
+                        style: AppTypography.paragraph.copyWith(color: Colors.black),
+                      ),
                     ),
                   ),
                   TextFormField(
+                    style: AppTypography.smallTitle,
                     controller: _openDateString,
                     decoration: const InputDecoration(
                         icon: Icon(Icons.calendar_today),
@@ -327,7 +363,25 @@ class _EditItemFormState extends State<EditItemForm> {
                           context: context,
                           initialDate: DateTime.now(),
                           firstDate: DateTime(2000),
-                          lastDate: DateTime(2101));
+                          lastDate: DateTime(2101),
+                        builder: (context, child) {
+                            return Theme(
+                              data: Theme.of(context).copyWith(
+                                colorScheme: const ColorScheme.light(
+                                  primary: AppColors.main1,
+                                  onPrimary: AppColors.main2,
+                                  onSurface: AppColors.main3,
+                                ),
+                                textButtonTheme: TextButtonThemeData(
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: Colors.black,
+                                  )
+                                )
+                              ),
+                              child: child!,
+                            );
+                        },
+                      );
                       if (pickedDate != null) {
                         String openedDate =
                             "${pickedDate.day}.${pickedDate.month}.${pickedDate.year}";
@@ -339,6 +393,7 @@ class _EditItemFormState extends State<EditItemForm> {
                     },
                   ),
                   TextFormField(
+                    style: AppTypography.smallTitle,
                     controller: _expDateString,
                     decoration: const InputDecoration(
                         icon: Icon(Icons.calendar_today),
@@ -349,7 +404,25 @@ class _EditItemFormState extends State<EditItemForm> {
                           context: context,
                           initialDate: DateTime.now(),
                           firstDate: DateTime(2000),
-                          lastDate: DateTime(2101));
+                          lastDate: DateTime(2101),
+                        builder: (context, child) {
+                          return Theme(
+                            data: Theme.of(context).copyWith(
+                                colorScheme: const ColorScheme.light(
+                                  primary: AppColors.main1,
+                                  onPrimary: AppColors.main2,
+                                  onSurface: AppColors.main3,
+                                ),
+                                textButtonTheme: TextButtonThemeData(
+                                    style: TextButton.styleFrom(
+                                      foregroundColor: Colors.black,
+                                    )
+                                )
+                            ),
+                            child: child!,
+                          );
+                        },
+                      );
                       if (pickedDate != null) {
                         String expirationDate =
                             "${pickedDate.day}.${pickedDate.month}.${pickedDate.year}";
@@ -365,6 +438,7 @@ class _EditItemFormState extends State<EditItemForm> {
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                   TextFormField(
+                    style: AppTypography.smallTitle,
                     controller: _details,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -380,8 +454,15 @@ class _EditItemFormState extends State<EditItemForm> {
                         height: MediaQuery.of(context).size.height * 0.07,
                         width: MediaQuery.of(context).size.height * 0.15,
                         child: ElevatedButton(
+                          style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                            backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                            side: MaterialStateProperty.resolveWith((states) => const BorderSide(width: 3, color: AppColors.main3)),
+                          ),
                           onPressed: () => _discardChangesDialog(false),
-                          child: const Text('CANCEL'),
+                          child: const Text('CANCEL',
+                            style: AppTypography.category,
+                          ),
                         ),
                       ),
                       SizedBox(width: MediaQuery.of(context).size.width * 0.05),
@@ -389,6 +470,10 @@ class _EditItemFormState extends State<EditItemForm> {
                         height: MediaQuery.of(context).size.height * 0.07,
                         width: MediaQuery.of(context).size.height * 0.15,
                         child: ElevatedButton(
+                          style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                            backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                          ),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               var item = Item(widget.item.id, _itemName.text,
@@ -403,7 +488,9 @@ class _EditItemFormState extends State<EditItemForm> {
                               Navigator.pop(context);
                             }
                           },
-                          child: const Text(' DONE '),
+                          child: const Text(' DONE ',
+                            style: AppTypography.category,
+                          ),
                         ),
                       ),
                     ],
