@@ -31,16 +31,25 @@ class _EditItemFormState extends State<EditShoppingListForm> {
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        content: const Text('Discard changes?'),
+        content: const Text(
+          'Discard changes?',
+          style: AppTypography.paragraph,
+        ),
         actions: <Widget>[
           TextButton(
-            child: const Text('CANCEL'),
+            child: Text(
+              'CANCEL',
+              style: AppTypography.category.copyWith(color: Colors.black38),
+            ),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
           TextButton(
-            child: const Text('DISCARD'),
+            child: Text(
+              'DISCARD',
+              style: AppTypography.category.copyWith(color: AppColors.main1),
+            ),
             onPressed: () {
               Navigator.pop(context);
               Navigator.pop(outerContext);
@@ -55,7 +64,9 @@ class _EditItemFormState extends State<EditShoppingListForm> {
   Widget build(BuildContext context) {
     _listName.text = '${_taskListController.taskLists.value?.items?[widget.listIndex].title}';
 
-    return Form(
+    return Scaffold(
+      backgroundColor: AppColors.main2,
+      body: Form(
         key: _formKey,
         child: ListView(
           padding: const EdgeInsets.all(8),
@@ -75,18 +86,20 @@ class _EditItemFormState extends State<EditShoppingListForm> {
                 )
               ],
             ),
-            SizedBox( height: MediaQuery.of(context).size.height * 0.03),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.03),
             Text(
-              'EDIT SHOPPING LIST',
+              'EDIT\nSHOPPING\nLIST',
               textAlign: TextAlign.center,
               style: AppTypography.heading2.copyWith(color: AppColors.main3),
             ),
-            SizedBox( height: MediaQuery.of(context).size.height * 0.03),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.03),
             SizedBox(
               child: TextFormField(
-              style: AppTypography.smallTitle,
+                style: AppTypography.paragraph,
                 controller: _listName,
                 decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   labelText: 'LIST NAME',
                 ),
@@ -98,7 +111,7 @@ class _EditItemFormState extends State<EditShoppingListForm> {
                 },
               ),
             ),
-            SizedBox( height: MediaQuery.of(context).size.height * 0.375),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.275),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -106,9 +119,12 @@ class _EditItemFormState extends State<EditShoppingListForm> {
                   height: MediaQuery.of(context).size.height * 0.07,
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
-                      backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.white),
-                      side: MaterialStateProperty.resolveWith((states) => const BorderSide(width: 3, color: AppColors.main3)),
+                      foregroundColor: MaterialStateProperty.resolveWith(
+                          (states) => AppColors.main3),
+                      backgroundColor: MaterialStateProperty.resolveWith(
+                          (states) => Colors.white),
+                      side: MaterialStateProperty.resolveWith((states) =>
+                          const BorderSide(width: 3, color: AppColors.main3)),
                     ),
                     onPressed: () => _discardChangesDialog(),
                     child: Text(
@@ -122,11 +138,13 @@ class _EditItemFormState extends State<EditShoppingListForm> {
                   height: MediaQuery.of(context).size.height * 0.07,
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
-                      backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                      foregroundColor: MaterialStateProperty.resolveWith(
+                          (states) => Colors.white),
+                      backgroundColor: MaterialStateProperty.resolveWith(
+                          (states) => AppColors.main3),
                     ),
                     onPressed: () {
-                      if(_formKey.currentState!.validate()) {
+                      if (_formKey.currentState!.validate()) {
                         int index = widget.listIndex;
                         _taskListController.editTaskLists(
                             _listName.text,
@@ -144,7 +162,8 @@ class _EditItemFormState extends State<EditShoppingListForm> {
               ],
             ),
           ],
-        )
+        ),
+      ),
     );
   }
 }

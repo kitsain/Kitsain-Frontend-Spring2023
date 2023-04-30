@@ -165,6 +165,7 @@ class _EditItemFormState extends State<EditItemForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.main2,
       body: Form(
         key: _formKey,
         child: ListView(
@@ -198,9 +199,11 @@ class _EditItemFormState extends State<EditItemForm> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextFormField(
-                    style: AppTypography.smallTitle,
+                    style: AppTypography.paragraph,
                     controller: _EANCodeField,
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
                       border: const OutlineInputBorder(),
                       labelText: 'EAN CODE',
                       suffixIcon: SizedBox(
@@ -280,9 +283,11 @@ class _EditItemFormState extends State<EditItemForm> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Stack(children: [
                     TextFormField(
-                      style: AppTypography.smallTitle,
+                      style: AppTypography.paragraph,
                       controller: _itemName,
                       decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
                         border: OutlineInputBorder(),
                         labelText: 'ITEM NAME',
                       ),
@@ -304,8 +309,10 @@ class _EditItemFormState extends State<EditItemForm> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Container(
                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(5)),
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: DropdownButtonFormField<String>(
@@ -446,9 +453,11 @@ class _EditItemFormState extends State<EditItemForm> {
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                   TextFormField(
-                    style: AppTypography.smallTitle,
+                    style: AppTypography.paragraph,
                     controller: _details,
                     decoration: const InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
                       border: OutlineInputBorder(),
                       hintText: 'Details',
                     ),
@@ -479,7 +488,7 @@ class _EditItemFormState extends State<EditItemForm> {
                         width: MediaQuery.of(context).size.height * 0.15,
                         child: ElevatedButton(
                           style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                            foregroundColor: MaterialStateProperty.resolveWith((states) => Colors.white),
                             backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
                           ),
                           onPressed: () {

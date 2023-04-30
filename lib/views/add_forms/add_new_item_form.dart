@@ -67,16 +67,25 @@ class _NewItemFormState extends State<NewItemForm> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          content: const Text('Discard changes?'),
+          content: const Text(
+            'Discard changes?',
+            style: AppTypography.paragraph,
+          ),
           actions: <Widget>[
             TextButton(
-              child: const Text('CANCEL'),
+              child: Text(
+                'CANCEL',
+                style: AppTypography.category.copyWith(color: Colors.black38),
+              ),
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
             TextButton(
-              child: const Text('DISCARD'),
+              child: Text(
+                'DISCARD',
+                style: AppTypography.category.copyWith(color: AppColors.main1),
+              ),
               onPressed: () {
                 Navigator.pop(context);
                 _discardChangesDialog(true);
@@ -129,14 +138,15 @@ class _NewItemFormState extends State<NewItemForm> {
                     child: ElevatedButton.icon(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                        foregroundColor: MaterialStateProperty.resolveWith((states) => Colors.white)
                       ),
                       icon: const Icon(
                         Icons.add_a_photo_rounded,
-                        color: AppColors.main2,
+                        color: Colors.white,
                         size: 40,
                       ),
                       label: Text('SCAN EAN',
-                          style: AppTypography.category.copyWith(color: AppColors.main2)
+                          style: AppTypography.category.copyWith(color: Colors.white)
                       ),
                       onPressed: () async {
                         var res = await Navigator.push(
@@ -173,9 +183,11 @@ class _NewItemFormState extends State<NewItemForm> {
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                   TextFormField(
-                    style: AppTypography.smallTitle,
+                    style: AppTypography.paragraph,
                     controller: _EANCodeField,
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
                       border: const OutlineInputBorder(),
                       labelText: 'EAN CODE',
                       suffixIcon: SizedBox(
@@ -256,9 +268,11 @@ class _NewItemFormState extends State<NewItemForm> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Stack(children: [
                     TextFormField(
-                      style: AppTypography.smallTitle,
+                      style: AppTypography.paragraph,
                       controller: _itemName,
                       decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
                         border: OutlineInputBorder(),
                         labelText: 'ITEM NAME',
                       ),
@@ -280,6 +294,7 @@ class _NewItemFormState extends State<NewItemForm> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Container(
                     decoration: BoxDecoration(
+                      color: Colors.white,
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(5),
                     ),
@@ -421,8 +436,11 @@ class _NewItemFormState extends State<NewItemForm> {
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                   TextFormField(
+                    style: AppTypography.paragraph,
                     controller: _details,
                     decoration: const InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
                       border: OutlineInputBorder(),
                       hintText: 'Details',
                     ),
@@ -454,7 +472,7 @@ class _NewItemFormState extends State<NewItemForm> {
                         child: ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
-                            foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                            foregroundColor: MaterialStateProperty.resolveWith((states) => Colors.white),
                           ),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {

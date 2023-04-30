@@ -209,11 +209,13 @@ class _UserShoppingListState extends State<UserShoppingList> {
               children: [
                 TextButton(
                     onPressed: () => _deselectAll(),
-                    child: Text('DESELECT ALL'),
+                    child: Text(
+                      'DESELECT ALL',
+                      style: AppTypography.smallTitle.copyWith(color: Colors.black),
+                    ),
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.all(4),
                     ),
-                    //style: AppTypography.smallTitle.copyWith(color: Colors.black),
                 ),
               ],
             ),

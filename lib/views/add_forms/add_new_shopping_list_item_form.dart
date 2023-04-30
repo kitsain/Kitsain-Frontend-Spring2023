@@ -71,6 +71,7 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.main2,
       body: WillPopScope(
         onWillPop: () async {
           return _discardChangesDialog();
@@ -104,10 +105,12 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                 Stack(
                     children: [
                       TextFormField(
-                        style: AppTypography.smallTitle,
+                        style: AppTypography.paragraph,
                         controller: _itemName,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
+                          filled: true,
+                          fillColor: Colors.white,
                           labelText: 'ITEM NAME',
                         ),
                         validator: (value) {
@@ -128,9 +131,11 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                 ),
                 SizedBox( height: MediaQuery.of(context).size.height * 0.025),
                 TextFormField(
-                  style: AppTypography.smallTitle,
+                  style: AppTypography.paragraph,
                   controller: _details,
                   decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
                     border: OutlineInputBorder(),
                     hintText: 'Details',
                   ),
@@ -159,7 +164,7 @@ class _NewItemFormState extends State<NewShoppingListItemForm> {
                       height: MediaQuery.of(context).size.height * 0.07,
                       child: ElevatedButton(
                         style: ButtonStyle(
-                          foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                          foregroundColor: MaterialStateProperty.resolveWith((states) => Colors.white),
                           backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
                         ),
                         onPressed: () {

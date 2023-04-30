@@ -59,7 +59,9 @@ class _NewItemFormState extends State<NewShoppingListForm> {
       onWillPop: () async {
         return _discardChangesDialog();
       },
-      child: Form(
+      child: Scaffold(
+        backgroundColor: AppColors.main2,
+        body: Form(
           key: _formKey,
           child: ListView(
             padding: const EdgeInsets.all(8),
@@ -79,39 +81,39 @@ class _NewItemFormState extends State<NewShoppingListForm> {
                   )
                 ],
               ),
-              SizedBox( height: MediaQuery.of(context).size.height * 0.03),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               Text(
                 'NEW\nSHOPPING\nLIST',
                 textAlign: TextAlign.center,
                 style: AppTypography.heading2.copyWith(color: AppColors.main3),
               ),
-              SizedBox( height: MediaQuery.of(context).size.height * 0.03),
-              Stack(
-                  children: [
-                    TextFormField(
-                      style: AppTypography.smallTitle,
-                      controller: _listName,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'LIST NAME',
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter list name";
-                        }
-                        return null;
-                      },
-                    ),
-                    Positioned(
-                        right: 27,
-                        top: 15,
-                        child: Icon(Icons.keyboard_alt_outlined,
-                          color: AppColors.main3,
-                        )
-                    )
-                  ]
-              ),
-              SizedBox( height: MediaQuery.of(context).size.height * 0.27),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+              Stack(children: [
+                TextFormField(
+                  style: AppTypography.paragraph,
+                  controller: _listName,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(),
+                    labelText: 'LIST NAME',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter list name";
+                    }
+                    return null;
+                  },
+                ),
+                Positioned(
+                    right: 27,
+                    top: 15,
+                    child: Icon(
+                      Icons.keyboard_alt_outlined,
+                      color: AppColors.main3,
+                    ))
+              ]),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.27),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -119,37 +121,48 @@ class _NewItemFormState extends State<NewShoppingListForm> {
                     height: MediaQuery.of(context).size.height * 0.07,
                     child: ElevatedButton(
                       style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
-                        backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.white),
-                        side: MaterialStateProperty.resolveWith((states) => const BorderSide(width: 3, color: AppColors.main3)),
+                        foregroundColor: MaterialStateProperty.resolveWith(
+                            (states) => AppColors.main3),
+                        backgroundColor: MaterialStateProperty.resolveWith(
+                            (states) => Colors.white),
+                        side: MaterialStateProperty.resolveWith((states) =>
+                            const BorderSide(width: 3, color: AppColors.main3)),
                       ),
                       onPressed: () => _discardChangesDialog(),
-                      child: Text('CANCEL'),
+                      child: Text(
+                        'CANCEL',
+                        style: AppTypography.category,
+                      ),
                     ),
                   ),
-                  SizedBox( width: MediaQuery.of(context).size.width * 0.05),
+                  SizedBox(width: MediaQuery.of(context).size.width * 0.05),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.07,
                     child: ElevatedButton(
                       style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
-                        backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                        foregroundColor: MaterialStateProperty.resolveWith(
+                            (states) => Colors.white),
+                        backgroundColor: MaterialStateProperty.resolveWith(
+                            (states) => AppColors.main3),
                       ),
                       onPressed: () {
-                        if(_formKey.currentState!.validate()) {
+                        if (_formKey.currentState!.validate()) {
                           _taskListController.createTaskLists(_listName.text);
                           Navigator.pop(context);
                         }
                       },
-                      child: Text('  DONE  '),
+                      child: Text(
+                        '  DONE  ',
+                        style: AppTypography.category,
+                      ),
                     ),
                   ),
                 ],
               ),
             ],
-          )
+          ),
+        ),
       ),
     );
   }
 }
-
