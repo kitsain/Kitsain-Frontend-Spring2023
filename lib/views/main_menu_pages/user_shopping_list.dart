@@ -265,6 +265,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
                           const EdgeInsets.all(10),
                       ),
                       foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),
+                      backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.white),
                       side: MaterialStateProperty.resolveWith((states) => const BorderSide(
                           width: 3, 
                           color: AppColors.main1)),

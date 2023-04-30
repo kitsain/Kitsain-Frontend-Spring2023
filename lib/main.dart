@@ -60,96 +60,120 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  int _navigationMenuIndex = 0;
-  final _pages = [
-    PantryView(),
-    ShoppingListNavigation(),
-    UsedAndExpired(),
-  ];
-
-  void _navMenuItemSelected(int index) {
-    setState(
-      () {
-        _navigationMenuIndex = index;
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    double navBarHeight = 75;
+    double paddingBoxHeight = 10;
+
     return WillPopScope(
       onWillPop: () async {
         return false;
       },
       child: Material(
-        child: Scaffold(
-          backgroundColor: AppColors.main2,
-          body: Center(
-            child: _pages[_navigationMenuIndex],
-          ), // This trailing comma makes auto-formatting nicer for build methods.
-          bottomNavigationBar: NavigationBar(
-            //backgroundColor: AppColors.main1,
-            selectedIndex: _navigationMenuIndex,
-            onDestinationSelected: (index) => _navMenuItemSelected(index),
-            destinations: [
-              DragTarget(
-                builder: (
-                  BuildContext context,
-                  List<dynamic> accepted,
-                  List<dynamic> rejected,
-                ) {
-                  return NavigationDestination(
-                      icon: Icon(
-                        Icons.house,
-                        //color: AppColors.main2,
-                      ),
-                      label: 'MY PANTRY');
-                  //label: AppLocalizations.of(context)!.pantryScreen);
-                },
-                onMove: (details) {
-                  _navigationMenuIndex = 0;
-                  _navMenuItemSelected(0);
-                },
-              ),
-              DragTarget(
-                builder: (
-                  BuildContext context,
-                  List<dynamic> accepted,
-                  List<dynamic> rejected,
-                ) {
-                  return NavigationDestination(
-                      icon: Icon(
-                        Icons.shopping_cart,
-                        //color: AppColors.main2,
-                      ),
-                      label: 'SHOPPING LISTS');
-                  //label: AppLocalizations.of(context)!.shoppingListsScreen);
-                },
-                onMove: (details) {
-                  _navigationMenuIndex = 1;
-                  _navMenuItemSelected(1);
-                },
-              ),
-              DragTarget(
-                builder: (
-                  BuildContext context,
-                  List<dynamic> accepted,
-                  List<dynamic> rejected,
-                ) {
-                  return NavigationDestination(
-                      icon: Icon(
-                        Icons.recycling,
-                        //color: AppColors.main2,
-                      ),
-                      label: 'PANTRY HISTORY');
-                  //label: AppLocalizations.of(context)!.historyScreen);
-                },
-                onMove: (details) {
-                  _navigationMenuIndex = 2;
-                  _navMenuItemSelected(2);
-                },
-              ),
-            ],
+        child: DefaultTabController(
+          animationDuration: Duration.zero,
+          length: 3,
+          child: Builder(
+            builder: (BuildContext context) {
+              return Scaffold(
+                backgroundColor: AppColors.main1,
+                body: const TabBarView(
+                  physics: NeverScrollableScrollPhysics(),
+                  children: [
+                    PantryView(),
+                    ShoppingListNavigation(),
+                    UsedAndExpired(),
+                  ],
+                ),
+                bottomNavigationBar: TabBar(
+                  splashFactory: NoSplash.splashFactory,
+                  overlayColor: MaterialStateProperty.all(Colors.transparent),
+                  indicatorColor: AppColors.main2,
+                  indicatorWeight: 4,
+                  unselectedLabelColor: AppColors.main2,
+                  tabs: [
+                    DragTarget(
+                      builder: (
+                        BuildContext context,
+                        List<dynamic> accepted,
+                        List<dynamic> rejected,
+                      ) {
+                        return SizedBox(
+                          height: navBarHeight,
+                          child: Column(
+                            children: [
+                              SizedBox(height: paddingBoxHeight),
+                              const Icon(
+                                Icons.house,
+                              ),
+                              const Text(
+                                'MY\nPANTRY',
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      onMove: (details) {
+                        DefaultTabController.of(context).animateTo(0);
+                      },
+                    ),
+                    DragTarget(
+                      builder: (
+                        BuildContext context,
+                        List<dynamic> accepted,
+                        List<dynamic> rejected,
+                      ) {
+                        return SizedBox(
+                          height: navBarHeight,
+                          child: Column(
+                            children: [
+                              SizedBox(height: paddingBoxHeight),
+                              const Icon(
+                                Icons.shopping_cart,
+                              ),
+                              const Text(
+                                'SHOPPING\nLISTS',
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      onMove: (details) {
+                        DefaultTabController.of(context).animateTo(1);
+                      },
+                    ),
+                    DragTarget(
+                      builder: (
+                        BuildContext context,
+                        List<dynamic> accepted,
+                        List<dynamic> rejected,
+                      ) {
+                        return Container(
+                          height: navBarHeight,
+                          child: Column(
+                            children: [
+                              SizedBox(height: paddingBoxHeight),
+                              const Icon(
+                                Icons.pie_chart,
+                              ),
+                              const Text(
+                                'PANTRY\nHISTORY',
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      onMove: (details) {
+                        DefaultTabController.of(context).animateTo(2);
+                      },
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),
