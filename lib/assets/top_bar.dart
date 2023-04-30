@@ -39,22 +39,33 @@ class _TopBarState extends State<TopBar> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Signed in as'),
+          title: Text(
+            'Signed in as',
+            style: AppTypography.paragraph.copyWith(color: AppColors.main1),
+          ),
           content: Text(
             '${_loginController.googleUser.value?.email}',
             textAlign: TextAlign.center,
+            style: AppTypography.paragraph,
           ),
           actions: <Widget>[
             TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('CANCEL')),
+                child: Text(
+                  'CANCEL',
+                  style: AppTypography.category.copyWith(color: Colors.black38),
+                ),
+            ),
             TextButton(
               onPressed: () {
                 _signOut();
               },
-              child: Text('LOG OUT'),
+              child: Text(
+                'LOG OUT',
+                style: AppTypography.category.copyWith(color: AppColors.main1),
+              ),
             ),
           ],
         );

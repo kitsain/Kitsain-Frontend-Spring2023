@@ -34,16 +34,25 @@ class _EditItemFormState extends State<EditShoppingListItemForm> {
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        content: const Text('Discard changes?'),
+        content: const Text(
+          'Discard changes?',
+          style: AppTypography.paragraph,
+        ),
         actions: <Widget>[
           TextButton(
-            child: const Text('CANCEL'),
+            child: Text(
+              'CANCEL',
+              style: AppTypography.category.copyWith(color: Colors.black38),
+            ),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
           TextButton(
-            child: const Text('DISCARD'),
+            child: Text(
+              'DISCARD',
+              style: AppTypography.category.copyWith(color: AppColors.main1),
+            ),
             onPressed: () {
               Navigator.pop(context);
               Navigator.pop(outerContext);
@@ -111,12 +120,6 @@ class _EditItemFormState extends State<EditShoppingListItemForm> {
                   border: OutlineInputBorder(),
                   labelText: 'ITEM DESCRIPTION',
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter item name";
-                  }
-                  return null;
-                },
               ),
             ),
             SizedBox( height: MediaQuery.of(context).size.height * 0.275),
