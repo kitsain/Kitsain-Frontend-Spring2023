@@ -41,7 +41,7 @@ class _TopBarState extends State<TopBar> {
     return PreferredSize(
       preferredSize: widget.preferredSize,
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.2,
+        height: (MediaQuery.of(context).size.height * 0.15) + MediaQuery.of(context).viewPadding.top,
         padding: const EdgeInsets.only(left: 15, top: 0, bottom: 1, right: 15),
         decoration: BoxDecoration(
           image: DecorationImage(
