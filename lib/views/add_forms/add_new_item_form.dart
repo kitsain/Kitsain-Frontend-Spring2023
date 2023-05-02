@@ -24,7 +24,6 @@ const List<String> categories = <String>[
   'Other'
 ];
 
-
 class NewItemForm extends StatefulWidget {
   const NewItemForm({super.key});
 
@@ -137,17 +136,18 @@ class _NewItemFormState extends State<NewItemForm> {
                     height: MediaQuery.of(context).size.height * 0.07,
                     child: ElevatedButton.icon(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
-                        foregroundColor: MaterialStateProperty.resolveWith((states) => Colors.white)
-                      ),
+                          backgroundColor: MaterialStateProperty.resolveWith(
+                              (states) => AppColors.main3),
+                          foregroundColor: MaterialStateProperty.resolveWith(
+                              (states) => Colors.white)),
                       icon: const Icon(
                         Icons.add_a_photo_rounded,
                         color: Colors.white,
                         size: 40,
                       ),
                       label: Text('SCAN EAN',
-                          style: AppTypography.category.copyWith(color: Colors.white)
-                      ),
+                          style: AppTypography.category
+                              .copyWith(color: Colors.white)),
                       onPressed: () async {
                         var res = await Navigator.push(
                           context,
@@ -157,9 +157,11 @@ class _NewItemFormState extends State<NewItemForm> {
                           ),
                         );
                         if (res is String && res != '-1') {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Fetching item...')));
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text('Fetching item...'),
+                            duration: Duration(seconds: 2),
+                          ));
                           try {
                             _EANCodeField.text = res;
                             primaryFocus!.unfocus(disposition: _disposition);
@@ -167,15 +169,21 @@ class _NewItemFormState extends State<NewItemForm> {
                             _itemName.text = _offData.productName.toString();
                           } catch (e) {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text(
-                                        'Item not found. Please enter item information.')));
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text(
+                                  'Item not found. Please enter item information.'),
+                              duration: Duration(seconds: 2),
+                            ));
                           }
                           if (_itemName.text.isNotEmpty) {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                             ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Item found!')));
+                              const SnackBar(
+                                content: Text('Item found!'),
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
                           }
                         }
                       },
@@ -195,8 +203,10 @@ class _NewItemFormState extends State<NewItemForm> {
                         height: 60,
                         child: ElevatedButton(
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
-                            foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
+                            backgroundColor: MaterialStateProperty.resolveWith(
+                                (states) => AppColors.main3),
+                            foregroundColor: MaterialStateProperty.resolveWith(
+                                (states) => AppColors.main2),
                             shape: const MaterialStatePropertyAll<
                                 RoundedRectangleBorder>(
                               RoundedRectangleBorder(
@@ -209,9 +219,11 @@ class _NewItemFormState extends State<NewItemForm> {
                           ),
                           onPressed: () async {
                             if (_EANCodeField.text.isNotEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text('Fetching item data...')));
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text('Fetching item data...'),
+                                duration: Duration(seconds: 2),
+                              ));
                               try {
                                 primaryFocus!
                                     .unfocus(disposition: _disposition);
@@ -226,6 +238,7 @@ class _NewItemFormState extends State<NewItemForm> {
                                   const SnackBar(
                                     content:
                                         Text('Item not found. Input manually.'),
+                                    duration: Duration(seconds: 2),
                                   ),
                                 );
                               }
@@ -235,6 +248,7 @@ class _NewItemFormState extends State<NewItemForm> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Item found!'),
+                                    duration: Duration(seconds: 2),
                                   ),
                                 );
                               }
@@ -286,10 +300,10 @@ class _NewItemFormState extends State<NewItemForm> {
                     const Positioned(
                         right: 27,
                         top: 15,
-                        child: Icon(Icons.keyboard_alt_outlined,
+                        child: Icon(
+                          Icons.keyboard_alt_outlined,
                           color: AppColors.main3,
-                        )
-                    )
+                        ))
                   ]),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Container(
@@ -301,7 +315,8 @@ class _NewItemFormState extends State<NewItemForm> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: DropdownButtonFormField<String>(
-                        style: AppTypography.smallTitle.copyWith(color: Colors.black),
+                        style: AppTypography.smallTitle
+                            .copyWith(color: Colors.black),
                         menuMaxHeight: 200,
                         value: _category,
                         icon: Icon(Icons.arrow_drop_down),
@@ -311,8 +326,9 @@ class _NewItemFormState extends State<NewItemForm> {
                           setState(
                             () {
                               _category = value!;
-                              _catInt = Categories.categoriesByIndex.keys.firstWhere(
-                                      (key) => categories[key] == value) +
+                              _catInt = Categories.categoriesByIndex.keys
+                                      .firstWhere(
+                                          (key) => categories[key] == value) +
                                   1;
                             },
                           );
@@ -343,16 +359,19 @@ class _NewItemFormState extends State<NewItemForm> {
                         });
                       },
                       icon: Icon(
-                          _favorite ? Icons.favorite : Icons.favorite_border,
+                        _favorite ? Icons.favorite : Icons.favorite_border,
                         color: Colors.black,
                       ),
-                      label: Text('Mark as favorite',
-                        style: AppTypography.paragraph.copyWith(color: Colors.black),
+                      label: Text(
+                        'Mark as favorite',
+                        style: AppTypography.paragraph
+                            .copyWith(color: Colors.black),
                       ),
                     ),
                   ),
                   TextFormField(
-                    style: AppTypography.smallTitle.copyWith(color: Colors.black),
+                    style:
+                        AppTypography.smallTitle.copyWith(color: Colors.black),
                     controller: _openDateString,
                     decoration: const InputDecoration(
                         icon: Icon(Icons.calendar_today),
@@ -373,10 +392,9 @@ class _NewItemFormState extends State<NewItemForm> {
                                 onSurface: AppColors.main3,
                               ),
                               textButtonTheme: TextButtonThemeData(
-                                style: TextButton.styleFrom(
-                                  foregroundColor: Colors.black,
-                                )
-                              ),
+                                  style: TextButton.styleFrom(
+                                foregroundColor: Colors.black,
+                              )),
                             ),
                             child: child!,
                           );
@@ -393,7 +411,8 @@ class _NewItemFormState extends State<NewItemForm> {
                     },
                   ),
                   TextFormField(
-                    style: AppTypography.smallTitle.copyWith(color: Colors.black),
+                    style:
+                        AppTypography.smallTitle.copyWith(color: Colors.black),
                     controller: _expDateString,
                     decoration: const InputDecoration(
                         icon: Icon(Icons.calendar_today),
@@ -406,22 +425,21 @@ class _NewItemFormState extends State<NewItemForm> {
                         firstDate: DateTime(2000),
                         lastDate: DateTime(2101),
                         builder: (context, child) {
-                        return Theme(
-                          data: Theme.of(context).copyWith(
-                            colorScheme: const ColorScheme.light(
-                              primary: AppColors.main1,
-                              onPrimary: AppColors.main2,
-                              onSurface: AppColors.main3,
-                            ),
-                            textButtonTheme: TextButtonThemeData(
-                              style: TextButton.styleFrom(
+                          return Theme(
+                            data: Theme.of(context).copyWith(
+                              colorScheme: const ColorScheme.light(
+                                primary: AppColors.main1,
+                                onPrimary: AppColors.main2,
+                                onSurface: AppColors.main3,
+                              ),
+                              textButtonTheme: TextButtonThemeData(
+                                  style: TextButton.styleFrom(
                                 foregroundColor: Colors.black,
-                              )
+                              )),
                             ),
-                          ),
-                          child: child!,
-                        );
-                      },
+                            child: child!,
+                          );
+                        },
                       );
                       if (pickedDate != null) {
                         String expirationDate =
@@ -454,12 +472,17 @@ class _NewItemFormState extends State<NewItemForm> {
                         height: MediaQuery.of(context).size.height * 0.07,
                         child: ElevatedButton(
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.white),
-                            foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
-                            side: MaterialStateProperty.resolveWith((states) => const BorderSide(width: 3, color: AppColors.main3)),
+                            backgroundColor: MaterialStateProperty.resolveWith(
+                                (states) => Colors.white),
+                            foregroundColor: MaterialStateProperty.resolveWith(
+                                (states) => AppColors.main3),
+                            side: MaterialStateProperty.resolveWith((states) =>
+                                const BorderSide(
+                                    width: 3, color: AppColors.main3)),
                           ),
                           onPressed: () => _discardChangesDialog(false),
-                          child: const Text('CANCEL',
+                          child: const Text(
+                            'CANCEL',
                             style: AppTypography.category,
                           ),
                         ),
@@ -471,8 +494,10 @@ class _NewItemFormState extends State<NewItemForm> {
                         height: MediaQuery.of(context).size.height * 0.07,
                         child: ElevatedButton(
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
-                            foregroundColor: MaterialStateProperty.resolveWith((states) => Colors.white),
+                            backgroundColor: MaterialStateProperty.resolveWith(
+                                (states) => AppColors.main3),
+                            foregroundColor: MaterialStateProperty.resolveWith(
+                                (states) => Colors.white),
                           ),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
@@ -493,7 +518,8 @@ class _NewItemFormState extends State<NewItemForm> {
                               Navigator.pop(context);
                             }
                           },
-                          child: const Text('ADD ITEM',
+                          child: const Text(
+                            'ADD ITEM',
                             style: AppTypography.category,
                           ),
                         ),

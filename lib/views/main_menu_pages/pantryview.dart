@@ -97,7 +97,11 @@ class _PantryViewState extends State<PantryView> {
       () {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(data.name, style: AppTypography.smallTitle,),
+            content: Text(
+              data.name,
+              style: AppTypography.smallTitle,
+            ),
+            duration: Duration(seconds: 2),
           ),
         );
       },
@@ -173,19 +177,31 @@ class _PantryViewState extends State<PantryView> {
                       return const [
                         PopupMenuItem(
                           value: "all",
-                          child: Text("ALL", style: AppTypography.smallTitle,),
+                          child: Text(
+                            "ALL",
+                            style: AppTypography.smallTitle,
+                          ),
                         ),
                         PopupMenuItem(
                           value: "favorites",
-                          child: Text("FAVORITES", style: AppTypography.smallTitle,),
+                          child: Text(
+                            "FAVORITES",
+                            style: AppTypography.smallTitle,
+                          ),
                         ),
                         PopupMenuItem(
                           value: "opened",
-                          child: Text("OPENED", style: AppTypography.smallTitle,),
+                          child: Text(
+                            "OPENED",
+                            style: AppTypography.smallTitle,
+                          ),
                         ),
                         PopupMenuItem(
                           value: "bycat",
-                          child: Text("BY CATEGORY", style: AppTypography.smallTitle,),
+                          child: Text(
+                            "BY CATEGORY",
+                            style: AppTypography.smallTitle,
+                          ),
                         ),
                       ];
                     },
@@ -210,15 +226,24 @@ class _PantryViewState extends State<PantryView> {
                       return const [
                         PopupMenuItem(
                           value: "az",
-                          child: Text("A - Z", style: AppTypography.smallTitle,),
+                          child: Text(
+                            "A - Z",
+                            style: AppTypography.smallTitle,
+                          ),
                         ),
                         PopupMenuItem(
                           value: "expdate",
-                          child: Text("Expiration date", style: AppTypography.smallTitle,),
+                          child: Text(
+                            "Expiration date",
+                            style: AppTypography.smallTitle,
+                          ),
                         ),
                         PopupMenuItem(
                           value: "addedlast",
-                          child: Text("Added last", style: AppTypography.smallTitle,),
+                          child: Text(
+                            "Added last",
+                            style: AppTypography.smallTitle,
+                          ),
                         ),
                       ];
                     },
@@ -239,7 +264,10 @@ class _PantryViewState extends State<PantryView> {
 
                   if (results.isEmpty) {
                     return const Center(
-                      child: Text("No items found", style: AppTypography.smallTitle,),
+                      child: Text(
+                        "No items found",
+                        style: AppTypography.smallTitle,
+                      ),
                     );
                   } else {
                     if (selectedView == "all") {
@@ -310,7 +338,8 @@ class _PantryViewState extends State<PantryView> {
                                     padding:
                                         const EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     child: Text(
-                                      Categories.categoriesByIndex[cat]!.toUpperCase(),
+                                      Categories.categoriesByIndex[cat]!
+                                          .toUpperCase(),
                                       style: AppTypography.heading3,
                                     ),
                                   ),

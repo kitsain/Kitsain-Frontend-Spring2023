@@ -36,8 +36,10 @@ class _UserShoppingListState extends State<UserShoppingList> {
 
     setState(
       () {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("$data")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("$data"),
+          duration: Duration(seconds: 2),
+        ));
       },
     );
   }
@@ -183,7 +185,11 @@ class _UserShoppingListState extends State<UserShoppingList> {
                       List<dynamic> accepted,
                       List<dynamic> rejected,
                     ) {
-                      return Text('SHOPPING LISTS', style: AppTypography.category.copyWith(color: Colors.black),);
+                      return Text(
+                        'SHOPPING LISTS',
+                        style: AppTypography.category
+                            .copyWith(color: Colors.black),
+                      );
                     },
                     onMove: (details) {
                       Navigator.pop(context);
@@ -198,24 +204,22 @@ class _UserShoppingListState extends State<UserShoppingList> {
                   // TODO: e.g., fontsize 16 => icon size 16
                 ),
                 const SizedBox(width: 2),
-                Text(
-                    widget.taskListName,
-                    style: AppTypography.paragraph
-                ),
+                Text(widget.taskListName, style: AppTypography.paragraph),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                    onPressed: () => _deselectAll(),
-                    child: Text(
-                      'DESELECT ALL',
-                      style: AppTypography.smallTitle.copyWith(color: Colors.black),
-                    ),
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.all(4),
-                    ),
+                  onPressed: () => _deselectAll(),
+                  child: Text(
+                    'DESELECT ALL',
+                    style:
+                        AppTypography.smallTitle.copyWith(color: Colors.black),
+                  ),
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.all(4),
+                  ),
                 ),
               ],
             ),
@@ -264,13 +268,14 @@ class _UserShoppingListState extends State<UserShoppingList> {
                   child: OutlinedButton(
                     style: ButtonStyle(
                       padding: MaterialStateProperty.all<EdgeInsets>(
-                          const EdgeInsets.all(10),
+                        const EdgeInsets.all(10),
                       ),
-                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),
-                      backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.white),
-                      side: MaterialStateProperty.resolveWith((states) => const BorderSide(
-                          width: 3, 
-                          color: AppColors.main1)),
+                      foregroundColor: MaterialStateProperty.resolveWith(
+                          (states) => AppColors.main1),
+                      backgroundColor: MaterialStateProperty.resolveWith(
+                          (states) => Colors.white),
+                      side: MaterialStateProperty.resolveWith((states) =>
+                          const BorderSide(width: 3, color: AppColors.main1)),
                     ),
                     onPressed: _removeSelectedItems,
                     child: Text(
@@ -286,10 +291,12 @@ class _UserShoppingListState extends State<UserShoppingList> {
                   child: OutlinedButton(
                     style: ButtonStyle(
                       padding: MaterialStateProperty.all<EdgeInsets>(
-                          const EdgeInsets.all(10),
+                        const EdgeInsets.all(10),
                       ),
-                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
-                      backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),
+                      foregroundColor: MaterialStateProperty.resolveWith(
+                          (states) => AppColors.main2),
+                      backgroundColor: MaterialStateProperty.resolveWith(
+                          (states) => AppColors.main1),
                     ),
                     onPressed: _moveSelectedItemsToPantry,
                     child: Text(

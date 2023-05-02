@@ -87,8 +87,10 @@ class _ShoppingListsState extends State<ShoppingLists> {
 
     setState(
       () {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("$title added")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("$title added"),
+          duration: Duration(seconds: 2),
+        ));
       },
     );
 
@@ -181,9 +183,10 @@ class _ShoppingListsState extends State<ShoppingLists> {
                               title: Row(
                                 children: [
                                   Text(
-                                      '${taskListController.taskLists.value?.items?[index].title}',
-                                      style: TextStyle(fontWeight: FontWeight.bold),
-                                      //style: AppTypography.paragraph.copyWith(fontWeight: FontWeight.bold),
+                                    '${taskListController.taskLists.value?.items?[index].title}',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                    //style: AppTypography.paragraph.copyWith(fontWeight: FontWeight.bold),
                                   ),
                                   const Spacer(),
                                   IconButton(
