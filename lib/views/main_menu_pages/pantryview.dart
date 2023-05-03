@@ -145,8 +145,7 @@ class _PantryViewState extends State<PantryView> {
     return Scaffold(
       backgroundColor: AppColors.main2,
       appBar: TopBar(
-        title: 'MY PANTRY',
-        //title: AppLocalizations.of(context)!.pantryScreen,
+        title: AppLocalizations.of(context)!.pantryScreen,
         addFunction: _addNewItem,
         helpFunction: _help,
         backgroundImageName: 'assets/images/pantry_banner_B1.jpg',

@@ -160,8 +160,7 @@ class _UserShoppingListState extends State<UserShoppingList> {
     return Scaffold(
       backgroundColor: AppColors.main2,
       appBar: TopBar(
-        title: 'SHOPPING \u200e\n\u200e LISTS',
-        //title: AppLocalizations.of(context)!.shoppingListsScreenTopBarTitle,
+        title: AppLocalizations.of(context)!.shoppingListsScreenTopBarTitle,
         addFunction: _addNewItem,
         addIcon: Icons.post_add,
         helpFunction: _help,

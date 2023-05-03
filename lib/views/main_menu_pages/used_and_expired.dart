@@ -123,8 +123,7 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
     return Scaffold(
       backgroundColor: AppColors.main2,
       appBar: TopBar(
-        title: 'PANTRY HISTORY',
-        // title: AppLocalizations.of(context)!.historyScreen,
+        title: AppLocalizations.of(context)!.historyScreenTopBarTitle,
         helpFunction: _help,
         backgroundImageName: 'assets/images/ue_banner_darker_B2.png',
         titleBackgroundColor: AppColors.titleBackgroundGreen,
@@ -282,7 +281,7 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                             Align(
                               alignment: Alignment.bottomRight,
                               child: Container(
-                                padding: EdgeInsets.only(right: 20),
+                                padding: const EdgeInsets.only(right: 20),
                                 child: Text(
                                   "${PantryProxy().countByMonth(monthInt, selectedView)}%",
                                   style: AppTypography.heading1.copyWith(

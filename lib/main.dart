@@ -14,7 +14,7 @@ import 'package:firebase_core/firebase_core.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MaterialApp(home: HomePage2()));
+  runApp(const MaterialApp(home: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -26,12 +26,12 @@ class MyApp extends StatelessWidget {
       title: 'Kitsain 2023 MVP',
       theme: ThemeData(
         scaffoldBackgroundColor: AppColors.main2,
-        primarySwatch: Colors.lightGreen,
+        primarySwatch: Colors.grey,
       ),
       home: HomePage2(),
       //home: const HomePage(title: 'Kitsain MVP 2023'),
       supportedLocales: L10n.all,
-      localizationsDelegates: [
+      localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
           child: Builder(
             builder: (BuildContext context) {
               return Container(
-                color: Color(0xff5C785E),
+                color: Colors.black,
                 child: SafeArea(
                   child: Scaffold(
                     backgroundColor: AppColors.main1,
@@ -97,6 +97,7 @@ class _HomePageState extends State<HomePage> {
                       indicatorColor: AppColors.main2,
                       indicatorWeight: 4,
                       unselectedLabelColor: AppColors.main2,
+                      labelColor: AppColors.main2,
                       tabs: [
                         DragTarget(
                           builder: (
@@ -112,8 +113,8 @@ class _HomePageState extends State<HomePage> {
                                   const Icon(
                                     Icons.house,
                                   ),
-                                  const Text(
-                                    'MY\nPANTRY',
+                                  Text(
+                                    AppLocalizations.of(context)!.pantryTabLabel,
                                     textAlign: TextAlign.center,
                                   ),
                                 ],
@@ -138,8 +139,8 @@ class _HomePageState extends State<HomePage> {
                                   const Icon(
                                     Icons.shopping_cart,
                                   ),
-                                  const Text(
-                                    'SHOPPING\nLISTS',
+                                  Text(
+                                    AppLocalizations.of(context)!.shoppingListsTabLabel,
                                     textAlign: TextAlign.center,
                                   ),
                                 ],
@@ -164,8 +165,8 @@ class _HomePageState extends State<HomePage> {
                                   const Icon(
                                     Icons.pie_chart,
                                   ),
-                                  const Text(
-                                    'PANTRY\nHISTORY',
+                                  Text(
+                                    AppLocalizations.of(context)!.pantryTabLabel,
                                     textAlign: TextAlign.center,
                                   ),
                                 ],

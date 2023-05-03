@@ -3,9 +3,17 @@
     "@pantryScreen": {
         "description": "Name to describe pantry screen"
     },
+    "pantryTabLabel": "MY\nPANTRY",
+    "@pantryTabLabel": {
+        "description": "Bottom navigation tab bar label for pantry"
+    },
     "shoppingListsScreen": "SHOPPING LISTS",
     "@shoppingListsScreen": {
         "description": "Name to describe shopping lists screen"
+    },
+    "shoppingListsTabLabel": "SHOPPING\nLISTS",
+    "@shoppingListsTabLabel": {
+        "description": "Bottom navigation tab bar label for shopping lists"
     },
     "shoppingListsScreenTopBarTitle": "SHOPPING \u200e\n\u200e LISTS",
     "@shoppingListsScreenTopBarTitle": {
@@ -14,6 +22,14 @@
     "historyScreen": "PANTRY HISTORY",
     "@historyScreen": {
         "description": "Name to describe history screen"
+    },
+    "historyTabLabel": "PANTRY\nHISTORY",
+    "@historyTabLabel": {
+        "description": "Bottom navigation tab bar label for history"
+    },
+    "historyScreenTopBarTitle": "PANTRY \u200e\n\u200e HISTORY",
+    "@historyScreenTopBarTitle": {
+            "description": "Name to describe history screen top bar title"
     },
     "addNewItem": "Add new item",
     "@addNewItem": {

@@ -90,8 +90,7 @@ class _TopBarState extends State<TopBar> {
       preferredSize: widget.preferredSize,
       child: Container(
         height: MediaQuery.of(context).size.height * 0.2,
-        //color: Colors.green,
-        // padding: const EdgeInsets.only(left: 15, top: 25, bottom: 1, right: 15),
+        padding: const EdgeInsets.only(left: 15, top: 0, bottom: 1, right: 15),
         decoration: BoxDecoration(
           image: DecorationImage(
             //image: AssetImage("assets/images/pantry_banner_2.jpg"),
