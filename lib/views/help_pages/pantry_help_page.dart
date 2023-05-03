@@ -4,7 +4,8 @@ import 'package:kitsain_frontend_spring2023/app_colors.dart';
 import 'package:kitsain_frontend_spring2023/app_typography.dart';
 
 const List<List<String>> paragraphs = [
-  ['In the pantry, you can easily see what',
+  [
+    'In the pantry, you can easily see what',
     'items you currently have in your home.',
     'You can sort and filter the view with',
     'different preferences, making it easy to',
@@ -46,34 +47,27 @@ class PantryHelp extends StatefulWidget {
 }
 
 class _PantryHelp extends State<PantryHelp> {
-
   //Helper function for creating texts and icons.
   //Returns text and icon widgets.
   Widget _createParagraph(List<String> paragraph, bool icons) {
     List<Widget> list = <Widget>[];
-    for(var line in paragraph) {
+    for (var line in paragraph) {
       list.add(Text(line, style: AppTypography.paragraph));
       //After last row don't add empty space
-      if(line != paragraph[paragraph.length -1]) {
+      if (line != paragraph[paragraph.length - 1]) {
         list.add(SizedBox(height: 3));
       }
     }
-    if(icons) {
-      list.add(Row(
-        children: [
-          Icon(Icons.check_box_outline_blank, size: 180),
-          Icon(Icons.check_box_outline_blank, size: 180),
-        ],
-      ));
-    }
+
     return new Column(children: list);
   }
 
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
-      return ListView(
-        children: <Widget> [
+      return Scaffold(
+        backgroundColor: AppColors.main2,
+        body: ListView(children: <Widget>[
           Column(
             children: [
               SizedBox(height: 50),
@@ -84,24 +78,54 @@ class _PantryHelp extends State<PantryHelp> {
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height * 0.05,
                     child: FloatingActionButton(
-                      foregroundColor: AppColors.main2,
-                      backgroundColor: AppColors.main3,
-                      child: const Icon(Icons.close),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      }
-                    ),
+                        foregroundColor: AppColors.main2,
+                        backgroundColor: AppColors.main3,
+                        child: const Icon(Icons.close),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
                   ),
                 ),
               ),
-              Text("WHAT IS\nPANTRY?",
+              Text(
+                "WHAT IS\nPANTRY?",
                 style: AppTypography.heading2.copyWith(color: AppColors.main3),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 15),
               _createParagraph(paragraphs[0], true),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.3,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/pantry_help1.png"),
+                    // fit: BoxFit.cover,
+                    // alignment: Alignment.bottomCenter,
+                  ),
+                ),
+              ),
               _createParagraph(paragraphs[1], true),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.3,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/pantry_help2.png"),
+                    // fit: BoxFit.cover,
+                    // alignment: Alignment.bottomCenter,
+                  ),
+                ),
+              ),
               _createParagraph(paragraphs[2], true),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.3,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/pantry_help3.png"),
+                    // fit: BoxFit.cover,
+                    // alignment: Alignment.bottomCenter,
+                  ),
+                ),
+              ),
               _createParagraph(paragraphs[3], false),
               SizedBox(height: 50),
               SizedBox(
@@ -109,8 +133,10 @@ class _PantryHelp extends State<PantryHelp> {
                 height: 50,
                 child: ElevatedButton(
                   style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main2),
-                    backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main3),
+                    foregroundColor: MaterialStateProperty.resolveWith(
+                        (states) => AppColors.main2),
+                    backgroundColor: MaterialStateProperty.resolveWith(
+                        (states) => AppColors.main3),
                   ),
                   onPressed: () {
                     Navigator.pop(context);
@@ -121,8 +147,8 @@ class _PantryHelp extends State<PantryHelp> {
               SizedBox(height: 50),
             ],
           ),
-      ]
+        ]),
       );
     });
-    }
+  }
 }

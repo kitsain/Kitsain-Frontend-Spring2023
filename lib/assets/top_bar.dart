@@ -32,29 +32,41 @@ class TopBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _TopBarState extends State<TopBar> {
   final _loginController = Get.put(LoginController());
-  VisualDensity _topIconsDensity = VisualDensity(horizontal: -4.0, vertical: -4.0);
+  VisualDensity _topIconsDensity =
+      VisualDensity(horizontal: -4.0, vertical: -4.0);
 
   _openAccountSettings(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Signed in as'),
+          title: Text(
+            'Signed in as',
+            style: AppTypography.paragraph.copyWith(color: AppColors.main1),
+          ),
           content: Text(
             '${_loginController.googleUser.value?.email}',
             textAlign: TextAlign.center,
+            style: AppTypography.paragraph,
           ),
           actions: <Widget>[
             TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('CANCEL')),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'CANCEL',
+                style: AppTypography.category.copyWith(color: Colors.black38),
+              ),
+            ),
             TextButton(
               onPressed: () {
                 _signOut();
               },
-              child: Text('LOG OUT'),
+              child: Text(
+                'LOG OUT',
+                style: AppTypography.category.copyWith(color: AppColors.main1),
+              ),
             ),
           ],
         );
@@ -79,7 +91,7 @@ class _TopBarState extends State<TopBar> {
       child: Container(
         height: MediaQuery.of(context).size.height * 0.2,
         //color: Colors.green,
-        padding: const EdgeInsets.only(left: 15, top: 25, bottom: 1, right: 15),
+        // padding: const EdgeInsets.only(left: 15, top: 25, bottom: 1, right: 15),
         decoration: BoxDecoration(
           image: DecorationImage(
             //image: AssetImage("assets/images/pantry_banner_2.jpg"),
@@ -90,6 +102,7 @@ class _TopBarState extends State<TopBar> {
           ),
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               width: MediaQuery.of(context).size.width * 0.64,
@@ -102,6 +115,7 @@ class _TopBarState extends State<TopBar> {
             ),
             const Spacer(),
             Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Row(
                   children: [
@@ -109,7 +123,8 @@ class _TopBarState extends State<TopBar> {
                       visualDensity: _topIconsDensity,
                       padding: EdgeInsets.zero,
                       onPressed: () => widget.helpFunction(),
-                      icon: const Icon(Icons.help_outline,
+                      icon: const Icon(
+                        Icons.help_outline,
                         color: AppColors.main2,
                       ),
                     ),
@@ -117,7 +132,8 @@ class _TopBarState extends State<TopBar> {
                       visualDensity: _topIconsDensity,
                       padding: EdgeInsets.zero,
                       onPressed: () => _openSettings(),
-                      icon: const Icon(Icons.settings,
+                      icon: const Icon(
+                        Icons.settings,
                         color: AppColors.main2,
                       ),
                     ),
@@ -125,7 +141,8 @@ class _TopBarState extends State<TopBar> {
                       visualDensity: _topIconsDensity,
                       padding: EdgeInsets.zero,
                       onPressed: () => _openAccountSettings(context),
-                      icon: const Icon(Icons.account_circle,
+                      icon: const Icon(
+                        Icons.account_circle,
                         color: AppColors.main2,
                       ),
                     ),

@@ -12,10 +12,12 @@ import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import '../../database/pantry_proxy.dart';
 
 const List<Widget> tabs = <Widget>[
-  Text('USED',
+  Text(
+    'USED',
     style: AppTypography.category,
   ),
-  Text('BIN',
+  Text(
+    'BIN',
     style: AppTypography.category,
   ),
 ];
@@ -93,6 +95,7 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(data.name),
+            duration: Duration(seconds: 2),
           ),
         );
       },
@@ -143,7 +146,8 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                         ),
                         DropdownButton(
                           value: month,
-                          style: AppTypography.category.copyWith(color: Colors.black),
+                          style: AppTypography.category
+                              .copyWith(color: Colors.black),
                           iconSize: 0,
                           onChanged: (String? value) {
                             setState(
@@ -171,7 +175,8 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                               .values
                               .toList(),
                         ),
-                        const Text("2023",
+                        const Text(
+                          "2023",
                           style: AppTypography.category,
                         )
                       ],
@@ -196,33 +201,33 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                   },
                   builder: (context, candidateData, rejectedData) {
                     return ToggleButtons(
-                      color: Colors.black,
-                      selectedColor: AppColors.main2,
-                      fillColor: AppColors.main1,
-                      borderColor: AppColors.main1,
-                      direction: Axis.horizontal,
-                      onPressed: (int index) {
-                        setState(
-                          () {
-                            for (int i = 0; i < _selectedTabs.length; i++) {
-                              _selectedTabs[i] = i == index;
-                              if (_selectedTabs[0] == true) {
-                                selectedView = "used";
-                              } else {
-                                selectedView = "bin";
+                        color: Colors.black,
+                        selectedColor: AppColors.main2,
+                        fillColor: AppColors.main1,
+                        borderColor: AppColors.main1,
+                        direction: Axis.horizontal,
+                        onPressed: (int index) {
+                          setState(
+                            () {
+                              for (int i = 0; i < _selectedTabs.length; i++) {
+                                _selectedTabs[i] = i == index;
+                                if (_selectedTabs[0] == true) {
+                                  selectedView = "used";
+                                } else {
+                                  selectedView = "bin";
+                                }
                               }
-                            }
-                          },
-                        );
-                      },
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(8)),
-                      constraints: const BoxConstraints(
-                        minHeight: 40.0,
-                        minWidth: 100.0,
-                      ),
-                      isSelected: _selectedTabs,
-                      children: tabs);
+                            },
+                          );
+                        },
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8)),
+                        constraints: const BoxConstraints(
+                          minHeight: 40.0,
+                          minWidth: 100.0,
+                        ),
+                        isSelected: _selectedTabs,
+                        children: tabs);
                   },
                 ),
               ),
@@ -235,7 +240,8 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
 
                   if (results.isEmpty) {
                     return const Center(
-                      child: Text("No items found",
+                      child: Text(
+                        "No items found",
                         style: AppTypography.smallTitle,
                       ),
                     );
@@ -279,7 +285,8 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
                                 padding: EdgeInsets.only(right: 20),
                                 child: Text(
                                   "${PantryProxy().countByMonth(monthInt, selectedView)}%",
-                                  style: AppTypography.heading1.copyWith(fontSize: 80,
+                                  style: AppTypography.heading1.copyWith(
+                                    fontSize: 80,
                                     color: AppColors.main1,
                                   ),
                                 ),

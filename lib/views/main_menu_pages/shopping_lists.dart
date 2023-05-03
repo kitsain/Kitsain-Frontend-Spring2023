@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 import 'package:kitsain_frontend_spring2023/app_colors.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:kitsain_frontend_spring2023/views/help_pages/shopping_lists_help_page.dart';
 import 'package:kitsain_frontend_spring2023/LoginController.dart';
@@ -28,6 +29,41 @@ class _ShoppingListsState extends State<ShoppingLists> {
 
   final loginController = Get.put(LoginController());
 
+  void _deleteListDialog(int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        content: const Text(
+          'Delete shopping list?',
+          style: AppTypography.paragraph,
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text(
+              'CANCEL',
+              style: AppTypography.category.copyWith(color: Colors.black38),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          TextButton(
+            child: Text(
+              'DELETE',
+              style: AppTypography.category.copyWith(color: AppColors.main1),
+            ),
+            onPressed: () {
+              taskListController.deleteTaskLists(
+                  '${taskListController.taskLists.value?.items?[index].id}',
+                  index);
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   void _editList(String listId, int listIndex) {
     showModalBottomSheet(
       context: context,
@@ -51,8 +87,10 @@ class _ShoppingListsState extends State<ShoppingLists> {
 
     setState(
       () {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("$title added")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("$title added"),
+          duration: Duration(seconds: 2),
+        ));
       },
     );
 
@@ -145,16 +183,15 @@ class _ShoppingListsState extends State<ShoppingLists> {
                               title: Row(
                                 children: [
                                   Text(
-                                      '${taskListController.taskLists.value?.items?[index].title}',
-                                      style: TextStyle(fontWeight: FontWeight.bold),
-                                      //style: AppTypography.paragraph.copyWith(fontWeight: FontWeight.bold),
+                                    '${taskListController.taskLists.value?.items?[index].title}',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                    //style: AppTypography.paragraph.copyWith(fontWeight: FontWeight.bold),
                                   ),
                                   const Spacer(),
                                   IconButton(
                                     onPressed: () {
-                                      taskListController.deleteTaskLists(
-                                          '${taskListController.taskLists.value?.items?[index].id}',
-                                          index);
+                                      _deleteListDialog(index);
                                     },
                                     icon: const Icon(
                                       Icons.delete,
