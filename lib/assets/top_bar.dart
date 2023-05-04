@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kitsain_frontend_spring2023/app_typography.dart';
+import 'package:kitsain_frontend_spring2023/l10n/language_picker.dart';
+import 'package:kitsain_frontend_spring2023/l10n/locale_provider.dart';
+import 'package:provider/provider.dart';
 
 class TopBar extends StatefulWidget implements PreferredSizeWidget {
   const TopBar({
@@ -79,14 +82,15 @@ class _TopBarState extends State<TopBar> {
                         color: Colors.white,
                       ),
                     ),
-                    IconButton(
-                      visualDensity: topIconsDensity,
-                      padding: EdgeInsets.zero,
-                      onPressed: () => _openSettings(),
-                      icon: const Icon(Icons.settings,
-                        color: Colors.white,
-                      ),
-                    ),
+                    LanguagePicker(icon: const Icon(Icons.settings, color: Colors.white,)),
+                    // IconButton(
+                    //   visualDensity: topIconsDensity,
+                    //   padding: EdgeInsets.zero,
+                    //   onPressed: () => _openSettings(),
+                    //   icon: const Icon(Icons.settings,
+                    //     color: Colors.white,
+                    //   ),
+                    // ),
                     IconButton(
                       visualDensity: topIconsDensity,
                       padding: EdgeInsets.zero,

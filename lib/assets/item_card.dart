@@ -7,8 +7,10 @@ import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/views/edit_forms/edit_item_form.dart';
+import 'package:realm/realm.dart';
 import 'statuscolor.dart';
 import 'package:kitsain_frontend_spring2023/categories.dart';
+import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 
 enum _MenuValues { edit, used, bin, shoppinglist, delete, pantry }
 
@@ -72,25 +74,25 @@ class _ItemCardState extends State<ItemCard> {
       ),
       itemBuilder: (BuildContext context) {
         return [
-          const PopupMenuItem(
+          PopupMenuItem(
             value: _MenuValues.edit,
-            child: Text("Edit item", style: AppTypography.smallTitle,),
+            child: Text(AppLocalizations.of(context)!.itemCardEditItem, style: AppTypography.smallTitle,),
           ),
-          const PopupMenuItem(
+          PopupMenuItem(
             value: _MenuValues.used,
-            child: Text("Move to used", style: AppTypography.smallTitle,),
+            child: Text(AppLocalizations.of(context)!.itemCardMoveToUsed, style: AppTypography.smallTitle,),
           ),
-          const PopupMenuItem(
+          PopupMenuItem(
             value: _MenuValues.bin,
-            child: Text("Move to bin", style: AppTypography.smallTitle,),
+            child: Text(AppLocalizations.of(context)!.itemCardMoveToBin, style: AppTypography.smallTitle,),
           ),
-          const PopupMenuItem(
+          PopupMenuItem(
             value: _MenuValues.shoppinglist,
-            child: Text("Move to shopping list", style: AppTypography.smallTitle,),
+            child: Text(AppLocalizations.of(context)!.itemCardMoveToShoppingList, style: AppTypography.smallTitle,),
           ),
-          const PopupMenuItem(
+          PopupMenuItem(
             value: _MenuValues.delete,
-            child: Text("Delete item", style: AppTypography.smallTitle,),
+            child: Text(AppLocalizations.of(context)!.deleteItem, style: AppTypography.smallTitle,),
           ),
         ];
       },
@@ -111,16 +113,15 @@ class _ItemCardState extends State<ItemCard> {
             showDialog(
               context: context,
               builder: (ctx) => AlertDialog(
-                title: const Text("Delete item", style: AppTypography.heading3,),
-                content: const Text(
-                    "Are you sure you want to delete this item? This action cannot be undone.",
+                title: Text(AppLocalizations.of(context)!.deleteItem, style: AppTypography.heading3,),
+                content: Text(AppLocalizations.of(context)!.deleteItemDialogPrompt,
                   style: AppTypography.paragraph,),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
                       Navigator.of(ctx).pop();
                     },
-                    child: const Text("Cancel"),
+                    child: Text(AppLocalizations.of(context)!.cancel),
                     style: ButtonStyle(
                       textStyle: MaterialStateProperty.resolveWith((states) => AppTypography.category),
                       foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.cancelGrey),
@@ -131,7 +132,7 @@ class _ItemCardState extends State<ItemCard> {
                       deleteItem(widget.item);
                       Navigator.of(ctx).pop();
                     },
-                    child: const Text("Delete"),
+                    child: Text(AppLocalizations.of(context)!.delete),
                     style: ButtonStyle(
                       textStyle: MaterialStateProperty.resolveWith((states) => AppTypography.category),
                       foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),
@@ -154,28 +155,28 @@ class _ItemCardState extends State<ItemCard> {
       itemBuilder: (BuildContext context) {
         return [
           if (widget.item.location == "Bin") ...[
-            const PopupMenuItem(
+            PopupMenuItem(
               value: _MenuValues.used,
-              child: Text("Move to used", style: AppTypography.smallTitle,),
+              child: Text(AppLocalizations.of(context)!.itemCardMoveToUsed, style: AppTypography.smallTitle,),
             ),
           ],
           if (widget.item.location == "Used") ...[
-            const PopupMenuItem(
+            PopupMenuItem(
               value: _MenuValues.bin,
-              child: Text("Move to bin", style: AppTypography.smallTitle,),
+              child: Text(AppLocalizations.of(context)!.itemCardMoveToBin, style: AppTypography.smallTitle,),
             ),
           ],
-          const PopupMenuItem(
+          PopupMenuItem(
             value: _MenuValues.pantry,
-            child: Text("Move to pantry", style: AppTypography.smallTitle,),
+            child: Text(AppLocalizations.of(context)!.itemCardMoveToPantry, style: AppTypography.smallTitle,),
           ),
-          const PopupMenuItem(
+          PopupMenuItem(
             value: _MenuValues.shoppinglist,
-            child: Text("Move to shopping list", style: AppTypography.smallTitle,),
+            child: Text(AppLocalizations.of(context)!.itemCardMoveToShoppingList, style: AppTypography.smallTitle,),
           ),
-          const PopupMenuItem(
+          PopupMenuItem(
             value: _MenuValues.delete,
-            child: Text("Delete item", style: AppTypography.smallTitle,),
+            child: Text(AppLocalizations.of(context)!.deleteItem, style: AppTypography.smallTitle,),
           ),
         ];
       },
@@ -196,16 +197,15 @@ class _ItemCardState extends State<ItemCard> {
             showDialog(
               context: context,
               builder: (ctx) => AlertDialog(
-                title: const Text("Delete item", style: AppTypography.heading3,),
-                content: const Text(
-                    "Are you sure you want to delete this item? This action cannot be undone.",
+                title: Text(AppLocalizations.of(context)!.deleteItem, style: AppTypography.heading3,),
+                content: Text(AppLocalizations.of(context)!.deleteItemDialogPrompt,
                 style: AppTypography.paragraph,),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
                       Navigator.of(ctx).pop();
                     },
-                    child: const Text("Cancel"),
+                    child: Text(AppLocalizations.of(context)!.cancel),
                     style: ButtonStyle(
                       textStyle: MaterialStateProperty.resolveWith((states) => AppTypography.category),
                       foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.cancelGrey),
@@ -216,7 +216,7 @@ class _ItemCardState extends State<ItemCard> {
                       deleteItem(widget.item);
                       Navigator.of(ctx).pop();
                     },
-                    child: const Text("Delete"),
+                    child: Text(AppLocalizations.of(context)!.delete),
                     style: ButtonStyle(
                       textStyle: MaterialStateProperty.resolveWith((states) => AppTypography.category),
                       foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),

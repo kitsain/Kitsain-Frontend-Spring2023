@@ -2,29 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kitsain_frontend_spring2023/app_colors.dart';
 import 'package:kitsain_frontend_spring2023/app_typography.dart';
+import 'package:flutter_gen/gen_l10n/app-localizations.dart';
+import 'package:realm/realm.dart';
 
-const List<List<String>> paragraphs = [
-  [
-    'In shopping lists, you can manage your',
-    'grocery shopping through personal or',
-    'shared shopping lists. Kitsain shopping',
-    'lists is connected to Google Tasks so you',
-    'can access them easily outside of the app.'
-  ],
-  [
-    'You can create a new shopping through the',
-    'icon in the top banner. Items can be either',
-    'dragged or sent via options into a',
-    'designated shopping list.'
-  ],
-  [
-    'You can add a new item to you pantry',
-    'either by hand or using your phones',
-    'camera as an EAN code scanner. You can',
-    'edit an item card anytime via the options',
-    'icon on the card.'
-  ],
-];
 
 class ShoppingListsHelp extends StatefulWidget {
   const ShoppingListsHelp({super.key});
@@ -59,6 +39,17 @@ class _ShoppingListsHelp extends State<ShoppingListsHelp> {
 
   @override
   Widget build(BuildContext context) {
+    List<List<String>> paragraphs = [
+      AppLocalizations.of(context)!.allListsHelpText1.split("\n"),
+      AppLocalizations.of(context)!.allListsHelpText2.split("\n"),
+      // [
+      //   'You can add a new item to you pantry',
+      //   'either by hand or using your phones',
+      //   'camera as an EAN code scanner. You can',
+      //   'edit an item card anytime via the options',
+      //   'icon on the card.'
+      // ],
+    ];
     return Builder(builder: (context) {
       return ListView(
           children: <Widget> [
@@ -83,14 +74,13 @@ class _ShoppingListsHelp extends State<ShoppingListsHelp> {
                   ),
                 ),
                 SizedBox(height: 15),
-                Text("WHAT'S IN\nSHOPPING LISTS?",
+                Text(AppLocalizations.of(context)!.allListsHelpTitle,
                   style: AppTypography.heading2.copyWith(color: AppColors.main3),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 15),
                 _createParagraph(paragraphs[0], true),
-                _createParagraph(paragraphs[1], true),
-                _createParagraph(paragraphs[2], false),
+                _createParagraph(paragraphs[1], false),
                 SizedBox(height: 50),
                 SizedBox(
                   width: 100,
@@ -103,7 +93,7 @@ class _ShoppingListsHelp extends State<ShoppingListsHelp> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text("GOT IT",
+                    child: Text(AppLocalizations.of(context)!.closeHelpSection,
                       style: AppTypography.category,
                     ),
                   ),

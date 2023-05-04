@@ -2,40 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kitsain_frontend_spring2023/app_colors.dart';
 import 'package:kitsain_frontend_spring2023/app_typography.dart';
-
-const List<List<String>> paragraphs = [
-  [
-    'In pantry history, you can access items that',
-    'are no longer in your pantry and follow the',
-    "amount of food waste you're producing by",
-    'using the toggle button.'
-  ],
-  [
-    'In the bin, you can see the percentage of',
-    "your household's food waste. The average",
-    'household food waste counts for almost 1/3',
-    'of all food waste produced globally. Every',
-    'small bit counts, so in Kitsain, you set and',
-    'follow your own realistic goals.'
-  ],
-  [
-    'In used, you can see all items listed that',
-    "you've had in your pantry in the order",
-    "you've used them. You can copy a item to",
-    'pantry or a shopping list through the item',
-    'card options button.'
-  ],
-  [
-    'If you need tips for how to reduce your',
-    'household food waste or want to know',
-    'more of it, you can start by visiting:'
-  ],
-  [
-    'Harward / sustainability / food waste',
-    'European Comission / food waste',
-    'Kuluttajaliitto / ruokahävikki'
-  ]
-];
+import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 
 class UsedAndExpiredHelp extends StatefulWidget {
   const UsedAndExpiredHelp({super.key});
@@ -70,6 +37,13 @@ class _UsedAndExpiredHelp extends State<UsedAndExpiredHelp> {
 
   @override
   Widget build(BuildContext context) {
+    List<List<String>> paragraphs = [
+      AppLocalizations.of(context)!.pantryHistoryHelpText1.split("\n"),
+      AppLocalizations.of(context)!.pantryHistoryHelpText2.split("\n"),
+      AppLocalizations.of(context)!.pantryHistoryHelpText3.split("\n"),
+      AppLocalizations.of(context)!.pantryHistoryHelpText4.split("\n"),
+    ];
+
     return Builder(builder: (context) {
       return ListView(
           children: <Widget> [
@@ -94,7 +68,7 @@ class _UsedAndExpiredHelp extends State<UsedAndExpiredHelp> {
                   ),
                 ),
                 const SizedBox(height: 15),
-                Text("WHAT IS\nPANTRY HISTORY?",
+                Text(AppLocalizations.of(context)!.pantryHistoryHelpTitle,
                   style: AppTypography.heading2.copyWith(color: AppColors.main3),
                   textAlign: TextAlign.center,
                 ),
@@ -103,8 +77,6 @@ class _UsedAndExpiredHelp extends State<UsedAndExpiredHelp> {
                 _createParagraph(paragraphs[1], true),
                 _createParagraph(paragraphs[2], true),
                 _createParagraph(paragraphs[3], false),
-                SizedBox(height: 30),
-                _createParagraph(paragraphs[4], false),
                 SizedBox(height: 50),
                 SizedBox(
                   width: 100,
@@ -117,7 +89,7 @@ class _UsedAndExpiredHelp extends State<UsedAndExpiredHelp> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text("GOT IT",
+                    child: Text(AppLocalizations.of(context)!.closeHelpSection,
                       style: AppTypography.category,
                     ),
                   ),

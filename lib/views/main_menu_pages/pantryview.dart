@@ -140,7 +140,7 @@ class _PantryViewState extends State<PantryView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
-        title: AppLocalizations.of(context)!.pantryScreen,
+        title: AppLocalizations.of(context)!.pantry,
         addFunction: _addNewItem,
         addIcon: Image.asset('assets/images/new_card_plus.png'),
         helpFunction: _help,

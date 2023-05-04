@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
+import 'package:kitsain_frontend_spring2023/app_colors.dart';
 
 class EditShoppingListForm extends StatefulWidget {
   const EditShoppingListForm({super.key});
@@ -17,10 +19,14 @@ class _EditItemFormState extends State<EditShoppingListForm> {
     showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          content: const Text('Discard changes?'),
+          content: const Text('Discard changes?',
+            style: AppTypography.paragraph,
+          ),
           actions: <Widget>[
             TextButton(
-              child: const Text('CANCEL'),
+              child: Text('CANCEL',
+                style: AppTypography.category.copyWith(color: AppColors.cancelGrey),
+              ),
               onPressed: () {
                 Navigator.pop(context);
               },

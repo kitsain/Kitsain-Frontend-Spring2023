@@ -119,7 +119,8 @@ class _UsedAndExpiredState extends State<UsedAndExpired> {
     );
     return Scaffold(
       appBar: TopBar(
-        title: AppLocalizations.of(context)!.historyScreen,
+        // title: AppLocalizations.of(context)!.historyScreen,
+        title: 'Pantry history',
         helpFunction: _help,
         backgroundImageName: 'assets/images/ue_banner_darker_B2.png',
         titleBackgroundColor: AppColors.titleBackgroundGreen,

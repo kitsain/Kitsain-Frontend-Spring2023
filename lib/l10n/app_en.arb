@@ -1,46 +1,122 @@
 {
-    "pantryScreen": "MY PANTRY",
+    "pantry": "Pantry",
     "@pantryScreen": {
-        "description": "Name to describe pantry screen"
+        "description": "Name to describe pantry"
     },
-    "shoppingListsScreen": "SHOPPING LISTS",
-    "@shoppingListsScreen": {
-        "description": "Name to describe shopping lists screen"
+    "shoppingLists": "Shopping lists",
+    "@shoppingLists": {
+        "description": "Name to describe shopping lists"
     },
-    "shoppingListsScreenTopBarTitle": "SHOPPING \u200e\n\u200e LISTS",
-    "@shoppingListsScreenTopBarTitle": {
-        "description": "Name to describe shopping lists screen top bar title"
+    "shoppingListsTopBarTitle": "Shopping\nlists",
+    "@shoppingListsTopBarTitle": {
+        "description": "Name to describe shopping lists top bar title"
     },
-    "historyScreen": "HISTORY",
-    "@historyScreen": {
-        "description": "Name to describe history screen"
+    "history": "Pantry history",
+    "@history": {
+        "description": "Name to describe history"
     },
-    "addNewItem": "Add new item",
-    "@addNewItem": {
-        "description": "Tooltip for adding new item"
+    "itemCardEditItem": "Edit item",
+    "@itemCardEditItem": {
+        "description": "Dropdown option for editing an item"
     },
-    "dragComplete": "drag complete",
-    "@dragComplete": {
-        "description": "Text when drag is completed"
+    "itemCardMoveToUsed": "Move to used",
+    "@itemCardMoveToUsed": {
+        "description": "Dropdown option for moving to used"
     },
-    "dropTarget": "Drop",
-    "@dropTarget": {
-        "description": "Text to show in the drop target on history page"
+    "itemCardMoveToBin": "Move to bin",
+    "@itemCardMoveToBin": {
+        "description": "Dropdown option for moving to bin"
     },
-    "openScanner": "Open Scanner",
-    "@openScanner": {
-        "description": "Text to show for opening scanner"
+    "itemCardMoveToPantry": "Move to pantry",
+    "@itemCardMoveToPantry": {
+        "description": "Dropdown option for moving to pantry"
     },
-    "barcode": "Barcode",
-    "@barcode": {
-        "description": "Placeholder text for barcode field when adding new item"
+    "itemCardMoveToShoppingList": "Move to shopping list",
+    "@itemCardMoveToShoppingList": {
+        "description": "Dropdown option for moving to shopping list"
     },
-    "pantryItem": "pantry",
-    "@pantryItem": {
-        "description": "Name to show on the demo pantry items"
+    "deleteItem": "Delete item",
+    "@deleteItem": {
+        "description": "Text for deleting an item"
     },
-    "shoppingListItem": "shopping list",
-    "@shoppingListItem": {
-        "description": "Name to show on the demo shopping list items"
+    "deleteItemDialogPrompt": "Are you sure you want to delete this item? This action cannot be undone.",
+    "@deleteItemDialogPrompt": {
+        "description": "Prompt shown in delete item dialog"
+    },
+    "cancel": "Cancel",
+    "@cancel": {
+        "description": "Cancel text"
+    },
+    "delete": "Delete",
+    "@delete": {
+        "description": "Delete text"
+    },
+    "pantryHelpTitle": "What is pantry?",
+    "@pantryHelpTitle": {
+        "description": "A title for the pantry help screen"
+    },
+    "pantryHelpText1": "In the pantry, you can easily see what\nitems you currently have in your home.\nYou can sort and filter the view with\ndifferent preferences, making it easy to\ntrack down specific items.",
+    "@pantryHelpText1": {
+        "description": "A pantry help text telling about the screen and filtering/sorting options"
+    },
+    "pantryHelpText2": "Open an item card by clicking it and set an\nexpiration and opening day and let Kitsain\ntell you which items should be used first\nthrough color coding. Items without a set\nexpiration date will show up with a grey\ncolor code. Easy, right?",
+    "@pantryHelpText2": {
+        "description": "A pantry help text telling about setting opening and expiration dates and the corresponding colors"
+    },
+    "pantryHelpText3": "Once you click the plus icon, you can add a\nnew item to your pantry either by hand or\nby using your phone’s camera as an EAN\ncode scanner. You can edit an item card\nanytime by tapping it. You can move an\nitem card to a different section via the\noptions icon or by simply dragging it.",
+    "@pantryHelpText3": {
+        "description": "A pantry help text telling about creating, modifying and moving item cards"
+    },
+    "pantryHelpText4": "As we all know, best before dates are not\nabsolute. That is why in Kitsain, You are in\ncharge of your pantry and decide when an\nitem is no longer viable for use. Items that\nhave passed their expiration date will show\nup with a black color code but will stay in\nthe pantry until you mark them either\nused or bin them.",
+    "@pantryHelpText4": {
+        "description": "A pantry help text specifying that items are not moved to the history tab automatically"
+    },
+    "closeHelpSection": "Got it",
+    "@closeHelpSection": {
+        "description": "Text for the button at the end of a help section"
+    },
+    "allListsHelpTitle": "What's in shopping lists?",
+    "@allListsHelpTitle": {
+        "description": "A title for the shopping lists help page"
+    },
+    "allListsHelpText1": "In shopping lists, you can manage your\ngrocery shopping. Kitsain shopping lists is\nconnected to Google Tasks so you can\naccess them easily outside of the app.",
+    "@allListsHelpText1": {
+        "description": "A shopping lists help text telling about the purpose of the screen and about the connection to Google Tasks"
+    },
+    "allListsHelpText2": "You can create a new shopping through the\nicon in the top banner. Items can be either\ndragged or sent via options into a\ndesignated shopping list. The destination\nlist will be indicated with a border.",
+    "@allListsHelpText2": {
+        "description": "A shopping lists help text telling about creating new shopping lists and moving items to them"
+    },
+    "singleListHelpTitle": "What can I do with an opened shopping list?",
+    "@singleListHelpTitle": {
+        "description": "A title for the help page for a single shopping list"
+    },
+    "singleListHelpText1": "Once you’ve opened a shopping list, you\ncan manage its contents. While grocery\nshopping, you can check off items as you\ngo. Once you’re done, you can move all\nchecked items to pantry. This doesn’t\nremove the items from the shopping list,\nso you can keep reusing the same list over\nand over if you want to!",
+    "@singleListHelpText1": {
+        "description": "A single shopping list help text telling about checking items and moving them to pantry"
+    },
+    "singleListHelpText2": "Add items to the shopping list through the\nshopping cart icon in the top banner. Then,\nset a name and an optional description to\nthe item. Don’t worry, other details, like an\nexpiration date can be added after you\nmove it to the pantry.",
+    "@singleListHelpText2": {
+        "description": "A single shopping list help text telling about adding items to shopping list"
+    },
+    "pantryHistoryHelpTitle": "What is\npantry history?",
+    "@pantryHistoryHelpTitle": {
+        "description": "A title for the pantry history help page"
+    },
+    "pantryHistoryHelpText1": "In pantry history, you can access items that\nare no longer in your pantry and monthly\nfollow the amount of food waste you’re\nproducing by using the toggle button.",
+    "@pantryHistoryHelpText1": {
+        "description": "History help text describing the history screen in general"
+    },
+    "pantryHistoryHelpText2": "In ‘used’, you can see all items that you’ve\nmarked as used, as well as the percentage\nof items you used from everything in your\npantry in that month. You can copy an item\nto pantry or a shopping list through the\nitem card options button.",
+    "@pantryHistoryHelpText2": {
+        "description": "History help text telling about the used tab"
+    },
+    "pantryHistoryHelpText3": "In the bin, you can see the percentage of\nyour household’s food waste. The average\nhousehold food waste counts for almost 1/3\nof all food waste produced globally. Every\nsmall bit counts, so in Kitsain, by clicking\nthe percentage, you can set and follow your\nown realistic goals.",
+    "@pantryHistoryHelpText3": {
+        "description": "History help text telling about the bin tab"
+    },
+    "pantryHistoryHelpText4": "If you need tips for how to reduce your\nhousehold food waste or want to know\nmore of it, you can start by visiting:\n\nHarward / sustainability / food waste\nEuropean Comission / food waste\nKuluttajaliitto / ruokahävikki",
+    "@pantryHistoryHelpText4": {
+        "description": "History help text telling about good places for further researching food waste prevention"
     }
 }

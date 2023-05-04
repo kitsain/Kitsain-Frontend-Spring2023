@@ -2,41 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kitsain_frontend_spring2023/app_colors.dart';
 import 'package:kitsain_frontend_spring2023/app_typography.dart';
+import 'package:flutter_gen/gen_l10n/app-localizations.dart';
+import 'package:realm/realm.dart';
 
-const List<List<String>> paragraphs = [
-  ['In the pantry, you can easily see what',
-    'items you currently have in your home.',
-    'You can sort and filter the view with',
-    'different preferences, making it easy to',
-    'track down specific items.'
-  ],
-  [
-    'Open an item card by clicking it and set an',
-    'expiration and opening day and let Kitsain',
-    'tell you which items should be used first',
-    'through color coding. Items without a set',
-    'expiration date will show up with a grey',
-    'color code. Easy, right?'
-  ],
-  [
-    'You can add a new item to your pantry',
-    'either by hand or using your phones',
-    'camera as an EAN code scanner. You can',
-    'edit an item card anytime via the options',
-    'icon on the card and drag an item to',
-    'different section of the app.'
-  ],
-  [
-    'As we all know, best before date are not',
-    'absolute. That is why in Kitsain, You are in',
-    'charge of your pantry and decide when an',
-    'item is no longer viable for use. Items that',
-    'have passed their expiration date will show',
-    'up with a black color code but will stay in',
-    'the pantry until you mark them either',
-    'used or bin them.'
-  ]
-];
 
 class PantryHelp extends StatefulWidget {
   const PantryHelp({super.key});
@@ -72,6 +40,12 @@ class _PantryHelp extends State<PantryHelp> {
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
+      List<List<String>> paragraphs = [
+        AppLocalizations.of(context)!.pantryHelpText1.split("\n"),
+        AppLocalizations.of(context)!.pantryHelpText2.split("\n"),
+        AppLocalizations.of(context)!.pantryHelpText3.split("\n"),
+        AppLocalizations.of(context)!.pantryHelpText4.split("\n"),
+      ];
       return ListView(
         children: <Widget> [
           Column(
@@ -94,7 +68,7 @@ class _PantryHelp extends State<PantryHelp> {
                   ),
                 ),
               ),
-              Text("WHAT IS\nPANTRY?",
+              Text(AppLocalizations.of(context)!.pantryHelpTitle,
                 style: AppTypography.heading2.copyWith(color: AppColors.main3),
                 textAlign: TextAlign.center,
               ),
@@ -115,7 +89,9 @@ class _PantryHelp extends State<PantryHelp> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text("GOT IT"),
+                  child: Text(AppLocalizations.of(context)!.closeHelpSection,
+                    style: AppTypography.category,
+                  ),
                 ),
               ),
               SizedBox(height: 50),

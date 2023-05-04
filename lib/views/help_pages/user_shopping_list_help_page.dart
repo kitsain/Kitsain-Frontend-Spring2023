@@ -2,32 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kitsain_frontend_spring2023/app_colors.dart';
 import 'package:kitsain_frontend_spring2023/app_typography.dart';
+import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 
-const List<List<String>> paragraphs = [
-  [
-    "Once you've opened a shopping list, you",
-    'can manage its contents.'
-  ],
-  [
-    'While grocery shopping, you can check off',
-    "items as you go. Once you're done, you can",
-    'move all checked items to pantry. This',
-    "doesn't remove items from the",
-    'shopping lists, so you can keep reusing the',
-    'same list over and over if you want to!'
-  ],
-  [
-    'Add items to the shopping list either by',
-    'hand or by using your phone as an EAN',
-    'code scanner. Item needs to be sorted to a',
-    'category upon adding, and you can add a',
-    'description.'
-  ],
-  [
-    'Other details, like an expiration date can',
-    'be added after you move it to the pantry'
-  ]
-];
 
 class UserShoppingListHelp extends StatefulWidget {
   const UserShoppingListHelp({super.key});
@@ -62,6 +38,10 @@ class _UserShoppingListHelp extends State<UserShoppingListHelp> {
 
   @override
   Widget build(BuildContext context) {
+    List<List<String>> paragraphs = [
+      AppLocalizations.of(context)!.singleListHelpText1.split("\n"),
+      AppLocalizations.of(context)!.singleListHelpText2.split("\n"),
+    ];
     return Builder(builder: (context) {
       return ListView(
           children: <Widget> [
@@ -86,15 +66,13 @@ class _UserShoppingListHelp extends State<UserShoppingListHelp> {
                   ),
                 ),
                 SizedBox(height: 15),
-                Text("WHAT CAN I DO\nWITH AN OPENED\nSHOPPING LIST?",
+                Text(AppLocalizations.of(context)!.singleListHelpTitle,
                   style: AppTypography.heading2.copyWith(color: AppColors.main3),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 15),
                 _createParagraph(paragraphs[0], true),
-                _createParagraph(paragraphs[1], true),
-                _createParagraph(paragraphs[2], true),
-                _createParagraph(paragraphs[3], false),
+                _createParagraph(paragraphs[1], false),
                 SizedBox(height: 50),
                 SizedBox(
                   width: 100,
@@ -107,7 +85,7 @@ class _UserShoppingListHelp extends State<UserShoppingListHelp> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: const Text("GOT IT",
+                    child: Text(AppLocalizations.of(context)!.closeHelpSection,
                       style: AppTypography.category,
                     ),
                   ),
