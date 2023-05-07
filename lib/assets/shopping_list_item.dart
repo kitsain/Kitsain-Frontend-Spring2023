@@ -8,11 +8,11 @@ import 'package:kitsain_frontend_spring2023/app_typography.dart';
 class ShoppingListItem extends StatefulWidget {
   const ShoppingListItem(
       {super.key,
-        required this.itemId,
-        required this.itemName,
-        this.itemDescription = '',
-        required this.itemIndex,
-        required this.listId});
+      required this.itemId,
+      required this.itemName,
+      this.itemDescription = '',
+      required this.itemIndex,
+      required this.listId});
 
   final String itemId;
   final String itemName;
@@ -50,7 +50,10 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
       builder: (BuildContext context) {
         return FractionallySizedBox(
           heightFactor: 1,
-          child: EditShoppingListItemForm(itemId: widget.itemId, listId: widget.listId, itemIndex: widget.itemIndex),
+          child: EditShoppingListItemForm(
+              itemId: widget.itemId,
+              listId: widget.listId,
+              itemIndex: widget.itemIndex),
         );
       },
     );
@@ -74,27 +77,37 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       const SizedBox(
                         height: 15,
                       ),
-                      Text(
-                        widget.itemName.toUpperCase(),
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                      Container(
+                        // height: 50,
+                        width: MediaQuery.of(context).size.width * .45,
+                        decoration: BoxDecoration(),
+                        clipBehavior: Clip.antiAlias,
+
+                        child: Text(
+                          widget.itemName.toUpperCase(),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                       Text(
                         widget.itemDescription, //'Additional description',
-                        style: AppTypography.paragraph.copyWith(color: Colors.black45),
+                        style: AppTypography.paragraph
+                            .copyWith(color: Colors.black45),
                       ),
                     ],
                   ),
                   Spacer(),
                   IconButton(
                     onPressed: () => _editItem(),
-                    icon: Icon(
-                        Icons.edit,
-                        color: AppColors.main1
-                    ),
+                    icon: Icon(Icons.edit, color: AppColors.main1),
                   ),
                   Checkbox(
                     value: taskController
