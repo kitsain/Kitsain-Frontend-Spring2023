@@ -6,6 +6,12 @@
     "pantryTabLabel": "MY\nPANTRY",
     "@pantryTabLabel": {
         "description": "Bottom navigation tab bar label for pantry"
+     },
+        "socialTab": "Social",
+        "@socialTab": {
+            "description": "Bottom navigation tab bar label for social functionalities"
+
+
     },
     "shoppingListsScreen": "SHOPPING LISTS",
     "@shoppingListsScreen": {
@@ -58,5 +64,11 @@
     "shoppingListItem": "shopping list",
     "@shoppingListItem": {
         "description": "Name to show on the demo shopping list items"
+    },
+    "map": "Map",
+    "@map": {
+    "description": "Bottom navigation tab bar label for map functionalities"
+
     }
+
 }

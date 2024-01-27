@@ -13,5 +13,7 @@
     "openScanner": "Avaa viivakoodinlukija",
     "barcode": "Viivakoodi",
     "pantryItem": "tuote",
-    "shoppingListItem": "kauppalista"
+    "shoppingListItem": "kauppalista",
+    "socialTab": "KANAVA",
+    "map":"kartta"
 }

@@ -25,7 +25,19 @@ class PantryProxy with ChangeNotifier {
         changes.modified; // indexes of modified objects
         changes.deleted; // indexes of deleted objects
         changes.newModified; // indexes of modified objects
-        // after deletions and insertions are accounted for
+        // after deletions and insertions ar
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        // e accounted for
         changes.moved; // indexes of moved objects
         changes.results; // the full List of objects
       },

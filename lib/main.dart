@@ -3,8 +3,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:kitsain_frontend_spring2023/app_colors.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
+//import 'package:kitsain_frontend_spring2023/src/simple_example.dart';
+import 'package:kitsain_frontend_spring2023/views/main_menu_pages/map.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/pantryview.dart';
+import 'package:kitsain_frontend_spring2023/views/main_menu_pages/some.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/used_and_expired.dart';
+// import 'package:kitsain_frontend_spring2023/views/main_menu_pages/map.dart';
+// import 'package:kitsain_frontend_spring2023/views/main_menu_pages/draft.dart';
+// import 'package:kitsain_frontend_spring2023/src/simple_example_hook.dart';
 import 'package:kitsain_frontend_spring2023/l10n/l10n.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 import 'package:kitsain_frontend_spring2023/views/homepage2.dart';
@@ -65,15 +71,16 @@ class _HomePageState extends State<HomePage> {
     double navBarHeight = 75;
     double paddingBoxHeight = 10;
 
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
+    return PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) {
+
+        },
       child: Material(
         child: DefaultTabController(
           // animationDuration: Duration.zero,
 
-          length: 3,
+          length: 5,
           child: Builder(
             builder: (BuildContext context) {
               return Container(
@@ -82,12 +89,14 @@ class _HomePageState extends State<HomePage> {
                   child: Scaffold(
                     backgroundColor: AppColors.main1,
                     body: const TabBarView(
-                      // physics: NeverScrollableScrollPhysics(),
+                      physics: NeverScrollableScrollPhysics(),
                       // clipBehavior: Clip.antiAlias,
                       children: [
                         PantryView(),
                         ShoppingListNavigation(),
                         UsedAndExpired(),
+                        Some(),
+                        WebApp() ,
                       ],
                     ),
                     bottomNavigationBar: TabBar(
@@ -177,6 +186,58 @@ class _HomePageState extends State<HomePage> {
                             DefaultTabController.of(context).animateTo(2);
                           },
                         ),
+                        DragTarget(
+                          builder: (
+                              BuildContext context,
+                              List<dynamic> accepted,
+                              List<dynamic> rejected,
+                              ) {
+                            return Container(
+                              height: navBarHeight,
+                              child: Column(
+                                children: [
+                                  SizedBox(height: paddingBoxHeight),
+                                  const Icon(
+                                    Icons.dynamic_feed,
+                                  ),
+                                  Text(
+                                    AppLocalizations.of(context)!.socialTab,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          onMove: (details) {
+                            DefaultTabController.of(context).animateTo(3);
+                          },
+                        ),
+                        DragTarget(
+                          builder: (
+                              BuildContext context,
+                              List<dynamic> accepted,
+                              List<dynamic> rejected,
+                              ) {
+                            return Container(
+                              height: navBarHeight,
+                              child: Column(
+                                children: [
+                                  SizedBox(height: paddingBoxHeight),
+                                  const Icon(
+                                    Icons.dynamic_feed,
+                                  ),
+                                  Text(
+                                    AppLocalizations.of(context)!.map,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          onMove: (details) {
+                            DefaultTabController.of(context).animateTo(4);
+                          },
+                        )
                       ],
                     ),
                   ),

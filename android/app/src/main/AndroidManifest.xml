@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kitsain.kitsain_frontend_spring2023">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="kitsain_frontend_spring2023"
         android:name="${applicationName}"
