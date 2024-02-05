@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:openfoodfacts/model/ProductResultV3.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
-import 'package:openfoodfacts/utils/CountryHelper.dart';
 import 'dart:async';
 
 Future<Product?> getFromJson(String barcode) async {
