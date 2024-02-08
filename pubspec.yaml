@@ -44,12 +44,13 @@ dependencies:
   get: ^4.6.5
   provider: ^6.0.5
   expansion_tile_card: ^3.0.0
-  firebase_auth: ^4.3.0
+  firebase_auth: ^4.17.4
   simple_barcode_scanner: ^0.1.0
   googleapis: ^12.0.0
   google_sign_in: ^6.0.2
   extension_google_sign_in_as_googleapis_auth: ^2.0.9
   flutter_signin_button: ^2.0.0
+  firebase_core: ^2.25.4
 
 dev_dependencies:
   flutter_test:
