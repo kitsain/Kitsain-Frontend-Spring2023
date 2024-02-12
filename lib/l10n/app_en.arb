@@ -44,7 +44,7 @@
         "description": "Tooltip for creating new recipe"
     },
     "createNewRecipe": "Create new recipe",
-    "@createNewrecipe": {
+    "@createNewRecipe": {
         "description": "Tooltip for adding new item"
     },
     "dragComplete": "drag complete",
