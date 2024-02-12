@@ -7,6 +7,14 @@
     "@pantryTabLabel": {
         "description": "Bottom navigation tab bar label for pantry"
     },
+        "recipeScreen": "MY RECIPES",
+    "@recipeScreen": {
+        "description": "Name to describe recipe screen"
+    },
+    "recipeTabLabel": "MY\nRECIPES",
+    "@recipeTabLabel": {
+        "description": "Bottom navigation tab bar label for recipes"
+    },
     "shoppingListsScreen": "SHOPPING LISTS",
     "@shoppingListsScreen": {
         "description": "Name to describe shopping lists screen"

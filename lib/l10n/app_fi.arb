@@ -1,5 +1,6 @@
 {
     "pantryScreen": "RUOKAKOMERO",
+    "recipeScreen": "RESEPTIT",
     "pantryTabLabel": "RUOKAKOMERO",
     "shoppingListsScreen": "KAUPPALISTAT",
     "shoppingListsTabLabel": "KAUPPALISTAT",

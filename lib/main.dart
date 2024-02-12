@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:kitsain_frontend_spring2023/app_colors.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/pantryview.dart';
+import 'package:kitsain_frontend_spring2023/views/main_menu_pages/recipeview.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/used_and_expired.dart';
 import 'package:kitsain_frontend_spring2023/l10n/l10n.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
@@ -77,7 +78,7 @@ class _HomePageState extends State<HomePage> {
         child: DefaultTabController(
           // animationDuration: Duration.zero,
 
-          length: 3,
+          length: 4,
           child: Builder(
             builder: (BuildContext context) {
               return Container(
@@ -92,6 +93,7 @@ class _HomePageState extends State<HomePage> {
                         PantryView(),
                         ShoppingListNavigation(),
                         UsedAndExpired(),
+                        RecipeView(),
                       ],
                     ),
                     bottomNavigationBar: TabBar(
@@ -179,6 +181,32 @@ class _HomePageState extends State<HomePage> {
                           },
                           onMove: (details) {
                             DefaultTabController.of(context).animateTo(2);
+                          },
+                        ),
+                        DragTarget(
+                          builder: (
+                            BuildContext context,
+                            List<dynamic> accepted,
+                            List<dynamic> rejected,
+                          ) {
+                            return SizedBox(
+                              height: navBarHeight,
+                              child: Column(
+                                children: [
+                                  SizedBox(height: paddingBoxHeight),
+                                  const Icon(
+                                    Icons.house,
+                                  ),
+                                  Text(
+                                    AppLocalizations.of(context)!.recipeTabLabel,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          onMove: (details) {
+                            DefaultTabController.of(context).animateTo(0);
                           },
                         ),
                       ],
