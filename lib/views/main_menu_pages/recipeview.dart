@@ -4,6 +4,7 @@ import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:kitsain_frontend_spring2023/views/add_forms/add_new_item_form.dart';
+import 'package:kitsain_frontend_spring2023/views/add_forms/create_recipe.dart';
 import 'package:kitsain_frontend_spring2023/views/help_pages/pantry_help_page.dart';
 import 'package:realm/realm.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
@@ -49,8 +50,8 @@ class _RecipeViewState extends State<RecipeView> {
   RealmResults<Item>? chosenStream(String selectedView) {
     if (selectedView == "all" || selectedView == "bycat") {
       return PantryProxy().getPantryItems(selectedSort);
-    } else if (selectedView == "opened") {
-      return PantryProxy().getOpenedItems(selectedSort);
+      // } else if (selectedView == "opened") {
+      //   return PantryProxy().getOpenedItems(selectedSort);
     } else if (selectedView == "favorites") {
       return PantryProxy().getFavouriteItems(selectedSort);
     }
@@ -66,13 +67,13 @@ class _RecipeViewState extends State<RecipeView> {
     }
   }
 
-  void _addNewItem() {
+  void _createNewrecipe() {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) {
         return const FractionallySizedBox(
-          child: NewItemForm(),
+          child: CreateNewRecipeForm(),
         );
       },
     );
@@ -146,7 +147,7 @@ class _RecipeViewState extends State<RecipeView> {
       backgroundColor: AppColors.main2,
       appBar: TopBar(
         title: AppLocalizations.of(context)!.recipeScreen,
-        addFunction: _addNewItem,
+        addFunction: _createNewrecipe,
         helpFunction: _help,
         backgroundImageName: 'assets/images/pantry_banner_B1.jpg',
         titleBackgroundColor: AppColors.titleBackgroundBrown,
@@ -188,13 +189,13 @@ class _RecipeViewState extends State<RecipeView> {
                             style: AppTypography.smallTitle,
                           ),
                         ),
-                        PopupMenuItem(
-                          value: "opened",
-                          child: Text(
-                            "OPENED",
-                            style: AppTypography.smallTitle,
-                          ),
-                        ),
+                        // PopupMenuItem(
+                        //   value: "opened",
+                        //   child: Text(
+                        //     "OPENED",
+                        //     style: AppTypography.smallTitle,
+                        //   ),
+                        // ),
                         PopupMenuItem(
                           value: "bycat",
                           child: Text(
@@ -230,13 +231,13 @@ class _RecipeViewState extends State<RecipeView> {
                             style: AppTypography.smallTitle,
                           ),
                         ),
-                        PopupMenuItem(
-                          value: "expdate",
-                          child: Text(
-                            "Expiration date",
-                            style: AppTypography.smallTitle,
-                          ),
-                        ),
+                        // PopupMenuItem(
+                        //   value: "expdate",
+                        //   child: Text(
+                        //     "Expiration date",
+                        //     style: AppTypography.smallTitle,
+                        //   ),
+                        // ),
                         PopupMenuItem(
                           value: "addedlast",
                           child: Text(
