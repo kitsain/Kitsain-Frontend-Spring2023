@@ -1,3 +1,5 @@
+// JOS EI LAITA KATEGORIAA RESEPTILLE TULEE VIRHE, VOI KATSOA MALLIA MITEN KORJATAAN ADD_NEW_ITEM_FORM.DART-tiedostosta JOS SIELLÄ TOIMIS
+
 import 'package:flutter/material.dart';
 import 'package:kitsain_frontend_spring2023/app_colors.dart';
 import 'package:kitsain_frontend_spring2023/app_typography.dart';
@@ -125,324 +127,53 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    child: ElevatedButton.icon(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.resolveWith(
-                              (states) => AppColors.main3),
-                          foregroundColor: MaterialStateProperty.resolveWith(
-                              (states) => Colors.white)),
-                      icon: const Icon(
-                        Icons.add_a_photo_rounded,
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    child: Container(
+                      decoration: BoxDecoration(
                         color: Colors.white,
-                        size: 40,
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(5),
                       ),
-                      label: Text('SCAN EAN',
-                          style: AppTypography.category
-                              .copyWith(color: Colors.white)),
-                      onPressed: () async {
-                        var res = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const SimpleBarcodeScannerPage(),
-                          ),
-                        );
-                        if (res is String && res != '-1') {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                            content: Text('Fetching item...'),
-                            duration: Duration(seconds: 2),
-                          ));
-                          try {
-                            _EANCodeField.text = res;
-                            primaryFocus!.unfocus(disposition: _disposition);
-                            _offData = await getFromJson(res);
-                            _itemName.text = _offData.productName.toString();
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              content: Text(
-                                  'Item not found. Please enter item information.'),
-                              duration: Duration(seconds: 2),
-                            ));
-                          }
-                          if (_itemName.text.isNotEmpty) {
-                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Item found!'),
-                                duration: Duration(seconds: 2),
-                              ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DropdownButtonFormField<String>(
+                          style: AppTypography.smallTitle
+                              .copyWith(color: Colors.black),
+                          menuMaxHeight: 200,
+                          value: _category,
+                          hint: Text(
+                              'Choose Category'), // Set 'Choose Category' as hint
+                          icon: Icon(Icons.arrow_drop_down),
+                          decoration:
+                              const InputDecoration.collapsed(hintText: ''),
+                          onChanged: (String? value) {
+                            setState(
+                              () {
+                                _category = value!;
+                                _catInt = Categories.categoriesByIndex.keys
+                                        .firstWhere(
+                                            (key) => categories[key] == value) +
+                                    1;
+                              },
                             );
-                          }
-                        }
-                      },
-                    ),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                  TextFormField(
-                    style: AppTypography.paragraph,
-                    controller: _EANCodeField,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: const OutlineInputBorder(),
-                      labelText: 'EAN CODE',
-                      suffixIcon: SizedBox(
-                        width: 80,
-                        height: 60,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.resolveWith(
-                                (states) => AppColors.main3),
-                            foregroundColor: MaterialStateProperty.resolveWith(
-                                (states) => AppColors.main2),
-                            shape: const MaterialStatePropertyAll<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadiusDirectional.only(
-                                  topEnd: Radius.circular(5),
-                                  bottomEnd: Radius.circular(5),
-                                ),
-                              ),
-                            ),
-                          ),
-                          onPressed: () async {
-                            if (_EANCodeField.text.isNotEmpty) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                content: Text('Fetching item data...'),
-                                duration: Duration(seconds: 2),
-                              ));
-                              try {
-                                primaryFocus!
-                                    .unfocus(disposition: _disposition);
-                                _offData =
-                                    await getFromJson(_EANCodeField.text);
-                                _itemName.text =
-                                    _offData.productName.toString();
-                              } catch (e) {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content:
-                                        Text('Item not found. Input manually.'),
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
-                              }
-                              if (_itemName.text.isNotEmpty) {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Item found!'),
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
-                              }
-                            } else {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) => SizedBox(
-                                  width: 10,
-                                  height: 10,
-                                  child: AlertDialog(
-                                    content:
-                                        const Text('Please input EAN-code'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: const Text('OK'),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }
                           },
-                          child: const Text('FETCH\n ITEM'),
+                          items: categories.map<DropdownMenuItem<String>>(
+                            (String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            },
+                          ).toList(),
+                          validator: (value) {
+                            if (value == 'Choose Category') {
+                              return "Please choose a category";
+                            }
+                            return null;
+                          },
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-                  Stack(children: [
-                    TextFormField(
-                      style: AppTypography.paragraph,
-                      controller: _itemName,
-                      decoration: const InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(),
-                        labelText: 'ITEM NAME',
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter item name";
-                        }
-                        return null;
-                      },
-                    ),
-                    const Positioned(
-                        right: 27,
-                        top: 15,
-                        child: Icon(
-                          Icons.keyboard_alt_outlined,
-                          color: AppColors.main3,
-                        ))
-                  ]),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: DropdownButtonFormField<String>(
-                        style: AppTypography.smallTitle
-                            .copyWith(color: Colors.black),
-                        menuMaxHeight: 200,
-                        value: _category,
-                        icon: Icon(Icons.arrow_drop_down),
-                        decoration:
-                            const InputDecoration.collapsed(hintText: ''),
-                        onChanged: (String? value) {
-                          setState(
-                            () {
-                              _category = value!;
-                              _catInt = Categories.categoriesByIndex.keys
-                                      .firstWhere(
-                                          (key) => categories[key] == value) +
-                                  1;
-                            },
-                          );
-                        },
-                        items: categories.map<DropdownMenuItem<String>>(
-                          (String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          },
-                        ).toList(),
-                        validator: (value) {
-                          if (value == categories.first) {
-                            return "Please enter a category";
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                  SizedBox(
-                    child: TextButton.icon(
-                      onPressed: () {
-                        setState(() {
-                          _favorite = !_favorite;
-                        });
-                      },
-                      icon: Icon(
-                        _favorite ? Icons.favorite : Icons.favorite_border,
-                        color: Colors.black,
-                      ),
-                      label: Text(
-                        'Mark as favorite',
-                        style: AppTypography.paragraph
-                            .copyWith(color: Colors.black),
-                      ),
-                    ),
-                  ),
-                  TextFormField(
-                    style:
-                        AppTypography.smallTitle.copyWith(color: Colors.black),
-                    controller: _openDateString,
-                    decoration: const InputDecoration(
-                        icon: Icon(Icons.calendar_today),
-                        labelText: "OPENING DATE"),
-                    readOnly: true,
-                    onTap: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2101),
-                        builder: (context, child) {
-                          return Theme(
-                            data: Theme.of(context).copyWith(
-                              colorScheme: const ColorScheme.light(
-                                primary: AppColors.main1,
-                                onPrimary: AppColors.main2,
-                                onSurface: AppColors.main3,
-                              ),
-                              textButtonTheme: TextButtonThemeData(
-                                  style: TextButton.styleFrom(
-                                foregroundColor: Colors.black,
-                              )),
-                            ),
-                            child: child!,
-                          );
-                        },
-                      );
-                      if (pickedDate != null) {
-                        String openedDate =
-                            "${pickedDate.day}.${pickedDate.month}.${pickedDate.year}";
-                        _openDateString.text = openedDate;
-                        _openDateDT = pickedDate;
-                      } else {
-                        _openDateString.text = "";
-                      }
-                    },
-                  ),
-                  TextFormField(
-                    style:
-                        AppTypography.smallTitle.copyWith(color: Colors.black),
-                    controller: _expDateString,
-                    decoration: const InputDecoration(
-                        icon: Icon(Icons.calendar_today),
-                        labelText: "EXPIRATION DATE"),
-                    readOnly: true,
-                    onTap: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2101),
-                        builder: (context, child) {
-                          return Theme(
-                            data: Theme.of(context).copyWith(
-                              colorScheme: const ColorScheme.light(
-                                primary: AppColors.main1,
-                                onPrimary: AppColors.main2,
-                                onSurface: AppColors.main3,
-                              ),
-                              textButtonTheme: TextButtonThemeData(
-                                  style: TextButton.styleFrom(
-                                foregroundColor: Colors.black,
-                              )),
-                            ),
-                            child: child!,
-                          );
-                        },
-                      );
-                      if (pickedDate != null) {
-                        String expirationDate =
-                            "${pickedDate.day}.${pickedDate.month}.${pickedDate.year}";
-                        _expDateString.text = expirationDate;
-                        _expDateDT = pickedDate;
-                        _hasExpiryDate = true;
-                      } else {
-                        _expDateString.text = "";
-                      }
-                    },
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                   TextFormField(
@@ -495,7 +226,8 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                             if (_formKey.currentState!.validate()) {
                               var newItem = Item(
                                 ObjectId().toString(),
-                                _itemName.text,
+                                _details
+                                    .text, // using details as the item name for simplicity
                                 "Pantry",
                                 _catInt,
                                 favorite: _favorite,
