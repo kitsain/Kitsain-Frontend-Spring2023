@@ -148,6 +148,7 @@ class _HomePageState extends State<HomePage> {
                                   Text(
                                     AppLocalizations.of(context)!.shoppingListsTabLabel,
                                     textAlign: TextAlign.center,
+                                    style:TextStyle(fontSize: 13),
                                   ),
                                 ],
                               ),
@@ -195,7 +196,7 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   SizedBox(height: paddingBoxHeight),
                                   const Icon(
-                                    Icons.house,
+                                    Icons.food_bank_outlined,
                                   ),
                                   Text(
                                     AppLocalizations.of(context)!.recipeTabLabel,

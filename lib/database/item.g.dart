@@ -6,6 +6,7 @@ part of 'item.dart';
 // RealmObjectGenerator
 // **************************************************************************
 
+// ignore_for_file: type=lint
 class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   static var _defaultsSet = false;
 
@@ -267,6 +268,54 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
       SchemaProperty('ecoscoreGrade', RealmPropertyType.string, optional: true),
       SchemaProperty('packaging', RealmPropertyType.string, optional: true),
       SchemaProperty('origins', RealmPropertyType.string, optional: true),
+      SchemaProperty('details', RealmPropertyType.string, optional: true),
+    ]);
+  }
+}
+
+class Recipe extends _Recipe with RealmEntity, RealmObjectBase, RealmObject {
+  Recipe(
+    String id,
+    String name, {
+    String? details,
+  }) {
+    RealmObjectBase.set(this, 'id', id);
+    RealmObjectBase.set(this, 'name', name);
+    RealmObjectBase.set(this, 'details', details);
+  }
+
+  Recipe._();
+
+  @override
+  String get id => RealmObjectBase.get<String>(this, 'id') as String;
+  @override
+  set id(String value) => throw RealmUnsupportedSetError();
+
+  @override
+  String get name => RealmObjectBase.get<String>(this, 'name') as String;
+  @override
+  set name(String value) => RealmObjectBase.set(this, 'name', value);
+
+  @override
+  String? get details =>
+      RealmObjectBase.get<String>(this, 'details') as String?;
+  @override
+  set details(String? value) => RealmObjectBase.set(this, 'details', value);
+
+  @override
+  Stream<RealmObjectChanges<Recipe>> get changes =>
+      RealmObjectBase.getChanges<Recipe>(this);
+
+  @override
+  Recipe freeze() => RealmObjectBase.freezeObject<Recipe>(this);
+
+  static SchemaObject get schema => _schema ??= _initSchema();
+  static SchemaObject? _schema;
+  static SchemaObject _initSchema() {
+    RealmObjectBase.registerFactory(Recipe._);
+    return const SchemaObject(ObjectType.realmObject, Recipe, 'Recipe', [
+      SchemaProperty('id', RealmPropertyType.string, primaryKey: true),
+      SchemaProperty('name', RealmPropertyType.string),
       SchemaProperty('details', RealmPropertyType.string, optional: true),
     ]);
   }

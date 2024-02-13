@@ -1,15 +1,18 @@
 import 'package:realm/realm.dart';
 import 'package:flutter/foundation.dart';
 import 'item.dart';
+import 'realmsetup.dart';
 
 // This file is used to modify the database.
 // When you want to call a function from another class,
 // use for example PantryProxy().
 
 // Creating and initiating the DB (realm)
-var _config =
+/* var _config =
     Configuration.local([Item.schema], shouldDeleteIfMigrationNeeded: true);
-var realm = Realm(_config);
+var realm = Realm(_config); */
+
+var realm = RealmSetup.getRealm();
 
 class PantryProxy with ChangeNotifier {
   RealmResults<Item> getItems() {

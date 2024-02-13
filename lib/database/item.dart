@@ -32,6 +32,14 @@ class _Item {
   late String? details;
 }
 
+@RealmModel()
+class _Recipe {
+  @PrimaryKey()
+  late final String id; // This will NOT be shown to the user
+  late String name;
+  late String? details;
+}
+
 class CategoryMaps {
   Map catEnglish = {
     1: 'New',

@@ -7,8 +7,8 @@ import 'package:kitsain_frontend_spring2023/views/add_forms/add_new_item_form.da
 import 'package:kitsain_frontend_spring2023/views/add_forms/create_recipe.dart';
 import 'package:kitsain_frontend_spring2023/views/help_pages/pantry_help_page.dart';
 import 'package:realm/realm.dart';
-import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
-import 'package:kitsain_frontend_spring2023/assets/itembuilder.dart';
+import 'package:kitsain_frontend_spring2023/database/recipes_proxy.dart';
+import 'package:kitsain_frontend_spring2023/assets/recipebuilder.dart';
 import 'package:kitsain_frontend_spring2023/app_colors.dart';
 import 'package:kitsain_frontend_spring2023/categories.dart';
 
@@ -47,18 +47,18 @@ class _RecipeViewState extends State<RecipeView> {
   // ];
 
   // Choose what items to query from db based on user selection
-  RealmResults<Item>? chosenStream(String selectedView) {
-    if (selectedView == "all" || selectedView == "bycat") {
-      return PantryProxy().getPantryItems(selectedSort);
+  RealmResults<Recipe>? chosenStream(String selectedView) {
+      if (selectedView == "all" || selectedView == "bycat") {
+      return RecipeProxy().getRecipes(selectedSort);
       // } else if (selectedView == "opened") {
       //   return PantryProxy().getOpenedItems(selectedSort);
-    } else if (selectedView == "favorites") {
-      return PantryProxy().getFavouriteItems(selectedSort);
+} else if (selectedView == "favorites") {
+      return RecipeProxy().getRecipes(selectedSort);
     }
     return null;
   }
 
-  // If the category has no items, the header for it will not be shown
+/*   // If the category has no items, the header for it will not be shown
   bool checkIfEmpty(int cat) {
     if (PantryProxy().getCatCount(cat) > 0) {
       return true;
@@ -66,7 +66,7 @@ class _RecipeViewState extends State<RecipeView> {
       return false;
     }
   }
-
+ */
   void _createNewrecipe() {
     showModalBottomSheet(
       context: context,
@@ -92,7 +92,7 @@ class _RecipeViewState extends State<RecipeView> {
     );
   }
 
-  _receiveItem(Item data) {
+/*   _receiveItem(Item data) {
     PantryProxy().changeLocation(data, "Pantry");
     setState(
       () {
@@ -107,7 +107,7 @@ class _RecipeViewState extends State<RecipeView> {
         );
       },
     );
-  }
+  } */
 
   // final catEnglish = <int, String>{
   //   1: 'New',
@@ -153,7 +153,7 @@ class _RecipeViewState extends State<RecipeView> {
         titleBackgroundColor: AppColors.titleBackgroundBrown,
       ),
       body: DragTarget<Item>(
-        onAccept: (data) => _receiveItem(data),
+    //    onAccept: (data) => _receiveItem(data),
         builder: (context, candidateData, rejectedData) {
           return ListView(
             children: [
@@ -196,13 +196,6 @@ class _RecipeViewState extends State<RecipeView> {
                         //     style: AppTypography.smallTitle,
                         //   ),
                         // ),
-                        PopupMenuItem(
-                          value: "bycat",
-                          child: Text(
-                            "BY CATEGORY",
-                            style: AppTypography.smallTitle,
-                          ),
-                        ),
                       ];
                     },
                   ),
@@ -253,7 +246,7 @@ class _RecipeViewState extends State<RecipeView> {
                   )
                 ],
               ),
-              StreamBuilder<RealmResultsChanges<Item>>(
+              StreamBuilder<RealmResultsChanges<Recipe>>(
                 stream: chosenStream(selectedView)?.changes,
                 builder: (context, snapshot) {
                   final data = snapshot.data;
@@ -269,8 +262,7 @@ class _RecipeViewState extends State<RecipeView> {
                         style: AppTypography.smallTitle,
                       ),
                     );
-                  } else {
-                    if (selectedView == "all") {
+                  } else {                    
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -281,85 +273,12 @@ class _RecipeViewState extends State<RecipeView> {
                               style: AppTypography.heading3,
                             ),
                           ),
-                          ItemBuilder(
-                            items: results,
+                          RecipeBuilder(
+                            recipes: results,
                             sortMethod: selectedSort,
-                            loc: "Pantry",
                           ),
                         ],
-                      );
-                    }
-                    if (selectedView == "favorites") {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                            child: Text(
-                              "FAVORITE ITEMS",
-                              style: AppTypography.heading3,
-                            ),
-                          ),
-                          ItemBuilder(
-                            items: results,
-                            sortMethod: selectedSort,
-                            loc: "Pantry",
-                          ),
-                        ],
-                      );
-                    }
-                    if (selectedView == "opened") {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                            child: Text(
-                              "OPENED ITEMS",
-                              style: AppTypography.heading3,
-                            ),
-                          ),
-                          ItemBuilder(
-                            items: results,
-                            sortMethod: selectedSort,
-                            loc: "Pantry",
-                          ),
-                        ],
-                      );
-                    } else {
-                      return Column(
-                        children: [
-                          for (var cat in Categories.categoriesByIndex.keys)
-                            if (checkIfEmpty(cat))
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(15, 5, 15, 5),
-                                    child: Text(
-                                      Categories.categoriesByIndex[cat]!
-                                          .toUpperCase(),
-                                      style: AppTypography.heading3,
-                                    ),
-                                  ),
-                                  ItemBuilder(
-                                    items: PantryProxy()
-                                        .getByMainCat(cat, selectedSort),
-                                    sortMethod: selectedSort,
-                                    loc: "Pantry",
-                                  ),
-                                  const Divider(
-                                    height: 15,
-                                    indent: 20,
-                                    endIndent: 20,
-                                    color: Colors.black,
-                                  ),
-                                ],
-                              ),
-                        ],
-                      );
-                    }
+                      );                     
                   }
                 },
               ),
