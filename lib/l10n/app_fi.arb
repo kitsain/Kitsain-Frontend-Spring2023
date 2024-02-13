@@ -1,7 +1,8 @@
 {
     "pantryScreen": "RUOKAKOMERO",
-    "recipeScreen": "RESEPTIT",
     "pantryTabLabel": "RUOKAKOMERO",
+    "recipeScreen": "RESEPTIT",
+    "recipeTabLabel": "RESEPTIT",
     "shoppingListsScreen": "KAUPPALISTAT",
     "shoppingListsTabLabel": "KAUPPALISTAT",
     "shoppingListsScreenTopBarTitle": "KAUPPALISTAT",
