@@ -3,14 +3,12 @@ import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import 'package:kitsain_frontend_spring2023/assets/top_bar.dart';
 import 'package:flutter_gen/gen_l10n/app-localizations.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
-import 'package:kitsain_frontend_spring2023/views/add_forms/add_new_item_form.dart';
 import 'package:kitsain_frontend_spring2023/views/add_forms/create_recipe.dart';
 import 'package:kitsain_frontend_spring2023/views/help_pages/pantry_help_page.dart';
 import 'package:realm/realm.dart';
 import 'package:kitsain_frontend_spring2023/database/recipes_proxy.dart';
 import 'package:kitsain_frontend_spring2023/assets/recipebuilder.dart';
 import 'package:kitsain_frontend_spring2023/app_colors.dart';
-import 'package:kitsain_frontend_spring2023/categories.dart';
 
 // This file only sets the general UI: where are the show and sort buttons
 // and where the main content goes. Item lists are generated in
@@ -48,11 +46,11 @@ class _RecipeViewState extends State<RecipeView> {
 
   // Choose what items to query from db based on user selection
   RealmResults<Recipe>? chosenStream(String selectedView) {
-      if (selectedView == "all" || selectedView == "bycat") {
+    if (selectedView == "all" || selectedView == "bycat") {
       return RecipeProxy().getRecipes(selectedSort);
       // } else if (selectedView == "opened") {
       //   return PantryProxy().getOpenedItems(selectedSort);
-} else if (selectedView == "favorites") {
+    } else if (selectedView == "favorites") {
       return RecipeProxy().getRecipes(selectedSort);
     }
     return null;
@@ -153,7 +151,7 @@ class _RecipeViewState extends State<RecipeView> {
         titleBackgroundColor: AppColors.titleBackgroundBrown,
       ),
       body: DragTarget<Item>(
-    //    onAccept: (data) => _receiveItem(data),
+        //    onAccept: (data) => _receiveItem(data),
         builder: (context, candidateData, rejectedData) {
           return ListView(
             children: [
@@ -262,23 +260,23 @@ class _RecipeViewState extends State<RecipeView> {
                         style: AppTypography.smallTitle,
                       ),
                     );
-                  } else {                    
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                            child: Text(
-                              "ALL ITEMS",
-                              style: AppTypography.heading3,
-                            ),
+                  } else {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                          child: Text(
+                            "ALL ITEMS",
+                            style: AppTypography.heading3,
                           ),
-                          RecipeBuilder(
-                            recipes: results,
-                            sortMethod: selectedSort,
-                          ),
-                        ],
-                      );                     
+                        ),
+                        RecipeBuilder(
+                          recipes: results,
+                          sortMethod: selectedSort,
+                        ),
+                      ],
+                    );
                   }
                 },
               ),

@@ -7,8 +7,6 @@ import 'package:kitsain_frontend_spring2023/categories.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:realm/realm.dart';
-import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
-import 'package:kitsain_frontend_spring2023/database/openfoodfacts.dart';
 
 const List<String> categories = <String>[
   'Choose category',
