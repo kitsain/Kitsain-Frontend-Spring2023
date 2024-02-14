@@ -45,6 +45,10 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   String _category = "Choose category";
   var _catInt;
   var _details = TextEditingController();
+  var _details2 = TextEditingController();
+  var _details3 = TextEditingController();
+  var _details4 = TextEditingController();
+  String? _selectedOption;
 
   var _offData;
   UnfocusDisposition _disposition = UnfocusDisposition.scope;
@@ -144,8 +148,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                           hint: Text(
                               'Choose Category'), // Set 'Choose Category' as hint
                           icon: Icon(Icons.arrow_drop_down),
-                          decoration:
-                              const InputDecoration.collapsed(hintText: ''),
+                          decoration: InputDecoration.collapsed(hintText: ''),
                           onChanged: (String? value) {
                             setState(
                               () {
@@ -176,6 +179,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                     ),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                  // First TextFormField
                   TextFormField(
                     style: AppTypography.paragraph,
                     controller: _details,
@@ -183,9 +187,70 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: 'Details',
+                      hintText:
+                          'Your diet and other wishes for the recipe? eg. vegan, 15-minute recipe, breakfast.',
                     ),
                     maxLines: 5,
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                  // Second TextFormField
+                  TextFormField(
+                    style: AppTypography.paragraph,
+                    controller: _details2,
+                    decoration: const InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(),
+                      hintText:
+                          'List the cooking tools available/ the tools you want to use for this recipe, eg. airfryer',
+                    ),
+                    maxLines: 5,
+                  ),
+                  // SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                  // // Third TextFormField
+                  // TextFormField(
+                  //   style: AppTypography.paragraph,
+                  //   controller: _details3,
+                  //   decoration: const InputDecoration(
+                  //     filled: true,
+                  //     fillColor: Colors.white,
+                  //     border: OutlineInputBorder(),
+                  //     hintText: 'Details 3',
+                  //   ),
+                  //   maxLines: 5,
+                  // ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                  // Fourth TextFormField
+                  TextFormField(
+                    style: AppTypography.paragraph,
+                    controller: _details4,
+                    decoration: const InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(),
+                      hintText:
+                          'Any ingredients you Want to use, eg. ingredients soon expiring?',
+                    ),
+                    maxLines: 5,
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                  // Add the dropdown menu here
+                  DropdownButtonFormField<String>(
+                    value: _selectedOption,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedOption = newValue!;
+                      });
+                    },
+                    items: <String>[
+                      'Use only pantry items',
+                      'Can use other items that are not in pantry'
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                   Row(
@@ -252,7 +317,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

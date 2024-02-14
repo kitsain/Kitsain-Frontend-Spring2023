@@ -17,8 +17,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MaterialApp(home: MyApp()));
 }
 
@@ -120,7 +120,8 @@ class _HomePageState extends State<HomePage> {
                                     Icons.house,
                                   ),
                                   Text(
-                                    AppLocalizations.of(context)!.pantryTabLabel,
+                                    AppLocalizations.of(context)!
+                                        .pantryTabLabel,
                                     textAlign: TextAlign.center,
                                   ),
                                 ],
@@ -146,9 +147,10 @@ class _HomePageState extends State<HomePage> {
                                     Icons.shopping_cart,
                                   ),
                                   Text(
-                                    AppLocalizations.of(context)!.shoppingListsTabLabel,
+                                    AppLocalizations.of(context)!
+                                        .shoppingListsTabLabel,
                                     textAlign: TextAlign.center,
-                                    style:TextStyle(fontSize: 13),
+                                    style: TextStyle(fontSize: 13),
                                   ),
                                 ],
                               ),
@@ -173,7 +175,8 @@ class _HomePageState extends State<HomePage> {
                                     Icons.pie_chart,
                                   ),
                                   Text(
-                                    AppLocalizations.of(context)!.pantryTabLabel,
+                                    AppLocalizations.of(context)!
+                                        .pantryTabLabel,
                                     textAlign: TextAlign.center,
                                   ),
                                 ],
@@ -199,7 +202,8 @@ class _HomePageState extends State<HomePage> {
                                     Icons.food_bank_outlined,
                                   ),
                                   Text(
-                                    AppLocalizations.of(context)!.recipeTabLabel,
+                                    AppLocalizations.of(context)!
+                                        .recipeTabLabel,
                                     textAlign: TextAlign.center,
                                   ),
                                 ],

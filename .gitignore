@@ -98,3 +98,4 @@ doc/api/
 
 .vscode/launch.json
 binary/
+/lib/api_key.dart
