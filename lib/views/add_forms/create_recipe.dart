@@ -1,5 +1,3 @@
-// JOS EI LAITA KATEGORIAA RESEPTILLE TULEE VIRHE, VOI KATSOA MALLIA MITEN KORJATAAN ADD_NEW_ITEM_FORM.DART-tiedostosta JOS SIELLÄ TOIMIS
-
 import 'package:flutter/material.dart';
 import 'package:kitsain_frontend_spring2023/app_colors.dart';
 import 'package:kitsain_frontend_spring2023/app_typography.dart';
@@ -33,6 +31,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   var _itemName = TextEditingController();
 
   // These dates control the date string user sees in the form
+  final TextEditingController _recipeTypeController = TextEditingController();
+  final TextEditingController _suppliesController = TextEditingController();
+  final TextEditingController _expSoonController = TextEditingController();
   var _expDateString = TextEditingController();
   var _openDateString = TextEditingController();
   var _recipeType = TextEditingController();
@@ -188,7 +189,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                   // First TextFormField
                   TextFormField(
                     style: AppTypography.paragraph,
-                    controller: _recipeType,
+                    controller: _recipeTypeController,
                     decoration: const InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
@@ -202,7 +203,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                   // Second TextFormField
                   TextFormField(
                     style: AppTypography.paragraph,
-                    controller: _supplies,
+                    controller: _suppliesController,
                     decoration: const InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
@@ -216,7 +217,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                   // Fourth TextFormField
                   TextFormField(
                     style: AppTypography.paragraph,
-                    controller: _exp_soon,
+                    controller: _expSoonController,
                     decoration: const InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
@@ -282,21 +283,25 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                           ),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              var newItem = Item(
-                                ObjectId().toString(),
-                                _details
-                                    .text, // using details as the item name for simplicity
-                                "Pantry",
-                                _catInt,
-                                favorite: _favorite,
-                                openedDate: _openDateDT,
-                                expiryDate: _expDateDT,
-                                hasExpiryDate: _hasExpiryDate,
-                                addedDate: DateTime.now().toUtc(),
-                                details: _details.text,
-                              );
-                              PantryProxy().upsertItem(newItem);
-                              setState(() {});
+                              // Get values from controllers
+                              String recipeType = _recipeTypeController.text;
+                              String supplies = _suppliesController.text;
+                              String expSoon = _expSoonController.text;
+
+                              // Call your function with the values
+                              var tobeprinted = generateRecipe(
+                                  "chicken, pasta, tomato, pesto, anjovis, chocolate, mint",
+                                  recipeType,
+                                  supplies,
+                                  expSoon,
+                                  "True");
+                              print(tobeprinted);
+                              // Clear the text fields if needed
+                              _recipeTypeController.clear();
+                              _suppliesController.clear();
+                              _expSoonController.clear();
+
+                              // Close the current screen if needed
                               Navigator.pop(context);
                             }
                           },

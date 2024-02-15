@@ -18,6 +18,6 @@ Future<String?> generateRecipe(String ingredients, String recipe_type,
 
   print(await http.read(Uri.https(
       'kitsain-build-ohtuprojekti-staging.apps.ocp-test-0.k8s.it.helsinki.fi',
-      'generate/')));
+      '/generate')));
   return response.body;
 }
