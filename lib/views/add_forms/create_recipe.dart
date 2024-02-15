@@ -281,7 +281,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                             foregroundColor: MaterialStateProperty.resolveWith(
                                 (states) => Colors.white),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               // Get values from controllers
                               String recipeType = _recipeTypeController.text;
@@ -289,13 +289,14 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                               String expSoon = _expSoonController.text;
 
                               // Call your function with the values
-                              var tobeprinted = generateRecipe(
+                              var generatedRecipe = await generateRecipe(
                                   "chicken, pasta, tomato, pesto, anjovis, chocolate, mint",
                                   recipeType,
                                   supplies,
                                   expSoon,
                                   "True");
-                              print(tobeprinted);
+                              print(generatedRecipe);
+
                               // Clear the text fields if needed
                               _recipeTypeController.clear();
                               _suppliesController.clear();

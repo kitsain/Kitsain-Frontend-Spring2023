@@ -12,9 +12,11 @@ Future<String?> generateRecipe(String ingredients, String recipe_type,
     'supplies': supplies,
     'pantry_only': pantry_only
   });
+  print(
+      "${ingredients}, ${recipe_type}, ${exp_soon}, ${supplies}, ${pantry_only}");
 
-  // print('Response status: ${response.statusCode}');
-  // print('Response body: ${response.body}');
+  print('Response status: ${response.statusCode}');
+  print('Response body: ${response.body}');
 
   print(await http.read(Uri.https(
       'kitsain-build-ohtuprojekti-staging.apps.ocp-test-0.k8s.it.helsinki.fi',
