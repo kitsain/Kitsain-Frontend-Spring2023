@@ -6,10 +6,13 @@ import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import 'package:kitsain_frontend_spring2023/categories.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
+import 'package:kitsain_frontend_spring2023/database/openaibackend.dart';
 import 'package:realm/realm.dart';
+
 
 const List<String> categories = <String>[
   'Choose category',
+  'No category',
   'Weekend',
   'Weekday',
   'Holiday',
@@ -33,6 +36,12 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   // These dates control the date string user sees in the form
   var _expDateString = TextEditingController();
   var _openDateString = TextEditingController();
+  var _recipeType = TextEditingController();
+  var _ingredients = TextEditingController();
+  var _supplies = TextEditingController();
+  var _exp_soon = TextEditingController();
+  var _pantry_only = TextEditingController();
+  String selected = "True";
 
   // These values are actually saved to the db as DateTime
   var _openDateDT;
@@ -44,12 +53,12 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   var _catInt;
   var _details = TextEditingController();
   var _details2 = TextEditingController();
-  var _details3 = TextEditingController();
+  // var _details3 = TextEditingController();
   var _details4 = TextEditingController();
   String? _selectedOption;
 
-  var _offData;
-  UnfocusDisposition _disposition = UnfocusDisposition.scope;
+  // var _offData;
+  // UnfocusDisposition _disposition = UnfocusDisposition.scope;
 
   void _discardChangesDialog(bool discardForm) {
     if (discardForm ||
@@ -180,7 +189,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                   // First TextFormField
                   TextFormField(
                     style: AppTypography.paragraph,
-                    controller: _details,
+                    controller: _recipeType,
                     decoration: const InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
@@ -194,7 +203,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                   // Second TextFormField
                   TextFormField(
                     style: AppTypography.paragraph,
-                    controller: _details2,
+                    controller: _supplies,
                     decoration: const InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
@@ -204,24 +213,11 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                     ),
                     maxLines: 5,
                   ),
-                  // SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                  // // Third TextFormField
-                  // TextFormField(
-                  //   style: AppTypography.paragraph,
-                  //   controller: _details3,
-                  //   decoration: const InputDecoration(
-                  //     filled: true,
-                  //     fillColor: Colors.white,
-                  //     border: OutlineInputBorder(),
-                  //     hintText: 'Details 3',
-                  //   ),
-                  //   maxLines: 5,
-                  // ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                   // Fourth TextFormField
                   TextFormField(
                     style: AppTypography.paragraph,
-                    controller: _details4,
+                    controller: _exp_soon,
                     decoration: const InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
@@ -305,6 +301,8 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                               Navigator.pop(context);
                             }
                           },
+                        ),
+                          onPressed: () => generateRecipe(),
                           child: const Text(
                             'CREATE RECIPE',
                             style: AppTypography.category,
