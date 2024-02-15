@@ -9,7 +9,6 @@ import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/database/openaibackend.dart';
 import 'package:realm/realm.dart';
 
-
 const List<String> categories = <String>[
   'Choose category',
   'No category',
@@ -301,8 +300,6 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                               Navigator.pop(context);
                             }
                           },
-                        ),
-                          onPressed: () => generateRecipe(),
                           child: const Text(
                             'CREATE RECIPE',
                             style: AppTypography.category,
