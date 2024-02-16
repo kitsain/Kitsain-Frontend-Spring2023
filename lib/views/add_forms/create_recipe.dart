@@ -292,8 +292,8 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                               var generatedRecipe = await generateRecipe(
                                   "chicken, pasta, tomato, pesto, anjovis, chocolate, mint",
                                   recipeType,
-                                  supplies,
                                   expSoon,
+                                  supplies,
                                   "True");
                               print(generatedRecipe);
 
