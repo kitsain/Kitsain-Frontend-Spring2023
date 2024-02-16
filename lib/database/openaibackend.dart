@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 Future<String?> generateRecipe(String ingredients, String recipe_type,
@@ -5,21 +6,20 @@ Future<String?> generateRecipe(String ingredients, String recipe_type,
   var url = Uri.https(
       'kitsain-build-ohtuprojekti-staging.apps.ocp-test-0.k8s.it.helsinki.fi',
       '/generate');
-  var response = await http.post(url, body: {
+  var headers = {"Content-Type": "application/json"};
+  var requestBody = json.encode({
     'ingredients': ingredients,
     'recipe_type': recipe_type,
     'exp_soon': exp_soon,
     'supplies': supplies,
     'pantry_only': pantry_only
   });
+  var response = await http.post(url, headers: headers, body: requestBody);
   print(
       "${ingredients}, ${recipe_type}, ${exp_soon}, ${supplies}, ${pantry_only}");
 
   print('Response status: ${response.statusCode}');
   print('Response body: ${response.body}');
 
-  print(await http.read(Uri.https(
-      'kitsain-build-ohtuprojekti-staging.apps.ocp-test-0.k8s.it.helsinki.fi',
-      '/generate')));
   return response.body;
 }
