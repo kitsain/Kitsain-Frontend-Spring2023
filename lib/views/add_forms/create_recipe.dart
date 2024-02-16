@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kitsain_frontend_spring2023/app_colors.dart';
 import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import 'package:kitsain_frontend_spring2023/categories.dart';
-import 'package:kitsain_frontend_spring2023/database/item.dart';
-import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
+import 'package:kitsain_frontend_spring2023/database/recipes_proxy.dart';
 import 'package:kitsain_frontend_spring2023/database/openaibackend.dart';
-import 'package:realm/realm.dart';
 
 const List<String> categories = <String>[
   'Choose category',
@@ -295,7 +293,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                                   expSoon,
                                   supplies,
                                   "True");
-                              print(generatedRecipe);
+
+                              RecipeProxy().upsertRecipe(generatedRecipe);
+                              setState(() {});
 
                               // Clear the text fields if needed
                               _recipeTypeController.clear();
