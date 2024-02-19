@@ -149,7 +149,6 @@ class _RecipeCardState extends State<RecipeCard> {
   }
 
   Widget _buildDetailsContainer(String details, {Color? color}) {
-  print(details);
   dynamic parsedJson = jsonDecode(details);
 
   // Separate the two parts

@@ -3,7 +3,11 @@ import 'package:kitsain_frontend_spring2023/app_colors.dart';
 import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import 'package:kitsain_frontend_spring2023/categories.dart';
 import 'package:kitsain_frontend_spring2023/database/recipes_proxy.dart';
+import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/database/openaibackend.dart';
+import 'package:kitsain_frontend_spring2023/database/item.dart';
+import 'package:realm/realm.dart';
+import 'package:kitsain_frontend_spring2023/assets/pantry_builder_recipe_generation.dart';
 
 const List<String> categories = <String>[
   'Choose category',
@@ -27,7 +31,30 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   final _formKey = GlobalKey<FormState>();
   final _EANCodeField = TextEditingController();
   var _itemName = TextEditingController();
+  var _pantryItems;
+  bool _isLoading = true; // Flag to track loading state
 
+  @override
+  void initState() {
+    super.initState();
+    _loadPantryItems();
+  }
+
+  // Load pantry items asynchronously
+  Future<void> _loadPantryItems() async {
+    try {
+      // Call your method to get pantry items
+      _pantryItems = await PantryProxy().getPantryItems();
+    } catch (e) {
+      // Handle any potential errors
+      print("Error loading pantry items: $e");
+    } finally {
+      // Set loading state to false after items are loaded or in case of error
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
   // These dates control the date string user sees in the form
   final TextEditingController _recipeTypeController = TextEditingController();
   final TextEditingController _suppliesController = TextEditingController();
@@ -54,6 +81,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   // var _details3 = TextEditingController();
   var _details4 = TextEditingController();
   String? _selectedOption;
+  var radioValues;
 
   // var _offData;
   // UnfocusDisposition _disposition = UnfocusDisposition.scope;
@@ -98,9 +126,17 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
       );
     }
   }
+// Choose what items to query from db based on user selection
 
   @override
   Widget build(BuildContext context) {
+    // Display loading indicator while pantry items are being loaded
+    if (_isLoading) {
+      return Center(
+        child: CircularProgressIndicator(), // Or any other loading indicator
+      );
+    }
+      
     return Scaffold(
       backgroundColor: AppColors.main2,
       body: Form(
@@ -244,6 +280,15 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                       );
                     }).toList(),
                   ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.03,
+                  ),
+                  
+                  PantryBuilder(
+                      items: _pantryItems,
+                      sortMethod: "az",
+                  ),
+                    
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -314,6 +359,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                       ),
                     ],
                   ),
+                  
                 ],
               ),
             ),
