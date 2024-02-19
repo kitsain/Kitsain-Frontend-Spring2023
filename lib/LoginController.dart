@@ -1,12 +1,7 @@
-import 'dart:io';
-
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/tasks/v1.dart';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
-import 'package:kitsain_frontend_spring2023/controller/tasklist_controller.dart';
 
 class LoginController extends GetxController {
   // GoogleSignInAccount? _user;
