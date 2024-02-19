@@ -10,6 +10,7 @@ import 'package:kitsain_frontend_spring2023/database/recipes_proxy.dart';
 import 'package:kitsain_frontend_spring2023/views/edit_forms/edit_item_form.dart';
 import 'statuscolor.dart';
 import 'package:kitsain_frontend_spring2023/categories.dart';
+import 'package:kitsain_frontend_spring2023/database/openaibackend.dart';
 
 enum _MenuValues {
   edit,
@@ -34,6 +35,17 @@ class _RecipeCardState extends State<RecipeCard> {
     realm.write(() {
       realm.delete(recipe);
     });
+  }
+
+  void _editItem() async {
+    var generatedRecipe = await changeRecipe(
+        "chicken, pasta, tomato, pesto, anjovis, chocolate, mint",
+        recipeType,
+        expSoon,
+        supplies,
+        "True");
+
+    RecipeProxy().upsertRecipe(generatedRecipe);
   }
 
   bool showAbbreviation = true;
@@ -120,7 +132,8 @@ class _RecipeCardState extends State<RecipeCard> {
                   ),
                 ),
                 child: ExpansionTile(
-                  onExpansionChanged: (val) => setState(() => showAbbreviation = !val),
+                  onExpansionChanged: (val) =>
+                      setState(() => showAbbreviation = !val),
                   title: Text(
                     widget.recipe.name.toUpperCase(),
                     style: AppTypography.heading3.copyWith(color: Colors.black),
@@ -133,7 +146,8 @@ class _RecipeCardState extends State<RecipeCard> {
                     if (widget.recipe.details != null) ...[
                       _buildDetailsContainer(widget.recipe.details!),
                     ] else ...[
-                      _buildDetailsContainer('[{"details":"1"},["details"]]', color: NULL_TEXT_COLOR),
+                      _buildDetailsContainer('[{"details":"1"},["details"]]',
+                          color: NULL_TEXT_COLOR),
                     ],
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.02,
@@ -149,49 +163,48 @@ class _RecipeCardState extends State<RecipeCard> {
   }
 
   Widget _buildDetailsContainer(String details, {Color? color}) {
-  print(details);
-  dynamic parsedJson = jsonDecode(details);
+    print(details);
+    dynamic parsedJson = jsonDecode(details);
 
-  // Separate the two parts
-  Map<String, dynamic> ingredients = parsedJson[0];
-  List<dynamic> steps = parsedJson[1];
+    // Separate the two parts
+    Map<String, dynamic> ingredients = parsedJson[0];
+    List<dynamic> steps = parsedJson[1];
 
-  // Create a widget for ingredients
-  Widget ingredientsWidget = Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text('Ingredients:', style: TextStyle(fontWeight: FontWeight.bold)),
-      for (var entry in ingredients.entries)
-        Text('${entry.key}: ${entry.value}'),
-    ],
-  );
+    // Create a widget for ingredients
+    Widget ingredientsWidget = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Ingredients:', style: TextStyle(fontWeight: FontWeight.bold)),
+        for (var entry in ingredients.entries)
+          Text('${entry.key}: ${entry.value}'),
+      ],
+    );
 
-  // Create a widget for steps
-  Widget stepsWidget = Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      SizedBox(height: 10),
-      Text('Steps:', style: TextStyle(fontWeight: FontWeight.bold)),
-      for (int i = 0; i < steps.length; i++)
-        Text('${i + 1}. ${steps[i]}'),
-    ],
-  );
+    // Create a widget for steps
+    Widget stepsWidget = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 10),
+        Text('Steps:', style: TextStyle(fontWeight: FontWeight.bold)),
+        for (int i = 0; i < steps.length; i++) Text('${i + 1}. ${steps[i]}'),
+      ],
+    );
 
-  return Container(
-    width: 200,
-    decoration: BoxDecoration(
-      border: Border.all(color: color ?? Colors.black),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ingredientsWidget,
-          stepsWidget,
-        ],
+    return Container(
+      width: 200,
+      decoration: BoxDecoration(
+        border: Border.all(color: color ?? Colors.black),
       ),
-    ),
-  );
-}
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ingredientsWidget,
+            stepsWidget,
+          ],
+        ),
+      ),
+    );
+  }
 }
