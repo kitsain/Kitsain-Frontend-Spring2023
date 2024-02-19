@@ -27,43 +27,44 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   final _formKey = GlobalKey<FormState>();
   final _EANCodeField = TextEditingController();
   var _itemName = TextEditingController();
+  var _formSubmitted = false;
 
   // These dates control the date string user sees in the form
-  final TextEditingController _recipeTypeController = TextEditingController();
-  final TextEditingController _suppliesController = TextEditingController();
-  final TextEditingController _expSoonController = TextEditingController();
-  var _expDateString = TextEditingController();
-  var _openDateString = TextEditingController();
-  var _recipeType = TextEditingController();
-  var _ingredients = TextEditingController();
-  var _supplies = TextEditingController();
-  var _exp_soon = TextEditingController();
-  var _pantry_only = TextEditingController();
+
+  // var _expDateString = TextEditingController();
+  // var _openDateString = TextEditingController();
+  // var _recipeType = TextEditingController();
+  // var _ingredients = TextEditingController();
+  // var _supplies = TextEditingController();
+  // var _exp_soon = TextEditingController();
+  // var _pantry_only = TextEditingController();
   String selected = "True";
 
   // These values are actually saved to the db as DateTime
-  var _openDateDT;
-  var _expDateDT;
-
-  bool _favorite = false;
-  bool _hasExpiryDate = false;
+  // var _openDateDT;
+  // var _expDateDT;
+  final TextEditingController _recipeTypeController = TextEditingController();
+  final TextEditingController _suppliesController = TextEditingController();
+  final TextEditingController _expSoonController = TextEditingController();
+  // bool _favorite = false;
+  // bool _hasExpiryDate = false;
   String _category = "Choose category";
   var _catInt;
-  var _details = TextEditingController();
-  var _details2 = TextEditingController();
-  // var _details3 = TextEditingController();
-  var _details4 = TextEditingController();
+  // var _details = TextEditingController();
+  // var _details2 = TextEditingController();
+  // // var _details3 = TextEditingController();
+  // var _details4 = TextEditingController();
   String? _selectedOption;
 
-  // var _offData;
-  // UnfocusDisposition _disposition = UnfocusDisposition.scope;
+  var _offData;
+  UnfocusDisposition _disposition = UnfocusDisposition.scope;
 
   void _discardChangesDialog(bool discardForm) {
     if (discardForm ||
         (_itemName.text.isEmpty &&
-            _EANCodeField.text.isEmpty &&
-            _openDateString.text.isEmpty &&
-            _expDateString.text.isEmpty)) {
+            _recipeTypeController.text.isEmpty &&
+            _suppliesController.text.isEmpty &&
+            _expSoonController.text.isEmpty)) {
       Navigator.pop(context);
     } else {
       showDialog(
@@ -295,6 +296,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                                   "True");
 
                               RecipeProxy().upsertRecipe(generatedRecipe);
+                              _formSubmitted = false;
                               setState(() {});
 
                               // Clear the text fields if needed
