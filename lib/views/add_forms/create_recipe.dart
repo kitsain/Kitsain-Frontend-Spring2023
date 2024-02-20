@@ -332,9 +332,17 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
                               String supplies = _suppliesController.text;
                               String expSoon = _expSoonController.text;
 
+                              // Get ingredients from pantry
+                              List<String> itemNames = [];
+                              for(Item item in _pantryItems){
+                                itemNames.add(item.name);
+                              }
+                              String ingredients = itemNames.join(', ');
+
                               // Call your function with the values
+                              
                               var generatedRecipe = await generateRecipe(
-                                  "chicken, pasta, tomato, pesto, anjovis, chocolate, mint",
+                                  ingredients,
                                   recipeType,
                                   expSoon,
                                   supplies,
