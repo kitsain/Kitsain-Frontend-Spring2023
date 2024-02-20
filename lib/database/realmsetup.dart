@@ -12,19 +12,19 @@ class RealmSetup {
   }
 
 
-  static void test() {
+/*   static void test() {
     var all = realm.all<Recipe>();
     if(all.isEmpty) {
       var recipe = Recipe("Chicken soup","Throw some chickens in hot water lol",);
     realm.write(() {
-      realm.add(recipe);     
+      realm.deleteAll<Recipe>();     
+      
       }
     );
     }
     
-  }
+  } */
   static Realm getRealm() {
-    test();
     return realm;
   }
 }

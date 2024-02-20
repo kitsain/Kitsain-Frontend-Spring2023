@@ -37,7 +37,7 @@ class _RecipeCardState extends State<RecipeCard> {
     });
   }
 
-  void _editItem() async {
+/*   void _editItem() async {
     var generatedRecipe = await changeRecipe(
         "chicken, pasta, tomato, pesto, anjovis, chocolate, mint",
         recipeType,
@@ -47,7 +47,7 @@ class _RecipeCardState extends State<RecipeCard> {
 
     RecipeProxy().upsertRecipe(generatedRecipe);
   }
-
+ */
   bool showAbbreviation = true;
 
   @override

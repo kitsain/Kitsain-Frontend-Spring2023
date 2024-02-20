@@ -31,12 +31,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   final _formKey = GlobalKey<FormState>();
   final _EANCodeField = TextEditingController();
   var _itemName = TextEditingController();
-<<<<<<< HEAD
   var _pantryItems;
   bool _isLoading = true; // Flag to track loading state
-=======
   var _formSubmitted = false;
->>>>>>> 9a42754ba82a7be35f689bf3c1f3e6f59965bea8
 
   @override
   void initState() {
