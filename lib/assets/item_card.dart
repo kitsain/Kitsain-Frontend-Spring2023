@@ -269,7 +269,7 @@ class _ItemCardState extends State<ItemCard> {
                   ),
                   trailing: Transform.translate(
                     offset: Offset(0, -15),
-                    child: Icon(Icons.more_horiz),
+                    child: Icon(Icons.favorite),
                   ),
                   leading: Transform.translate(
                     offset: Offset(0, 0),

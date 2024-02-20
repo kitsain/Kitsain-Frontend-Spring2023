@@ -144,10 +144,27 @@ class _RecipeCardState extends State<RecipeCard> {
                       height: MediaQuery.of(context).size.height * 0.02,
                     ),
                     if (widget.recipe.details != null) ...[
-                      _buildDetailsContainer(widget.recipe.details!),
+                      //_buildDetailsContainer(widget.recipe.details!),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildDetailsButton("Details", Colors.green, widget.recipe.details!, widget.recipe.name),
+                          _buildChangeButton("Change", Colors.blue, widget.recipe.name),
+                          _buildDeleteButton("Delete", Colors.red, widget.recipe.name),
+                          //_buildElevatedButton("Edit", Colors.blue),
+                          //_buildElevatedButton("Delete", Colors.red)
+
+                          
+                          //_buildDetailsContainer('[{"details":"1"},["details"]]',
+                          //    color: NULL_TEXT_COLOR),
+                          //_buildDetailsContainer('[{"details":"1"},["details"]]',
+                          //    color: NULL_TEXT_COLOR),
+                          //_buildDetailsContainer('[{"details":"1"},["details"]]',
+                          //    color: NULL_TEXT_COLOR),
+                        ]
+                      )
                     ] else ...[
-                      _buildDetailsContainer('[{"details":"1"},["details"]]',
-                          color: NULL_TEXT_COLOR),
+                      // nothing
                     ],
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.02,
@@ -162,7 +179,162 @@ class _RecipeCardState extends State<RecipeCard> {
     );
   }
 
-  Widget _buildDetailsContainer(String details, {Color? color}) {
+  Widget _buildDetailsButton(String text, Color? color, String details, String recipeName) {
+    return ElevatedButton(
+      child: Text(text),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+      ),
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => _buildDetailsScreen(context, details, recipeName),
+        );
+      },
+    );
+  }
+
+  Widget _buildChangeButton(String text, Color? color, String recipeName) {
+    return ElevatedButton(
+      child: Text(text),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+      ),
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => _buildChangeAlert(context, recipeName),
+        );
+      }
+    );
+  }
+
+  Widget _buildDeleteButton(String text, Color? color, String recipeName) {
+    return ElevatedButton(
+      child: Text(text),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+      ),
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => _buildDeleteAlert(context, recipeName),
+        );
+      }
+    );
+  }
+
+  Widget _buildDetailsScreen(BuildContext context, String details, String recipeName) {
+    dynamic parsedJson = jsonDecode(details);
+    Map<String, dynamic> ingredients = parsedJson[0];
+    List<dynamic> steps = parsedJson[1];
+    return AlertDialog(
+      title: Text('${recipeName}', style: const TextStyle(fontWeight: FontWeight.bold)),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Ingredients:', style: TextStyle(fontWeight: FontWeight.bold)),
+          for (var entry in ingredients.entries)
+            Text('${entry.key}: ${entry.value}'),
+          Text('Steps:', style: TextStyle(fontWeight: FontWeight.bold)),
+          for (int i = 0; i < steps.length; i++) 
+            Text('${steps[i]}'),
+          ],
+        ),
+      actions: <Widget>[
+        ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Close'),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildChangeAlert(BuildContext context, String recipeName) {
+    return AlertDialog(
+      title: Text('Change recipe'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Please enter wanted changes to'),
+          Text('${recipeName}', style: const TextStyle(fontWeight: FontWeight.bold)),
+          Card(
+            color: Colors.white,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: TextField(
+                maxLines: 8,
+                decoration: InputDecoration.collapsed(hintText: "Enter your text here"),
+              ),
+            )
+          )
+          ],
+        ),
+      actions: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue,
+            ),
+            onPressed: () {
+              // Call change functionality here
+            },
+            child: const Text('Change'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Cancel'),
+          ),
+          ]
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDeleteAlert(BuildContext context, String recipeName) {
+    return AlertDialog(
+      title: Text('Delete recipe'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Are you sure you want to delete ${recipeName}')
+          ],
+        ),
+      actions: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+            ),
+            onPressed: () {
+              // Delete recipe from database
+            },
+            child: const Text('Delete'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Cancel'),
+          ),
+          ]
+        ),
+      ],
+    );
+  }
+
+  /* Widget _buildDetailsContainer(String details, {Color? color}) {
     print(details);
     dynamic parsedJson = jsonDecode(details);
 
@@ -191,7 +363,7 @@ class _RecipeCardState extends State<RecipeCard> {
     );
 
     return Container(
-      width: 200,
+      width: 100,
       decoration: BoxDecoration(
         border: Border.all(color: color ?? Colors.black),
       ),
@@ -206,5 +378,5 @@ class _RecipeCardState extends State<RecipeCard> {
         ),
       ),
     );
-  }
+  } */
 }
