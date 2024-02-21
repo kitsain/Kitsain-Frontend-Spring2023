@@ -21,7 +21,8 @@ class CreateNewRecipeForm extends StatefulWidget {
 
 class LoadingDialogWithTimeout extends StatefulWidget {
   @override
-  _LoadingDialogWithTimeoutState createState() => _LoadingDialogWithTimeoutState();
+  _LoadingDialogWithTimeoutState createState() =>
+      _LoadingDialogWithTimeoutState();
 }
 
 class _LoadingDialogWithTimeoutState extends State<LoadingDialogWithTimeout> {
@@ -52,8 +53,6 @@ class _LoadingDialogWithTimeoutState extends State<LoadingDialogWithTimeout> {
     );
   }
 }
-
-
 
 @override
 class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
@@ -142,22 +141,23 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     }
   }
 
-bool _areFormFieldsEmpty() {
-  return _itemName.text.isEmpty &&
-      _recipeTypeController.text.isEmpty &&
-      _suppliesController.text.isEmpty &&
-      _expSoonController.text.isEmpty;
-}
+  bool _areFormFieldsEmpty() {
+    return _itemName.text.isEmpty &&
+        _recipeTypeController.text.isEmpty &&
+        _suppliesController.text.isEmpty &&
+        _expSoonController.text.isEmpty;
+  }
 
-Widget _buildDialogButton(String text, Color textColor, void Function() onPressed) {
-  return TextButton(
-    onPressed: onPressed,
-    child: Text(
-      text,
-      style: AppTypography.category.copyWith(color: textColor),
-    ),
-  );
-}
+  Widget _buildDialogButton(
+      String text, Color textColor, void Function() onPressed) {
+    return TextButton(
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: AppTypography.category.copyWith(color: textColor),
+      ),
+    );
+  }
 // Choose what items to query from db based on user selection
 
   @override
@@ -229,19 +229,22 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
         children: [
           _buildTextFormField(
             controller: _recipeTypeController,
-            hintText: 'Your diet and other wishes for the recipe? eg. vegan, 15-minute recipe, breakfast.',
+            hintText:
+                'Your diet and other wishes for the recipe? eg. vegan, 15-minute recipe, breakfast.',
             maxLines: 5,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           _buildTextFormField(
             controller: _suppliesController,
-            hintText: 'List the cooking tools available/ the tools you want to use for this recipe, eg. airfryer',
+            hintText:
+                'List the cooking tools available/ the tools you want to use for this recipe, eg. airfryer',
             maxLines: 5,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           _buildTextFormField(
             controller: _expSoonController,
-            hintText: 'Any ingredients you Want to use, eg. ingredients soon expiring?',
+            hintText:
+                'Any ingredients you Want to use, eg. ingredients soon expiring?',
             maxLines: 5,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
@@ -250,14 +253,13 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
             width: MediaQuery.of(context).size.width * 0.03,
           ),
           PantryBuilder(
-            items: _pantryItems,
-            sortMethod: "az",
-            onSelectedItemsChanged: (selectedItems) {
-              setState(() {
-                selectedItemsString = selectedItems;
-              });
-            }
-          ),
+              items: _pantryItems,
+              sortMethod: "az",
+              onSelectedItemsChanged: (selectedItems) {
+                setState(() {
+                  selectedItemsString = selectedItems;
+                });
+              }),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           _buildActionButtons(),
         ],
@@ -354,7 +356,8 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
     return LoadingDialogWithTimeout();
   }
 
-  Widget _buildButton(String label, Color backgroundColor, Color textColor, Function() onPressed) {
+  Widget _buildButton(String label, Color backgroundColor, Color textColor,
+      Function() onPressed) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
@@ -364,7 +367,6 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
       child: Text(label),
     );
   }
-
 
   Future<void> _createRecipe() async {
     if (_formKey.currentState!.validate()) {
@@ -388,4 +390,3 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
     }
   }
 }
-
