@@ -7,16 +7,9 @@ import 'package:kitsain_frontend_spring2023/database/pantry_proxy.dart';
 import 'package:kitsain_frontend_spring2023/database/openaibackend.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:realm/realm.dart';
+import 'dart:async';
 import 'package:kitsain_frontend_spring2023/assets/pantry_builder_recipe_generation.dart';
-
-const List<String> categories = <String>[
-  'Choose category',
-  'No category',
-  'Weekend',
-  'Weekday',
-  'Holiday',
-  'Quick recipes',
-];
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class CreateNewRecipeForm extends StatefulWidget {
   const CreateNewRecipeForm({super.key});
@@ -25,6 +18,42 @@ class CreateNewRecipeForm extends StatefulWidget {
   // ignore: library_private_types_in_public_api
   _CreateNewRecipeFormState createState() => _CreateNewRecipeFormState();
 }
+
+class LoadingDialogWithTimeout extends StatefulWidget {
+  @override
+  _LoadingDialogWithTimeoutState createState() => _LoadingDialogWithTimeoutState();
+}
+
+class _LoadingDialogWithTimeoutState extends State<LoadingDialogWithTimeout> {
+  @override
+  void initState() {
+    super.initState();
+    // Start a timer to close the dialog after 10 seconds
+    Timer(Duration(seconds: 10), () {
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SpinKitWanderingCubes(color: Colors.white, size: 50),
+          SizedBox(height: 16),
+          Text('Creating recipe...', style: TextStyle(color: Colors.white)),
+        ],
+      ),
+    );
+  }
+}
+
+
 
 @override
 class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
@@ -197,8 +226,6 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildCategoryDropdown(),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           _buildTextFormField(
             controller: _recipeTypeController,
             hintText: 'Your diet and other wishes for the recipe? eg. vegan, 15-minute recipe, breakfast.',
@@ -228,52 +255,6 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           _buildActionButtons(),
         ],
-      ),
-    );
-  }
-
-  Widget _buildCategoryDropdown() {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.05,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: DropdownButtonFormField<String>(
-            style: AppTypography.smallTitle.copyWith(color: Colors.black),
-            menuMaxHeight: 200,
-            value: _category,
-            hint: Text('Choose Category'),
-            icon: Icon(Icons.arrow_drop_down),
-            decoration: InputDecoration.collapsed(hintText: ''),
-            onChanged: (String? value) {
-              setState(() {
-                _category = value!;
-                _catInt = Categories.categoriesByIndex.keys
-                    .firstWhere((key) => categories[key] == value) +
-                    1;
-              });
-            },
-            items: categories.map<DropdownMenuItem<String>>(
-              (String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              },
-            ).toList(),
-            validator: (value) {
-              if (value == 'Choose Category') {
-                return "Please choose a category";
-              }
-              return null;
-            },
-          ),
-        ),
       ),
     );
   }
@@ -319,6 +300,8 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
   }
 
   Widget _buildActionButtons() {
+    bool isLoading = false; // Set this to true when waiting for createRecipe
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -326,34 +309,47 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
           _discardChangesDialog(false);
         }),
         SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-        _buildButton('CREATE RECIPE', Colors.white, AppColors.main3, () async {
-          await _createRecipe();
-        }),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            foregroundColor: AppColors.main3,
+          ),
+          onPressed: () async {
+            if (isLoading) return; // Do nothing if loading
+
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) => _loadingDialog(context),
+            );
+
+            try {
+              await _createRecipe();
+            } finally {
+              Navigator.of(context).pop(); // Close the loading dialog
+            }
+          },
+          child: const Text('CREATE RECIPE'),
+        ),
       ],
     );
   }
 
-  Widget _buildButton(
-      String text, Color backgroundColor, Color foregroundColor, Function()? onPressed) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.07,
-      child: ElevatedButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.resolveWith(
-              (states) => backgroundColor),
-          foregroundColor: MaterialStateProperty.resolveWith(
-              (states) => foregroundColor),
-          side: MaterialStateProperty.resolveWith((states) =>
-              const BorderSide(width: 3, color: AppColors.main3)),
-        ),
-        onPressed: onPressed,
-        child: Text(
-          text,
-          style: AppTypography.category,
-        ),
+  Widget _loadingDialog(BuildContext context) {
+    return LoadingDialogWithTimeout();
+  }
+
+  Widget _buildButton(String label, Color backgroundColor, Color textColor, Function() onPressed) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: backgroundColor,
+        foregroundColor: textColor,
       ),
+      onPressed: onPressed,
+      child: Text(label),
     );
   }
+
 
   Future<void> _createRecipe() async {
     if (_formKey.currentState!.validate()) {
@@ -377,13 +373,9 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
 
       RecipeProxy().upsertRecipe(generatedRecipe);
       _formSubmitted = false;
-      setState(() {});
-
       _recipeTypeController.clear();
       _suppliesController.clear();
       _expSoonController.clear();
-
-      Navigator.pop(context);
     }
   }
 }
