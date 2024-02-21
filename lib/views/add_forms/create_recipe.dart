@@ -25,16 +25,16 @@ class LoadingDialogWithTimeout extends StatefulWidget {
 }
 
 class _LoadingDialogWithTimeoutState extends State<LoadingDialogWithTimeout> {
-  @override
+/*   @override
   void initState() {
     super.initState();
     // Start a timer to close the dialog after 10 seconds
-    Timer(Duration(seconds: 10), () {
+    Timer(Duration(seconds: 20), () {
       if (mounted) {
         Navigator.of(context).pop();
       }
-    });
-  }
+    }); 
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -326,12 +326,21 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
             showDialog(
               context: context,
               barrierDismissible: false,
-              builder: (BuildContext context) => _loadingDialog(context),
+              builder: (BuildContext context) {
+                // Use a Builder widget to create a new valid BuildContext
+                return Builder(
+                  builder: (BuildContext context) {
+                    return _loadingDialog(context);
+                  },
+                );
+              },
             );
 
             try {
               await _createRecipe();
             } finally {
+              // Use rootNavigator: true to pop the dialog from the root navigator
+              Navigator.of(context, rootNavigator: true).pop();
               Navigator.of(context).pop(); // Close the loading dialog
             }
           },
