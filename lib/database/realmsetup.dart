@@ -12,6 +12,7 @@ class RealmSetup {
   }
 
   static Realm getRealm() {
+    // realm.write(() { realm.deleteAll<Recipe>(); }); // use this if you want to delete all recipes from database
     return realm;
   }
 }
