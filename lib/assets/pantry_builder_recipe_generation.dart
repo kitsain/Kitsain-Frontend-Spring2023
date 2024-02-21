@@ -44,6 +44,31 @@ class _PantryBuilderState extends State<PantryBuilder> {
     return SingleChildScrollView(
       child: Column(
         children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      for (int i = 0; i < isSelected.length; i++) {
+                      isSelected[i] = true;
+                    }
+                    widget.onSelectedItemsChanged(getSelectedItemsAsString());
+                    });
+                  },
+                  child: Text('Select all'),
+                        ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      for (int i = 0; i < isSelected.length; i++) {
+                      isSelected[i] = false;
+                    }
+                    });
+                  },
+                  child: Text('Deselect all'),),
+              ],
+            ),
           Padding(
             padding: EdgeInsets.all(8.0),
             child: Wrap(
