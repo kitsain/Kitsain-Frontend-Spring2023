@@ -238,7 +238,7 @@ class _RecipeCardState extends State<RecipeCard> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _buildChangeButton("Change", Colors.grey[200], recipeName),
-            _buildDeleteButton("Delete", Colors.grey[200], recipeName),
+            _buildDeleteButton("Delete", Colors.grey[200], recipeName), 
           ],
         ),
       ],

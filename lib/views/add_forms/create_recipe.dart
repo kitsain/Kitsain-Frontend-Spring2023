@@ -88,11 +88,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   UnfocusDisposition _disposition = UnfocusDisposition.scope;
 
   void _discardChangesDialog(bool discardForm) {
-    if (discardForm ||
-        (_itemName.text.isEmpty &&
-            _recipeTypeController.text.isEmpty &&
-            _suppliesController.text.isEmpty &&
-            _expSoonController.text.isEmpty)) {
+    if (discardForm || _areFormFieldsEmpty()) {
       Navigator.pop(context);
     } else {
       showDialog(
@@ -103,41 +99,43 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
             style: AppTypography.paragraph,
           ),
           actions: <Widget>[
-            TextButton(
-              child: Text(
-                'CANCEL',
-                style: AppTypography.category.copyWith(color: Colors.black38),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            TextButton(
-              child: Text(
-                'DISCARD',
-                style: AppTypography.category.copyWith(color: AppColors.main1),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-                _discardChangesDialog(true);
-              },
-            ),
+            _buildDialogButton('CANCEL', Colors.black38, () {
+              Navigator.pop(context);
+            }),
+            _buildDialogButton('DISCARD', AppColors.main1, () {
+              Navigator.pop(context);
+              _discardChangesDialog(true);
+            }),
           ],
         ),
       );
     }
   }
+
+bool _areFormFieldsEmpty() {
+  return _itemName.text.isEmpty &&
+      _recipeTypeController.text.isEmpty &&
+      _suppliesController.text.isEmpty &&
+      _expSoonController.text.isEmpty;
+}
+
+Widget _buildDialogButton(String text, Color textColor, void Function() onPressed) {
+  return TextButton(
+    onPressed: onPressed,
+    child: Text(
+      text,
+      style: AppTypography.category.copyWith(color: textColor),
+    ),
+  );
+}
 // Choose what items to query from db based on user selection
 
   @override
   Widget build(BuildContext context) {
-    // Display loading indicator while pantry items are being loaded
     if (_isLoading) {
-      return Center(
-        child: CircularProgressIndicator(), // Or any other loading indicator
-      );
+      return _buildLoadingIndicator();
     }
-      
+
     return Scaffold(
       backgroundColor: AppColors.main2,
       body: Form(
@@ -146,236 +144,247 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
           padding: const EdgeInsets.all(8),
           children: <Widget>[
             SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.04,
-                  child: FloatingActionButton(
-                    onPressed: () => _discardChangesDialog(false),
-                    foregroundColor: AppColors.main2,
-                    backgroundColor: AppColors.main3,
-                    child: const Icon(Icons.close),
-                  ),
-                ),
-              ],
-            ),
+            _buildCloseButton(),
             SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-            Text(
-              'GENERATE A NEW RECIPE',
-              textAlign: TextAlign.center,
-              style: AppTypography.heading2.copyWith(color: AppColors.main3),
-            ),
+            _buildRecipeHeading(),
             SizedBox(height: MediaQuery.of(context).size.height * 0.06),
-            Padding(
-              padding: const EdgeInsets.only(left: 7, right: 7),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: DropdownButtonFormField<String>(
-                          style: AppTypography.smallTitle
-                              .copyWith(color: Colors.black),
-                          menuMaxHeight: 200,
-                          value: _category,
-                          hint: Text(
-                              'Choose Category'), // Set 'Choose Category' as hint
-                          icon: Icon(Icons.arrow_drop_down),
-                          decoration: InputDecoration.collapsed(hintText: ''),
-                          onChanged: (String? value) {
-                            setState(
-                              () {
-                                _category = value!;
-                                _catInt = Categories.categoriesByIndex.keys
-                                        .firstWhere(
-                                            (key) => categories[key] == value) +
-                                    1;
-                              },
-                            );
-                          },
-                          items: categories.map<DropdownMenuItem<String>>(
-                            (String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            },
-                          ).toList(),
-                          validator: (value) {
-                            if (value == 'Choose Category') {
-                              return "Please choose a category";
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                  // First TextFormField
-                  TextFormField(
-                    style: AppTypography.paragraph,
-                    controller: _recipeTypeController,
-                    decoration: const InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(),
-                      hintText:
-                          'Your diet and other wishes for the recipe? eg. vegan, 15-minute recipe, breakfast.',
-                    ),
-                    maxLines: 5,
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                  // Second TextFormField
-                  TextFormField(
-                    style: AppTypography.paragraph,
-                    controller: _suppliesController,
-                    decoration: const InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(),
-                      hintText:
-                          'List the cooking tools available/ the tools you want to use for this recipe, eg. airfryer',
-                    ),
-                    maxLines: 5,
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                  // Fourth TextFormField
-                  TextFormField(
-                    style: AppTypography.paragraph,
-                    controller: _expSoonController,
-                    decoration: const InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(),
-                      hintText:
-                          'Any ingredients you Want to use, eg. ingredients soon expiring?',
-                    ),
-                    maxLines: 5,
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                  // Add the dropdown menu here
-                  DropdownButtonFormField<String>(
-                    value: _selectedOption,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _selectedOption = newValue!;
-                      });
-                    },
-                    items: <String>[
-                      'Use only pantry items',
-                      'Can use other items that are not in pantry'
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.03,
-                  ),
-                  
-                  PantryBuilder(
-                      items: _pantryItems,
-                      sortMethod: "az",
-                  ),
-                    
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.07,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.resolveWith(
-                                (states) => Colors.white),
-                            foregroundColor: MaterialStateProperty.resolveWith(
-                                (states) => AppColors.main3),
-                            side: MaterialStateProperty.resolveWith((states) =>
-                                const BorderSide(
-                                    width: 3, color: AppColors.main3)),
-                          ),
-                          onPressed: () => _discardChangesDialog(false),
-                          child: const Text(
-                            'CANCEL',
-                            style: AppTypography.category,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.03,
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.07,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.resolveWith(
-                                (states) => AppColors.main3),
-                            foregroundColor: MaterialStateProperty.resolveWith(
-                                (states) => Colors.white),
-                          ),
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              // Get values from controllers
-                              String recipeType = _recipeTypeController.text;
-                              String supplies = _suppliesController.text;
-                              String expSoon = _expSoonController.text;
-
-                              // Get ingredients from pantry
-                              List<String> itemNames = [];
-                              for(Item item in _pantryItems){
-                                itemNames.add(item.name);
-                              }
-                              String ingredients = itemNames.join(', ');
-
-                              // Call your function with the values
-                              
-                              var generatedRecipe = await generateRecipe(
-                                  ingredients,
-                                  recipeType,
-                                  expSoon,
-                                  supplies,
-                                  "True");
-
-                              RecipeProxy().upsertRecipe(generatedRecipe);
-                              _formSubmitted = false;
-                              setState(() {});
-
-                              // Clear the text fields if needed
-                              _recipeTypeController.clear();
-                              _suppliesController.clear();
-                              _expSoonController.clear();
-
-                              // Close the current screen if needed
-                              Navigator.pop(context);
-                            }
-                          },
-                          child: const Text(
-                            'CREATE RECIPE',
-                            style: AppTypography.category,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  
-                ],
-              ),
-            ),
+            _buildRecipeForm(),
           ],
         ),
       ),
     );
   }
+
+  Widget _buildLoadingIndicator() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  Widget _buildCloseButton() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.04,
+          child: FloatingActionButton(
+            onPressed: () => _discardChangesDialog(false),
+            foregroundColor: AppColors.main2,
+            backgroundColor: AppColors.main3,
+            child: const Icon(Icons.close),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRecipeHeading() {
+    return Column(
+      children: [
+        Text(
+          'GENERATE A NEW RECIPE',
+          textAlign: TextAlign.center,
+          style: AppTypography.heading2.copyWith(color: AppColors.main3),
+        ),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.06),
+      ],
+    );
+  }
+
+  Widget _buildRecipeForm() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 7, right: 7),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildCategoryDropdown(),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+          _buildTextFormField(
+            controller: _recipeTypeController,
+            hintText: 'Your diet and other wishes for the recipe? eg. vegan, 15-minute recipe, breakfast.',
+            maxLines: 5,
+          ),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+          _buildTextFormField(
+            controller: _suppliesController,
+            hintText: 'List the cooking tools available/ the tools you want to use for this recipe, eg. airfryer',
+            maxLines: 5,
+          ),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+          _buildTextFormField(
+            controller: _expSoonController,
+            hintText: 'Any ingredients you Want to use, eg. ingredients soon expiring?',
+            maxLines: 5,
+          ),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+          _buildDropdownMenu(),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.03,
+          ),
+          PantryBuilder(
+            items: _pantryItems,
+            sortMethod: "az",
+          ),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+          _buildActionButtons(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCategoryDropdown() {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.05,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: DropdownButtonFormField<String>(
+            style: AppTypography.smallTitle.copyWith(color: Colors.black),
+            menuMaxHeight: 200,
+            value: _category,
+            hint: Text('Choose Category'),
+            icon: Icon(Icons.arrow_drop_down),
+            decoration: InputDecoration.collapsed(hintText: ''),
+            onChanged: (String? value) {
+              setState(() {
+                _category = value!;
+                _catInt = Categories.categoriesByIndex.keys
+                    .firstWhere((key) => categories[key] == value) +
+                    1;
+              });
+            },
+            items: categories.map<DropdownMenuItem<String>>(
+              (String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              },
+            ).toList(),
+            validator: (value) {
+              if (value == 'Choose Category') {
+                return "Please choose a category";
+              }
+              return null;
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextFormField({
+    required TextEditingController controller,
+    required String hintText,
+    required int maxLines,
+  }) {
+    return TextFormField(
+      style: AppTypography.paragraph,
+      controller: controller,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(),
+        hintText: hintText,
+      ),
+      maxLines: maxLines,
+    );
+  }
+
+  Widget _buildDropdownMenu() {
+    return DropdownButtonFormField<String>(
+      value: _selectedOption,
+      onChanged: (String? newValue) {
+        setState(() {
+          _selectedOption = newValue!;
+        });
+      },
+      items: <String>[
+        'Use only pantry items',
+        'Can use other items that are not in pantry'
+      ].map<DropdownMenuItem<String>>(
+        (String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        },
+      ).toList(),
+    );
+  }
+
+  Widget _buildActionButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _buildButton('CANCEL', AppColors.main3, Colors.white, () {
+          _discardChangesDialog(false);
+        }),
+        SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+        _buildButton('CREATE RECIPE', Colors.white, AppColors.main3, () async {
+          await _createRecipe();
+        }),
+      ],
+    );
+  }
+
+  Widget _buildButton(
+      String text, Color backgroundColor, Color foregroundColor, Function()? onPressed) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.07,
+      child: ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.resolveWith(
+              (states) => backgroundColor),
+          foregroundColor: MaterialStateProperty.resolveWith(
+              (states) => foregroundColor),
+          side: MaterialStateProperty.resolveWith((states) =>
+              const BorderSide(width: 3, color: AppColors.main3)),
+        ),
+        onPressed: onPressed,
+        child: Text(
+          text,
+          style: AppTypography.category,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _createRecipe() async {
+    if (_formKey.currentState!.validate()) {
+      String recipeType = _recipeTypeController.text;
+      String supplies = _suppliesController.text;
+      String expSoon = _expSoonController.text;
+
+      List<String> itemNames = [];
+      for (Item item in _pantryItems) {
+        itemNames.add(item.name);
+      }
+      String ingredients = itemNames.join(', ');
+
+      var generatedRecipe = await generateRecipe(
+        ingredients,
+        recipeType,
+        expSoon,
+        supplies,
+        "True",
+      );
+
+      RecipeProxy().upsertRecipe(generatedRecipe);
+      _formSubmitted = false;
+      setState(() {});
+
+      _recipeTypeController.clear();
+      _suppliesController.clear();
+      _expSoonController.clear();
+
+      Navigator.pop(context);
+    }
+  }
 }
+
