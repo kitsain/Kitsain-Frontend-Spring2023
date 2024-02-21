@@ -11,20 +11,8 @@ class RealmSetup {
     return Realm(config);
   }
 
-
-/*   static void test() {
-    var all = realm.all<Recipe>();
-    if(all.isEmpty) {
-      var recipe = Recipe("Chicken soup","Throw some chickens in hot water lol",);
-    realm.write(() {
-      realm.deleteAll<Recipe>();     
-      
-      }
-    );
-    }
-    
-  } */
   static Realm getRealm() {
+    // realm.write(() { realm.deleteAll<Recipe>(); }); // use this if you want to delete all recipes from database
     return realm;
   }
 }

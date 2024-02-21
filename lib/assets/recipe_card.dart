@@ -104,95 +104,65 @@ class _RecipeCardState extends State<RecipeCard> {
   Widget _buildRecipeCardWidget() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-      child: Card(
-        elevation: 7,
-        shape: RoundedRectangleBorder(
-          side: BorderSide(
-            color: Colors.grey,
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(5),
-          ),
-        ),
-        child: ClipPath(
-          clipper: ShapeBorderClipper(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
+      child: GestureDetector(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => _buildDetailsScreen(context, widget.recipe.details!, widget.recipe.name),
+          );
+        },
+        child: Card(
+          elevation: 7,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Colors.grey,
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(5),
             ),
           ),
-          child: Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    left: BorderSide(
-                      color: NULL_STATUS_COLOR,
-                      width: BORDER_WIDTH,
-                    ),
-                  ),
-                ),
-                child: ExpansionTile(
-                  onExpansionChanged: (val) =>
-                      setState(() => showAbbreviation = !val),
-                  title: Text(
-                    widget.recipe.name.toUpperCase(),
-                    style: AppTypography.heading3.copyWith(color: Colors.black),
-                  ),
-                  children: [
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
-                    ),
-                    if (widget.recipe.details != null) ...[
-                      //_buildDetailsContainer(widget.recipe.details!),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          _buildDetailsButton("Details", Colors.green, widget.recipe.details!, widget.recipe.name),
-                          _buildChangeButton("Change", Colors.blue, widget.recipe.name),
-                          _buildDeleteButton("Delete", Colors.red, widget.recipe.name),
-                          //_buildElevatedButton("Edit", Colors.blue),
-                          //_buildElevatedButton("Delete", Colors.red)
-
-                          
-                          //_buildDetailsContainer('[{"details":"1"},["details"]]',
-                          //    color: NULL_TEXT_COLOR),
-                          //_buildDetailsContainer('[{"details":"1"},["details"]]',
-                          //    color: NULL_TEXT_COLOR),
-                          //_buildDetailsContainer('[{"details":"1"},["details"]]',
-                          //    color: NULL_TEXT_COLOR),
-                        ]
-                      )
-                    ] else ...[
-                      // nothing
-                    ],
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
-                    ),
-                  ],
-                ),
+          child: ClipPath(
+            clipper: ShapeBorderClipper(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
               ),
-            ],
+            ),
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      left: BorderSide(
+                        color: NULL_STATUS_COLOR,
+                        width: BORDER_WIDTH,
+                      ),
+                    ),
+                  ),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          widget.recipe.name.toUpperCase(),
+                          style: AppTypography.heading3.copyWith(color: Colors.black),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildDetailsButton(String text, Color? color, String details, String recipeName) {
-    return ElevatedButton(
-      child: Text(text),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: color,
-      ),
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => _buildDetailsScreen(context, details, recipeName),
-        );
-      },
-    );
-  }
 
   Widget _buildChangeButton(String text, Color? color, String recipeName) {
     return ElevatedButton(
@@ -228,26 +198,48 @@ class _RecipeCardState extends State<RecipeCard> {
     dynamic parsedJson = jsonDecode(details);
     Map<String, dynamic> ingredients = parsedJson[0];
     List<dynamic> steps = parsedJson[1];
+
     return AlertDialog(
-      title: Text('${recipeName}', style: const TextStyle(fontWeight: FontWeight.bold)),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Ingredients:', style: TextStyle(fontWeight: FontWeight.bold)),
-          for (var entry in ingredients.entries)
-            Text('${entry.key}: ${entry.value}'),
-          Text('Steps:', style: TextStyle(fontWeight: FontWeight.bold)),
-          for (int i = 0; i < steps.length; i++) 
-            Text('${steps[i]}'),
+          Expanded(
+            child: Text(
+              recipeName,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Ingredients:', style: TextStyle(fontWeight: FontWeight.bold)),
+            for (var entry in ingredients.entries)
+              Text('${entry.key}: ${entry.value}'),
+            SizedBox(height: 10),
+            Text('Steps:', style: TextStyle(fontWeight: FontWeight.bold)),
+            for (int i = 0; i < steps.length; i++)
+              Text(steps[i]),
           ],
         ),
+      ),
       actions: <Widget>[
-        ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Close'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildChangeButton("Change", Colors.grey[200], recipeName),
+            _buildDeleteButton("Delete", Colors.grey[200], recipeName),
+          ],
         ),
       ],
     );
@@ -261,7 +253,7 @@ class _RecipeCardState extends State<RecipeCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('Please enter wanted changes to'),
-          Text('${recipeName}', style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text(recipeName, style: const TextStyle(fontWeight: FontWeight.bold)),
           Card(
             color: Colors.white,
             child: Padding(
@@ -306,7 +298,7 @@ class _RecipeCardState extends State<RecipeCard> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Are you sure you want to delete ${recipeName}')
+          Text('Are you sure you want to delete $recipeName')
           ],
         ),
       actions: <Widget>[
@@ -318,7 +310,9 @@ class _RecipeCardState extends State<RecipeCard> {
               backgroundColor: Colors.red,
             ),
             onPressed: () {
-              // Delete recipe from database
+              deleteItem(widget.recipe);
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
             },
             child: const Text('Delete'),
           ),
