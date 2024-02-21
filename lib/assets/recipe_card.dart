@@ -202,8 +202,14 @@ class _RecipeCardState extends State<RecipeCard> {
     return AlertDialog(
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(recipeName, style: const TextStyle(fontWeight: FontWeight.bold)),
+          Expanded(
+            child: Text(
+              recipeName,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
           IconButton(
             icon: Icon(Icons.close),
             onPressed: () {
@@ -212,17 +218,20 @@ class _RecipeCardState extends State<RecipeCard> {
           ),
         ],
       ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Ingredients:', style: TextStyle(fontWeight: FontWeight.bold)),
-          for (var entry in ingredients.entries)
-            Text('${entry.key}: ${entry.value}'),
-          Text('Steps:', style: TextStyle(fontWeight: FontWeight.bold)),
-          for (int i = 0; i < steps.length; i++)
-            Text('${i + 1}. ${steps[i]}'),
-        ],
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Ingredients:', style: TextStyle(fontWeight: FontWeight.bold)),
+            for (var entry in ingredients.entries)
+              Text('${entry.key}: ${entry.value}'),
+            SizedBox(height: 10),
+            Text('Steps:', style: TextStyle(fontWeight: FontWeight.bold)),
+            for (int i = 0; i < steps.length; i++)
+              Text(steps[i]),
+          ],
+        ),
       ),
       actions: <Widget>[
         Row(
