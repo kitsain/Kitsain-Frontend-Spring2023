@@ -286,7 +286,9 @@ class _RecipeCardState extends State<RecipeCard> {
               backgroundColor: Colors.red,
             ),
             onPressed: () {
-              // Delete recipe from database
+              deleteItem(widget.recipe);
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
             },
             child: const Text('Delete'),
           ),
