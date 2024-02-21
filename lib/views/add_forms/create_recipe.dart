@@ -34,6 +34,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   var _pantryItems;
   bool _isLoading = true; // Flag to track loading state
   var _formSubmitted = false;
+  String selectedItemsString = '';
 
   @override
   void initState() {
@@ -224,6 +225,11 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
           PantryBuilder(
             items: _pantryItems,
             sortMethod: "az",
+            onSelectedItemsChanged: (selectedItems) {
+              setState(() {
+                selectedItemsString = selectedItems;
+              });
+            }
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           _buildActionButtons(),
@@ -361,14 +367,8 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
       String supplies = _suppliesController.text;
       String expSoon = _expSoonController.text;
 
-      List<String> itemNames = [];
-      for (Item item in _pantryItems) {
-        itemNames.add(item.name);
-      }
-      String ingredients = itemNames.join(', ');
-
       var generatedRecipe = await generateRecipe(
-        ingredients,
+        selectedItemsString,
         recipeType,
         expSoon,
         supplies,
