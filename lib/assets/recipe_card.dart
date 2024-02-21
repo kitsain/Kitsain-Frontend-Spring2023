@@ -138,17 +138,21 @@ class _RecipeCardState extends State<RecipeCard> {
                       ),
                     ),
                   ),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 10),
-                      Text(
-                        widget.recipe.name.toUpperCase(),
-                        style: AppTypography.heading3.copyWith(color: Colors.black),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
-                      ),
-                    ],
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          widget.recipe.name.toUpperCase(),
+                          style: AppTypography.heading3.copyWith(color: Colors.black),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -158,6 +162,7 @@ class _RecipeCardState extends State<RecipeCard> {
       ),
     );
   }
+
 
   Widget _buildChangeButton(String text, Color? color, String recipeName) {
     return ElevatedButton(
@@ -195,7 +200,18 @@ class _RecipeCardState extends State<RecipeCard> {
     List<dynamic> steps = parsedJson[1];
 
     return AlertDialog(
-      title: Text('${recipeName}', style: const TextStyle(fontWeight: FontWeight.bold)),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(recipeName, style: const TextStyle(fontWeight: FontWeight.bold)),
+          IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,14 +225,13 @@ class _RecipeCardState extends State<RecipeCard> {
         ],
       ),
       actions: <Widget>[
-        ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Close'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildChangeButton("Change", Colors.grey[200], recipeName),
+            _buildDeleteButton("Delete", Colors.grey[200], recipeName),
+          ],
         ),
-        _buildChangeButton("Change", Colors.blue, recipeName),
-        _buildDeleteButton("Delete", Colors.red, recipeName),
       ],
     );
   }
@@ -229,7 +244,7 @@ class _RecipeCardState extends State<RecipeCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('Please enter wanted changes to'),
-          Text('${recipeName}', style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text(recipeName, style: const TextStyle(fontWeight: FontWeight.bold)),
           Card(
             color: Colors.white,
             child: Padding(
@@ -274,7 +289,7 @@ class _RecipeCardState extends State<RecipeCard> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Are you sure you want to delete ${recipeName}')
+          Text('Are you sure you want to delete $recipeName')
           ],
         ),
       actions: <Widget>[
