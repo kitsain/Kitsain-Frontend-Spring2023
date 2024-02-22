@@ -11,6 +11,7 @@ import 'package:kitsain_frontend_spring2023/views/edit_forms/edit_item_form.dart
 import 'statuscolor.dart';
 import 'package:kitsain_frontend_spring2023/categories.dart';
 import 'package:kitsain_frontend_spring2023/database/openaibackend.dart';
+import 'package:kitsain_frontend_spring2023/database/openaibackend.dart';
 
 enum _MenuValues {
   edit,
@@ -25,7 +26,7 @@ class RecipeCard extends StatefulWidget {
   RecipeCard({super.key, required this.recipe});
 
   final Recipe recipe;
-
+  final TextEditingController _changesController = TextEditingController();
   @override
   State<RecipeCard> createState() => _RecipeCardState();
 }
@@ -108,7 +109,8 @@ class _RecipeCardState extends State<RecipeCard> {
         onTap: () {
           showDialog(
             context: context,
-            builder: (BuildContext context) => _buildDetailsScreen(context, widget.recipe.details!, widget.recipe.name),
+            builder: (BuildContext context) => _buildDetailsScreen(
+                context, widget.recipe.details!, widget.recipe.name),
           );
         },
         child: Card(
@@ -146,7 +148,8 @@ class _RecipeCardState extends State<RecipeCard> {
                       children: [
                         Text(
                           widget.recipe.name.toUpperCase(),
-                          style: AppTypography.heading3.copyWith(color: Colors.black),
+                          style: AppTypography.heading3
+                              .copyWith(color: Colors.black),
                         ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02,
@@ -163,38 +166,38 @@ class _RecipeCardState extends State<RecipeCard> {
     );
   }
 
-
   Widget _buildChangeButton(String text, Color? color, String recipeName) {
     return ElevatedButton(
-      child: Text(text),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: color,
-      ),
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => _buildChangeAlert(context, recipeName),
-        );
-      }
-    );
+        child: Text(text),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+        ),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) =>
+                _buildChangeAlert(context, recipeName),
+          );
+        });
   }
 
   Widget _buildDeleteButton(String text, Color? color, String recipeName) {
     return ElevatedButton(
-      child: Text(text),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: color,
-      ),
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => _buildDeleteAlert(context, recipeName),
-        );
-      }
-    );
+        child: Text(text),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+        ),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) =>
+                _buildDeleteAlert(context, recipeName),
+          );
+        });
   }
 
-  Widget _buildDetailsScreen(BuildContext context, String details, String recipeName) {
+  Widget _buildDetailsScreen(
+      BuildContext context, String details, String recipeName) {
     dynamic parsedJson = jsonDecode(details);
     Map<String, dynamic> ingredients = parsedJson[0];
     List<dynamic> steps = parsedJson[1];
@@ -228,8 +231,7 @@ class _RecipeCardState extends State<RecipeCard> {
               Text('${entry.key}: ${entry.value}'),
             SizedBox(height: 10),
             Text('Steps:', style: TextStyle(fontWeight: FontWeight.bold)),
-            for (int i = 0; i < steps.length; i++)
-              Text(steps[i]),
+            for (int i = 0; i < steps.length; i++) Text(steps[i]),
           ],
         ),
       ),
@@ -238,7 +240,7 @@ class _RecipeCardState extends State<RecipeCard> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _buildChangeButton("Change", Colors.grey[200], recipeName),
-            _buildDeleteButton("Delete", Colors.grey[200], recipeName), 
+            _buildDeleteButton("Delete", Colors.grey[200], recipeName),
           ],
         ),
       ],
@@ -246,6 +248,7 @@ class _RecipeCardState extends State<RecipeCard> {
   }
 
   Widget _buildChangeAlert(BuildContext context, String recipeName) {
+    final _changesController = TextEditingController(); //
     return AlertDialog(
       title: Text('Change recipe'),
       content: Column(
@@ -255,27 +258,31 @@ class _RecipeCardState extends State<RecipeCard> {
           Text('Please enter wanted changes to'),
           Text(recipeName, style: const TextStyle(fontWeight: FontWeight.bold)),
           Card(
-            color: Colors.white,
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: TextField(
-                maxLines: 8,
-                decoration: InputDecoration.collapsed(hintText: "Enter your text here"),
-              ),
-            )
-          )
-          ],
-        ),
+              color: Colors.white,
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: _changesController,
+                  maxLines: 8,
+                  decoration: InputDecoration.collapsed(
+                      hintText: "Enter your text here"),
+                ),
+              ))
+        ],
+      ),
       actions: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
+        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blue,
             ),
-            onPressed: () {
-              // Call change functionality here
+            onPressed: () async {
+              String changes = _changesController.text;
+
+              var changedRecipe = await changeRecipe(changes);
+
+              RecipeProxy().upsertRecipe(changedRecipe);
+              _changesController.clear();
             },
             child: const Text('Change'),
           ),
@@ -285,8 +292,7 @@ class _RecipeCardState extends State<RecipeCard> {
             },
             child: const Text('Cancel'),
           ),
-          ]
-        ),
+        ]),
       ],
     );
   }
@@ -297,14 +303,10 @@ class _RecipeCardState extends State<RecipeCard> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Are you sure you want to delete $recipeName')
-          ],
-        ),
+        children: [Text('Are you sure you want to delete $recipeName')],
+      ),
       actions: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
+        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
@@ -322,8 +324,7 @@ class _RecipeCardState extends State<RecipeCard> {
             },
             child: const Text('Cancel'),
           ),
-          ]
-        ),
+        ]),
       ],
     );
   }

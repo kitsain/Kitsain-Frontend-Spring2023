@@ -99,3 +99,9 @@ doc/api/
 .vscode/launch.json
 binary/
 /lib/api_key.dart
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
