@@ -65,6 +65,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
                     for (int i = 0; i < isSelected.length; i++) {
                       isSelected[i] = false;
                     }
+                    widget.onSelectedItemsChanged(getSelectedItems());
                   });
                 },
                 child: Text('Deselect all'),
