@@ -277,11 +277,11 @@ class _RecipeCardState extends State<RecipeCard> {
               backgroundColor: Colors.blue,
             ),
             onPressed: () async {
-              String changes = _changesController.text;
+              // String changes = _changesController.text;
 
-              var changedRecipe = await changeRecipe(changes);
+              // var changedRecipe = await changeRecipe(changes);
 
-              RecipeProxy().upsertRecipe(changedRecipe);
+              // RecipeProxy().upsertRecipe(changedRecipe);
               _changesController.clear();
             },
             child: const Text('Change'),
