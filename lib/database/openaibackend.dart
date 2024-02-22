@@ -6,7 +6,7 @@ import 'package:realm/realm.dart';
 Future<Recipe> generateRecipe(String ingredients, String recipe_type,
     String exp_soon, String supplies, String pantry_only) async {
   var url = Uri.https(
-      'kitsain-build-ohtuprojekti-staging.apps.ocp-test-0.k8s.it.helsinki.fi',
+      'https://kitsain-backend-test-ohtuprojekti-staging.apps.ocp-test-0.k8s.it.helsinki.fi',
       '/generate');
   var headers = {"Content-Type": "application/json"};
   var requestBody = json.encode({
