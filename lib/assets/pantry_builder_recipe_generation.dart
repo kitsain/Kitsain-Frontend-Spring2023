@@ -7,11 +7,12 @@ import 'package:realm/realm.dart';
 // or in the history tab
 
 class PantryBuilder extends StatefulWidget {
-  const PantryBuilder(
-      {super.key,
-      required this.items,
-      required this.sortMethod,
-      required this.onSelectedItemsChanged,});
+  const PantryBuilder({
+    super.key,
+    required this.items,
+    required this.sortMethod,
+    required this.onSelectedItemsChanged,
+  });
   final RealmResults<Item> items;
   final String sortMethod;
   final Function(String) onSelectedItemsChanged;
@@ -44,31 +45,32 @@ class _PantryBuilderState extends State<PantryBuilder> {
     return SingleChildScrollView(
       child: Column(
         children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      for (int i = 0; i < isSelected.length; i++) {
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    for (int i = 0; i < isSelected.length; i++) {
                       isSelected[i] = true;
                     }
                     widget.onSelectedItemsChanged(getSelectedItemsAsString());
-                    });
-                  },
-                  child: Text('Select all'),
-                        ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      for (int i = 0; i < isSelected.length; i++) {
+                  });
+                },
+                child: Text('Select all'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    for (int i = 0; i < isSelected.length; i++) {
                       isSelected[i] = false;
                     }
-                    });
-                  },
-                  child: Text('Deselect all'),),
-              ],
-            ),
+                  });
+                },
+                child: Text('Deselect all'),
+              ),
+            ],
+          ),
           Padding(
             padding: EdgeInsets.all(8.0),
             child: Wrap(
@@ -86,7 +88,9 @@ class _PantryBuilderState extends State<PantryBuilder> {
                   child: Container(
                     padding: EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
-                      color: isSelected[index] ? Color.fromARGB(255, 78, 117, 88) : null,
+                      color: isSelected[index]
+                          ? Color.fromARGB(255, 78, 117, 88)
+                          : null,
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: Text(
@@ -103,5 +107,3 @@ class _PantryBuilderState extends State<PantryBuilder> {
     );
   }
 }
-
-
