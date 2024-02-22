@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:kitsain_frontend_spring2023/app_colors.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import 'package:kitsain_frontend_spring2023/item_controller.dart';
+import 'package:kitsain_frontend_spring2023/views/main_menu_pages/feedview.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/pantryview.dart';
 import 'package:kitsain_frontend_spring2023/views/main_menu_pages/used_and_expired.dart';
 import 'package:kitsain_frontend_spring2023/l10n/l10n.dart';
@@ -28,8 +30,8 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: AppColors.main2,
         primarySwatch: Colors.grey,
       ),
-      home: HomePage2(),
-      //home: const HomePage(title: 'Kitsain MVP 2023'),
+      //home: HomePage2(),
+      home: const HomePage(title: 'Kitsain MVP 2023'),
       supportedLocales: L10n.all,
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -73,7 +75,7 @@ class _HomePageState extends State<HomePage> {
         child: DefaultTabController(
           // animationDuration: Duration.zero,
 
-          length: 3,
+          length: 4,
           child: Builder(
             builder: (BuildContext context) {
               return Container(
@@ -86,8 +88,11 @@ class _HomePageState extends State<HomePage> {
                       // clipBehavior: Clip.antiAlias,
                       children: [
                         PantryView(),
-                        ShoppingListNavigation(),
+                        // Temporary disabled to prevent crashing the app while developing
+                        // ShoppingListNavigation(),
+                        PantryView(),
                         UsedAndExpired(),
+                        FeedView(),
                       ],
                     ),
                     bottomNavigationBar: TabBar(
@@ -114,8 +119,10 @@ class _HomePageState extends State<HomePage> {
                                     Icons.house,
                                   ),
                                   Text(
-                                    AppLocalizations.of(context)!.pantryTabLabel,
+                                    AppLocalizations.of(context)!
+                                        .pantryTabLabel,
                                     textAlign: TextAlign.center,
+                                    style: AppTypography.tabTitle,
                                   ),
                                 ],
                               ),
@@ -140,8 +147,10 @@ class _HomePageState extends State<HomePage> {
                                     Icons.shopping_cart,
                                   ),
                                   Text(
-                                    AppLocalizations.of(context)!.shoppingListsTabLabel,
+                                    AppLocalizations.of(context)!
+                                        .shoppingListsTabLabel,
                                     textAlign: TextAlign.center,
+                                    style: AppTypography.tabTitle,
                                   ),
                                 ],
                               ),
@@ -166,15 +175,44 @@ class _HomePageState extends State<HomePage> {
                                     Icons.pie_chart,
                                   ),
                                   Text(
-                                    AppLocalizations.of(context)!.pantryTabLabel,
+                                    AppLocalizations.of(context)!
+                                        .pantryTabLabel,
                                     textAlign: TextAlign.center,
+                                    style: AppTypography.tabTitle,
                                   ),
                                 ],
                               ),
                             );
                           },
                           onMove: (details) {
-                            DefaultTabController.of(context).animateTo(2);
+                            DefaultTabController.of(context).animateTo(3);
+                          },
+                        ),
+                        DragTarget(
+                          builder: (
+                            BuildContext context,
+                            List<dynamic> accepted,
+                            List<dynamic> rejected,
+                          ) {
+                            return Container(
+                              height: navBarHeight,
+                              child: Column(
+                                children: [
+                                  SizedBox(height: paddingBoxHeight),
+                                  const Icon(
+                                    Icons.feed,
+                                  ),
+                                  Text(
+                                    AppLocalizations.of(context)!.feedTabLabel,
+                                    textAlign: TextAlign.center,
+                                    style: AppTypography.tabTitle,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          onMove: (details) {
+                            DefaultTabController.of(context).animateTo(3);
                           },
                         ),
                       ],

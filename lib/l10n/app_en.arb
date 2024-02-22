@@ -31,6 +31,14 @@
     "@historyScreenTopBarTitle": {
             "description": "Name to describe history screen top bar title"
     },
+    "feedTabLabel": "FEED",
+    "@feedTabLabel": {
+       "description": "Bottom navigation tab bar label for feed"
+    },
+    "feedScreen": "DISCOUNT \u200e\n\u200e FEED",
+    "@feedScreen": {
+        "description": "Name to describe feed screen"
+    },
     "addNewItem": "Add new item",
     "@addNewItem": {
         "description": "Tooltip for adding new item"

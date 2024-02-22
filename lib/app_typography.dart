@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kitsain_frontend_spring2023/app_colors.dart';
 
-
 class AppTypography {
   static const TextStyle heading1 = TextStyle(
     fontFamily: 'PlayfairDisplay',
@@ -41,6 +40,13 @@ class AppTypography {
     fontFamily: 'GillSans',
     fontSize: 12,
     fontWeight: FontWeight.w600,
+    height: 1.17,
+    letterSpacing: 0,
+  );
+  static const TextStyle tabTitle = TextStyle(
+    fontFamily: 'PlayfairDisplays',
+    fontSize: 13,
+    fontWeight: FontWeight.w500,
     height: 1.17,
     letterSpacing: 0,
   );
