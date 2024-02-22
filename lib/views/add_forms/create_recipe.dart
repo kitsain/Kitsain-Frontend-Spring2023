@@ -62,7 +62,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   var _pantryItems;
   bool _isLoading = true; // Flag to track loading state
   var _formSubmitted = false;
-  String selectedItemsString = '';
+  List<String> selectedItems = [];
 
   @override
   void initState() {
@@ -257,7 +257,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
               sortMethod: "az",
               onSelectedItemsChanged: (selectedItems) {
                 setState(() {
-                  selectedItemsString = selectedItems;
+                  this.selectedItems = selectedItems;
                 });
               }),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
@@ -375,11 +375,11 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
       String expSoon = _expSoonController.text;
 
       var generatedRecipe = await generateRecipe(
-        selectedItemsString,
+        selectedItems,
         recipeType,
-        expSoon,
-        supplies,
-        "True",
+        [expSoon],  // temporary solution. rather ask the user for an actual list
+        [supplies], // temporary solution. rather ask the user for an actual list
+        true,
       );
 
       RecipeProxy().upsertRecipe(generatedRecipe);

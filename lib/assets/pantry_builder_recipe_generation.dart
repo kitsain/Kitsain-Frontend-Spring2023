@@ -15,7 +15,7 @@ class PantryBuilder extends StatefulWidget {
   });
   final RealmResults<Item> items;
   final String sortMethod;
-  final Function(String) onSelectedItemsChanged;
+  final Function(List<String>) onSelectedItemsChanged;
 
   @override
   State<PantryBuilder> createState() => _PantryBuilderState();
@@ -30,14 +30,14 @@ class _PantryBuilderState extends State<PantryBuilder> {
     isSelected = List.generate(widget.items.length, (index) => false);
   }
 
-  String getSelectedItemsAsString() {
+  List<String> getSelectedItems() {
     List<String> selectedItems = [];
     for (int i = 0; i < widget.items.length; i++) {
       if (isSelected[i]) {
         selectedItems.add(widget.items[i].name);
       }
     }
-    return selectedItems.join(', ');
+    return selectedItems;
   }
 
   @override
@@ -54,7 +54,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
                     for (int i = 0; i < isSelected.length; i++) {
                       isSelected[i] = true;
                     }
-                    widget.onSelectedItemsChanged(getSelectedItemsAsString());
+                    widget.onSelectedItemsChanged(getSelectedItems());
                   });
                 },
                 child: Text('Select all'),
@@ -82,7 +82,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
                   onTap: () {
                     setState(() {
                       isSelected[index] = !isSelected[index];
-                      widget.onSelectedItemsChanged(getSelectedItemsAsString());
+                      widget.onSelectedItemsChanged(getSelectedItems());
                     });
                   },
                   child: Container(
