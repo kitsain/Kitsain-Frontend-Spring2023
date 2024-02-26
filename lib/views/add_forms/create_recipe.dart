@@ -280,7 +280,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
 
   Widget _buildDropdownMenu() {
     return DropdownButtonFormField<String>(
-      value: _selectedOption,
+      value: _selectedOption ?? 'Can use other items that are not in pantry',
       onChanged: (String? newValue) {
         setState(() {
           _selectedOption = newValue!;
