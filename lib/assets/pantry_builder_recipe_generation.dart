@@ -22,6 +22,7 @@ class PantryBuilder extends StatefulWidget {
 }
 
 class _PantryBuilderState extends State<PantryBuilder> {
+  late int expirationTimeInDays = 4;
   late List<bool> isSelectedAll;
   late List<bool> isSelectedNotExpiring;
   late List<bool> isSelectedExpiring;
@@ -61,7 +62,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
         continue;
       }
 
-      if (item.expiryDate!.difference(currentDate).inDays <= 3){
+      if (item.expiryDate!.difference(currentDate).inDays <= expirationTimeInDays){
         expiringItems.add(item);
       }
     }
@@ -79,7 +80,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
         continue;
       }
 
-      if (item.expiryDate!.difference(currentDate).inDays >= 3){
+      if (item.expiryDate!.difference(currentDate).inDays >= expirationTimeInDays){
         notExpiringItems.add(item);
       }
     }
@@ -162,8 +163,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: Text(
-                      (expiringItems[index].name + " " + formatter.format(expiringItems[index].expiryDate)),
-                      
+                      (expiringItems[index].name + " " + formatter.format(expiringItems[index].expiryDate!.toLocal())),         
                       style: const TextStyle(fontSize: 12.0),
                     ),
                   ),
