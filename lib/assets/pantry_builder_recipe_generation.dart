@@ -171,38 +171,14 @@ class _PantryBuilderState extends State<PantryBuilder> {
                     child: Text(
                       (expiringItems[index].name + " " + formatter.format(expiringItems[index].expiryDate!.toLocal())),         
                       style: const TextStyle(fontSize: 12.0),
-              padding: const EdgeInsets.all(8.0),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Wrap(
-                  alignment: WrapAlignment.start,
-                  direction: Axis.vertical,
-                  spacing: 1.0,
-                  runSpacing: 8.0,
-                  children: List.generate(
-                    expiringItems.length,
-                    (index) => GestureDetector(
-                      onTap: () => toggleItemSelectionExpiring(index),
-                      child: Container(
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          color: isSelectedExpiring[index]
-                              ? const Color.fromARGB(255, 78, 117, 88)
-                              : null,
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Text(
-                          (expiringItems[index].name +
-                              " " +
-                              formatter
-                                  .format(expiringItems[index].expiryDate)),
-                          style: AppTypography.smallTitle,
-                        ),
-                      ),
                     ),
+
                   ),
                 ),
-              )),
+              ),
+              ),
+            ),
+          ),
           Text("Rest of ingredients"),
           SizedBox(
             height: 20,
