@@ -38,17 +38,14 @@ class _RecipeCardState extends State<RecipeCard> {
     });
   }
 
-/*   void _editItem() async {
-    var generatedRecipe = await changeRecipe(
-        "chicken, pasta, tomato, pesto, anjovis, chocolate, mint",
-        recipeType,
-        expSoon,
-        supplies,
-        "True");
+  void _editItem() async {
+    final TextEditingController _changeController = TextEditingController();
+    String change = _changeController.text;
+    var generatedRecipe = await changeRecipe(change);
 
     RecipeProxy().upsertRecipe(generatedRecipe);
   }
- */
+
   bool showAbbreviation = true;
 
   @override
@@ -277,11 +274,11 @@ class _RecipeCardState extends State<RecipeCard> {
               backgroundColor: Colors.blue,
             ),
             onPressed: () async {
-              // String changes = _changesController.text;
+              String changes = _changesController.text;
 
-              // var changedRecipe = await changeRecipe(changes);
+              var changedRecipe = await changeRecipe(changes);
 
-              // RecipeProxy().upsertRecipe(changedRecipe);
+              RecipeProxy().upsertRecipe(changedRecipe);
               _changesController.clear();
             },
             child: const Text('Change'),

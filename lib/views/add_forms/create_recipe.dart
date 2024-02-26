@@ -85,31 +85,16 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
       });
     }
   }
-  // These dates control the date string user sees in the form
 
-  // var _expDateString = TextEditingController();
-  // var _openDateString = TextEditingController();
-  // var _recipeType = TextEditingController();
-  // var _ingredients = TextEditingController();
-  // var _supplies = TextEditingController();
-  // var _exp_soon = TextEditingController();
-  // var _pantry_only = TextEditingController();
   String selected = "True";
 
-  // These values are actually saved to the db as DateTime
-  // var _openDateDT;
-  // var _expDateDT;
   final TextEditingController _recipeTypeController = TextEditingController();
   final TextEditingController _suppliesController = TextEditingController();
   final TextEditingController _expSoonController = TextEditingController();
-  // bool _favorite = false;
-  // bool _hasExpiryDate = false;
+
   String _category = "Choose category";
   var _catInt;
-  // var _details = TextEditingController();
-  // var _details2 = TextEditingController();
-  // // var _details3 = TextEditingController();
-  // var _details4 = TextEditingController();
+
   String? _selectedOption;
   var radioValues;
 
@@ -229,22 +214,28 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
         children: [
           _buildTextFormField(
             controller: _recipeTypeController,
+            labelText:
+                'Your diet or recipe type? eg. vegan, 15-minute recipe, breakfast.',
             hintText:
-                'Your diet and other wishes for the recipe? eg. vegan, 15-minute recipe, breakfast.',
+                'Your diet or recipe type? eg. vegan, 15-minute recipe, breakfast.',
             maxLines: 5,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           _buildTextFormField(
             controller: _suppliesController,
+            labelText:
+                'The cooking tools available/the ones you want to use for this recipe, eg. airfryer',
             hintText:
-                'List the cooking tools available/ the tools you want to use for this recipe, eg. airfryer',
+                'The cooking tools available/the ones you want to use for this recipe, eg. airfryer',
             maxLines: 5,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           _buildTextFormField(
             controller: _expSoonController,
+            labelText:
+                'Items that must be included in the recipe eg. soon expiring?',
             hintText:
-                'Any ingredients you Want to use, eg. ingredients soon expiring?',
+                'Items that must be included in the recipe eg. soon expiring?',
             maxLines: 5,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
@@ -270,6 +261,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   Widget _buildTextFormField({
     required TextEditingController controller,
     required String hintText,
+    required String labelText,
     required int maxLines,
   }) {
     return TextFormField(
@@ -279,6 +271,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
         filled: true,
         fillColor: Colors.white,
         border: OutlineInputBorder(),
+        labelText: labelText,
         hintText: hintText,
       ),
       maxLines: maxLines,
@@ -377,8 +370,10 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
       var generatedRecipe = await generateRecipe(
         selectedItems,
         recipeType,
-        [expSoon],  // temporary solution. rather ask the user for an actual list
-        [supplies], // temporary solution. rather ask the user for an actual list
+        [expSoon], // temporary solution. rather ask the user for an actual list
+        [
+          supplies
+        ], // temporary solution. rather ask the user for an actual list
         true,
       );
 
