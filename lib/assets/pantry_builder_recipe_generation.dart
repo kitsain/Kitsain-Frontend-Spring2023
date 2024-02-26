@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:kitsain_frontend_spring2023/assets/item_card.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:realm/realm.dart';
+import 'package:kitsain_frontend_spring2023/app_typography.dart';
 
 class PantryBuilder extends StatefulWidget {
   const PantryBuilder({
@@ -15,7 +16,6 @@ class PantryBuilder extends StatefulWidget {
   final RealmResults<Item> items;
   final String sortMethod;
   final Function(List<String>) onSelectedItemsChanged;
-
 
   @override
   State<PantryBuilder> createState() => _PantryBuilderState();
@@ -33,7 +33,8 @@ class _PantryBuilderState extends State<PantryBuilder> {
   void initState() {
     super.initState();
     isSelectedAll = List.generate(widget.items.length, (index) => false);
-    isSelectedNotExpiring = List.generate(notExpiringItems.length, (index) => false);
+    isSelectedNotExpiring =
+        List.generate(notExpiringItems.length, (index) => false);
     isSelectedExpiring = List.generate(expiringItems.length, (index) => false);
   }
 
@@ -61,13 +62,12 @@ class _PantryBuilderState extends State<PantryBuilder> {
         continue;
       }
 
-      if (item.expiryDate!.difference(currentDate).inDays <= 3){
+      if (item.expiryDate!.difference(currentDate).inDays <= 3) {
         expiringItems.add(item);
       }
     }
     return expiringItems;
   }
-
 
   List getNotExpiringItems() {
     final DateTime currentDate = DateTime.now();
@@ -79,7 +79,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
         continue;
       }
 
-      if (item.expiryDate!.difference(currentDate).inDays >= 3){
+      if (item.expiryDate!.difference(currentDate).inDays >= 3) {
         notExpiringItems.add(item);
       }
     }
@@ -88,7 +88,8 @@ class _PantryBuilderState extends State<PantryBuilder> {
 
   void toggleSelectNotExpiring(bool select) {
     setState(() {
-      isSelectedNotExpiring = List<bool>.filled(notExpiringItems.length, select);
+      isSelectedNotExpiring =
+          List<bool>.filled(notExpiringItems.length, select);
       widget.onSelectedItemsChanged(getSelectedItems());
     });
   }
@@ -97,11 +98,10 @@ class _PantryBuilderState extends State<PantryBuilder> {
     setState(() {
       isSelectedNotExpiring[index] = !isSelectedNotExpiring[index];
       widget.onSelectedItemsChanged(getSelectedItems());
-      
     });
   }
 
-    void toggleSelectExpiring(bool select) {
+  void toggleSelectExpiring(bool select) {
     setState(() {
       isSelectedExpiring = List<bool>.filled(expiringItems.length, select);
       widget.onSelectedItemsChanged(getSelectedItems());
@@ -125,7 +125,9 @@ class _PantryBuilderState extends State<PantryBuilder> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: 30,),
+          SizedBox(
+            height: 30,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -139,70 +141,79 @@ class _PantryBuilderState extends State<PantryBuilder> {
               ),
             ],
           ),
-          SizedBox(height: 30,),
+          SizedBox(
+            height: 30,
+          ),
           Text("Expiring ingredients"),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Align(alignment: Alignment.topLeft, child: Wrap(
-              alignment: WrapAlignment.start,
-              direction: Axis.vertical,
-              spacing: 1.0,
-              runSpacing: 8.0,
-              children: List.generate(
-                expiringItems.length,
-                (index) => GestureDetector(
-                  onTap: () => toggleItemSelectionExpiring(index),
-                  child: Container(
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: isSelectedExpiring[index]
-                          ? const Color.fromARGB(255, 78, 117, 88)
-                          : null,
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: Text(
-                      (expiringItems[index].name + " " + formatter.format(expiringItems[index].expiryDate)),
-                      
-                      style: const TextStyle(fontSize: 12.0),
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Wrap(
+                  alignment: WrapAlignment.start,
+                  direction: Axis.vertical,
+                  spacing: 1.0,
+                  runSpacing: 8.0,
+                  children: List.generate(
+                    expiringItems.length,
+                    (index) => GestureDetector(
+                      onTap: () => toggleItemSelectionExpiring(index),
+                      child: Container(
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          color: isSelectedExpiring[index]
+                              ? const Color.fromARGB(255, 78, 117, 88)
+                              : null,
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: Text(
+                          (expiringItems[index].name +
+                              " " +
+                              formatter
+                                  .format(expiringItems[index].expiryDate)),
+                          style: AppTypography.smallTitle,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-            )
-          ),
+              )),
           Text("Rest of ingredients"),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Align(alignment: Alignment.topLeft, child:Wrap(
-              direction: Axis.vertical,
-              spacing: 1.0,
-              runSpacing: 8.0,
-              children: List.generate(
-                notExpiringItems.length,
-                (index) => GestureDetector(
-                  onTap: () => toggleItemSelectionNotExpiring(index),
-                  child: Container(
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: isSelectedNotExpiring[index]
-                          ? const Color.fromARGB(255, 78, 117, 88)
-                          : null,
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: Text(
-                      notExpiringItems[index].name,
-                      style: const TextStyle(fontSize: 12.0),
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Wrap(
+                  direction: Axis.vertical,
+                  spacing: 1.0,
+                  runSpacing: 8.0,
+                  children: List.generate(
+                    notExpiringItems.length,
+                    (index) => GestureDetector(
+                      onTap: () => toggleItemSelectionNotExpiring(index),
+                      child: Container(
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          color: isSelectedNotExpiring[index]
+                              ? const Color.fromARGB(255, 78, 117, 88)
+                              : null,
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: Text(
+                          notExpiringItems[index].name,
+                          style: AppTypography.smallTitle,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-            )
-          ),
-
+              )),
         ],
       ),
     );
