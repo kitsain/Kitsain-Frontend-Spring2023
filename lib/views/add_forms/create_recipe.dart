@@ -229,6 +229,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
         children: [
           _buildTextFormField(
             controller: _recipeTypeController,
+            labelText: 'Recipe type, diet?',
             hintText:
                 'Your diet and other wishes for the recipe? eg. vegan, 15-minute recipe, breakfast.',
             maxLines: 5,
@@ -236,6 +237,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           _buildTextFormField(
             controller: _suppliesController,
+            labelText: 'Specific kitchen supplies?',
             hintText:
                 'List the cooking tools available/ the tools you want to use for this recipe, eg. airfryer',
             maxLines: 5,
@@ -243,8 +245,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           _buildTextFormField(
             controller: _expSoonController,
+            labelText: 'Items that must be included in the recipe?',
             hintText:
-                'Any ingredients you Want to use, eg. ingredients soon expiring?',
+                'Any ingredients that must be used, eg. ingredients soon expiring?',
             maxLines: 5,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
@@ -270,6 +273,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   Widget _buildTextFormField({
     required TextEditingController controller,
     required String hintText,
+    required String labelText,
     required int maxLines,
   }) {
     return TextFormField(
@@ -279,6 +283,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
         filled: true,
         fillColor: Colors.white,
         border: OutlineInputBorder(),
+        labelText: labelText,
         hintText: hintText,
       ),
       maxLines: maxLines,
@@ -377,8 +382,10 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
       var generatedRecipe = await generateRecipe(
         selectedItems,
         recipeType,
-        [expSoon],  // temporary solution. rather ask the user for an actual list
-        [supplies], // temporary solution. rather ask the user for an actual list
+        [expSoon], // temporary solution. rather ask the user for an actual list
+        [
+          supplies
+        ], // temporary solution. rather ask the user for an actual list
         true,
       );
 
