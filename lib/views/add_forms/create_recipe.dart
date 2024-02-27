@@ -365,7 +365,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
       var generatedRecipe = await generateRecipe(
         optionalItems,
         recipeType,
-        mustHaveItems, // temporary solution. rather ask the user for an actual list
+        mustHaveItems,
         [
           supplies
         ], // temporary solution. rather ask the user for an actual list

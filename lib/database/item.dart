@@ -42,7 +42,7 @@ class _Recipe {
   late String? recipeType;
   late List<String?> supplies;
   late List<String?> expSoon;
-  late List<String?> pantryonly;
+  late bool? pantryonly;
 }
 
 class CategoryMaps {

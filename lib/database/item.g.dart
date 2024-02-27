@@ -279,23 +279,22 @@ class Recipe extends _Recipe with RealmEntity, RealmObjectBase, RealmObject {
     String name, {
     String? details,
     String? recipeType,
+    bool? pantryonly,
     Iterable<String?> selectedItems = const [],
     Iterable<String?> supplies = const [],
     Iterable<String?> expSoon = const [],
-    Iterable<String?> pantryonly = const [],
   }) {
     RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set(this, 'name', name);
     RealmObjectBase.set(this, 'details', details);
     RealmObjectBase.set(this, 'recipeType', recipeType);
+    RealmObjectBase.set(this, 'pantryonly', pantryonly);
     RealmObjectBase.set<RealmList<String?>>(
         this, 'selectedItems', RealmList<String?>(selectedItems));
     RealmObjectBase.set<RealmList<String?>>(
         this, 'supplies', RealmList<String?>(supplies));
     RealmObjectBase.set<RealmList<String?>>(
         this, 'expSoon', RealmList<String?>(expSoon));
-    RealmObjectBase.set<RealmList<String?>>(
-        this, 'pantryonly', RealmList<String?>(pantryonly));
   }
 
   Recipe._();
@@ -345,11 +344,10 @@ class Recipe extends _Recipe with RealmEntity, RealmObjectBase, RealmObject {
       throw RealmUnsupportedSetError();
 
   @override
-  RealmList<String?> get pantryonly =>
-      RealmObjectBase.get<String?>(this, 'pantryonly') as RealmList<String?>;
+  bool? get pantryonly =>
+      RealmObjectBase.get<bool>(this, 'pantryonly') as bool?;
   @override
-  set pantryonly(covariant RealmList<String?> value) =>
-      throw RealmUnsupportedSetError();
+  set pantryonly(bool? value) => RealmObjectBase.set(this, 'pantryonly', value);
 
   @override
   Stream<RealmObjectChanges<Recipe>> get changes =>
@@ -373,8 +371,7 @@ class Recipe extends _Recipe with RealmEntity, RealmObjectBase, RealmObject {
           optional: true, collectionType: RealmCollectionType.list),
       SchemaProperty('expSoon', RealmPropertyType.string,
           optional: true, collectionType: RealmCollectionType.list),
-      SchemaProperty('pantryonly', RealmPropertyType.string,
-          optional: true, collectionType: RealmCollectionType.list),
+      SchemaProperty('pantryonly', RealmPropertyType.bool, optional: true),
     ]);
   }
 }

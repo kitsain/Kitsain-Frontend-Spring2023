@@ -270,7 +270,7 @@ class _RecipeCardState extends State<RecipeCard> {
 
               // the recipe details and changes are sent as parameters
               var changedRecipe =
-                  await changeRecipe(widget.recipe.details, changes);
+                  await changeRecipe(widget.recipe.details, changes,widget.recipe.selectedItems,widget.recipe.recipeType,widget.recipe.expSoon,widget.recipe.supplies, widget.recipe.pantryonly);
 
               RecipeProxy().upsertRecipe(changedRecipe);
               changesController.clear();
