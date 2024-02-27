@@ -38,6 +38,11 @@ class _Recipe {
   late final String id; // This will NOT be shown to the user
   late String name;
   late String? details;
+  late String? selectedItems;
+  late String? recipeType;
+  late String? supplies;
+  late String? expSoon;
+  late String? pantryonly;
 }
 
 class CategoryMaps {
