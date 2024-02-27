@@ -10,7 +10,8 @@ class RecipeProxy with ChangeNotifier {
     var all = realm.all<Recipe>();
     return all;
   }
-    subscribe() {
+
+  subscribe() {
     final recipes = getItems();
     recipes.changes.listen(
       (changes) {
@@ -47,7 +48,6 @@ class RecipeProxy with ChangeNotifier {
     return result;
   }
 
-
   /*
   MODIFYING ITEMS
   */
@@ -64,7 +64,6 @@ class RecipeProxy with ChangeNotifier {
       return false;
     }
   }
-
 
   void deleteRecipe(Recipe recipe) {
     try {

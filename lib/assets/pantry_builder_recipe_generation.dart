@@ -97,8 +97,6 @@ class _PantryBuilderState extends State<PantryBuilder> {
   void toggleItemSelectionNotExpiring(int index, String item) {
     setState(() {
       isSelectedNotExpiring[index] = !isSelectedNotExpiring[index];
-      widget.onOptionalItemsChanged(getOptionalItems());
-      widget.onMustHaveItemsChanged(getMustHaveItems());
       if (isSelectedNotExpiring[index]) {
         optionalItems.add(item);
       }
@@ -106,6 +104,8 @@ class _PantryBuilderState extends State<PantryBuilder> {
         optionalItems.remove(item);
         mustHaveItems.remove(item);
       }
+      widget.onOptionalItemsChanged(getOptionalItems());
+      widget.onMustHaveItemsChanged(getMustHaveItems());
     });
 
   }
@@ -121,8 +121,6 @@ class _PantryBuilderState extends State<PantryBuilder> {
   void toggleItemSelectionExpiring(int index, String item) {
     setState(() {
       isSelectedExpiring[index] = !isSelectedExpiring[index];
-      widget.onOptionalItemsChanged(getOptionalItems());
-      widget.onMustHaveItemsChanged(getMustHaveItems());
       if (isSelectedExpiring[index]) {
         optionalItems.add(item);
       }
@@ -130,6 +128,8 @@ class _PantryBuilderState extends State<PantryBuilder> {
         optionalItems.remove(item);
         mustHaveItems.remove(item);
       }
+      widget.onOptionalItemsChanged(getOptionalItems());
+      widget.onMustHaveItemsChanged(getMustHaveItems());
     });
 
   }
@@ -138,7 +138,6 @@ class _PantryBuilderState extends State<PantryBuilder> {
     setState(() {
       if (select) {
         for (var item in widget.items) {
-          print(item.name);
           optionalItems.add(item.name);
       }
     }

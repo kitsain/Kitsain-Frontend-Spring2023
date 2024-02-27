@@ -31,6 +31,10 @@ Future<Recipe> generateRecipe(List<String> ingredients, String recipe_type,
   /* The Recipe class only has these few fields so we have to hack the recipe data into those existing fields.
    * Change this when Recipe class gets more complete. */
   return Recipe(ObjectId().toString(), responseMap["recipe_name"],
+      selectedItems: ingredients,
+      recipeType: recipe_type,
+      expSoon: exp_soon,
+      supplies: supplies,
       details: json
           .encode([responseMap["ingredients"], responseMap["instructions"]]));
 }

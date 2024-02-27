@@ -360,7 +360,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     if (_formKey.currentState!.validate()) {
       String recipeType = _recipeTypeController.text;
       String supplies = _suppliesController.text;
-      String expSoon = _expSoonController.text;
+      // String expSoon = _expSoonController.text;
 
       var generatedRecipe = await generateRecipe(
         optionalItems,
