@@ -51,7 +51,8 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   var _pantryItems;
   bool _isLoading = true; // Flag to track loading state
   var _formSubmitted = false;
-  List<String> selectedItems = [];
+  List<String> optionalItems = [];
+  List<String> mustHaveItems = [];
 
   @override
   void initState() {
@@ -222,7 +223,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
           _buildTextFormField(
             controller: _expSoonController,
             labelText:
-                'Items that must be included in the recipe eg. soon expiring?',
+                'Implement this to add items to the optional and must have lists below',
             hintText:
                 'Items that must be included in the recipe eg. soon expiring?',
             maxLines: 5,
@@ -235,9 +236,14 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
           PantryBuilder(
               items: _pantryItems,
               sortMethod: "az",
-              onSelectedItemsChanged: (selectedItems) {
+              onMustHaveItemsChanged: (mustHaveItems) {
                 setState(() {
-                  this.selectedItems = selectedItems;
+                  this.mustHaveItems = mustHaveItems;
+                });
+              },
+              onOptionalItemsChanged: (optionalItems) {
+                setState(() {
+                  this.optionalItems = optionalItems;
                 });
               }),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
@@ -357,9 +363,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
       String expSoon = _expSoonController.text;
 
       var generatedRecipe = await generateRecipe(
-        selectedItems,
+        optionalItems,
         recipeType,
-        [expSoon], // temporary solution. rather ask the user for an actual list
+        mustHaveItems, // temporary solution. rather ask the user for an actual list
         [
           supplies
         ], // temporary solution. rather ask the user for an actual list
