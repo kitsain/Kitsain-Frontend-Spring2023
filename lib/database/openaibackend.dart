@@ -33,16 +33,16 @@ Future<Recipe> generateRecipe(List<String> ingredients, String recipe_type,
           .encode([responseMap["ingredients"], responseMap["instructions"]]));
 }
 
-Future<Recipe> changeRecipe(String change) async {
+Future<Recipe> changeRecipe(String? details, String change) async {
   var url = Uri.https(
-      'kitsain-build-ohtuprojekti-staging.apps.ocp-test-0.k8s.it.helsinki.fi',
+      'kitsain-backend-test-ohtuprojekti-staging.apps.ocp-test-0.k8s.it.helsinki.fi',
       '/change');
   var headers = {"Content-Type": "application/json"};
   var requestBody = json.encode({'change': change});
   var response = await http.post(url, headers: headers, body: requestBody);
 
   print("${change}");
-
+  print("details: ${details}");
   print('Response status: ${response.statusCode}');
   print('Response body: ${response.body}');
 
