@@ -3,10 +3,10 @@ import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:http/http.dart' as http;
 import 'package:realm/realm.dart';
 
-Future<Recipe> generateRecipe(String ingredients, String recipe_type,
-    String exp_soon, String supplies, String pantry_only) async {
+Future<Recipe> generateRecipe(List<String> ingredients, String recipe_type,
+    List<String> exp_soon, List<String> supplies, bool pantry_only) async {
   var url = Uri.https(
-      'kitsain-build-ohtuprojekti-staging.apps.ocp-test-0.k8s.it.helsinki.fi',
+      'kitsain-backend-test-ohtuprojekti-staging.apps.ocp-test-0.k8s.it.helsinki.fi',
       '/generate');
   var headers = {"Content-Type": "application/json"};
   var requestBody = json.encode({
@@ -33,29 +33,15 @@ Future<Recipe> generateRecipe(String ingredients, String recipe_type,
           .encode([responseMap["ingredients"], responseMap["instructions"]]));
 }
 
-Future<Recipe> changeRecipe(
-    String changes,
-    String ingredients,
-    String recipe_type,
-    String exp_soon,
-    String supplies,
-    String pantry_only) async {
+Future<Recipe> changeRecipe(String change) async {
   var url = Uri.https(
       'kitsain-build-ohtuprojekti-staging.apps.ocp-test-0.k8s.it.helsinki.fi',
-      '/generate');
+      '/change');
   var headers = {"Content-Type": "application/json"};
-  var requestBody = json.encode({
-    'changes': changes,
-    'ingredients': ingredients,
-    'recipe_type': recipe_type,
-    'exp_soon': exp_soon,
-    'supplies': supplies,
-    'pantry_only': pantry_only
-  });
+  var requestBody = json.encode({'change': change});
   var response = await http.post(url, headers: headers, body: requestBody);
 
-  print(
-      "${ingredients}, ${recipe_type}, ${exp_soon}, ${supplies}, ${pantry_only}");
+  print("${change}");
 
   print('Response status: ${response.statusCode}');
   print('Response body: ${response.body}');

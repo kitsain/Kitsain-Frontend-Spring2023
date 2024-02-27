@@ -149,17 +149,20 @@ class _EditItemFormState extends State<EditItemForm> {
     }
 
     if (widget.item.openedDate != null) {
-      _openDateDT = widget.item.openedDate!;
+      _openDateDT = widget.item.openedDate!.toLocal();
       String openedDate =
           "${_openDateDT.day}.${_openDateDT.month}.${_openDateDT.year}";
       _openDateString.text = openedDate;
     }
+
     if (widget.item.expiryDate != null) {
-      _expDateDT = widget.item.expiryDate!;
+      _expDateDT = widget.item.expiryDate!.toLocal();
       String expirationDate =
           "${_expDateDT.day}.${_expDateDT.month}.${_expDateDT.year}";
+      _expDateDT = widget.item.expiryDate!.toLocal();
       _expDateString.text = expirationDate;
     }
+
     if (widget.item.details != null) {
       _details.text = widget.item.details!;
     }

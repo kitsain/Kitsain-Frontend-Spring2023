@@ -23,7 +23,6 @@ const double BORDERWIDTH = 30.0;
 const Color NULLSTATUSCOLOR = Color(0xffF0EBE5);
 const Color NULLTEXTCOLOR = Color(0xff979797);
 
-
 class ItemCard extends StatefulWidget {
   ItemCard({super.key, required this.item, required this.loc});
   late Item item;
@@ -59,22 +58,32 @@ class _ItemCardState extends State<ItemCard> {
   @override
   Widget build(BuildContext context) {
     var popupMenuButton = PopupMenuButton<_MenuValues>(
-      icon: const Icon(Icons.more_horiz,
+      icon: const Icon(
+        Icons.more_horiz,
         color: Colors.black,
       ),
       itemBuilder: (BuildContext context) {
         return [
           const PopupMenuItem(
             value: _MenuValues.edit,
-            child: Text("Edit item", style: AppTypography.smallTitle,),
+            child: Text(
+              "Edit item",
+              style: AppTypography.smallTitle,
+            ),
           ),
           const PopupMenuItem(
             value: _MenuValues.used,
-            child: Text("Move to used", style: AppTypography.smallTitle,),
+            child: Text(
+              "Move to used",
+              style: AppTypography.smallTitle,
+            ),
           ),
           const PopupMenuItem(
             value: _MenuValues.bin,
-            child: Text("Move to bin", style: AppTypography.smallTitle,),
+            child: Text(
+              "Move to bin",
+              style: AppTypography.smallTitle,
+            ),
           ),
           //const PopupMenuItem(
           //  value: _MenuValues.shoppinglist,
@@ -85,7 +94,10 @@ class _ItemCardState extends State<ItemCard> {
           //),
           const PopupMenuItem(
             value: _MenuValues.delete,
-            child: Text("Delete item", style: AppTypography.smallTitle,),
+            child: Text(
+              "Delete item",
+              style: AppTypography.smallTitle,
+            ),
           ),
         ];
       },
@@ -106,10 +118,14 @@ class _ItemCardState extends State<ItemCard> {
             showDialog(
               context: context,
               builder: (ctx) => AlertDialog(
-                title: const Text("Delete item", style: AppTypography.heading3,),
+                title: const Text(
+                  "Delete item",
+                  style: AppTypography.heading3,
+                ),
                 content: const Text(
-                    "Are you sure you want to delete this item? This action cannot be undone.",
-                  style: AppTypography.paragraph,),
+                  "Are you sure you want to delete this item? This action cannot be undone.",
+                  style: AppTypography.paragraph,
+                ),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
@@ -117,21 +133,24 @@ class _ItemCardState extends State<ItemCard> {
                     },
                     child: const Text("Cancel"),
                     style: ButtonStyle(
-                      textStyle: MaterialStateProperty.resolveWith((states) => AppTypography.category),
-                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.cancelGrey),
+                      textStyle: MaterialStateProperty.resolveWith(
+                          (states) => AppTypography.category),
+                      foregroundColor: MaterialStateProperty.resolveWith(
+                          (states) => AppColors.cancelGrey),
                     ),
                   ),
                   TextButton(
-                    onPressed: () {
-                      deleteItem(widget.item);
-                      Navigator.of(ctx).pop();
-                    },
-                    child: const Text("Delete"),
-                    style: ButtonStyle(
-                      textStyle: MaterialStateProperty.resolveWith((states) => AppTypography.category),
-                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),
-                    )
-                  )
+                      onPressed: () {
+                        deleteItem(widget.item);
+                        Navigator.of(ctx).pop();
+                      },
+                      child: const Text("Delete"),
+                      style: ButtonStyle(
+                        textStyle: MaterialStateProperty.resolveWith(
+                            (states) => AppTypography.category),
+                        foregroundColor: MaterialStateProperty.resolveWith(
+                            (states) => AppColors.main1),
+                      ))
                 ],
               ),
             );
@@ -143,7 +162,8 @@ class _ItemCardState extends State<ItemCard> {
     );
 
     var popupMenuButtonHistory = PopupMenuButton<_MenuValues>(
-      icon: const Icon(Icons.more_horiz,
+      icon: const Icon(
+        Icons.more_horiz,
         color: Colors.black,
       ),
       itemBuilder: (BuildContext context) {
@@ -151,18 +171,27 @@ class _ItemCardState extends State<ItemCard> {
           if (widget.item.location == "Bin") ...[
             const PopupMenuItem(
               value: _MenuValues.used,
-              child: Text("Move to used", style: AppTypography.smallTitle,),
+              child: Text(
+                "Move to used",
+                style: AppTypography.smallTitle,
+              ),
             ),
           ],
           if (widget.item.location == "Used") ...[
             const PopupMenuItem(
               value: _MenuValues.bin,
-              child: Text("Move to bin", style: AppTypography.smallTitle,),
+              child: Text(
+                "Move to bin",
+                style: AppTypography.smallTitle,
+              ),
             ),
           ],
           const PopupMenuItem(
             value: _MenuValues.pantry,
-            child: Text("Move to pantry", style: AppTypography.smallTitle,),
+            child: Text(
+              "Move to pantry",
+              style: AppTypography.smallTitle,
+            ),
           ),
           //const PopupMenuItem(
           //  value: _MenuValues.shoppinglist,
@@ -173,7 +202,10 @@ class _ItemCardState extends State<ItemCard> {
           //),
           const PopupMenuItem(
             value: _MenuValues.delete,
-            child: Text("Delete item", style: AppTypography.smallTitle,),
+            child: Text(
+              "Delete item",
+              style: AppTypography.smallTitle,
+            ),
           ),
         ];
       },
@@ -194,10 +226,14 @@ class _ItemCardState extends State<ItemCard> {
             showDialog(
               context: context,
               builder: (ctx) => AlertDialog(
-                title: const Text("Delete item", style: AppTypography.heading3,),
+                title: const Text(
+                  "Delete item",
+                  style: AppTypography.heading3,
+                ),
                 content: const Text(
-                    "Are you sure you want to delete this item? This action cannot be undone.",
-                style: AppTypography.paragraph,),
+                  "Are you sure you want to delete this item? This action cannot be undone.",
+                  style: AppTypography.paragraph,
+                ),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
@@ -205,21 +241,24 @@ class _ItemCardState extends State<ItemCard> {
                     },
                     child: const Text("Cancel"),
                     style: ButtonStyle(
-                      textStyle: MaterialStateProperty.resolveWith((states) => AppTypography.category),
-                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.cancelGrey),
+                      textStyle: MaterialStateProperty.resolveWith(
+                          (states) => AppTypography.category),
+                      foregroundColor: MaterialStateProperty.resolveWith(
+                          (states) => AppColors.cancelGrey),
                     ),
                   ),
                   TextButton(
-                    onPressed: () {
-                      deleteItem(widget.item);
-                      Navigator.of(ctx).pop();
-                    },
-                    child: const Text("Delete"),
-                    style: ButtonStyle(
-                      textStyle: MaterialStateProperty.resolveWith((states) => AppTypography.category),
-                      foregroundColor: MaterialStateProperty.resolveWith((states) => AppColors.main1),
-                    )
-                  ),
+                      onPressed: () {
+                        deleteItem(widget.item);
+                        Navigator.of(ctx).pop();
+                      },
+                      child: const Text("Delete"),
+                      style: ButtonStyle(
+                        textStyle: MaterialStateProperty.resolveWith(
+                            (states) => AppTypography.category),
+                        foregroundColor: MaterialStateProperty.resolveWith(
+                            (states) => AppColors.main1),
+                      )),
                 ],
               ),
             );
@@ -320,11 +359,14 @@ class _ItemCardState extends State<ItemCard> {
                         setState(() => showAbbreviation = !val),
                     title: Text(
                       widget.item.name.toUpperCase(),
-                      style: AppTypography.heading3.copyWith(color: Colors.black),
+                      style:
+                          AppTypography.heading3.copyWith(color: Colors.black),
                     ),
                     subtitle: Text(
-                      Categories.categoriesByIndex[widget.item.mainCat]!.toUpperCase(),
-                        style: AppTypography.smallTitle.copyWith(color: Colors.black),
+                      Categories.categoriesByIndex[widget.item.mainCat]!
+                          .toUpperCase(),
+                      style: AppTypography.smallTitle
+                          .copyWith(color: Colors.black),
                     ),
                     trailing: widget.loc == "Pantry"
                         ? popupMenuButton
@@ -353,7 +395,8 @@ class _ItemCardState extends State<ItemCard> {
                           ] else ...[
                             Text(
                               "OPENED",
-                              style: AppTypography.smallTitle.copyWith(color: NULLTEXTCOLOR),
+                              style: AppTypography.smallTitle
+                                  .copyWith(color: NULLTEXTCOLOR),
                             )
                           ]
                         ],
@@ -379,7 +422,8 @@ class _ItemCardState extends State<ItemCard> {
                           ] else ...[
                             Text(
                               "EXPIRATION",
-                              style: AppTypography.smallTitle.copyWith(color: NULLTEXTCOLOR),
+                              style: AppTypography.smallTitle
+                                  .copyWith(color: NULLTEXTCOLOR),
                             )
                           ]
                         ],
@@ -406,7 +450,10 @@ class _ItemCardState extends State<ItemCard> {
                                   color: Colors.grey),
                             ),
                           ],
-                          const Text("MARK AS FAVORITE", style: AppTypography.smallTitle,)
+                          const Text(
+                            "MARK AS FAVORITE",
+                            style: AppTypography.smallTitle,
+                          )
                         ],
                       ),
                       SizedBox(
@@ -420,7 +467,8 @@ class _ItemCardState extends State<ItemCard> {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
-                            child: Text(widget.item.details!,
+                            child: Text(
+                              widget.item.details!,
                               style: AppTypography.paragraph,
                             ),
                           ),
@@ -436,7 +484,8 @@ class _ItemCardState extends State<ItemCard> {
                             padding: const EdgeInsets.all(5.0),
                             child: Text(
                               "Details",
-                              style: AppTypography.paragraph.copyWith(color: NULLTEXTCOLOR),
+                              style: AppTypography.paragraph
+                                  .copyWith(color: NULLTEXTCOLOR),
                             ),
                           ),
                         ),
@@ -458,7 +507,7 @@ class _ItemCardState extends State<ItemCard> {
                             7) ...[
                           if (showAbbreviation) ...[
                             for (var rune in DateFormat(DateFormat.ABBR_WEEKDAY)
-                                .format(widget.item.expiryDate!)
+                                .format(widget.item.expiryDate!.toLocal())
                                 .runes) ...[
                               Text(
                                 String.fromCharCode(rune),
@@ -467,7 +516,7 @@ class _ItemCardState extends State<ItemCard> {
                             ]
                           ] else ...[
                             for (var rune in DateFormat(DateFormat.WEEKDAY)
-                                .format(widget.item.expiryDate!)
+                                .format(widget.item.expiryDate!.toLocal())
                                 .runes) ...[
                               Text(
                                 String.fromCharCode(rune),

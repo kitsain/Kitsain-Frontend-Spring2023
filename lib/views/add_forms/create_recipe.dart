@@ -21,20 +21,21 @@ class CreateNewRecipeForm extends StatefulWidget {
 
 class LoadingDialogWithTimeout extends StatefulWidget {
   @override
-  _LoadingDialogWithTimeoutState createState() => _LoadingDialogWithTimeoutState();
+  _LoadingDialogWithTimeoutState createState() =>
+      _LoadingDialogWithTimeoutState();
 }
 
 class _LoadingDialogWithTimeoutState extends State<LoadingDialogWithTimeout> {
-  @override
+/*   @override
   void initState() {
     super.initState();
     // Start a timer to close the dialog after 10 seconds
-    Timer(Duration(seconds: 10), () {
+    Timer(Duration(seconds: 20), () {
       if (mounted) {
         Navigator.of(context).pop();
       }
-    });
-  }
+    }); 
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +54,6 @@ class _LoadingDialogWithTimeoutState extends State<LoadingDialogWithTimeout> {
   }
 }
 
-
-
 @override
 class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   final _formKey = GlobalKey<FormState>();
@@ -63,7 +62,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   var _pantryItems;
   bool _isLoading = true; // Flag to track loading state
   var _formSubmitted = false;
-  String selectedItemsString = '';
+  List<String> selectedItems = [];
 
   @override
   void initState() {
@@ -86,31 +85,16 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
       });
     }
   }
-  // These dates control the date string user sees in the form
 
-  // var _expDateString = TextEditingController();
-  // var _openDateString = TextEditingController();
-  // var _recipeType = TextEditingController();
-  // var _ingredients = TextEditingController();
-  // var _supplies = TextEditingController();
-  // var _exp_soon = TextEditingController();
-  // var _pantry_only = TextEditingController();
   String selected = "True";
 
-  // These values are actually saved to the db as DateTime
-  // var _openDateDT;
-  // var _expDateDT;
   final TextEditingController _recipeTypeController = TextEditingController();
   final TextEditingController _suppliesController = TextEditingController();
   final TextEditingController _expSoonController = TextEditingController();
-  // bool _favorite = false;
-  // bool _hasExpiryDate = false;
+
   String _category = "Choose category";
   var _catInt;
-  // var _details = TextEditingController();
-  // var _details2 = TextEditingController();
-  // // var _details3 = TextEditingController();
-  // var _details4 = TextEditingController();
+
   String? _selectedOption;
   var radioValues;
 
@@ -142,22 +126,23 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     }
   }
 
-bool _areFormFieldsEmpty() {
-  return _itemName.text.isEmpty &&
-      _recipeTypeController.text.isEmpty &&
-      _suppliesController.text.isEmpty &&
-      _expSoonController.text.isEmpty;
-}
+  bool _areFormFieldsEmpty() {
+    return _itemName.text.isEmpty &&
+        _recipeTypeController.text.isEmpty &&
+        _suppliesController.text.isEmpty &&
+        _expSoonController.text.isEmpty;
+  }
 
-Widget _buildDialogButton(String text, Color textColor, void Function() onPressed) {
-  return TextButton(
-    onPressed: onPressed,
-    child: Text(
-      text,
-      style: AppTypography.category.copyWith(color: textColor),
-    ),
-  );
-}
+  Widget _buildDialogButton(
+      String text, Color textColor, void Function() onPressed) {
+    return TextButton(
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: AppTypography.category.copyWith(color: textColor),
+      ),
+    );
+  }
 // Choose what items to query from db based on user selection
 
   @override
@@ -229,19 +214,28 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
         children: [
           _buildTextFormField(
             controller: _recipeTypeController,
-            hintText: 'Your diet and other wishes for the recipe? eg. vegan, 15-minute recipe, breakfast.',
+            labelText:
+                'Your diet or recipe type? eg. vegan, 15-minute recipe, breakfast.',
+            hintText:
+                'Your diet or recipe type? eg. vegan, 15-minute recipe, breakfast.',
             maxLines: 5,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           _buildTextFormField(
             controller: _suppliesController,
-            hintText: 'List the cooking tools available/ the tools you want to use for this recipe, eg. airfryer',
+            labelText:
+                'The cooking tools available/the ones you want to use for this recipe, eg. airfryer',
+            hintText:
+                'The cooking tools available/the ones you want to use for this recipe, eg. airfryer',
             maxLines: 5,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           _buildTextFormField(
             controller: _expSoonController,
-            hintText: 'Any ingredients you Want to use, eg. ingredients soon expiring?',
+            labelText:
+                'Items that must be included in the recipe eg. soon expiring?',
+            hintText:
+                'Items that must be included in the recipe eg. soon expiring?',
             maxLines: 5,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
@@ -250,14 +244,13 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
             width: MediaQuery.of(context).size.width * 0.03,
           ),
           PantryBuilder(
-            items: _pantryItems,
-            sortMethod: "az",
-            onSelectedItemsChanged: (selectedItems) {
-              setState(() {
-                selectedItemsString = selectedItems;
-              });
-            }
-          ),
+              items: _pantryItems,
+              sortMethod: "az",
+              onSelectedItemsChanged: (selectedItems) {
+                setState(() {
+                  this.selectedItems = selectedItems;
+                });
+              }),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           _buildActionButtons(),
         ],
@@ -268,6 +261,7 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
   Widget _buildTextFormField({
     required TextEditingController controller,
     required String hintText,
+    required String labelText,
     required int maxLines,
   }) {
     return TextFormField(
@@ -277,6 +271,7 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
         filled: true,
         fillColor: Colors.white,
         border: OutlineInputBorder(),
+        labelText: labelText,
         hintText: hintText,
       ),
       maxLines: maxLines,
@@ -285,7 +280,7 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
 
   Widget _buildDropdownMenu() {
     return DropdownButtonFormField<String>(
-      value: _selectedOption,
+      value: _selectedOption ?? 'Can use other items that are not in pantry',
       onChanged: (String? newValue) {
         setState(() {
           _selectedOption = newValue!;
@@ -326,12 +321,21 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
             showDialog(
               context: context,
               barrierDismissible: false,
-              builder: (BuildContext context) => _loadingDialog(context),
+              builder: (BuildContext context) {
+                // Use a Builder widget to create a new valid BuildContext
+                return Builder(
+                  builder: (BuildContext context) {
+                    return _loadingDialog(context);
+                  },
+                );
+              },
             );
 
             try {
               await _createRecipe();
             } finally {
+              // Use rootNavigator: true to pop the dialog from the root navigator
+              Navigator.of(context, rootNavigator: true).pop();
               Navigator.of(context).pop(); // Close the loading dialog
             }
           },
@@ -345,7 +349,8 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
     return LoadingDialogWithTimeout();
   }
 
-  Widget _buildButton(String label, Color backgroundColor, Color textColor, Function() onPressed) {
+  Widget _buildButton(String label, Color backgroundColor, Color textColor,
+      Function() onPressed) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
@@ -356,7 +361,6 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
     );
   }
 
-
   Future<void> _createRecipe() async {
     if (_formKey.currentState!.validate()) {
       String recipeType = _recipeTypeController.text;
@@ -364,11 +368,13 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
       String expSoon = _expSoonController.text;
 
       var generatedRecipe = await generateRecipe(
-        selectedItemsString,
+        selectedItems,
         recipeType,
-        expSoon,
-        supplies,
-        "True",
+        [expSoon], // temporary solution. rather ask the user for an actual list
+        [
+          supplies
+        ], // temporary solution. rather ask the user for an actual list
+        true,
       );
 
       RecipeProxy().upsertRecipe(generatedRecipe);
@@ -379,4 +385,3 @@ Widget _buildDialogButton(String text, Color textColor, void Function() onPresse
     }
   }
 }
-

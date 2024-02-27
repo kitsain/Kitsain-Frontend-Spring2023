@@ -444,9 +444,15 @@ class _NewItemFormState extends State<NewItemForm> {
                       if (pickedDate != null) {
                         String expirationDate =
                             "${pickedDate.day}.${pickedDate.month}.${pickedDate.year}";
+
                         _expDateString.text = expirationDate;
                         _expDateDT = pickedDate;
                         _hasExpiryDate = true;
+                        print('_expDateDT, ${_expDateDT}');
+                        print('pickedDate, ${pickedDate}');
+                        print('expirationDate, ${expirationDate}');
+                        print('_expDateString.text, ${_expDateString.text}');
+                        print("MOI PÄÄSIN TÄNNE");
                       } else {
                         _expDateString.text = "";
                       }
@@ -513,6 +519,10 @@ class _NewItemFormState extends State<NewItemForm> {
                                 addedDate: DateTime.now().toUtc(),
                                 details: _details.text,
                               );
+                              print('_expDateDT, ${_expDateDT}');
+                              print(
+                                  'newItem.expiryDate, ${newItem.expiryDate}');
+                              print("MOI PÄÄSIN TÄNNE 2");
                               PantryProxy().upsertItem(newItem);
                               setState(() {});
                               Navigator.pop(context);
