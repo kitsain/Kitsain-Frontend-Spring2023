@@ -26,20 +26,9 @@ class LoadingDialogWithTimeout extends StatefulWidget {
 }
 
 class _LoadingDialogWithTimeoutState extends State<LoadingDialogWithTimeout> {
-/*   @override
-  void initState() {
-    super.initState();
-    // Start a timer to close the dialog after 10 seconds
-    Timer(Duration(seconds: 20), () {
-      if (mounted) {
-        Navigator.of(context).pop();
-      }
-    }); 
-  } */
-
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return const AlertDialog(
       backgroundColor: Colors.transparent,
       elevation: 0,
       content: Column(
