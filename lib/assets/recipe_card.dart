@@ -41,7 +41,8 @@ class _RecipeCardState extends State<RecipeCard> {
   void _editItem() async {
     final TextEditingController _changeController = TextEditingController();
     String change = _changeController.text;
-    var generatedRecipe = await changeRecipe(change);
+    String details = "dsfdadfda";
+    var generatedRecipe = await changeRecipe(details, change);
 
     RecipeProxy().upsertRecipe(generatedRecipe);
   }
@@ -276,7 +277,9 @@ class _RecipeCardState extends State<RecipeCard> {
             onPressed: () async {
               String changes = _changesController.text;
 
-              var changedRecipe = await changeRecipe(changes);
+              // the recipe details and changes are sent as parameters
+              var changedRecipe =
+                  await changeRecipe(widget.recipe.details, changes);
 
               RecipeProxy().upsertRecipe(changedRecipe);
               _changesController.clear();
