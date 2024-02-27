@@ -37,14 +37,25 @@ class _FeedViewState extends State<FeedView> {
       body: ListView.builder(
         itemCount: 10,
         itemBuilder: (context, index) {
-          return PostCard();
+          return const PostCard();
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreatePostView()),
+          );
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
 }
 
 class PostCard extends StatelessWidget {
+  const PostCard({super.key});
+
   // Placeholder for the posts
 
   @override
@@ -81,6 +92,26 @@ class PostCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// A view for creating a new post.
+///
+class CreatePostView extends StatefulWidget {
+  const CreatePostView({super.key});
+
+  @override
+  CreatePostViewState createState() => CreatePostViewState();
+}
+
+class CreatePostViewState extends State<CreatePostView> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Create Post'),
       ),
     );
   }
