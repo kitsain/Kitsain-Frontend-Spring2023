@@ -18,9 +18,9 @@ enum _MenuValues {
   delete,
 }
 
-const double BORDER_WIDTH = 30.0;
-const Color NULL_STATUS_COLOR = Color(0xffF0EBE5);
-const Color NULL_TEXT_COLOR = Color(0xff979797);
+const double borderWidth = 30.0;
+const Color nullStatusColor = Color(0xffF0EBE5);
+const Color nullTextColor = Color(0xff979797);
 
 class RecipeCard extends StatefulWidget {
   RecipeCard({super.key, required this.recipe});
@@ -39,8 +39,8 @@ class _RecipeCardState extends State<RecipeCard> {
   }
 
   void _editItem() async {
-    final TextEditingController _changeController = TextEditingController();
-    String change = _changeController.text;
+    final TextEditingController changeController = TextEditingController();
+    String change = changeController.text;
     var generatedRecipe = await changeRecipe(change);
 
     RecipeProxy().upsertRecipe(generatedRecipe);
@@ -77,8 +77,8 @@ class _RecipeCardState extends State<RecipeCard> {
             decoration: BoxDecoration(
               border: Border(
                 left: BorderSide(
-                  color: NULL_STATUS_COLOR,
-                  width: BORDER_WIDTH,
+                  color: nullStatusColor,
+                  width: borderWidth,
                 ),
               ),
             ),
@@ -132,8 +132,8 @@ class _RecipeCardState extends State<RecipeCard> {
                   decoration: BoxDecoration(
                     border: Border(
                       left: BorderSide(
-                        color: NULL_STATUS_COLOR,
-                        width: BORDER_WIDTH,
+                        color: nullStatusColor,
+                        width: borderWidth,
                       ),
                     ),
                   ),
@@ -245,7 +245,7 @@ class _RecipeCardState extends State<RecipeCard> {
   }
 
   Widget _buildChangeAlert(BuildContext context, String recipeName) {
-    final _changesController = TextEditingController(); //
+    final changesController = TextEditingController(); //
     return AlertDialog(
       title: Text('Change recipe'),
       content: Column(
@@ -259,7 +259,7 @@ class _RecipeCardState extends State<RecipeCard> {
               child: Padding(
                 padding: EdgeInsets.all(8.0),
                 child: TextField(
-                  controller: _changesController,
+                  controller: changesController,
                   maxLines: 8,
                   decoration: InputDecoration.collapsed(
                       hintText: "Enter your text here"),
@@ -274,12 +274,12 @@ class _RecipeCardState extends State<RecipeCard> {
               backgroundColor: Colors.blue,
             ),
             onPressed: () async {
-              String changes = _changesController.text;
+              String changes = changesController.text;
 
               var changedRecipe = await changeRecipe(changes);
 
               RecipeProxy().upsertRecipe(changedRecipe);
-              _changesController.clear();
+              changesController.clear();
             },
             child: const Text('Change'),
           ),

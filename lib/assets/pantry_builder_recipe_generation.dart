@@ -29,6 +29,8 @@ class _PantryBuilderState extends State<PantryBuilder> {
   late List expiringItems = getExpiringItems();
   late List notExpiringItems = getNotExpiringItems();
   late DateFormat formatter = DateFormat('yyyy-dd-MM');
+  late List<String> mustHaveItems = ["test"];
+  late List<String> optionalItems = ["test"];
 
   @override
   void initState() {
@@ -121,37 +123,41 @@ class _PantryBuilderState extends State<PantryBuilder> {
     toggleSelectNotExpiring(select);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(
-            height: 30,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () => toggleSelectAll(true),
-                child: const Text('Select all'),
-              ),
-              ElevatedButton(
-                onPressed: () => toggleSelectAll(false),
-                child: const Text('Deselect all'),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          Text("Expiring ingredients"),
-          SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Align(alignment: Alignment.topLeft, child: Wrap(
+  void switchList(String item, List<String> fromList, List<String> toList) {
+    setState(() {
+      fromList.remove(item);
+      toList.add(item);
+      widget.onSelectedItemsChanged(getSelectedItems());
+    });
+  }
+
+  Widget buildSelectButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          onPressed: () => toggleSelectAll(true),
+          child: const Text('Select all'),
+        ),
+        ElevatedButton(
+          onPressed: () => toggleSelectAll(false),
+          child: const Text('Deselect all'),
+        ),
+      ],
+    );
+  }
+
+  Widget buildExpiringIngredients() {
+    return Column(
+      children: [
+        SizedBox(height: 30),
+        Text("Expiring ingredients"),
+        SizedBox(height: 20),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: Wrap(
               alignment: WrapAlignment.start,
               direction: Axis.vertical,
               spacing: 1.0,
@@ -169,49 +175,110 @@ class _PantryBuilderState extends State<PantryBuilder> {
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: Text(
-                      (expiringItems[index].name + " " + formatter.format(expiringItems[index].expiryDate!.toLocal())),         
+                      (expiringItems[index].name +
+                          " " +
+                          formatter.format(expiringItems[index].expiryDate!.toLocal())),
                       style: const TextStyle(fontSize: 12.0),
                     ),
-
                   ),
                 ),
-              ),
               ),
             ),
           ),
-          Text("Rest of ingredients"),
-          SizedBox(
-            height: 20,
-          ),
-          Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Wrap(
-                  direction: Axis.vertical,
-                  spacing: 1.0,
-                  runSpacing: 8.0,
-                  children: List.generate(
-                    notExpiringItems.length,
-                    (index) => GestureDetector(
-                      onTap: () => toggleItemSelectionNotExpiring(index),
-                      child: Container(
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          color: isSelectedNotExpiring[index]
-                              ? const Color.fromARGB(255, 78, 117, 88)
-                              : null,
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Text(
-                          notExpiringItems[index].name,
-                          style: AppTypography.smallTitle,
-                        ),
-                      ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildRestOfIngredients() {
+    return Column(
+      children: [
+        SizedBox(height: 30),
+        Text("Rest of ingredients"),
+        SizedBox(height: 20),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: Wrap(
+              direction: Axis.vertical,
+              spacing: 1.0,
+              runSpacing: 8.0,
+              children: List.generate(
+                notExpiringItems.length,
+                (index) => GestureDetector(
+                  onTap: () => toggleItemSelectionNotExpiring(index),
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      color: isSelectedNotExpiring[index]
+                          ? const Color.fromARGB(255, 78, 117, 88)
+                          : null,
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Text(
+                      notExpiringItems[index].name,
+                      style: AppTypography.smallTitle,
                     ),
                   ),
                 ),
-              )),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildSelectedItemLists() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Expanded(
+          child: Container(
+            height: 200, // Adjust this value as needed
+            child: ListView.builder(
+              itemCount: mustHaveItems.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(mustHaveItems[index]),
+                  onTap: () {
+                    switchList(mustHaveItems[index], mustHaveItems, optionalItems);
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+        Expanded(
+          child: Container(
+            height: 200, // Adjust this value as needed
+            child: ListView.builder(
+              itemCount: optionalItems.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(optionalItems[index]),
+                  onTap: () {
+                    switchList(optionalItems[index], optionalItems, mustHaveItems);
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          buildSelectButtons(),
+          buildExpiringIngredients(),
+          buildRestOfIngredients(),
+          buildSelectedItemLists(),
         ],
       ),
     );
