@@ -278,10 +278,24 @@ class Recipe extends _Recipe with RealmEntity, RealmObjectBase, RealmObject {
     String id,
     String name, {
     String? details,
+    String? recipeType,
+    Iterable<String?> selectedItems = const [],
+    Iterable<String?> supplies = const [],
+    Iterable<String?> expSoon = const [],
+    Iterable<String?> pantryonly = const [],
   }) {
     RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set(this, 'name', name);
     RealmObjectBase.set(this, 'details', details);
+    RealmObjectBase.set(this, 'recipeType', recipeType);
+    RealmObjectBase.set<RealmList<String?>>(
+        this, 'selectedItems', RealmList<String?>(selectedItems));
+    RealmObjectBase.set<RealmList<String?>>(
+        this, 'supplies', RealmList<String?>(supplies));
+    RealmObjectBase.set<RealmList<String?>>(
+        this, 'expSoon', RealmList<String?>(expSoon));
+    RealmObjectBase.set<RealmList<String?>>(
+        this, 'pantryonly', RealmList<String?>(pantryonly));
   }
 
   Recipe._();
@@ -303,6 +317,41 @@ class Recipe extends _Recipe with RealmEntity, RealmObjectBase, RealmObject {
   set details(String? value) => RealmObjectBase.set(this, 'details', value);
 
   @override
+  RealmList<String?> get selectedItems =>
+      RealmObjectBase.get<String?>(this, 'selectedItems') as RealmList<String?>;
+  @override
+  set selectedItems(covariant RealmList<String?> value) =>
+      throw RealmUnsupportedSetError();
+
+  @override
+  String? get recipeType =>
+      RealmObjectBase.get<String>(this, 'recipeType') as String?;
+  @override
+  set recipeType(String? value) =>
+      RealmObjectBase.set(this, 'recipeType', value);
+
+  @override
+  RealmList<String?> get supplies =>
+      RealmObjectBase.get<String?>(this, 'supplies') as RealmList<String?>;
+  @override
+  set supplies(covariant RealmList<String?> value) =>
+      throw RealmUnsupportedSetError();
+
+  @override
+  RealmList<String?> get expSoon =>
+      RealmObjectBase.get<String?>(this, 'expSoon') as RealmList<String?>;
+  @override
+  set expSoon(covariant RealmList<String?> value) =>
+      throw RealmUnsupportedSetError();
+
+  @override
+  RealmList<String?> get pantryonly =>
+      RealmObjectBase.get<String?>(this, 'pantryonly') as RealmList<String?>;
+  @override
+  set pantryonly(covariant RealmList<String?> value) =>
+      throw RealmUnsupportedSetError();
+
+  @override
   Stream<RealmObjectChanges<Recipe>> get changes =>
       RealmObjectBase.getChanges<Recipe>(this);
 
@@ -317,6 +366,15 @@ class Recipe extends _Recipe with RealmEntity, RealmObjectBase, RealmObject {
       SchemaProperty('id', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('name', RealmPropertyType.string),
       SchemaProperty('details', RealmPropertyType.string, optional: true),
+      SchemaProperty('selectedItems', RealmPropertyType.string,
+          optional: true, collectionType: RealmCollectionType.list),
+      SchemaProperty('recipeType', RealmPropertyType.string, optional: true),
+      SchemaProperty('supplies', RealmPropertyType.string,
+          optional: true, collectionType: RealmCollectionType.list),
+      SchemaProperty('expSoon', RealmPropertyType.string,
+          optional: true, collectionType: RealmCollectionType.list),
+      SchemaProperty('pantryonly', RealmPropertyType.string,
+          optional: true, collectionType: RealmCollectionType.list),
     ]);
   }
 }
