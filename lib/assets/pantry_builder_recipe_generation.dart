@@ -10,12 +10,14 @@ class PantryBuilder extends StatefulWidget {
     Key? key,
     required this.items,
     required this.sortMethod,
-    required this.onSelectedItemsChanged,
+    required this.onOptionalItemsChanged,
+    required this.onMustHaveItemsChanged,
   }) : super(key: key);
 
   final RealmResults<Item> items;
   final String sortMethod;
-  final Function(List<String>) onSelectedItemsChanged;
+  final Function(List<String>) onOptionalItemsChanged;
+  final Function(List<String>) onMustHaveItemsChanged;
 
   @override
   State<PantryBuilder> createState() => _PantryBuilderState();
@@ -29,8 +31,8 @@ class _PantryBuilderState extends State<PantryBuilder> {
   late List expiringItems = getExpiringItems();
   late List notExpiringItems = getNotExpiringItems();
   late DateFormat formatter = DateFormat('yyyy-dd-MM');
-  late List<String> mustHaveItems = ["test"];
-  late List<String> optionalItems = ["test"];
+  late List<String> mustHaveItems = [];
+  late List<String> optionalItems = [];
 
   @override
   void initState() {
@@ -41,19 +43,12 @@ class _PantryBuilderState extends State<PantryBuilder> {
     isSelectedExpiring = List.generate(expiringItems.length, (index) => false);
   }
 
-  List<String> getSelectedItems() {
-    final selectedItems = <String>[];
-    for (int i = 0; i < notExpiringItems.length; i++) {
-      if (isSelectedNotExpiring[i]) {
-        selectedItems.add(notExpiringItems[i].name);
-      }
-    }
-    for (int i = 0; i < expiringItems.length; i++) {
-      if (isSelectedExpiring[i]) {
-        selectedItems.add(expiringItems[i].name);
-      }
-    }
-    return selectedItems;
+  List<String> getOptionalItems() {
+    return optionalItems;
+  }
+  
+  List<String> getMustHaveItems() {
+    return mustHaveItems;
   }
 
   List getExpiringItems() {
@@ -93,41 +88,80 @@ class _PantryBuilderState extends State<PantryBuilder> {
     setState(() {
       isSelectedNotExpiring =
           List<bool>.filled(notExpiringItems.length, select);
-      widget.onSelectedItemsChanged(getSelectedItems());
+      widget.onOptionalItemsChanged(getOptionalItems());
+      widget.onMustHaveItemsChanged(getMustHaveItems());
+
     });
   }
 
-  void toggleItemSelectionNotExpiring(int index) {
+  void toggleItemSelectionNotExpiring(int index, String item) {
     setState(() {
       isSelectedNotExpiring[index] = !isSelectedNotExpiring[index];
-      widget.onSelectedItemsChanged(getSelectedItems());
+      widget.onOptionalItemsChanged(getOptionalItems());
+      widget.onMustHaveItemsChanged(getMustHaveItems());
+      if (isSelectedNotExpiring[index]) {
+        optionalItems.add(item);
+      }
+      else {
+        optionalItems.remove(item);
+        mustHaveItems.remove(item);
+      }
     });
+
   }
 
   void toggleSelectExpiring(bool select) {
     setState(() {
       isSelectedExpiring = List<bool>.filled(expiringItems.length, select);
-      widget.onSelectedItemsChanged(getSelectedItems());
+      widget.onOptionalItemsChanged(getOptionalItems());
+      widget.onMustHaveItemsChanged(getMustHaveItems());
     });
   }
 
-  void toggleItemSelectionExpiring(int index) {
+  void toggleItemSelectionExpiring(int index, String item) {
     setState(() {
       isSelectedExpiring[index] = !isSelectedExpiring[index];
-      widget.onSelectedItemsChanged(getSelectedItems());
+      widget.onOptionalItemsChanged(getOptionalItems());
+      widget.onMustHaveItemsChanged(getMustHaveItems());
+      if (isSelectedExpiring[index]) {
+        optionalItems.add(item);
+      }
+      else {
+        optionalItems.remove(item);
+        mustHaveItems.remove(item);
+      }
     });
+
   }
 
   void toggleSelectAll(bool select) {
+    setState(() {
+      if (select) {
+        for (var item in widget.items) {
+          print(item.name);
+          optionalItems.add(item.name);
+      }
+    }
+      else {
+        for (var item in widget.items) {
+          if (optionalItems.contains(item.name)) {
+            optionalItems.remove(item.name);
+          }
+        }
+      }
+    });
+
     toggleSelectExpiring(select);
     toggleSelectNotExpiring(select);
+  
   }
 
-  void switchList(String item, List<String> fromList, List<String> toList) {
+  void switchList(String item, List fromList, List toList) {
     setState(() {
       fromList.remove(item);
       toList.add(item);
-      widget.onSelectedItemsChanged(getSelectedItems());
+      widget.onOptionalItemsChanged(getOptionalItems());
+      widget.onMustHaveItemsChanged(getMustHaveItems());
     });
   }
 
@@ -165,7 +199,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
               children: List.generate(
                 expiringItems.length,
                 (index) => GestureDetector(
-                  onTap: () => toggleItemSelectionExpiring(index),
+                  onTap: () => toggleItemSelectionExpiring(index, expiringItems[index].name),
                   child: Container(
                     padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
@@ -207,7 +241,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
               children: List.generate(
                 notExpiringItems.length,
                 (index) => GestureDetector(
-                  onTap: () => toggleItemSelectionNotExpiring(index),
+                  onTap: () => toggleItemSelectionNotExpiring(index, notExpiringItems[index].name),
                   child: Container(
                     padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
@@ -229,46 +263,69 @@ class _PantryBuilderState extends State<PantryBuilder> {
       ],
     );
   }
-
-  Widget buildSelectedItemLists() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Expanded(
-          child: Container(
-            height: 200, // Adjust this value as needed
-            child: ListView.builder(
-              itemCount: mustHaveItems.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(mustHaveItems[index]),
-                  onTap: () {
-                    switchList(mustHaveItems[index], mustHaveItems, optionalItems);
-                  },
-                );
-              },
+Widget buildSelectedItemLists() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Must Have Items', // Title for the first list
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-        ),
-        Expanded(
-          child: Container(
-            height: 200, // Adjust this value as needed
-            child: ListView.builder(
-              itemCount: optionalItems.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(optionalItems[index]),
-                  onTap: () {
-                    switchList(optionalItems[index], optionalItems, mustHaveItems);
-                  },
-                );
-              },
+            Container(
+              height: 200, // Adjust this value as needed
+              child: ListView.builder(
+                itemCount: mustHaveItems.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(mustHaveItems[index]),
+                    onTap: () {
+                      switchList(mustHaveItems[index], mustHaveItems, optionalItems);
+                    },
+                  );
+                },
+              ),
             ),
-          ),
+          ],
         ),
-      ],
-    );
-  }
+      ),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Optional Items', // Title for the second list
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Container(
+              height: 200, // Adjust this value as needed
+              child: ListView.builder(
+                itemCount: optionalItems.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(optionalItems[index]),
+                    onTap: () {
+                      switchList(optionalItems[index], optionalItems, mustHaveItems);
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
 
   @override
   Widget build(BuildContext context) {
