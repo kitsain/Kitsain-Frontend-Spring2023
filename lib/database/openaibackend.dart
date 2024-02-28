@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:http/http.dart' as http;
 import 'package:realm/realm.dart';
+//kitsain-backend-test-ohtuprojekti-staging.apps.ocp-test-0.k8s.it.helsinki.fi
 
 Future<Recipe> generateRecipe(List<String> ingredients, String recipe_type,
     List<String> exp_soon, List<String> supplies, bool pantry_only) async {
-    var url = Uri.https(
-      'kitsain-backend-test-ohtuprojekti-staging.apps.ocp-test-0.k8s.it.helsinki.fi',
+    var url = Uri.http(
+      '10.0.2.2:5000',
       '/generate'); 
   var headers = {"Content-Type": "application/json"};
   var requestBody = json.encode({
@@ -45,17 +46,17 @@ Future<Recipe> changeRecipe(
     List<String?> exp_soon,
     List<String?> supplies,
     bool? pantry_only) async {
-  var url = Uri.https(
-      'kitsain-backend-test-ohtuprojekti-staging.apps.ocp-test-0.k8s.it.helsinki.fi',
+  var url = Uri.http(
+      '10.0.2.2:5000',
       '/change'); 
   var headers = {"Content-Type": "application/json"};
   var requestBody = json.encode({
     'change': change,
-    'selectedItems': ingredients,
+    'ingredients': ingredients,
     'recipeType': recipe_type,
     'expSoon': exp_soon,
     'supplies': supplies,
-    'details': json
+    'details': details
   });
   var response = await http.post(url, headers: headers, body: requestBody);
 

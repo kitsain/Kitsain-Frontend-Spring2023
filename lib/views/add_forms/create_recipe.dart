@@ -82,6 +82,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   final TextEditingController _suppliesController = TextEditingController();
   final TextEditingController _expSoonController = TextEditingController();
 
+
   String _category = "Choose category";
   var _catInt;
 
@@ -275,7 +276,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
 
   Widget _buildDropdownMenu() {
     return DropdownButtonFormField<String>(
-      value: _selectedOption ?? 'Can use other items that are not in pantry',
+      value: _selectedOption ?? 'Use only pantry items',
       onChanged: (String? newValue) {
         setState(() {
           _selectedOption = newValue!;
@@ -360,7 +361,11 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     if (_formKey.currentState!.validate()) {
       String recipeType = _recipeTypeController.text;
       String supplies = _suppliesController.text;
+      bool pantryOnly = true;
       // String expSoon = _expSoonController.text;
+      if(_selectedOption == "Can use other items that are not in pantry"){
+        pantryOnly = false;
+      }
 
       var generatedRecipe = await generateRecipe(
         optionalItems,
@@ -369,7 +374,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
         [
           supplies
         ], // temporary solution. rather ask the user for an actual list
-        true,
+        pantryOnly,
       );
 
       RecipeProxy().upsertRecipe(generatedRecipe);
