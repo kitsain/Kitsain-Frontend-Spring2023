@@ -221,15 +221,6 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
             maxLines: 5,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-          _buildTextFormField(
-            controller: _expSoonController,
-            labelText:
-                'Implement this to add items to the optional and must have lists below',
-            hintText:
-                'Items that must be included in the recipe eg. soon expiring?',
-            maxLines: 5,
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           _buildDropdownMenu(),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.03,

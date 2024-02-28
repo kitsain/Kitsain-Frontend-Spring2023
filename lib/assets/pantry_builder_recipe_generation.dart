@@ -164,6 +164,22 @@ class _PantryBuilderState extends State<PantryBuilder> {
     });
   }
 
+  void removeFromList(String item, List list) {
+    setState(() {
+      list.remove(item);
+      widget.onOptionalItemsChanged(getOptionalItems());
+      widget.onMustHaveItemsChanged(getMustHaveItems());
+    });
+  }
+
+  void addItemToList(String item, List list) {
+    setState(() {
+      list.add(item);
+      widget.onOptionalItemsChanged(getOptionalItems());
+      widget.onMustHaveItemsChanged(getMustHaveItems());
+    });
+  }
+
   Widget buildSelectButtons() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -226,9 +242,9 @@ class _PantryBuilderState extends State<PantryBuilder> {
   Widget buildRestOfIngredients() {
     return Column(
       children: [
-        SizedBox(height: 30),
-        Text("Rest of ingredients"),
-        SizedBox(height: 20),
+        const SizedBox(height: 30),
+        const Text("Rest of ingredients"),
+        const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Align(
@@ -262,69 +278,131 @@ class _PantryBuilderState extends State<PantryBuilder> {
       ],
     );
   }
-Widget buildSelectedItemLists() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    children: [
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Must Have Items', // Title for the first list
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+  
+  Widget buildSelectedItemLists() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center, // Center the text
+            children: [
+              const Text(
+                'Must Have Items', // Title for the first list
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Container(
-              height: 200, // Adjust this value as needed
-              child: ListView.builder(
-                itemCount: mustHaveItems.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(mustHaveItems[index]),
-                    onTap: () {
-                      switchList(mustHaveItems[index], mustHaveItems, optionalItems);
-                    },
-                  );
-                },
+              Container(
+                height: 200, // Adjust this value as needed
+                child: ListView.builder(
+                  itemCount: mustHaveItems.length + 1, // Add 1 for the extra card
+                  itemBuilder: (context, index) {
+                    if (index == mustHaveItems.length) {
+                      // Render the extra card for adding new items
+                      return Card(
+                        child: ListTile(
+                          title: TextField(
+                            onSubmitted: (value) {
+                              addItemToList(value, mustHaveItems);
+                            },
+                            decoration: const InputDecoration(
+                              hintText: 'Enter item',
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                      );
+                    } else {
+                      // Render the existing items
+                      return Card(
+                        child: ListTile(
+                          title: Row(
+                            children: [
+                              Text(mustHaveItems[index]),
+                              const Spacer(),
+                              GestureDetector(
+                                onTap: () {
+                                  removeFromList(mustHaveItems[index], mustHaveItems);
+                                },
+                                child: const Icon(Icons.close),
+                              ),
+                            ],
+                          ),
+                          onTap: () {
+                            switchList(mustHaveItems[index], mustHaveItems, optionalItems);
+                          },
+                        ),
+                      );
+                    }
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Optional Items', // Title for the second list
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                'Optional Items', // Title for the second list
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Container(
-              height: 200, // Adjust this value as needed
-              child: ListView.builder(
-                itemCount: optionalItems.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(optionalItems[index]),
-                    onTap: () {
-                      switchList(optionalItems[index], optionalItems, mustHaveItems);
-                    },
-                  );
-                },
+              Container(
+                height: 200, // Adjust this value as needed
+                child: ListView.builder(
+                  itemCount: optionalItems.length + 1, // Add 1 for the extra card
+                  itemBuilder: (context, index) {
+                    if (index == optionalItems.length) {
+                      // Render the extra card for adding new items
+                      return Card(
+                        child: ListTile(
+                          title: TextField(
+                            onSubmitted: (value) {
+                              addItemToList(value, optionalItems);
+                            },
+                            decoration: const InputDecoration(
+                              hintText: 'Enter item',
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Card(
+                        child: ListTile(
+                          title: Row(
+                            children: [
+                              Text(optionalItems[index]),
+                              const Spacer(),
+                              GestureDetector(
+                                onTap: () {
+                                  removeFromList(optionalItems[index], optionalItems);
+                                },
+                                child: const Icon(Icons.close),
+                              ),
+                            ],
+                          ),
+                          onTap: () {
+                            switchList(optionalItems[index], optionalItems, mustHaveItems);
+                          },
+                        ),
+                      );
+                    }
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    ],
-  );
-}
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
