@@ -5,6 +5,11 @@ import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:realm/realm.dart';
 import 'package:kitsain_frontend_spring2023/app_typography.dart';
 
+class NewItem {
+  String name;
+  NewItem(this.name);
+}
+
 class PantryBuilder extends StatefulWidget {
   const PantryBuilder({
     Key? key,
@@ -25,29 +30,29 @@ class PantryBuilder extends StatefulWidget {
 
 class _PantryBuilderState extends State<PantryBuilder> {
   late int expirationTimeInDays = 4;
-  late List<bool> isSelectedAll;
-  late List<bool> isSelectedNotExpiring;
-  late List<bool> isSelectedExpiring;
+  late List<Map<String, dynamic>> isSelectedAll;
   late List expiringItems = getExpiringItems();
   late List notExpiringItems = getNotExpiringItems();
   late DateFormat formatter = DateFormat('yyyy-dd-MM');
-  late List<List> mustHaveItems = [];
-  late List<List> optionalItems = [];
+  late List mustHaveItems = [];
+  late List optionalItems = [];
   late List<String> optionalItemsNames = [];
   late List<String> mustHaveItemsNames = [];
 
   @override
   void initState() {
     super.initState();
-    isSelectedAll = List.generate(widget.items.length, (index) => false);
-    isSelectedNotExpiring =
-        List.generate(notExpiringItems.length, (index) => false);
-    isSelectedExpiring = List.generate(expiringItems.length, (index) => false);
+    isSelectedAll = List.generate(widget.items.length, (index) {
+      return {
+        'item': widget.items[index],
+        'isSelected': false,
+      };
+    });
   }
 
   List<String> getOptionalItems() {
     for (var item in optionalItems) {
-      optionalItemsNames.add(item[0]);
+      optionalItemsNames.add(item.name);
     }
 
     return optionalItemsNames;
@@ -55,7 +60,13 @@ class _PantryBuilderState extends State<PantryBuilder> {
   
   List<String> getMustHaveItems() {
     for (var item in mustHaveItems) {
-      mustHaveItemsNames.add(item[0]);
+      if (item.name != null) {
+        mustHaveItemsNames.add(item.name);
+      }
+      else {
+        mustHaveItems.add(item);
+      }
+      
     }
 
     return mustHaveItemsNames;
@@ -94,65 +105,58 @@ class _PantryBuilderState extends State<PantryBuilder> {
     return notExpiringItems;
   }
 
-  void toggleSelectNotExpiring(bool select) {
-    setState(() {
-      isSelectedNotExpiring =
-          List<bool>.filled(notExpiringItems.length, select);
-      widget.onOptionalItemsChanged(getOptionalItems());
-      widget.onMustHaveItemsChanged(getMustHaveItems());
 
-    });
+  void toggleSelectAll(bool select) {
+  setState(() {
+    for (var item in isSelectedAll) {
+      item['isSelected'] = select;
+    }
+    for (var item in isSelectedAll) {
+      if (item['isSelected'] && !optionalItems.contains(item['item']) && !mustHaveItems.contains(item['item'])) {
+        optionalItems.add(item['item']);
+      }
+      else if(!item['isSelected']) {
+        if (optionalItems.contains(item['item'])) {
+          optionalItems.remove(item['item']);
+        }
+        if (mustHaveItems.contains(item['item'])) {
+          mustHaveItems.remove(item['item']);
+        }
+      }
+    }
+    widget.onOptionalItemsChanged(getOptionalItems());
+    widget.onMustHaveItemsChanged(getMustHaveItems());
+    
+  });
   }
 
-  void toggleItemSelectionNotExpiring(int index, String item) {
+  void toggleItemSelection(item) {
     setState(() {
-      isSelectedNotExpiring[index] = !isSelectedNotExpiring[index];
-      if (isSelectedNotExpiring[index]) {
-        optionalItems.add([item, "notExpiring"]);
+      int indexToUpdate = isSelectedAll.indexWhere((element) => element['item'] == item);
+      // If the item is found in the pantry items
+      if (indexToUpdate != -1) {
+        isSelectedAll[indexToUpdate]['isSelected'] = !isSelectedAll[indexToUpdate]['isSelected'];
       }
+      // Else remove it from the two lists
       else {
-        int indexOfItem = optionalItems.indexWhere((element) =>
-          element[0] == item && element[1] == "notExpiring");
-        if (indexOfItem != -1) {
-          optionalItems.removeAt(indexOfItem);
-        }
-        indexOfItem = mustHaveItems.indexWhere((element) =>
-          element[0] == item && element[1] == "notExpiring");
-        if (indexOfItem != -1) {
-          mustHaveItems.removeAt(indexOfItem);
-        }
+        removeFromList(item, optionalItems);
+        removeFromList(item, mustHaveItems);
+        return;
       }
-      widget.onOptionalItemsChanged(getOptionalItems());
-      widget.onMustHaveItemsChanged(getMustHaveItems());
-    });
-
-  }
-
-  void toggleSelectExpiring(bool select) {
-    setState(() {
-      isSelectedExpiring = List<bool>.filled(expiringItems.length, select);
-      widget.onOptionalItemsChanged(getOptionalItems());
-      widget.onMustHaveItemsChanged(getMustHaveItems());
-    });
-  }
-
-  void toggleItemSelectionExpiring(int index, String item) {
-    setState(() {
-      isSelectedExpiring[index] = !isSelectedExpiring[index];
-      if (isSelectedExpiring[index]) {
-        optionalItems.add([item, "expiring"]);
+      if (isSelectedAll[indexToUpdate]['isSelected']) {
+        optionalItems.add(item);
       }
       else {
         // Find the index of the item to remove
-        int indexOfItem = optionalItems.indexWhere((element) =>
-            element[0] == item && element[1] == "expiring");
-        if (indexOfItem != -1) {
-          optionalItems.removeAt(indexOfItem);
+        int indexToRemove = optionalItems.indexWhere((element) =>
+            element == item);
+        if (indexToRemove != -1) {
+          optionalItems.removeAt(indexToRemove);
         }
-        indexOfItem = mustHaveItems.indexWhere((element) =>
-          element[0] == item && element[1] == "expiring");
-        if (indexOfItem != -1) {
-          mustHaveItems.removeAt(indexOfItem);
+        indexToRemove = mustHaveItems.indexWhere((element) =>
+            element == item);
+        if (indexToRemove != -1) {
+          mustHaveItems.removeAt(indexToRemove);
         }
       }
       widget.onOptionalItemsChanged(getOptionalItems());
@@ -161,36 +165,15 @@ class _PantryBuilderState extends State<PantryBuilder> {
 
   }
 
-  void toggleSelectAll(bool select) {
-    setState(() {
-      // Select all
-      if (select) {
-        for (var item in expiringItems) {
-          optionalItems.add([item.name, "expiring"]);
-        }
-        for (var item in notExpiringItems) {
-          optionalItems.add([item.name, "notExpiring"]);
-      }
-    }
-    // Deselect all
-      else {
-        for (var item in widget.items) {
-          if (optionalItems.contains([item.name, "expiring"])) {
-            optionalItems.remove([item.name, "expiring"]);
-          }
-          if (optionalItems.contains([item.name, "notExpiring"])) {
-            optionalItems.remove([item.name, "notExpiring"]);
-          }
-        }
-      }
-    });
-
-    toggleSelectExpiring(select);
-    toggleSelectNotExpiring(select);
-  
+  getColor(item) {
+    int index = isSelectedAll.indexWhere((element) => element['item'] == item);
+    var color = isSelectedAll[index]['isSelected'] 
+      ? const Color.fromARGB(255, 78, 117, 88)
+      : null;
+    return color;
   }
 
-  void switchList(List item, List fromList, List toList) {
+  void switchList(item, List fromList, List toList) {
     setState(() {
       fromList.remove(item);
       toList.add(item);
@@ -199,7 +182,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
     });
   }
 
-  void removeFromList(List item, List list) {
+  void removeFromList(item, List list) {
     setState(() {
       list.remove(item);
       widget.onOptionalItemsChanged(getOptionalItems());
@@ -207,7 +190,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
     });
   }
 
-  void addItemToList(List item, List list) {
+  void addItemToList(item, List list) {
     setState(() {
       list.add(item);
       widget.onOptionalItemsChanged(getOptionalItems());
@@ -215,19 +198,6 @@ class _PantryBuilderState extends State<PantryBuilder> {
     });
   }
 
-  void removeToggleSelectionHighlight(List item) {
-    if (item[1] == "expiring") {
-      int indexOfItem = expiringItems.indexWhere((element) =>
-        element.name == item[0]);
-      isSelectedExpiring[indexOfItem] = !isSelectedExpiring[indexOfItem];
-    }
-    if (item[1] == "notExpiring") {
-      int indexOfItem = notExpiringItems.indexWhere((element) =>
-        element.name == item[0]);
-      isSelectedNotExpiring[indexOfItem] = !isSelectedNotExpiring[indexOfItem];
-    }
-
-  }
 
   Widget buildSelectButtons() {
     return Row(
@@ -267,13 +237,11 @@ class _PantryBuilderState extends State<PantryBuilder> {
               children: List.generate(
                 expiringItems.length,
                 (index) => GestureDetector(
-                  onTap: () => toggleItemSelectionExpiring(index, expiringItems[index].name),
+                  onTap: () => toggleItemSelection(expiringItems[index]),
                   child: Container(
                     padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
-                      color: isSelectedExpiring[index]
-                          ? const Color.fromARGB(255, 78, 117, 88)
-                          : null,
+                      color: getColor(expiringItems[index]),
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: Text(
@@ -314,13 +282,11 @@ class _PantryBuilderState extends State<PantryBuilder> {
               children: List.generate(
                 notExpiringItems.length,
                 (index) => GestureDetector(
-                  onTap: () => toggleItemSelectionNotExpiring(index, notExpiringItems[index].name),
+                  onTap: () => toggleItemSelection(notExpiringItems[index]),
                   child: Container(
                     padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
-                      color: isSelectedNotExpiring[index]
-                          ? const Color.fromARGB(255, 78, 117, 88)
-                          : null,
+                      color: getColor(notExpiringItems[index]),
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: Text(
@@ -363,7 +329,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
                         child: ListTile(
                           title: TextField(
                             onSubmitted: (value) {
-                              addItemToList([value, "null"], mustHaveItems);
+                              addItemToList(NewItem(value), mustHaveItems);
                             },
                             decoration: const InputDecoration(
                               hintText: 'Enter item',
@@ -378,11 +344,11 @@ class _PantryBuilderState extends State<PantryBuilder> {
                         child: ListTile(
                           title: Row(
                             children: [
-                              Text(mustHaveItems[index][0]),
+                              Text(mustHaveItems[index].name),
                               const Spacer(),
                               GestureDetector(
                                 onTap: () {
-                                  removeFromList(mustHaveItems[index], mustHaveItems);
+                                  toggleItemSelection(mustHaveItems[index]);
                                 },
                                 child: const Icon(Icons.close),
                               ),
@@ -422,7 +388,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
                         child: ListTile(
                           title: TextField(
                             onSubmitted: (value) {
-                              addItemToList([value, "null"], optionalItems);
+                              addItemToList(NewItem(value), optionalItems);
                             },
                             decoration: const InputDecoration(
                               hintText: 'Enter item',
@@ -436,12 +402,11 @@ class _PantryBuilderState extends State<PantryBuilder> {
                         child: ListTile(
                           title: Row(
                             children: [
-                              Text(optionalItems[index][0]),
+                              Text(optionalItems[index].name),
                               const Spacer(),
                               GestureDetector(
                                 onTap: () {
-                                  removeToggleSelectionHighlight(optionalItems[index]);
-                                  removeFromList(optionalItems[index], optionalItems);
+                                  toggleItemSelection(optionalItems[index]);
                                 },
                                 child: const Icon(Icons.close),
                               ),
