@@ -203,22 +203,14 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const Text('Your diet or recipe type? eg. vegan, 15-minute recipe, breakfast.'),
           _buildTextFormField(
             controller: _recipeTypeController,
-            labelText:
-                'Your diet or recipe type? eg. vegan, 15-minute recipe, breakfast.',
-            hintText:
-                'Your diet or recipe type? eg. vegan, 15-minute recipe, breakfast.',
-            maxLines: 5,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+          const Text('The cooking tools available/the ones you want to use for this recipe, eg. airfryer'),
           _buildTextFormField(
             controller: _suppliesController,
-            labelText:
-                'The cooking tools available/the ones you want to use for this recipe, eg. airfryer',
-            hintText:
-                'The cooking tools available/the ones you want to use for this recipe, eg. airfryer',
-            maxLines: 5,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           _buildDropdownMenu(),
@@ -247,9 +239,6 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
 
   Widget _buildTextFormField({
     required TextEditingController controller,
-    required String hintText,
-    required String labelText,
-    required int maxLines,
   }) {
     return TextFormField(
       style: AppTypography.paragraph,
@@ -258,10 +247,8 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
         filled: true,
         fillColor: Colors.white,
         border: OutlineInputBorder(),
-        labelText: labelText,
-        hintText: hintText,
-      ),
-      maxLines: maxLines,
+      ), 
+      maxLines: null,
     );
   }
 
@@ -299,8 +286,8 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
         SizedBox(width: MediaQuery.of(context).size.width * 0.03),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            foregroundColor: AppColors.main3,
+            backgroundColor: AppColors.main3,
+            foregroundColor: Colors.white,
           ),
           onPressed: () async {
             if (isLoading) return; // Do nothing if loading
@@ -340,8 +327,8 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
       Function() onPressed) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor,
-        foregroundColor: textColor,
+        backgroundColor: Colors.white,
+        foregroundColor: AppColors.main3
       ),
       onPressed: onPressed,
       child: Text(label),
