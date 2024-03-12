@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:googleapis/dfareporting/v4.dart';
 import 'package:kitsain_frontend_spring2023/app_colors.dart';
 import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import 'package:kitsain_frontend_spring2023/categories.dart';
@@ -53,6 +54,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   var _formSubmitted = false;
   List<String> optionalItems = [];
   List<String> mustHaveItems = [];
+  String language = "English";
 
   @override
   void initState() {
@@ -167,6 +169,24 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     );
   }
 
+  Widget _buildLanguageDropdown() {
+    return DropdownButton<String>(
+      value: language,
+      onChanged: (String? newValue) {
+        setState(() {
+          language = newValue!;
+        });
+      },
+      items: <String>['English', 'Finnish', 'Swedish']
+          .map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
+  }
+
   Widget _buildCloseButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -215,8 +235,11 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           _buildDropdownMenu(),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.03,
+            height: MediaQuery.of(context).size.width * 0.05,
           ),
+          const Text("Select language for the recipe:"),
+          _buildLanguageDropdown(),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           PantryBuilder(
               items: _pantryItems,
               sortMethod: "az",
@@ -353,6 +376,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
           supplies
         ], // temporary solution. rather ask the user for an actual list
         pantryOnly,
+        language
       );
 
       RecipeProxy().upsertRecipe(generatedRecipe);
