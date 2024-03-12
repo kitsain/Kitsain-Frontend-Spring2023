@@ -14,7 +14,8 @@ Future<Recipe> generateRecipe(List<String> ingredients, String recipe_type,
     'recipe_type': recipe_type,
     'exp_soon': exp_soon,
     'supplies': supplies,
-    'pantry_only': pantry_only
+    'pantry_only': pantry_only,
+    'language': language
   });
   print(
       "${ingredients}, ${recipe_type}, ${exp_soon}, ${supplies}, ${pantry_only}, ${language}");
