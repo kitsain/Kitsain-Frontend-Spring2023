@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:realm/realm.dart';
 
 Future<Recipe> generateRecipe(List<String> ingredients, String recipe_type,
-    List<String> exp_soon, List<String> supplies, bool pantry_only) async {
+    List<String> exp_soon, List<String> supplies, bool pantry_only, String language) async {
     var url = Uri.https(
       'kitsain-backend-test-ohtuprojekti-staging.apps.ocp-test-0.k8s.it.helsinki.fi',
       '/generate'); 
@@ -14,12 +14,15 @@ Future<Recipe> generateRecipe(List<String> ingredients, String recipe_type,
     'recipe_type': recipe_type,
     'exp_soon': exp_soon,
     'supplies': supplies,
-    'pantry_only': pantry_only
+    'pantry_only': pantry_only,
+    'language': language
   });
+  print(
+      "${ingredients}, ${recipe_type}, ${exp_soon}, ${supplies}, ${pantry_only}, ${language}");
+
   var response = await http.post(url, headers: headers, body: requestBody);
 
-  print(
-      "${ingredients}, ${recipe_type}, ${exp_soon}, ${supplies}, ${pantry_only}");
+  
 
   print('Response status: ${response.statusCode}');
   print('Response body: ${response.body}');
@@ -51,11 +54,11 @@ Future<Recipe> changeRecipe(
   var headers = {"Content-Type": "application/json"};
   var requestBody = json.encode({
     'change': change,
-    'selectedItems': ingredients,
+    'ingredients': ingredients,
     'recipeType': recipe_type,
     'expSoon': exp_soon,
     'supplies': supplies,
-    'details': json
+    'details': details
   });
   var response = await http.post(url, headers: headers, body: requestBody);
 

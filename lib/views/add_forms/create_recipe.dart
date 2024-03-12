@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:googleapis/dfareporting/v4.dart';
 import 'package:kitsain_frontend_spring2023/app_colors.dart';
 import 'package:kitsain_frontend_spring2023/app_typography.dart';
 import 'package:kitsain_frontend_spring2023/categories.dart';
@@ -46,13 +47,12 @@ class _LoadingDialogWithTimeoutState extends State<LoadingDialogWithTimeout> {
 @override
 class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   final _formKey = GlobalKey<FormState>();
-  final _EANCodeField = TextEditingController();
   var _itemName = TextEditingController();
   var _pantryItems;
   bool _isLoading = true; // Flag to track loading state
-  var _formSubmitted = false;
   List<String> optionalItems = [];
   List<String> mustHaveItems = [];
+  String language = "English";
 
   @override
   void initState() {
@@ -82,14 +82,8 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   final TextEditingController _suppliesController = TextEditingController();
   final TextEditingController _expSoonController = TextEditingController();
 
-  String _category = "Choose category";
-  var _catInt;
-
   String? _selectedOption;
   var radioValues;
-
-  var _offData;
-  UnfocusDisposition _disposition = UnfocusDisposition.scope;
 
   void _discardChangesDialog(bool discardForm) {
     if (discardForm || _areFormFieldsEmpty()) {
@@ -166,6 +160,24 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     );
   }
 
+  Widget _buildLanguageDropdown() {
+    return DropdownButton<String>(
+      value: language,
+      onChanged: (String? newValue) {
+        setState(() {
+          language = newValue!;
+        });
+      },
+      items: <String>['English', 'Finnish', 'Swedish']
+          .map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
+  }
+
   Widget _buildCloseButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -202,28 +214,23 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const Text('Your diet or recipe type? eg. vegan, 15-minute recipe, breakfast.'),
           _buildTextFormField(
             controller: _recipeTypeController,
-            labelText:
-                'Your diet or recipe type? eg. vegan, 15-minute recipe, breakfast.',
-            hintText:
-                'Your diet or recipe type? eg. vegan, 15-minute recipe, breakfast.',
-            maxLines: 5,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+          const Text('The cooking tools available/the ones you want to use for this recipe, eg. airfryer'),
           _buildTextFormField(
             controller: _suppliesController,
-            labelText:
-                'The cooking tools available/the ones you want to use for this recipe, eg. airfryer',
-            hintText:
-                'The cooking tools available/the ones you want to use for this recipe, eg. airfryer',
-            maxLines: 5,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           _buildDropdownMenu(),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.03,
+            height: MediaQuery.of(context).size.width * 0.05,
           ),
+          const Text("Select language for the recipe:"),
+          _buildLanguageDropdown(),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           PantryBuilder(
               items: _pantryItems,
               sortMethod: "az",
@@ -246,9 +253,6 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
 
   Widget _buildTextFormField({
     required TextEditingController controller,
-    required String hintText,
-    required String labelText,
-    required int maxLines,
   }) {
     return TextFormField(
       style: AppTypography.paragraph,
@@ -257,10 +261,8 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
         filled: true,
         fillColor: Colors.white,
         border: OutlineInputBorder(),
-        labelText: labelText,
-        hintText: hintText,
-      ),
-      maxLines: maxLines,
+      ), 
+      maxLines: null,
     );
   }
 
@@ -298,8 +300,8 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
         SizedBox(width: MediaQuery.of(context).size.width * 0.03),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            foregroundColor: AppColors.main3,
+            backgroundColor: AppColors.main3,
+            foregroundColor: Colors.white,
           ),
           onPressed: () async {
             if (isLoading) return; // Do nothing if loading
@@ -339,8 +341,8 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
       Function() onPressed) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor,
-        foregroundColor: textColor,
+        backgroundColor: Colors.white,
+        foregroundColor: AppColors.main3
       ),
       onPressed: onPressed,
       child: Text(label),
@@ -351,20 +353,23 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     if (_formKey.currentState!.validate()) {
       String recipeType = _recipeTypeController.text;
       String supplies = _suppliesController.text;
+      bool pantryOnly = true;
       // String expSoon = _expSoonController.text;
+      if (_selectedOption == "Can use other items that are not in pantry") {
+        pantryOnly = false;
+      }
 
       var generatedRecipe = await generateRecipe(
-        optionalItems,
-        recipeType,
-        mustHaveItems,
-        [
-          supplies
-        ], // temporary solution. rather ask the user for an actual list
-        true,
-      );
+          optionalItems,
+          recipeType,
+          mustHaveItems,
+          [
+            supplies
+          ], // temporary solution. rather ask the user for an actual list
+          pantryOnly,
+          language);
 
       RecipeProxy().upsertRecipe(generatedRecipe);
-      _formSubmitted = false;
       _recipeTypeController.clear();
       _suppliesController.clear();
       _expSoonController.clear();

@@ -248,16 +248,20 @@ class _PantryBuilderState extends State<PantryBuilder> {
   Widget buildExpiringIngredients() {
     return Column(
       children: [
-        SizedBox(height: 30),
-        Text("Expiring ingredients"),
-        SizedBox(height: 20),
+        const SizedBox(height: 30),
+        const Text("Expiring ingredients"),
+        const SizedBox(height: 20),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(
+            left: 8.0,
+            right: 8.0,
+            top: 16.0,
+            bottom: 16.0,
+            ),
           child: Align(
-            alignment: Alignment.topLeft,
+            alignment: Alignment.center,
             child: Wrap(
-              alignment: WrapAlignment.start,
-              direction: Axis.vertical,
+              direction: Axis.horizontal,
               spacing: 1.0,
               runSpacing: 8.0,
               children: List.generate(
@@ -276,7 +280,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
                       (expiringItems[index].name +
                           " " +
                           formatter.format(expiringItems[index].expiryDate!.toLocal())),
-                      style: const TextStyle(fontSize: 12.0),
+                      style: AppTypography.category,
                     ),
                   ),
                 ),
@@ -295,11 +299,16 @@ class _PantryBuilderState extends State<PantryBuilder> {
         const Text("Rest of ingredients"),
         const SizedBox(height: 20),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(
+            left: 8.0,
+            right: 8.0,
+            top: 16.0,
+            bottom: 30.0,
+            ),
           child: Align(
-            alignment: Alignment.topLeft,
+            alignment: Alignment.center,
             child: Wrap(
-              direction: Axis.vertical,
+              direction: Axis.horizontal,
               spacing: 1.0,
               runSpacing: 8.0,
               children: List.generate(
@@ -316,7 +325,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
                     ),
                     child: Text(
                       notExpiringItems[index].name,
-                      style: AppTypography.smallTitle,
+                      style: AppTypography.category,
                     ),
                   ),
                 ),

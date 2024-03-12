@@ -135,10 +135,12 @@ class _RecipeCardState extends State<RecipeCard> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          widget.recipe.name.toUpperCase(),
-                          style: AppTypography.heading3
-                              .copyWith(color: Colors.black),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16.0),
+                          child: Text(
+                            widget.recipe.name.toUpperCase(),
+                            style: AppTypography.heading3.copyWith(color: Colors.black),
+                          ),
                         ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02,
