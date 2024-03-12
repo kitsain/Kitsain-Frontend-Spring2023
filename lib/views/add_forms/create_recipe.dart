@@ -47,11 +47,9 @@ class _LoadingDialogWithTimeoutState extends State<LoadingDialogWithTimeout> {
 @override
 class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   final _formKey = GlobalKey<FormState>();
-  final _EANCodeField = TextEditingController();
   var _itemName = TextEditingController();
   var _pantryItems;
   bool _isLoading = true; // Flag to track loading state
-  var _formSubmitted = false;
   List<String> optionalItems = [];
   List<String> mustHaveItems = [];
   String language = "English";
@@ -84,15 +82,8 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   final TextEditingController _suppliesController = TextEditingController();
   final TextEditingController _expSoonController = TextEditingController();
 
-
-  String _category = "Choose category";
-  var _catInt;
-
   String? _selectedOption;
   var radioValues;
-
-  var _offData;
-  UnfocusDisposition _disposition = UnfocusDisposition.scope;
 
   void _discardChangesDialog(bool discardForm) {
     if (discardForm || _areFormFieldsEmpty()) {
@@ -277,7 +268,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
 
   Widget _buildDropdownMenu() {
     return DropdownButtonFormField<String>(
-      value: _selectedOption ?? 'Use only pantry items',
+      value: _selectedOption ?? 'Can use other items that are not in pantry',
       onChanged: (String? newValue) {
         setState(() {
           _selectedOption = newValue!;
@@ -364,23 +355,21 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
       String supplies = _suppliesController.text;
       bool pantryOnly = true;
       // String expSoon = _expSoonController.text;
-      if(_selectedOption == "Can use other items that are not in pantry"){
+      if (_selectedOption == "Can use other items that are not in pantry") {
         pantryOnly = false;
       }
 
       var generatedRecipe = await generateRecipe(
-        optionalItems,
-        recipeType,
-        mustHaveItems,
-        [
-          supplies
-        ], // temporary solution. rather ask the user for an actual list
-        pantryOnly,
-        language
-      );
+          optionalItems,
+          recipeType,
+          mustHaveItems,
+          [
+            supplies
+          ], // temporary solution. rather ask the user for an actual list
+          pantryOnly,
+          language);
 
       RecipeProxy().upsertRecipe(generatedRecipe);
-      _formSubmitted = false;
       _recipeTypeController.clear();
       _suppliesController.clear();
       _expSoonController.clear();
