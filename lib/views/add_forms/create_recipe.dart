@@ -44,6 +44,7 @@ class _LoadingDialogWithTimeoutState extends State<LoadingDialogWithTimeout> {
   }
 }
 
+/// Class that upholds the state of recipe form
 @override
 class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   final _formKey = GlobalKey<FormState>();
@@ -85,6 +86,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   String? _selectedOption;
   var radioValues;
 
+  /// Dialog asking whether user wants to discard changes
   void _discardChangesDialog(bool discardForm) {
     if (discardForm || _areFormFieldsEmpty()) {
       Navigator.pop(context);
@@ -154,12 +156,18 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     );
   }
 
+  /// Builds indicator for loading.
+  ///
+  /// Returns indicator.
   Widget _buildLoadingIndicator() {
     return Center(
       child: CircularProgressIndicator(),
     );
   }
 
+  /// Builds the language choice dropdown.
+  ///
+  /// Returns dropdown.
   Widget _buildLanguageDropdown() {
     return DropdownButton<String>(
       value: language,
@@ -178,6 +186,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     );
   }
 
+  /// Builds the close button for the recipe generating form.
+  ///
+  /// Returns close button.
   Widget _buildCloseButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -195,6 +206,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     );
   }
 
+  /// Builds the header for the recipe generating form.
+  ///
+  /// Returns header.
   Widget _buildRecipeHeading() {
     return Column(
       children: [
@@ -208,6 +222,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     );
   }
 
+  /// Builds the recipe generating form as a whole.
+  ///
+  /// Returns recipe form.
   Widget _buildRecipeForm() {
     return Padding(
       padding: const EdgeInsets.only(left: 7, right: 7),
@@ -256,6 +273,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     );
   }
 
+  /// Builds the text fields utilized in recipe generating form.
+  ///
+  /// Returns text field.
   Widget _buildTextFormField({
     required TextEditingController controller,
   }) {
@@ -271,6 +291,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     );
   }
 
+  /// Builds dropdown menu determining what kind of items are allowed.
+  ///
+  /// Returns dropdown menu.
   Widget _buildDropdownMenu() {
     // build use only pantry/use other than pantry menu with can use other than pantry as default
     return DropdownButtonFormField<String>(
@@ -292,6 +315,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     );
   }
 
+  /// Builds action buttons for the recipe form
+  ///
+  /// Returns buttons
   Widget _buildActionButtons() {
     bool isLoading = false; // Set this to true when waiting for createRecipe
 
@@ -341,6 +367,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     return LoadingDialogWithTimeout();
   }
 
+  /// Builds template for buttons used in recipe form
+  ///
+  /// [label] determines the label on button, [backgroundColor] determines the background color and [textColor] determines the text color
   Widget _buildButton(String label, Color backgroundColor, Color textColor,
       Function() onPressed) {
     return ElevatedButton(
@@ -351,6 +380,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     );
   }
 
+  /// Sends the created recipe to backend
   Future<void> _createRecipe() async {
     if (_formKey.currentState!.validate()) {
       String recipeType = _recipeTypeController.text;
