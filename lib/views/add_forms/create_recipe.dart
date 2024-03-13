@@ -315,6 +315,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     );
   }
 
+  /// Builds action buttons for the recipe form
+  ///
+  /// Returns buttons
   Widget _buildActionButtons() {
     bool isLoading = false; // Set this to true when waiting for createRecipe
 
@@ -364,6 +367,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     return LoadingDialogWithTimeout();
   }
 
+  /// Builds template for buttons used in recipe form
+  ///
+  /// [label] determines the label on button, [backgroundColor] determines the background color and [textColor] determines the text color
   Widget _buildButton(String label, Color backgroundColor, Color textColor,
       Function() onPressed) {
     return ElevatedButton(
@@ -374,6 +380,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     );
   }
 
+  /// Sends the created recipe to backend
   Future<void> _createRecipe() async {
     if (_formKey.currentState!.validate()) {
       String recipeType = _recipeTypeController.text;
