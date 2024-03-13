@@ -256,13 +256,13 @@ class _PantryBuilderState extends State<PantryBuilder> {
   }
 
   Widget buildInstruction() {
-    return Column(
+    return const Column(
       children: [
-        const SizedBox(height: 20),
-        const Text(
+          SizedBox(height: 20),
+          Text(
             'Tap items to switch between lists',
             style: AppTypography.heading5),
-        const SizedBox(height: 5),
+          SizedBox(height: 5),
       ], // children
     );
   }
@@ -491,14 +491,11 @@ class _PantryBuilderState extends State<PantryBuilder> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          // buildSelectButtons(),
           buildExpiringIngredients(),
           buildRestOfIngredients(),
-          buildInstruction(),
           buildSelectButtons(),
           buildInstruction(),
           buildSelectedItemLists(),
-          // buildSelectButtons(),
         ],
       ),
     );
