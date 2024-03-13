@@ -260,7 +260,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     required TextEditingController controller,
   }) {
     return TextFormField(
-      style: AppTypography.heading3,
+      style: AppTypography.paragraph,
       controller: controller,
       decoration: InputDecoration(
         filled: true,
