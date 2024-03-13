@@ -12,10 +12,35 @@ import 'statuscolor.dart';
 import 'package:kitsain_frontend_spring2023/categories.dart';
 import 'package:kitsain_frontend_spring2023/database/openaibackend.dart';
 import 'package:kitsain_frontend_spring2023/database/openaibackend.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 enum _MenuValues {
   edit,
   delete,
+}
+
+class LoadingDialogWithTimeout extends StatefulWidget {
+  @override
+  _LoadingDialogWithTimeoutState createState() =>
+      _LoadingDialogWithTimeoutState();
+}
+
+class _LoadingDialogWithTimeoutState extends State<LoadingDialogWithTimeout> {
+  @override
+  Widget build(BuildContext context) {
+    return const AlertDialog(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SpinKitWanderingCubes(color: Colors.white, size: 50),
+          SizedBox(height: 16),
+          Text('Modifying recipe...', style: TextStyle(color: Colors.white)),
+        ],
+      ),
+    );
+  }
 }
 
 const double borderWidth = 30.0;
@@ -32,6 +57,7 @@ class RecipeCard extends StatefulWidget {
 }
 
 class _RecipeCardState extends State<RecipeCard> {
+  bool _isLoading = true; // Flag to track loading state
   void deleteItem(Recipe recipe) {
     realm.write(() {
       realm.delete(recipe);
@@ -268,14 +294,36 @@ class _RecipeCardState extends State<RecipeCard> {
               backgroundColor: Colors.blue,
             ),
             onPressed: () async {
+              var navigator = Navigator.of(context);
               String changes = changesController.text;
+
+              showDialog(
+                context: context,
+                barrierDismissible: false, // Prevent closing the dialog by tapping outside
+                builder: (BuildContext context) {
+                  return LoadingDialogWithTimeout(); // Loading spinner
+                },
+              );
 
               // the recipe details and changes are sent as parameters
               var changedRecipe =
-                  await changeRecipe(widget.recipe.details, changes,widget.recipe.selectedItems,widget.recipe.recipeType,widget.recipe.expSoon,widget.recipe.supplies, widget.recipe.pantryonly);
+                await changeRecipe(
+                  widget.recipe.details,
+                  changes,
+                  widget.recipe.selectedItems,
+                  widget.recipe.recipeType,
+                  widget.recipe.expSoon,
+                  widget.recipe.supplies,
+                  widget.recipe.pantryonly
+                );
+
+              navigator.pop();
+                
 
               RecipeProxy().upsertRecipe(changedRecipe);
               changesController.clear();
+              navigator.pop();
+              navigator.pop();
             },
             child: const Text('Change'),
           ),
