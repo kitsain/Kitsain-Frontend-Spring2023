@@ -203,7 +203,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
           textAlign: TextAlign.center,
           style: AppTypography.heading2.copyWith(color: AppColors.main3),
         ),
-        SizedBox(height: MediaQuery.of(context).size.height * 0.06),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.001),
       ],
     );
   }
@@ -214,21 +214,26 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text('Your diet or recipe type? eg. vegan, 15-minute recipe, breakfast.'),
+          const Text(
+              'Your diet or recipe type? eg. vegan, 15-minute recipe, breakfast.',
+              style: AppTypography.heading4),
           _buildTextFormField(
             controller: _recipeTypeController,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-          const Text('The cooking tools available/the ones you want to use for this recipe, eg. airfryer'),
+          const Text(
+              'The cooking tools available/the ones you want to use for this recipe, eg. airfryer',
+              style: AppTypography.heading4),
           _buildTextFormField(
             controller: _suppliesController,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           _buildDropdownMenu(),
           SizedBox(
-            height: MediaQuery.of(context).size.width * 0.05,
+            height: MediaQuery.of(context).size.width * 0.15,
           ),
-          const Text("Select language for the recipe:"),
+          const Text("Select language for the recipe:",
+              style: AppTypography.heading4),
           _buildLanguageDropdown(),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           PantryBuilder(
@@ -261,23 +266,22 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
         filled: true,
         fillColor: Colors.white,
         border: OutlineInputBorder(),
-      ), 
+      ),
       maxLines: null,
     );
   }
 
   Widget _buildDropdownMenu() {
+    // build use only pantry/use other than pantry menu with can use other than pantry as default
     return DropdownButtonFormField<String>(
-      value: _selectedOption ?? 'Can use other items that are not in pantry',
+      value: _selectedOption ?? 'Can use items not in pantry',
       onChanged: (String? newValue) {
         setState(() {
           _selectedOption = newValue!;
         });
       },
-      items: <String>[
-        'Use only pantry items',
-        'Can use other items that are not in pantry'
-      ].map<DropdownMenuItem<String>>(
+      items: <String>['Use only pantry items', 'Can use items not in pantry']
+          .map<DropdownMenuItem<String>>(
         (String value) {
           return DropdownMenuItem<String>(
             value: value,
@@ -341,9 +345,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
       Function() onPressed) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        foregroundColor: AppColors.main3
-      ),
+          backgroundColor: Colors.white, foregroundColor: AppColors.main3),
       onPressed: onPressed,
       child: Text(label),
     );
@@ -355,7 +357,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
       String supplies = _suppliesController.text;
       bool pantryOnly = true;
       // String expSoon = _expSoonController.text;
-      if (_selectedOption == "Can use other items that are not in pantry") {
+      if (_selectedOption == "Can use items not in pantry") {
         pantryOnly = false;
       }
 
@@ -370,6 +372,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
           language);
 
       RecipeProxy().upsertRecipe(generatedRecipe);
+      // clear
       _recipeTypeController.clear();
       _suppliesController.clear();
       _expSoonController.clear();
