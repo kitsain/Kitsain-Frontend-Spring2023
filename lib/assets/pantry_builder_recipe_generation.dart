@@ -54,21 +54,19 @@ class _PantryBuilderState extends State<PantryBuilder> {
   /// Gets the names of optional items
   /// Returns the names of optional items
   List<String> getOptionalItemsNames() {
+    optionalItemsNames = [];
     for (var item in optionalItems) {
       optionalItemsNames.add(item.name);
     }
-
+    print(optionalItemsNames);
     return optionalItemsNames;
   }
   /// Gets the names of must have items
   /// Returns the names of must have items
   List<String> getMustHaveItemsNames() {
+    mustHaveItemsNames = [];
     for (var item in mustHaveItems) {
-      if (item.name != null) {
         mustHaveItemsNames.add(item.name);
-      } else {
-        mustHaveItems.add(item);
-      }
     }
 
     return mustHaveItemsNames;
