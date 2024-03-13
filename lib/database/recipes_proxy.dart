@@ -29,12 +29,14 @@ class RecipeProxy with ChangeNotifier {
   GETTERS
   */
 
+  /// Gets all recipes from the database
   RealmResults<Recipe> getRecipes([String sortBy = "az"]) {
     var all = getItems();
 
     return all;
   }
 
+  /// Gets only the recipes that are favorited from the database
   RealmResults<Recipe> getFavouriteRecipes([String sortBy = "az"]) {
     var all = getRecipes();
     late RealmResults<Recipe> result;
@@ -52,6 +54,8 @@ class RecipeProxy with ChangeNotifier {
   MODIFYING ITEMS
   */
 
+  /// Inserts the [recipe] into the database
+  /// Returns true if succesful, false otherwise
   bool upsertRecipe(Recipe recipe) {
     try {
       realm.write(() {
@@ -65,6 +69,7 @@ class RecipeProxy with ChangeNotifier {
     }
   }
 
+  /// Deletes the [recipe] from the database
   void deleteRecipe(Recipe recipe) {
     try {
       realm.write(() {
@@ -75,7 +80,7 @@ class RecipeProxy with ChangeNotifier {
       debugPrint(e.message);
     }
   }
-
+  /// Deletes all recipes from the database
   void deleteAll() {
     realm.write(() {
       realm.deleteAll<Recipe>();
