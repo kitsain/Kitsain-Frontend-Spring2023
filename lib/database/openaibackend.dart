@@ -71,8 +71,8 @@ Future<Recipe> changeRecipe(
   var requestBody = json.encode({
     'change': change,
     'ingredients': ingredients,
-    'recipeType': recipeType,
-    'expSoon': expSoon,
+    'recipe_type': recipeType,
+    'exp_soon': expSoon,
     'supplies': supplies,
     'details': details
   });
