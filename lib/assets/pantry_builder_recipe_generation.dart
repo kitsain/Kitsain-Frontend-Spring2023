@@ -5,11 +5,13 @@ import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:realm/realm.dart';
 import 'package:kitsain_frontend_spring2023/app_typography.dart';
 
+/// Class for creating a new temporary ingredient
 class NewItem {
   String name;
   NewItem(this.name);
 }
 
+/// Builds the choosing of ingredients part of the UI
 class PantryBuilder extends StatefulWidget {
   const PantryBuilder({
     Key? key,
@@ -49,16 +51,18 @@ class _PantryBuilderState extends State<PantryBuilder> {
       };
     });
   }
-
-  List<String> getOptionalItems() {
+  /// Gets the names of optional items
+  /// Returns the names of optional items
+  List<String> getOptionalItemsNames() {
     for (var item in optionalItems) {
       optionalItemsNames.add(item.name);
     }
 
     return optionalItemsNames;
   }
-  
-  List<String> getMustHaveItems() {
+  /// Gets the names of must have items
+  /// Returns the names of must have items
+  List<String> getMustHaveItemsNames() {
     for (var item in mustHaveItems) {
       if (item.name != null) {
         mustHaveItemsNames.add(item.name);
@@ -71,7 +75,9 @@ class _PantryBuilderState extends State<PantryBuilder> {
 
     return mustHaveItemsNames;
   }
-
+  /// Gets a part of the list widget.items(all items in pantry),
+  /// only the items that are expiring in less than 4 days are added to this list
+  /// Returns the list with expiring items
   List getExpiringItems() {
     final DateTime currentDate = DateTime.now();
     final expiringItems = [];
@@ -88,6 +94,9 @@ class _PantryBuilderState extends State<PantryBuilder> {
     return expiringItems;
   }
 
+  /// Gets a part of the list widget.items(all items in pantry),
+  /// only the items that are NOT expiring in less than 4 days are added to this list
+  /// Returns the list with items that are NOT expiring
   List getNotExpiringItems() {
     final DateTime currentDate = DateTime.now();
     final notExpiringItems = [];
@@ -105,7 +114,8 @@ class _PantryBuilderState extends State<PantryBuilder> {
     return notExpiringItems;
   }
 
-
+  /// Selects and deselects all items to be added into the optional items list,
+  /// if the parem [select] is true all the items are selected, if false they are deselected
   void toggleSelectAll(bool select) {
   setState(() {
     for (var item in isSelectedAll) {
@@ -124,20 +134,23 @@ class _PantryBuilderState extends State<PantryBuilder> {
         }
       }
     }
-    widget.onOptionalItemsChanged(getOptionalItems());
-    widget.onMustHaveItemsChanged(getMustHaveItems());
+    widget.onOptionalItemsChanged(getOptionalItemsNames());
+    widget.onMustHaveItemsChanged(getMustHaveItemsNames());
     
   });
   }
-
+  /// Toggles whether the ingredient is selected into the recipe
+  /// Takes the ingredient [item] which can either be an Item class object from the pantry,
+  /// or a temporary NewItem class object
   void toggleItemSelection(item) {
     setState(() {
-      int indexToUpdate = isSelectedAll.indexWhere((element) => element['item'] == item);
+      int indexToUpdate = isSelectedAll.indexWhere((element) =>
+          element['item'] == item);
       // If the item is found in the pantry items
       if (indexToUpdate != -1) {
         isSelectedAll[indexToUpdate]['isSelected'] = !isSelectedAll[indexToUpdate]['isSelected'];
       }
-      // Else remove it from the two lists
+      // Else remove it from the two lists and leave the function
       else {
         removeFromList(item, optionalItems);
         removeFromList(item, mustHaveItems);
@@ -159,12 +172,16 @@ class _PantryBuilderState extends State<PantryBuilder> {
           mustHaveItems.removeAt(indexToRemove);
         }
       }
-      widget.onOptionalItemsChanged(getOptionalItems());
-      widget.onMustHaveItemsChanged(getMustHaveItems());
+      widget.onOptionalItemsChanged(getOptionalItemsNames());
+      widget.onMustHaveItemsChanged(getMustHaveItemsNames());
     });
 
   }
 
+  /// Gets the color for the highlightation
+  /// Checks whether the [item] (ingredient) is selected,
+  /// if it's selected the color is green ish, if not the color is same as background
+  /// Returns the color
   getColor(item) {
     int index = isSelectedAll.indexWhere((element) => element['item'] == item);
     var color = isSelectedAll[index]['isSelected'] 
@@ -173,32 +190,35 @@ class _PantryBuilderState extends State<PantryBuilder> {
     return color;
   }
 
+  /// Switches an [item] (ingredient) from [fromList] to [toList]
   void switchList(item, List fromList, List toList) {
     setState(() {
       fromList.remove(item);
       toList.add(item);
-      widget.onOptionalItemsChanged(getOptionalItems());
-      widget.onMustHaveItemsChanged(getMustHaveItems());
+      widget.onOptionalItemsChanged(getOptionalItemsNames());
+      widget.onMustHaveItemsChanged(getMustHaveItemsNames());
     });
   }
 
+  /// Removes an [item] (ingredient) from [list]
   void removeFromList(item, List list) {
     setState(() {
       list.remove(item);
-      widget.onOptionalItemsChanged(getOptionalItems());
-      widget.onMustHaveItemsChanged(getMustHaveItems());
+      widget.onOptionalItemsChanged(getOptionalItemsNames());
+      widget.onMustHaveItemsChanged(getMustHaveItemsNames());
     });
   }
 
+  /// Adds an [item] to [list]
   void addItemToList(item, List list) {
     setState(() {
       list.add(item);
-      widget.onOptionalItemsChanged(getOptionalItems());
-      widget.onMustHaveItemsChanged(getMustHaveItems());
+      widget.onOptionalItemsChanged(getOptionalItemsNames());
+      widget.onMustHaveItemsChanged(getMustHaveItemsNames());
     });
   }
 
-
+  /// Builds the UI element for select and deselect buttons
   Widget buildSelectButtons() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -215,6 +235,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
     );
   }
 
+  /// Builds the UI element for list of [expiringItems]
   Widget buildExpiringIngredients() {
     return Column(
       children: [
@@ -260,6 +281,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
     );
   }
 
+  /// Builds the UI element for list of [notExpiringItems]
   Widget buildRestOfIngredients() {
     return Column(
       children: [
@@ -302,11 +324,23 @@ class _PantryBuilderState extends State<PantryBuilder> {
       ],
     );
   }
-  
+
+  Widget buildInstruction() {
+    return const Column(children: [
+      Text('Tap items to switch between lists'),
+      SizedBox(height: 20,)
+      ],
+      );
+
+  }
+
+  /// Builds the UI element for [optionalItems] and [mustHaveItems]
   Widget buildSelectedItemLists() {
+    /// Row for the two lists to be shown next to eachother
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
+        /// Must have items element
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center, // Center the text
@@ -320,7 +354,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
               ),
               Container(
                 height: 200, // Adjust this value as needed
-                child: ListView.builder(
+                child: Scrollbar(child: ListView.builder(
                   itemCount: mustHaveItems.length + 1, // Add 1 for the extra card
                   itemBuilder: (context, index) {
                     if (index == mustHaveItems.length) {
@@ -362,10 +396,12 @@ class _PantryBuilderState extends State<PantryBuilder> {
                     }
                   },
                 ),
+                )
               ),
             ],
           ),
         ),
+        /// Optional items element
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -379,7 +415,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
               ),
               Container(
                 height: 200, // Adjust this value as needed
-                child: ListView.builder(
+                child: Scrollbar(child: ListView.builder(
                   itemCount: optionalItems.length + 1, // Add 1 for the extra card
                   itemBuilder: (context, index) {
                     if (index == optionalItems.length) {
@@ -398,6 +434,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
                         ),
                       );
                     } else {
+                      // Render the existing items
                       return Card(
                         child: ListTile(
                           title: Row(
@@ -420,6 +457,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
                     }
                   },
                 ),
+                )
               ),
             ],
           ),
@@ -427,7 +465,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
       ],
     );
   }
-
+  /// Builds all of the UI elements together to form this part of the page
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -436,6 +474,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
           buildSelectButtons(),
           buildExpiringIngredients(),
           buildRestOfIngredients(),
+          buildInstruction(),
           buildSelectedItemLists(),
         ],
       ),
