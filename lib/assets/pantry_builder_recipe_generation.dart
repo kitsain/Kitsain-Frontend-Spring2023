@@ -66,11 +66,9 @@ class _PantryBuilderState extends State<PantryBuilder> {
     for (var item in mustHaveItems) {
       if (item.name != null) {
         mustHaveItemsNames.add(item.name);
-      }
-      else {
+      } else {
         mustHaveItems.add(item);
       }
-      
     }
 
     return mustHaveItemsNames;
@@ -87,7 +85,8 @@ class _PantryBuilderState extends State<PantryBuilder> {
         continue;
       }
 
-      if (item.expiryDate!.difference(currentDate).inDays <= expirationTimeInDays){
+      if (item.expiryDate!.difference(currentDate).inDays <=
+          expirationTimeInDays) {
         expiringItems.add(item);
       }
     }
@@ -107,7 +106,8 @@ class _PantryBuilderState extends State<PantryBuilder> {
         continue;
       }
 
-      if (item.expiryDate!.difference(currentDate).inDays >= expirationTimeInDays){
+      if (item.expiryDate!.difference(currentDate).inDays >=
+          expirationTimeInDays) {
         notExpiringItems.add(item);
       }
     }
@@ -138,6 +138,27 @@ class _PantryBuilderState extends State<PantryBuilder> {
     widget.onMustHaveItemsChanged(getMustHaveItemsNames());
     
   });
+    setState(() {
+      for (var item in isSelectedAll) {
+        item['isSelected'] = select;
+      }
+      for (var item in isSelectedAll) {
+        if (item['isSelected'] &&
+            !optionalItems.contains(item['item']) &&
+            !mustHaveItems.contains(item['item'])) {
+          optionalItems.add(item['item']);
+        } else if (!item['isSelected']) {
+          if (optionalItems.contains(item['item'])) {
+            optionalItems.remove(item['item']);
+          }
+          if (mustHaveItems.contains(item['item'])) {
+            mustHaveItems.remove(item['item']);
+          }
+        }
+      }
+      widget.onOptionalItemsChanged(getOptionalItems());
+      widget.onMustHaveItemsChanged(getMustHaveItems());
+    });
   }
   /// Toggles whether the ingredient is selected into the recipe
   /// Takes the ingredient [item] which can either be an Item class object from the pantry,
@@ -146,9 +167,12 @@ class _PantryBuilderState extends State<PantryBuilder> {
     setState(() {
       int indexToUpdate = isSelectedAll.indexWhere((element) =>
           element['item'] == item);
+      int indexToUpdate =
+          isSelectedAll.indexWhere((element) => element['item'] == item);
       // If the item is found in the pantry items
       if (indexToUpdate != -1) {
-        isSelectedAll[indexToUpdate]['isSelected'] = !isSelectedAll[indexToUpdate]['isSelected'];
+        isSelectedAll[indexToUpdate]['isSelected'] =
+            !isSelectedAll[indexToUpdate]['isSelected'];
       }
       // Else remove it from the two lists and leave the function
       else {
@@ -158,16 +182,14 @@ class _PantryBuilderState extends State<PantryBuilder> {
       }
       if (isSelectedAll[indexToUpdate]['isSelected']) {
         optionalItems.add(item);
-      }
-      else {
+      } else {
         // Find the index of the item to remove
-        int indexToRemove = optionalItems.indexWhere((element) =>
-            element == item);
+        int indexToRemove =
+            optionalItems.indexWhere((element) => element == item);
         if (indexToRemove != -1) {
           optionalItems.removeAt(indexToRemove);
         }
-        indexToRemove = mustHaveItems.indexWhere((element) =>
-            element == item);
+        indexToRemove = mustHaveItems.indexWhere((element) => element == item);
         if (indexToRemove != -1) {
           mustHaveItems.removeAt(indexToRemove);
         }
@@ -184,9 +206,9 @@ class _PantryBuilderState extends State<PantryBuilder> {
   /// Returns the color
   getColor(item) {
     int index = isSelectedAll.indexWhere((element) => element['item'] == item);
-    var color = isSelectedAll[index]['isSelected'] 
-      ? const Color.fromARGB(255, 78, 117, 88)
-      : null;
+    var color = isSelectedAll[index]['isSelected']
+        ? const Color.fromARGB(255, 78, 117, 88)
+        : null;
     return color;
   }
 
@@ -235,20 +257,32 @@ class _PantryBuilderState extends State<PantryBuilder> {
     );
   }
 
+  Widget buildInstruction() {
+    return Column(
+      children: [
+        const SizedBox(height: 20),
+        const Text(
+            "Tap the ingredient for optional item and tap it again to add it as a must have item",
+            style: AppTypography.heading5),
+        const SizedBox(height: 5),
+      ], // children
+    );
+  }
+
   /// Builds the UI element for list of [expiringItems]
   Widget buildExpiringIngredients() {
     return Column(
       children: [
-        const SizedBox(height: 30),
-        const Text("Expiring ingredients"),
-        const SizedBox(height: 20),
+        // const SizedBox(height: 20),
+        const Text("Expiring ingredients", style: AppTypography.heading4),
+        const SizedBox(height: 5),
         Padding(
           padding: const EdgeInsets.only(
             left: 8.0,
             right: 8.0,
             top: 16.0,
             bottom: 16.0,
-            ),
+          ),
           child: Align(
             alignment: Alignment.center,
             child: Wrap(
@@ -268,8 +302,9 @@ class _PantryBuilderState extends State<PantryBuilder> {
                     child: Text(
                       (expiringItems[index].name +
                           " " +
-                          formatter.format(expiringItems[index].expiryDate!.toLocal())),
-                      style: AppTypography.category,
+                          formatter.format(
+                              expiringItems[index].expiryDate!.toLocal())),
+                      style: AppTypography.heading5,
                     ),
                   ),
                 ),
@@ -286,15 +321,15 @@ class _PantryBuilderState extends State<PantryBuilder> {
     return Column(
       children: [
         const SizedBox(height: 30),
-        const Text("Rest of ingredients"),
-        const SizedBox(height: 20),
+        const Text("Rest of the ingredients", style: AppTypography.heading4),
+        const SizedBox(height: 1),
         Padding(
           padding: const EdgeInsets.only(
             left: 8.0,
             right: 8.0,
             top: 16.0,
             bottom: 30.0,
-            ),
+          ),
           child: Align(
             alignment: Alignment.center,
             child: Wrap(
@@ -313,7 +348,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
                     ),
                     child: Text(
                       notExpiringItems[index].name,
-                      style: AppTypography.category,
+                      style: AppTypography.heading5,
                     ),
                   ),
                 ),
@@ -345,13 +380,9 @@ class _PantryBuilderState extends State<PantryBuilder> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center, // Center the text
             children: [
-              const Text(
-                'Must Have Items', // Title for the first list
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              const SizedBox(height: 30),
+              const Text('Must Have Items', // Title for the first list
+                  style: AppTypography.heading4),
               Container(
                 height: 200, // Adjust this value as needed
                 child: Scrollbar(child: ListView.builder(
@@ -389,7 +420,8 @@ class _PantryBuilderState extends State<PantryBuilder> {
                             ],
                           ),
                           onTap: () {
-                            switchList(mustHaveItems[index], mustHaveItems, optionalItems);
+                            switchList(mustHaveItems[index], mustHaveItems,
+                                optionalItems);
                           },
                         ),
                       );
@@ -406,17 +438,16 @@ class _PantryBuilderState extends State<PantryBuilder> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                'Optional Items', // Title for the second list
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              const SizedBox(height: 30),
+              const Text('Optional Items', // Title for the second list
+                  style: AppTypography.heading4),
               Container(
                 height: 200, // Adjust this value as needed
                 child: Scrollbar(child: ListView.builder(
                   itemCount: optionalItems.length + 1, // Add 1 for the extra card
+                child: ListView.builder(
+                  itemCount:
+                      optionalItems.length + 1, // Add 1 for the extra card
                   itemBuilder: (context, index) {
                     if (index == optionalItems.length) {
                       // Render the extra card for adding new items
@@ -450,7 +481,8 @@ class _PantryBuilderState extends State<PantryBuilder> {
                             ],
                           ),
                           onTap: () {
-                            switchList(optionalItems[index], optionalItems, mustHaveItems);
+                            switchList(optionalItems[index], optionalItems,
+                                mustHaveItems);
                           },
                         ),
                       );
@@ -471,11 +503,14 @@ class _PantryBuilderState extends State<PantryBuilder> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          buildSelectButtons(),
+          // buildSelectButtons(),
           buildExpiringIngredients(),
           buildRestOfIngredients(),
           buildInstruction(),
+          buildSelectButtons(),
+          buildInstruction(),
           buildSelectedItemLists(),
+          // buildSelectButtons(),
         ],
       ),
     );
