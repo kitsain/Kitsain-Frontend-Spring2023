@@ -44,6 +44,7 @@ class _LoadingDialogWithTimeoutState extends State<LoadingDialogWithTimeout> {
   }
 }
 
+/// Class that upholds the state of recipe form
 @override
 class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   final _formKey = GlobalKey<FormState>();
@@ -85,6 +86,7 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   String? _selectedOption;
   var radioValues;
 
+  /// Dialog asking whether user wants to discard changes
   void _discardChangesDialog(bool discardForm) {
     if (discardForm || _areFormFieldsEmpty()) {
       Navigator.pop(context);
@@ -154,6 +156,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     );
   }
 
+  /// Builds indicator for loading.
+  ///
+  /// Returns indicator.
   Widget _buildLoadingIndicator() {
     return Center(
       child: CircularProgressIndicator(),

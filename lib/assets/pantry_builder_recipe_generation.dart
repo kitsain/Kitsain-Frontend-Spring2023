@@ -207,6 +207,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
   }
 
   /// Gets the color for the highlightation
+  ///
   /// Checks whether the [item] (ingredient) is selected,
   /// if it's selected the color is green ish, if not the color is same as background
   /// Returns the color
