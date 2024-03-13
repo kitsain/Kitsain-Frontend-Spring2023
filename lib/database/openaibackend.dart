@@ -3,7 +3,7 @@ import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:http/http.dart' as http;
 import 'package:realm/realm.dart';
 
-/// Generates a recipe using the parameters 
+/// Generates a recipe using the parameters
 /// [ingredients] (list of ingredients),
 /// [recipeType] (the type of recipe (eg. vegan)),
 /// [expSoon] (list of must have items in the recipe)
@@ -11,18 +11,23 @@ import 'package:realm/realm.dart';
 /// [pantryOnly] (boolean value whether the recipe only uses items from the pantry or adds new ingredients)
 /// [language] (in which language is the recipe generated in)
 /// Returns a Recipe object with the generated recipe from ChatGPT
-Future<Recipe> generateRecipe(List<String> ingredients, String recipeType,
-    List<String> expSoon, List<String> supplies, bool pantryOnly, String language) async {
-    var url = Uri.https(
+Future<Recipe> generateRecipe(
+    List<String> ingredients,
+    String recipeType,
+    List<String> expSoon,
+    List<String> supplies,
+    bool pantryOnly,
+    String language) async {
+  var url = Uri.https(
       'kitsain-backend-test-ohtuprojekti-staging.apps.ocp-test-0.k8s.it.helsinki.fi',
-      '/generate'); 
+      '/generate');
   var headers = {"Content-Type": "application/json"};
   var requestBody = json.encode({
     'ingredients': ingredients,
-    'recipeType': recipeType,
-    'expSoon': expSoon,
+    'recipe_type': recipeType,
+    'exp_soon': expSoon,
     'supplies': supplies,
-    'pantryOnly': pantryOnly,
+    'pantry_only': pantryOnly,
     'language': language
   });
   print(
@@ -61,7 +66,7 @@ Future<Recipe> changeRecipe(
     bool? pantryOnly) async {
   var url = Uri.https(
       'kitsain-backend-test-ohtuprojekti-staging.apps.ocp-test-0.k8s.it.helsinki.fi',
-      '/change'); 
+      '/change');
   var headers = {"Content-Type": "application/json"};
   var requestBody = json.encode({
     'change': change,

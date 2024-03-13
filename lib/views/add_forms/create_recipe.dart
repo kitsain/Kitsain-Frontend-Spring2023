@@ -160,6 +160,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     );
   }
 
+  /// Builds the language choice dropdown.
+  ///
+  /// Returns dropdown.
   Widget _buildLanguageDropdown() {
     return DropdownButton<String>(
       value: language,
@@ -178,6 +181,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     );
   }
 
+  /// Builds the close button for the recipe generating form.
+  ///
+  /// Returns close button.
   Widget _buildCloseButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -195,6 +201,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     );
   }
 
+  /// Builds the header for the recipe generating form.
+  ///
+  /// Returns header.
   Widget _buildRecipeHeading() {
     return Column(
       children: [
@@ -208,6 +217,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     );
   }
 
+  /// Builds the recipe generating form as a whole.
+  ///
+  /// Returns recipe form.
   Widget _buildRecipeForm() {
     return Padding(
       padding: const EdgeInsets.only(left: 7, right: 7),
@@ -256,6 +268,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     );
   }
 
+  /// Builds the text fields utilized in recipe generating form.
+  ///
+  /// Returns text field.
   Widget _buildTextFormField({
     required TextEditingController controller,
   }) {
@@ -271,6 +286,9 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
     );
   }
 
+  /// Builds dropdown menu determining what kind of items are allowed.
+  ///
+  /// Returns dropdown menu.
   Widget _buildDropdownMenu() {
     // build use only pantry/use other than pantry menu with can use other than pantry as default
     return DropdownButtonFormField<String>(

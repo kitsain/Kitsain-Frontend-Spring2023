@@ -51,7 +51,9 @@ class _PantryBuilderState extends State<PantryBuilder> {
       };
     });
   }
+
   /// Gets the names of optional items
+  ///
   /// Returns the names of optional items
   List<String> getOptionalItemsNames() {
     for (var item in optionalItems) {
@@ -60,7 +62,9 @@ class _PantryBuilderState extends State<PantryBuilder> {
 
     return optionalItemsNames;
   }
+
   /// Gets the names of must have items
+  ///
   /// Returns the names of must have items
   List<String> getMustHaveItemsNames() {
     for (var item in mustHaveItems) {
@@ -73,8 +77,10 @@ class _PantryBuilderState extends State<PantryBuilder> {
 
     return mustHaveItemsNames;
   }
+
   /// Gets a part of the list widget.items(all items in pantry),
   /// only the items that are expiring in less than 4 days are added to this list
+  ///
   /// Returns the list with expiring items
   List getExpiringItems() {
     final DateTime currentDate = DateTime.now();
@@ -95,6 +101,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
 
   /// Gets a part of the list widget.items(all items in pantry),
   /// only the items that are NOT expiring in less than 4 days are added to this list
+  ///
   /// Returns the list with items that are NOT expiring
   List getNotExpiringItems() {
     final DateTime currentDate = DateTime.now();
@@ -115,29 +122,29 @@ class _PantryBuilderState extends State<PantryBuilder> {
   }
 
   /// Selects and deselects all items to be added into the optional items list,
-  /// if the parem [select] is true all the items are selected, if false they are deselected
+  /// if the param [select] is true all the items are selected, if false they are deselected
   void toggleSelectAll(bool select) {
-  setState(() {
-    for (var item in isSelectedAll) {
-      item['isSelected'] = select;
-    }
-    for (var item in isSelectedAll) {
-      if (item['isSelected'] && !optionalItems.contains(item['item']) && !mustHaveItems.contains(item['item'])) {
-        optionalItems.add(item['item']);
+    setState(() {
+      for (var item in isSelectedAll) {
+        item['isSelected'] = select;
       }
-      else if(!item['isSelected']) {
-        if (optionalItems.contains(item['item'])) {
-          optionalItems.remove(item['item']);
-        }
-        if (mustHaveItems.contains(item['item'])) {
-          mustHaveItems.remove(item['item']);
+      for (var item in isSelectedAll) {
+        if (item['isSelected'] &&
+            !optionalItems.contains(item['item']) &&
+            !mustHaveItems.contains(item['item'])) {
+          optionalItems.add(item['item']);
+        } else if (!item['isSelected']) {
+          if (optionalItems.contains(item['item'])) {
+            optionalItems.remove(item['item']);
+          }
+          if (mustHaveItems.contains(item['item'])) {
+            mustHaveItems.remove(item['item']);
+          }
         }
       }
-    }
-    widget.onOptionalItemsChanged(getOptionalItemsNames());
-    widget.onMustHaveItemsChanged(getMustHaveItemsNames());
-    
-  });
+      widget.onOptionalItemsChanged(getOptionalItemsNames());
+      widget.onMustHaveItemsChanged(getMustHaveItemsNames());
+    });
     setState(() {
       for (var item in isSelectedAll) {
         item['isSelected'] = select;
@@ -160,7 +167,9 @@ class _PantryBuilderState extends State<PantryBuilder> {
       widget.onMustHaveItemsChanged(getMustHaveItemsNames());
     });
   }
+
   /// Toggles whether the ingredient is selected into the recipe
+  ///
   /// Takes the ingredient [item] which can either be an Item class object from the pantry,
   /// or a temporary NewItem class object
   void toggleItemSelection(item) {
@@ -195,7 +204,6 @@ class _PantryBuilderState extends State<PantryBuilder> {
       widget.onOptionalItemsChanged(getOptionalItemsNames());
       widget.onMustHaveItemsChanged(getMustHaveItemsNames());
     });
-
   }
 
   /// Gets the color for the highlightation
@@ -258,11 +266,10 @@ class _PantryBuilderState extends State<PantryBuilder> {
   Widget buildInstruction() {
     return const Column(
       children: [
-          SizedBox(height: 20),
-          Text(
-            'Tap items to switch between lists',
+        SizedBox(height: 20),
+        Text('Tap items to switch between lists',
             style: AppTypography.heading5),
-          SizedBox(height: 5),
+        SizedBox(height: 5),
       ], // children
     );
   }
@@ -373,55 +380,57 @@ class _PantryBuilderState extends State<PantryBuilder> {
               const Text('Must Have Items', // Title for the first list
                   style: AppTypography.heading4),
               Container(
-                height: 200, // Adjust this value as needed
-                child: Scrollbar(child: ListView.builder(
-                  itemCount: mustHaveItems.length + 1, // Add 1 for the extra card
-                  itemBuilder: (context, index) {
-                    if (index == mustHaveItems.length) {
-                      // Render the extra card for adding new items
-                      return Card(
-                        child: ListTile(
-                          title: TextField(
-                            onSubmitted: (value) {
-                              addItemToList(NewItem(value), mustHaveItems);
-                            },
-                            decoration: const InputDecoration(
-                              hintText: 'Enter item',
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      );
-                    } else {
-                      // Render the existing items
-                      return Card(
-                        child: ListTile(
-                          title: Row(
-                            children: [
-                              Text(mustHaveItems[index].name),
-                              const Spacer(),
-                              GestureDetector(
-                                onTap: () {
-                                  toggleItemSelection(mustHaveItems[index]);
+                  height: 200, // Adjust this value as needed
+                  child: Scrollbar(
+                    child: ListView.builder(
+                      itemCount:
+                          mustHaveItems.length + 1, // Add 1 for the extra card
+                      itemBuilder: (context, index) {
+                        if (index == mustHaveItems.length) {
+                          // Render the extra card for adding new items
+                          return Card(
+                            child: ListTile(
+                              title: TextField(
+                                onSubmitted: (value) {
+                                  addItemToList(NewItem(value), mustHaveItems);
                                 },
-                                child: const Icon(Icons.close),
+                                decoration: const InputDecoration(
+                                  hintText: 'Enter item',
+                                  border: InputBorder.none,
+                                ),
                               ),
-                            ],
-                          ),
-                          onTap: () {
-                            switchList(mustHaveItems[index], mustHaveItems,
-                                optionalItems);
-                          },
-                        ),
-                      );
-                    }
-                  },
-                ),
-                )
-              ),
+                            ),
+                          );
+                        } else {
+                          // Render the existing items
+                          return Card(
+                            child: ListTile(
+                              title: Row(
+                                children: [
+                                  Text(mustHaveItems[index].name),
+                                  const Spacer(),
+                                  GestureDetector(
+                                    onTap: () {
+                                      toggleItemSelection(mustHaveItems[index]);
+                                    },
+                                    child: const Icon(Icons.close),
+                                  ),
+                                ],
+                              ),
+                              onTap: () {
+                                switchList(mustHaveItems[index], mustHaveItems,
+                                    optionalItems);
+                              },
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  )),
             ],
           ),
         ),
+
         /// Optional items element
         Expanded(
           child: Column(
@@ -431,60 +440,60 @@ class _PantryBuilderState extends State<PantryBuilder> {
               const Text('Optional Items', // Title for the second list
                   style: AppTypography.heading4),
               Container(
-                height: 200, // Adjust this value as needed
-                child: Scrollbar(child: 
-                ListView.builder(
-                  itemCount:
-                      optionalItems.length + 1, // Add 1 for the extra card
-                  itemBuilder: (context, index) {
-                    if (index == optionalItems.length) {
-                      // Render the extra card for adding new items
-                      return Card(
-                        child: ListTile(
-                          title: TextField(
-                            onSubmitted: (value) {
-                              addItemToList(NewItem(value), optionalItems);
-                            },
-                            decoration: const InputDecoration(
-                              hintText: 'Enter item',
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      );
-                    } else {
-                      // Render the existing items
-                      return Card(
-                        child: ListTile(
-                          title: Row(
-                            children: [
-                              Text(optionalItems[index].name),
-                              const Spacer(),
-                              GestureDetector(
-                                onTap: () {
-                                  toggleItemSelection(optionalItems[index]);
+                  height: 200, // Adjust this value as needed
+                  child: Scrollbar(
+                    child: ListView.builder(
+                      itemCount:
+                          optionalItems.length + 1, // Add 1 for the extra card
+                      itemBuilder: (context, index) {
+                        if (index == optionalItems.length) {
+                          // Render the extra card for adding new items
+                          return Card(
+                            child: ListTile(
+                              title: TextField(
+                                onSubmitted: (value) {
+                                  addItemToList(NewItem(value), optionalItems);
                                 },
-                                child: const Icon(Icons.close),
+                                decoration: const InputDecoration(
+                                  hintText: 'Enter item',
+                                  border: InputBorder.none,
+                                ),
                               ),
-                            ],
-                          ),
-                          onTap: () {
-                            switchList(optionalItems[index], optionalItems,
-                                mustHaveItems);
-                          },
-                        ),
-                      );
-                    }
-                  },
-                ),
-                )
-              ),
+                            ),
+                          );
+                        } else {
+                          // Render the existing items
+                          return Card(
+                            child: ListTile(
+                              title: Row(
+                                children: [
+                                  Text(optionalItems[index].name),
+                                  const Spacer(),
+                                  GestureDetector(
+                                    onTap: () {
+                                      toggleItemSelection(optionalItems[index]);
+                                    },
+                                    child: const Icon(Icons.close),
+                                  ),
+                                ],
+                              ),
+                              onTap: () {
+                                switchList(optionalItems[index], optionalItems,
+                                    mustHaveItems);
+                              },
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  )),
             ],
           ),
         ),
       ],
     );
   }
+
   /// Builds all of the UI elements together to form this part of the page
   @override
   Widget build(BuildContext context) {
