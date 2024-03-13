@@ -212,12 +212,24 @@ class _PantryBuilderState extends State<PantryBuilder> {
     );
   }
 
+  Widget buildInstruction() {
+    return Column(
+      children: [
+        const SizedBox(height: 20),
+        const Text(
+            "Tap the ingredient for optional item and tap it again to add it as a must have item",
+            style: AppTypography.heading5),
+        const SizedBox(height: 5),
+      ], // children
+    );
+  }
+
   Widget buildExpiringIngredients() {
     return Column(
       children: [
-        const SizedBox(height: 30),
+        // const SizedBox(height: 20),
         const Text("Expiring ingredients", style: AppTypography.heading4),
-        const SizedBox(height: 20),
+        const SizedBox(height: 5),
         Padding(
           padding: const EdgeInsets.only(
             left: 8.0,
@@ -263,7 +275,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
       children: [
         const SizedBox(height: 30),
         const Text("Rest of the ingredients", style: AppTypography.heading4),
-        const SizedBox(height: 20),
+        const SizedBox(height: 1),
         Padding(
           padding: const EdgeInsets.only(
             left: 8.0,
@@ -309,6 +321,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center, // Center the text
             children: [
+              const SizedBox(height: 30),
               const Text('Must Have Items', // Title for the first list
                   style: AppTypography.heading4),
               Container(
@@ -365,6 +378,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              const SizedBox(height: 30),
               const Text('Optional Items', // Title for the second list
                   style: AppTypography.heading4),
               Container(
@@ -425,10 +439,13 @@ class _PantryBuilderState extends State<PantryBuilder> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          buildSelectButtons(),
+          // buildSelectButtons(),
           buildExpiringIngredients(),
           buildRestOfIngredients(),
+          buildSelectButtons(),
+          buildInstruction(),
           buildSelectedItemLists(),
+          // buildSelectButtons(),
         ],
       ),
     );
