@@ -156,8 +156,8 @@ class _PantryBuilderState extends State<PantryBuilder> {
           }
         }
       }
-      widget.onOptionalItemsChanged(getOptionalItems());
-      widget.onMustHaveItemsChanged(getMustHaveItems());
+      widget.onOptionalItemsChanged(getOptionalItemsNames());
+      widget.onMustHaveItemsChanged(getMustHaveItemsNames());
     });
   }
   /// Toggles whether the ingredient is selected into the recipe
@@ -165,8 +165,6 @@ class _PantryBuilderState extends State<PantryBuilder> {
   /// or a temporary NewItem class object
   void toggleItemSelection(item) {
     setState(() {
-      int indexToUpdate = isSelectedAll.indexWhere((element) =>
-          element['item'] == item);
       int indexToUpdate =
           isSelectedAll.indexWhere((element) => element['item'] == item);
       // If the item is found in the pantry items
@@ -262,7 +260,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
       children: [
         const SizedBox(height: 20),
         const Text(
-            "Tap the ingredient for optional item and tap it again to add it as a must have item",
+            'Tap items to switch between lists',
             style: AppTypography.heading5),
         const SizedBox(height: 5),
       ], // children
@@ -360,15 +358,6 @@ class _PantryBuilderState extends State<PantryBuilder> {
     );
   }
 
-  Widget buildInstruction() {
-    return const Column(children: [
-      Text('Tap items to switch between lists'),
-      SizedBox(height: 20,)
-      ],
-      );
-
-  }
-
   /// Builds the UI element for [optionalItems] and [mustHaveItems]
   Widget buildSelectedItemLists() {
     /// Row for the two lists to be shown next to eachother
@@ -443,9 +432,8 @@ class _PantryBuilderState extends State<PantryBuilder> {
                   style: AppTypography.heading4),
               Container(
                 height: 200, // Adjust this value as needed
-                child: Scrollbar(child: ListView.builder(
-                  itemCount: optionalItems.length + 1, // Add 1 for the extra card
-                child: ListView.builder(
+                child: Scrollbar(child: 
+                ListView.builder(
                   itemCount:
                       optionalItems.length + 1, // Add 1 for the extra card
                   itemBuilder: (context, index) {
