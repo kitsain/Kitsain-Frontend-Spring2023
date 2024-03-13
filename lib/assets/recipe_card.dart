@@ -117,6 +117,9 @@ class _RecipeCardState extends State<RecipeCard> {
     );
   }
 
+  /// Builds the template for the recipe card.
+  ///
+  /// Returns the template.
   Widget _buildRecipeCardWidget() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
@@ -165,7 +168,8 @@ class _RecipeCardState extends State<RecipeCard> {
                           padding: const EdgeInsets.only(top: 16.0),
                           child: Text(
                             widget.recipe.name.toUpperCase(),
-                            style: AppTypography.heading3.copyWith(color: Colors.black),
+                            style: AppTypography.heading3
+                                .copyWith(color: Colors.black),
                           ),
                         ),
                         SizedBox(
@@ -183,6 +187,10 @@ class _RecipeCardState extends State<RecipeCard> {
     );
   }
 
+  /// Builds the button to change the recipe.
+  ///
+  /// Includes [text] describing what the button does, [color] indicates the button's color
+  /// and [recipeName] indicates the recipe that's being changed. Returns the button.
   Widget _buildChangeButton(String text, Color? color, String recipeName) {
     return ElevatedButton(
         child: Text(text),
@@ -198,6 +206,10 @@ class _RecipeCardState extends State<RecipeCard> {
         });
   }
 
+  /// Builds the button to delete the recipe.
+  ///
+  /// Includes [text] describing what the button does, [color] indicates the button's color
+  /// and [recipeName] indicates the recipe that's being deleted. Returns the button.
   Widget _buildDeleteButton(String text, Color? color, String recipeName) {
     return ElevatedButton(
         child: Text(text),
@@ -213,6 +225,10 @@ class _RecipeCardState extends State<RecipeCard> {
         });
   }
 
+  /// Builds the details screen for the recipe.
+  ///
+  /// Includes [details] presenting the details of the recipe. [recipeName] describes the name of the recipe whose details
+  /// are shown. Returns the details screen as alert dialog.
   Widget _buildDetailsScreen(
       BuildContext context, String details, String recipeName) {
     dynamic parsedJson = jsonDecode(details);
@@ -264,6 +280,10 @@ class _RecipeCardState extends State<RecipeCard> {
     );
   }
 
+  /// Builds the view asking for the wanted changes to the recipe.
+  ///
+  /// [recipeName] indicates the recipe on which the changes are applied.
+  /// Returns the change view as alert dialog.
   Widget _buildChangeAlert(BuildContext context, String recipeName) {
     final changesController = TextEditingController(); //
     return AlertDialog(
@@ -299,26 +319,24 @@ class _RecipeCardState extends State<RecipeCard> {
 
               showDialog(
                 context: context,
-                barrierDismissible: false, // Prevent closing the dialog by tapping outside
+                barrierDismissible:
+                    false, // Prevent closing the dialog by tapping outside
                 builder: (BuildContext context) {
                   return LoadingDialogWithTimeout(); // Loading spinner
                 },
               );
 
               // the recipe details and changes are sent as parameters
-              var changedRecipe =
-                await changeRecipe(
+              var changedRecipe = await changeRecipe(
                   widget.recipe.details,
                   changes,
                   widget.recipe.selectedItems,
                   widget.recipe.recipeType,
                   widget.recipe.expSoon,
                   widget.recipe.supplies,
-                  widget.recipe.pantryonly
-                );
+                  widget.recipe.pantryonly);
 
               navigator.pop();
-                
 
               RecipeProxy().upsertRecipe(changedRecipe);
               changesController.clear();
@@ -338,6 +356,10 @@ class _RecipeCardState extends State<RecipeCard> {
     );
   }
 
+  /// Builds the view asking whether the user wants to delete the recipe.
+  ///
+  /// [recipeName] indicates the recipe which is to be deleted.
+  /// Returns the delete view as alert dialog.
   Widget _buildDeleteAlert(BuildContext context, String recipeName) {
     return AlertDialog(
       title: Text('Delete recipe'),
