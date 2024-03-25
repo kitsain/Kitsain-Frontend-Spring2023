@@ -50,20 +50,30 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
   final _formKey = GlobalKey<FormState>();
   var _itemName = TextEditingController();
   var _pantryItems;
-  PantryBuilderLogic? logic;
+
 
   @override
   void initState() {
     super.initState();
     _loadPantryItems();
   }
+  onMustHaveItemsChanged(mustHaveItems) {
+                setState(() {
+                  this.mustHaveItems = mustHaveItems;
+                });
+              }
 
+  onOptionalItemsChanged (optionalItems) {
+          setState(() {
+            this.optionalItems = optionalItems;
+          });
+        }
   // Load pantry items asynchronously
   Future<void> _loadPantryItems() async {
     try {
       // Call your method to get pantry items
+
       _pantryItems = await PantryProxy().getPantryItems();
-      logic = PantryBuilderLogic(_pantryItems);
       print(_pantryItems);
     } catch (e) {
       // Handle any potential errors
@@ -256,7 +266,8 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
           _buildLanguageDropdown(),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           PantryBuilder(
-                logic: logic!,
+              items: _pantryItems,
+              sortMethod: "az",
               onMustHaveItemsChanged: (mustHaveItems) {
                 setState(() {
                   this.mustHaveItems = mustHaveItems;
@@ -265,8 +276,8 @@ class _CreateNewRecipeFormState extends State<CreateNewRecipeForm> {
               onOptionalItemsChanged: (optionalItems) {
                 setState(() {
                   this.optionalItems = optionalItems;
-                });
-              }),
+                });}
+                ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           _buildActionButtons(),
         ],
