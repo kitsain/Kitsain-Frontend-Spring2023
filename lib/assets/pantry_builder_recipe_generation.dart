@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kitsain_frontend_spring2023/assets/item_card.dart';
 import 'package:kitsain_frontend_spring2023/database/item.dart';
 import 'package:realm/realm.dart';
 import 'package:kitsain_frontend_spring2023/app_typography.dart';
@@ -11,45 +10,27 @@ class NewItem {
   NewItem(this.name);
 }
 
-/// Builds the choosing of ingredients part of the UI
-class PantryBuilder extends StatefulWidget {
-  const PantryBuilder({
-    Key? key,
-    required this.items,
-    required this.sortMethod,
-    required this.onOptionalItemsChanged,
-    required this.onMustHaveItemsChanged,
-  }) : super(key: key);
-
-  final RealmResults<Item> items;
-  final String sortMethod;
-  final Function(List<String>) onOptionalItemsChanged;
-  final Function(List<String>) onMustHaveItemsChanged;
-
-  @override
-  State<PantryBuilder> createState() => _PantryBuilderState();
-}
-
-class _PantryBuilderState extends State<PantryBuilder> {
+class PantryBuilderLogic {
   late int expirationTimeInDays = 4;
   late List<Map<String, dynamic>> isSelectedAll;
-  late List expiringItems = getExpiringItems();
-  late List notExpiringItems = getNotExpiringItems();
+  late List expiringItems;
+  late List notExpiringItems;
   late DateFormat formatter = DateFormat('yyyy-dd-MM');
   late List mustHaveItems = [];
   late List optionalItems = [];
   late List<String> optionalItemsNames = [];
   late List<String> mustHaveItemsNames = [];
+  final List<Item> items;
 
-  @override
-  void initState() {
-    super.initState();
-    isSelectedAll = List.generate(widget.items.length, (index) {
+  PantryBuilderLogic(this.items) {
+    isSelectedAll = List.generate(items.length, (index) {
       return {
-        'item': widget.items[index],
+        'item': items[index],
         'isSelected': false,
       };
     });
+    expiringItems = getExpiringItems();
+    notExpiringItems = getNotExpiringItems();
   }
 
   /// Gets the names of optional items
@@ -76,7 +57,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
     return mustHaveItemsNames;
   }
 
-  /// Gets a part of the list widget.items(all items in pantry),
+  /// Gets a part of the list items (all items in pantry),
   /// only the items that are expiring in less than 4 days are added to this list
   ///
   /// Returns the list with expiring items
@@ -84,7 +65,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
     final DateTime currentDate = DateTime.now();
     final expiringItems = [];
 
-    for (var item in widget.items) {
+    for (var item in items) {
       if (item.expiryDate == null) {
         continue;
       }
@@ -97,7 +78,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
     return expiringItems;
   }
 
-  /// Gets a part of the list widget.items(all items in pantry),
+  /// Gets a part of the list items (all items in pantry),
   /// only the items that are NOT expiring in less than 4 days are added to this list
   ///
   /// Returns the list with items that are NOT expiring
@@ -105,7 +86,7 @@ class _PantryBuilderState extends State<PantryBuilder> {
     final DateTime currentDate = DateTime.now();
     final notExpiringItems = [];
 
-    for (var item in widget.items) {
+    for (var item in items) {
       if (item.expiryDate == null) {
         notExpiringItems.add(item);
         continue;
@@ -140,8 +121,8 @@ class _PantryBuilderState extends State<PantryBuilder> {
           }
         }
       }
-      widget.onOptionalItemsChanged(getOptionalItemsNames());
-      widget.onMustHaveItemsChanged(getMustHaveItemsNames());
+      onOptionalItemsChanged(getOptionalItemsNames());
+      onMustHaveItemsChanged(getMustHaveItemsNames());
     });
     setState(() {
       for (var item in isSelectedAll) {
@@ -161,8 +142,8 @@ class _PantryBuilderState extends State<PantryBuilder> {
           }
         }
       }
-      widget.onOptionalItemsChanged(getOptionalItemsNames());
-      widget.onMustHaveItemsChanged(getMustHaveItemsNames());
+      onOptionalItemsChanged(getOptionalItemsNames());
+      onMustHaveItemsChanged(getMustHaveItemsNames());
     });
   }
 
@@ -199,8 +180,8 @@ class _PantryBuilderState extends State<PantryBuilder> {
           mustHaveItems.removeAt(indexToRemove);
         }
       }
-      widget.onOptionalItemsChanged(getOptionalItemsNames());
-      widget.onMustHaveItemsChanged(getMustHaveItemsNames());
+      onOptionalItemsChanged(getOptionalItemsNames());
+      onMustHaveItemsChanged(getMustHaveItemsNames());
     });
   }
 
@@ -222,8 +203,8 @@ class _PantryBuilderState extends State<PantryBuilder> {
     setState(() {
       fromList.remove(item);
       toList.add(item);
-      widget.onOptionalItemsChanged(getOptionalItemsNames());
-      widget.onMustHaveItemsChanged(getMustHaveItemsNames());
+      onOptionalItemsChanged(getOptionalItemsNames());
+      onMustHaveItemsChanged(getMustHaveItemsNames());
     });
   }
 
@@ -231,8 +212,8 @@ class _PantryBuilderState extends State<PantryBuilder> {
   void removeFromList(item, List list) {
     setState(() {
       list.remove(item);
-      widget.onOptionalItemsChanged(getOptionalItemsNames());
-      widget.onMustHaveItemsChanged(getMustHaveItemsNames());
+      onOptionalItemsChanged(getOptionalItemsNames());
+      onMustHaveItemsChanged(getMustHaveItemsNames());
     });
   }
 
@@ -240,22 +221,66 @@ class _PantryBuilderState extends State<PantryBuilder> {
   void addItemToList(item, List list) {
     setState(() {
       list.add(item);
-      widget.onOptionalItemsChanged(getOptionalItemsNames());
-      widget.onMustHaveItemsChanged(getMustHaveItemsNames());
+      onOptionalItemsChanged(getOptionalItemsNames());
+      onMustHaveItemsChanged(getMustHaveItemsNames());
     });
   }
 
+  /// Placeholder method for setState
+  void setState(Function() callback) {
+    // Implement your own setState logic here
+    // For example, you can use a state management library like Provider or Riverpod
+    // Or you can use Flutter's built-in StatefulBuilder widget
+    // This is just a placeholder method to demonstrate the concept
+    callback();
+  }
+
+  /// Placeholder method for onOptionalItemsChanged
+  void onOptionalItemsChanged(List<String> optionalItems) {
+    // Implement your own logic here
+    // This is just a placeholder method to demonstrate the concept
+    print('Optional Items Changed: $optionalItems');
+  }
+
+  /// Placeholder method for onMustHaveItemsChanged
+  void onMustHaveItemsChanged(List<String> mustHaveItems) {
+    // Implement your own logic here
+    // This is just a placeholder method to demonstrate the concept
+    print('Must Have Items Changed: $mustHaveItems');
+  }
+}
+
+/// Builds the choosing of ingredients part of the UI
+class PantryBuilder extends StatefulWidget {
+  final PantryBuilderLogic logic;
+
+  const PantryBuilder({
+    super.key,
+    required this.logic,
+    required this.onOptionalItemsChanged,
+    required this.onMustHaveItemsChanged,
+  });
+
+  final Function(List<String>) onOptionalItemsChanged;
+  final Function(List<String>) onMustHaveItemsChanged;
+
+  @override
+  State<PantryBuilder> createState() => _PantryBuilderState();
+}
+
+class _PantryBuilderState extends State<PantryBuilder> {
+  
   /// Builds the UI element for select and deselect buttons
   Widget buildSelectButtons() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ElevatedButton(
-          onPressed: () => toggleSelectAll(true),
+          onPressed: () => widget.logic.toggleSelectAll(true),
           child: const Text('Select all'),
         ),
         ElevatedButton(
-          onPressed: () => toggleSelectAll(false),
+          onPressed: () => widget.logic.toggleSelectAll(false),
           child: const Text('Deselect all'),
         ),
       ],
@@ -294,20 +319,20 @@ class _PantryBuilderState extends State<PantryBuilder> {
               spacing: 1.0,
               runSpacing: 8.0,
               children: List.generate(
-                expiringItems.length,
+                widget.logic.expiringItems.length,
                 (index) => GestureDetector(
-                  onTap: () => toggleItemSelection(expiringItems[index]),
+                  onTap: () => widget.logic.toggleItemSelection(widget.logic.expiringItems[index]),
                   child: Container(
                     padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
-                      color: getColor(expiringItems[index]),
+                      color: widget.logic.getColor(widget.logic.expiringItems[index]),
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: Text(
-                      (expiringItems[index].name +
+                      (widget.logic.expiringItems[index].name +
                           " " +
-                          formatter.format(
-                              expiringItems[index].expiryDate!.toLocal())),
+                          widget.logic.formatter.format(
+                              widget.logic.expiringItems[index].expiryDate!.toLocal())),
                       style: AppTypography.heading5,
                     ),
                   ),
@@ -341,17 +366,17 @@ class _PantryBuilderState extends State<PantryBuilder> {
               spacing: 1.0,
               runSpacing: 8.0,
               children: List.generate(
-                notExpiringItems.length,
+                widget.logic.notExpiringItems.length,
                 (index) => GestureDetector(
-                  onTap: () => toggleItemSelection(notExpiringItems[index]),
+                  onTap: () => widget.logic.toggleItemSelection(widget.logic.notExpiringItems[index]),
                   child: Container(
                     padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
-                      color: getColor(notExpiringItems[index]),
+                      color: widget.logic.getColor(widget.logic.notExpiringItems[index]),
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: Text(
-                      notExpiringItems[index].name,
+                      widget.logic.notExpiringItems[index].name,
                       style: AppTypography.heading5,
                     ),
                   ),
@@ -383,15 +408,15 @@ class _PantryBuilderState extends State<PantryBuilder> {
                   child: Scrollbar(
                     child: ListView.builder(
                       itemCount:
-                          mustHaveItems.length + 1, // Add 1 for the extra card
+                          widget.logic.mustHaveItems.length + 1, // Add 1 for the extra card
                       itemBuilder: (context, index) {
-                        if (index == mustHaveItems.length) {
+                        if (index == widget.logic.mustHaveItems.length) {
                           // Render the extra card for adding new items
                           return Card(
                             child: ListTile(
                               title: TextField(
                                 onSubmitted: (value) {
-                                  addItemToList(NewItem(value), mustHaveItems);
+                                  widget.logic.addItemToList(NewItem(value), widget.logic.mustHaveItems);
                                 },
                                 decoration: const InputDecoration(
                                   hintText: 'Enter item',
@@ -406,19 +431,19 @@ class _PantryBuilderState extends State<PantryBuilder> {
                             child: ListTile(
                               title: Row(
                                 children: [
-                                  Text(mustHaveItems[index].name),
+                                  Text(widget.logic.mustHaveItems[index].name),
                                   const Spacer(),
                                   GestureDetector(
                                     onTap: () {
-                                      toggleItemSelection(mustHaveItems[index]);
+                                      widget.logic.toggleItemSelection(widget.logic.mustHaveItems[index]);
                                     },
                                     child: const Icon(Icons.close),
                                   ),
                                 ],
                               ),
                               onTap: () {
-                                switchList(mustHaveItems[index], mustHaveItems,
-                                    optionalItems);
+                                widget.logic.switchList(widget.logic.mustHaveItems[index], widget.logic.mustHaveItems,
+                                    widget.logic.optionalItems);
                               },
                             ),
                           );
@@ -443,15 +468,15 @@ class _PantryBuilderState extends State<PantryBuilder> {
                   child: Scrollbar(
                     child: ListView.builder(
                       itemCount:
-                          optionalItems.length + 1, // Add 1 for the extra card
+                          widget.logic.optionalItems.length + 1, // Add 1 for the extra card
                       itemBuilder: (context, index) {
-                        if (index == optionalItems.length) {
+                        if (index == widget.logic.optionalItems.length) {
                           // Render the extra card for adding new items
                           return Card(
                             child: ListTile(
                               title: TextField(
                                 onSubmitted: (value) {
-                                  addItemToList(NewItem(value), optionalItems);
+                                  widget.logic.addItemToList(NewItem(value), widget.logic.optionalItems);
                                 },
                                 decoration: const InputDecoration(
                                   hintText: 'Enter item',
@@ -466,19 +491,19 @@ class _PantryBuilderState extends State<PantryBuilder> {
                             child: ListTile(
                               title: Row(
                                 children: [
-                                  Text(optionalItems[index].name),
+                                  Text(widget.logic.optionalItems[index].name),
                                   const Spacer(),
                                   GestureDetector(
                                     onTap: () {
-                                      toggleItemSelection(optionalItems[index]);
+                                      widget.logic.toggleItemSelection(widget.logic.optionalItems[index]);
                                     },
                                     child: const Icon(Icons.close),
                                   ),
                                 ],
                               ),
                               onTap: () {
-                                switchList(optionalItems[index], optionalItems,
-                                    mustHaveItems);
+                                widget.logic.switchList(widget.logic.optionalItems[index], widget.logic.optionalItems,
+                                    widget.logic.mustHaveItems);
                               },
                             ),
                           );
