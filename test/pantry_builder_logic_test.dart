@@ -11,6 +11,7 @@ class MockRealmResults<T> extends Mock implements RealmResults<T> {
   Iterator<T> get iterator => <T>[].iterator;
 }
 
+
 void main() {
   group('PantryBuilderLogic', () {
     late PantryBuilderLogic logic;
@@ -22,7 +23,7 @@ void main() {
       // Add some items to the optionalItems list
       logic.optionalItems = [Item("3", "pinapple", "Fridge", 1)];
       var result = logic.getOptionalItemsNames();
-
+      print(logic.widget.items);
       // Check that the result is correct
       expect(result, equals(["pinapple"]));
     });
